@@ -1,0 +1,141 @@
+/*
+ * Copyright (c) 2008-2011 Mark C. Prins <mc.prins@gmail.com>
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+.olContainer {
+	border: 1px solid #888888;
+	width: auto;
+	float: left; /* misschien lost dit breedte op */
+}
+
+#olmap {
+	width: 500px;
+	height: 350px;
+	border: 1px solid #000000;
+}
+
+.olStatusBarContainer {
+	background-color: #EEEEEE;
+	border: 1px solid #000000;
+	font-size: smaller;
+	overflow: hidden;
+}
+
+.olStatusBar {
+	height: 10px;
+	border-right: 1px solid #000000;
+	display: inline;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-left: 1px;
+	padding-right: 1px;
+	position: relative;
+	width: auto;
+}
+
+.olStatusBarScale {
+	font-style: italic;
+}
+
+.olStatusBarPermalink {
+    font-weight: bold;
+}
+
+.olStatusBarMouseposition {
+	
+}
+
+.olStatusBarProjection {
+	font-style: italic;
+}
+
+.olStatusBarText {
+	
+}
+
+.olControlOverviewMapElement {
+	background-color: #DDDDDD;
+	padding: 5px;
+	filter: alpha(opacity =   80);
+	-moz-opacity: .8;
+	-khtml-opacity: .8;
+	opacity: .8;
+}
+
+div#olToolbar {
+	float: left;
+	background-color: #EEEEEE;
+	border: 1px solid #000000;
+	padding: 0px;
+}
+
+.olToolbar div {
+	display: block;
+	width: 24px;
+	height: 24px;
+	margin: 1px;
+	float: left;
+}
+
+.olToolbar .olControlZoomBoxItemActive {
+	background-color: #DDDDDD;
+	background-image: url("lib/img/icon_zoomin.png");
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.olToolbar .olControlZoomBoxItemInactive {
+	background-image: url("lib/img/icon_zoomin.png");
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.olToolbar .olControlZoomOutItemActive {
+	background-color: #DDDDDD;
+	background-image: url("lib/img/icon_zoomout.png");
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.olToolbar .olControlZoomOutItemInactive {
+	background-image: url("lib/img/icon_zoomout.png");
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.olToolbar .olControlDragPanItemActive {
+	background-color: #DDDDDD;
+	background-image: url("lib/img/icon_pan.png");
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.olToolbar .olControlDragPanItemInactive {
+	background-image: url("lib/img/icon_pan.png");
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.olToolbar .olControlFeatureInfoItemActive {
+	background-color: #DDDDDD;
+	background-image: url("lib/img/icon_query.png");
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.olToolbar .olControlFeatureInfoItemInactive {
+	background-image: url("lib/img/icon_query.png");
+	background-position: center;
+	background-repeat: no-repeat;
+}
