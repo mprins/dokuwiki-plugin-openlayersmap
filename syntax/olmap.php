@@ -65,7 +65,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
  			return 'block';
  		}
 
- 		/** 
+ 		/**
  		 * Returns a number used to determine in which order modes are added.
  		 * @Override
  		 */
@@ -73,7 +73,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
  			return 901;
  		}
 
- 		/**  
+ 		/**
  		 * This function is inherited from Doku_Parser_Mode.
  		 * Here is the place to register the regular expressions needed
  		 * to match your syntax.
@@ -87,10 +87,15 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
  		 * handle each olmap tag. prepare the matched syntax for use in the renderer.
  		 * @Override
  		 */
- 		function handle($match, $state, $pos, & $handler) {
+ 		function handle($match, $state, $pos, &$handler) {
  			// break matched cdata into its components
  			list ($str_params, $str_points) = explode('>', substr($match, 7, -9), 2);
-
+ 			// get the lat/lon for adding them to the metadata (used by geotag)
+ 			preg_match('(lat[:|=]\"\d*\.\d*\")',$match,$mainLat);
+ 			preg_match('(lon[:|=]\"\d*\.\d*\")',$match,$mainLon);
+ 			$mainLat=substr($mainLat[0],5,-1);
+ 			$mainLon=substr($mainLon[0],5,-1);
+ 				
  			$gmap = $this->_extract_params($str_params);
  			$overlay = $this->_extract_points($str_points);
 
@@ -132,7 +137,9 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
  			return array (
  			$mapid,
  			$style,
- 			$js
+ 			$js,
+ 			$mainLat,
+ 			$mainLon
  			);
  		}
 
@@ -140,10 +147,11 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
  		 * render html tag/output. render the content.
  		 * @Override
  		 */
- 		function render($mode, & $renderer, $data) {
+ 		function render($mode, &$renderer, $data) {
  			static $initialised = false; // set to true after script initialisation
+ 			list ($mapid, $style, $param, $mainLat, $mainLon) = $data;
+
  			if ($mode == 'xhtml') {
- 				list ($mapid, $style, $param) = $data;
  				$olscript = '';
  				$olEnable = false;
  				$gscript = '';
@@ -202,6 +210,14 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			    <script type='text/javascript'>//<![CDATA[
 			    var $mapid = $param 
 			   //]]></script>";
+ 			} elseif ($mode == 'metadata') {
+ 				// render metadata if available
+ 				if (!(($this->dflt['lat']==$mainLat)||($thisdflt['lon']==$mainLon))){
+ 					// unless they are the default
+ 					$renderer->meta['geo']['lat'] = $mainLat;
+ 					$renderer->meta['geo']['lon'] = $mainLon;
+ 				}
+ 				return true;
  			}
  			return false;
  		}
@@ -215,7 +231,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
  		function _extract_params($str_params) {
  			$param = array ();
  			preg_match_all('/(\w*)="(.*?)"/us', $str_params, $param, PREG_SET_ORDER);
-
  			// parse match for instructions, break into key value pairs
  			$gmap = $this->dflt;
  			foreach ($param as $kvpair) {
@@ -238,7 +253,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
  			$point = array ();
  			//preg_match_all('/^(.*?),(.*?),(.*?),(.*?),(.*?),(.*)$/um', $str_points, $point, PREG_SET_ORDER);
  			preg_match_all('/^([+-]?[0-9].*?),([+-]?[0-9].*?),(.*?),(.*?),(.*?),(.*)$/um', $str_points, $point, PREG_SET_ORDER);
- 			
+ 			// create poi array
  			$overlay = array ();
  			foreach ($point as $pt) {
  				list ($match, $lat, $lon, $angle, $opacity, $img, $text) = $pt;

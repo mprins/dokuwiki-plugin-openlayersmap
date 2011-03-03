@@ -32,14 +32,15 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin {
 	 *
 	 * @param    $controller   DokuWiki's event controller object. Also available as global $EVENT_HANDLER
 	 */
-	function register(& $controller) {
+	function register(Doku_Event_Handler &$controller) {
 		$controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'insert_button', array ());
 	}
 
 	/**
 	 * Inserts a toolbar button.
+	 * @param Doku_Event $event the DokuWiki event
 	 */
-	function insert_button(& $event, $param) {
+	function insert_button(Doku_Event &$event, $param) {
 		$strOpen ='<olmap id="olMapOne" width="550px" height="450px" lat="50.0" ';
 		$strOpen.='lon="5.1" zoom="12" statusbar="1" toolbar="1" controls="1" poihoverstyle="0" ';
 		$strOpen.='baselyr="OpenStreetMap" gpxfile="" kmlfile="">\n';
@@ -55,7 +56,6 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin {
 			'open' => $strOpen,
 			'sample' => '50.0117,5.1287,-90,.8,marker-green.png,Pont de Barbouillons; Daverdisse \\\\ external link: [[http://test.com|test.com]] \\\\ internal link: [[::start]]\\\\ **DW Formatting** \n',
 			'close' => '</olmap>\n',
-			
 		);
 	}
 }
