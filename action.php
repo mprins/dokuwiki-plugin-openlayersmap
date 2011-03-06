@@ -37,7 +37,7 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin {
 	}
 
 	/**
-	 * Inserts a toolbar button.
+	 * Inserts the toolbar button.
 	 * @param Doku_Event $event the DokuWiki event
 	 */
 	function insert_button(Doku_Event &$event, $param) {
