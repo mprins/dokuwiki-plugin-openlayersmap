@@ -49,7 +49,7 @@
 }
 
 .olStatusBarPermalink {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .olStatusBarMouseposition {
@@ -67,7 +67,7 @@
 .olControlOverviewMapElement {
 	background-color: #DDDDDD;
 	padding: 5px;
-	filter: alpha(opacity =   80);
+	filter: alpha(opacity =     80);
 	-moz-opacity: .8;
 	-khtml-opacity: .8;
 	opacity: .8;
