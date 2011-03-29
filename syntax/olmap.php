@@ -251,8 +251,16 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
  		 */
  		function _extract_points($str_points) {
  			$point = array ();
- 			//preg_match_all('/^(.*?),(.*?),(.*?),(.*?),(.*?),(.*)$/um', $str_points, $point, PREG_SET_ORDER);
- 			preg_match_all('/^([+-]?[0-9].*?),([+-]?[0-9].*?),(.*?),(.*?),(.*?),(.*)$/um', $str_points, $point, PREG_SET_ORDER);
+ 			//preg_match_all('/^([+-]?[0-9].*?),\s*([+-]?[0-9].*?),(.*?),(.*?),(.*?),(.*)$/um', $str_points, $point, PREG_SET_ORDER);
+ 			/*
+ 			group 1: ([+-]?[0-9]+(?:\.[0-9]*)?)
+ 			group 2: ([+-]?[0-9]+(?:\.[0-9]*)?)
+ 			group 3: (.*?)
+ 			group 4: (.*?)
+ 			group 5: (.*?)
+ 			group 6: (.*)
+ 			*/
+ 			preg_match_all('/^([+-]?[0-9]+(?:\.[0-9]*)?),\s*([+-]?[0-9]+(?:\.[0-9]*)?),(.*?),(.*?),(.*?),(.*)$/um', $str_points, $point, PREG_SET_ORDER);
  			// create poi array
  			$overlay = array ();
  			foreach ($point as $pt) {
@@ -264,14 +272,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
  				$img = trim($img);
  				// TODO validate & set up default img?
  				$text = addslashes(str_replace("\n", "", p_render("xhtml", p_get_instructions($text), $info)));
- 				$overlay[] = array (
- 				$lat,
- 				$lon,
- 				$text,
- 				$angle,
- 				$opacity,
- 				$img
- 				);
+ 				$overlay[] = array($lat, $lon, $text, $angle, $opacity, $img);
  			}
  			return $overlay;
  		}
