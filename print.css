@@ -14,48 +14,54 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 .olContainer {
-	page-break-before: always ';
+	page-break-before: always;
 }
 
-div#olToolbar,.olToolbar div,.olControlLayerSwitcher,.olStatusBarPermalink,.olControlPanZoomBar,.olStatusBarScale
+div#olToolbar,.olToolbar div,.olControlLayerSwitcher,.olStatusBarPermalink,.olControlPanZoomBar,.olStatusBarScale,.olStatusBarMouseposition,.olStatusBarProjection
 	{
-	display: none; 
+	display: none;
 	/* visibility: hidden; */
 }
 
 .olPOItable {
 	display: '';
-	page-break-after: always;
 	margin: 1;
 	padding: 1;
-	border: 1;
-	border-color: __border__
+	border: 1px solid __border__;
 }
 
 .olPrintOnly {
 	display: '';
 }
 
-.olPOItable .olPOITblHeader {
+.olPOITblHeader {
 	
 }
 
-.olPOItable .olPOITblBody {
+.olPOITblBody {
 	
 }
 
-.olPOItable .olPOITblFooter {
+.olPOITblFooter {
+	
+}
+
+.olPOItable .rowId {
 	
 }
 
 .olPOItable .icon {
-	
+	align: center;
 }
 
 .olPOItable .lat,.olPOItable .lon {
 	
 }
 
-.olPOItable .desc {
+.olPOITblCaption {
+	
+}
+
+.olPOItable .txt {
 	
 }

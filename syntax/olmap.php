@@ -133,10 +133,11 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
 					$rowId++;
 					$poi .= ", {lat: $lat, lon: $lon, txt: '$text', angle: $angle, opacity: $opacity, img: '$img', rowId: $rowId}";
-					$poitable .='<tr>'."\n".'<td class="rowId">'.$rowId.'</td><td class="icon"><img src="/lib/plugins/openlayersmap/icons/'.$img.'" alt="icon"></td>
-							<td class="lat" title="latitude in decimal degrees">'.$lat.'</td>
-							<td class="lon" title="longitude in decimal degrees">'.$lon.'</td>
-							<td class="desc">'.$text.'</td>'."\n".'</tr>';
+					$poitable .='<tr>'."\n".'<td class="rowId">'.$rowId.'</td>
+							<td class="icon"><img src="/lib/plugins/openlayersmap/icons/'.$img.'" alt="icon"></td>
+							<td class="lat" title="'.$this->getLang('olmapPOIlatTitle').'">'.$lat.'</td>
+							<td class="lon" title="'.$this->getLang('olmapPOIlonTitle').'">'.$lon.'</td>
+							<td class="txt">'.$text.'</td>'."\n".'</tr>';
 				}
 				$poi = substr($poi, 2);
 			}
@@ -215,22 +216,21 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 				// render a (hidden) table of the POI for the print and a11y presentation
 				$renderer->doc .= '
- 	<table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
-		<caption class="caption">'.$this->getLang('olmapPOItitle').'</caption>
+ 	<table class="olPOItable inline" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
+		<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
 		<thead class="olPOITblHeader">
 			<tr>
 				<th class="rowId" scope="col">id</th>
-				<th class="icon" scope="col">icon</th>
-				<th class="lat" scope="col">latitude</th>
-				<th class="lon" scope="col">longitude</th>
-				<th class="desc" scope="col">description</th>
+				<th class="icon" scope="col">'.$this->getLang('olmapPOIicon').'</th>
+				<th class="lat" scope="col" title="'.$this->getLang('olmapPOIlatTitle').'">'.$this->getLang('olmapPOIlat').'</th>
+				<th class="lon" scope="col" title="'.$this->getLang('olmapPOIlonTitle').'">'.$this->getLang('olmapPOIlon').'</th>
+				<th class="txt" scope="col">'.$this->getLang('olmapPOItxt').'</th>
 			</tr>
 		</thead>
-		<tbody class="olPOITblBody">
-			'.$poitable.'
-		</tbody>
+		<tbody class="olPOITblBody">'.$poitable.'</tbody>
 		<tfoot class="olPOITblFooter"><tr><td colspan="5">'.$poitabledesc.'</td></tr></tfoot>
 	</table>';
+				//TODO no tfoot when $poitabledesc is empty
 
 			} elseif ($mode == 'metadata') {
 				// render metadata if available

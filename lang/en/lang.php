@@ -22,3 +22,10 @@
  * @license BSD license
  */
 $lang['olmapPOItitle'] = 'Points of Interest';
+$lang['olmapPOIlatTitle']='latitude in decimal degrees';
+$lang['olmapPOIlonTitle']='longitude in decimal degrees';
+$lang['olmapPOIicon']='symbol';
+$lang['olmapPOIlat']='latitude';
+$lang['olmapPOIlon']='longitude';
+$lang['olmapPOItxt']='description';
+//$lang['']='';

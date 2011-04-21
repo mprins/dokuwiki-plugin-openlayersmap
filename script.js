@@ -61,8 +61,8 @@ function onFeatureSelect(feature) {
 	}
 
 	var pContent = "";
-	if (feature.data.description != undefined) {
-		pContent += "<div style=''>" + feature.data.id + ": </div>";
+	if (feature.data.rowId != undefined) {
+		pContent += "<span style=''>" + feature.data.rowId + ": </span>";
 	}
 	if (feature.data.name != undefined) {
 		pContent += "<div style=''>" + feature.data.name + "<br /></div>";
@@ -105,7 +105,8 @@ function onFeatureUnselect(feature) {
 	}
 }
 
-// TODO IE7 and lower don't have document.getElementsByClassName so we make one; seems to conflict with openlayers prototypes?
+// TODO IE7 and lower don't have document.getElementsByClassName so we make one;
+// seems to conflict with openlayers prototypes?
 // Object.prototype.getElementsByClassName = document.getElementsByClassName =
 // document.getElementsByClassName
 // || function(className) {
@@ -134,7 +135,7 @@ function olInit() {
 	// var tbls = getElementsByClassName('olPOItable');
 	// console.log(tbls);
 	for (i = 0; i < tbls.length; i++) {
-		tbls[i].className = 'olPOItable olPrintOnly';
+		tbls[i].className = tbls[i].className + ' olPrintOnly';
 	}
 }
 
@@ -374,7 +375,13 @@ function createMap(mapOpts, OLmapPOI) {
 									backgroundXOffset : 0,
 									backgroundYOffset : -4,
 									backgroundRotation : "${angle}",
-									pointRadius : 10
+									pointRadius : 10,
+									fontSize : "12px",
+									// fontFamily: "Courier New, monospace",
+									labelXOffset : 5,
+									labelYOffset : 5,
+									labelAlign : "lb",
+									label : "${label}"
 								},
 								"select" : {
 									cursor : "crosshair",
@@ -405,11 +412,12 @@ function createMap(mapOpts, OLmapPOI) {
 						angle : OLmapPOI[j].angle,
 						opacity : OLmapPOI[j].opacity,
 						img : DocBase + "lib/plugins/openlayersmap/icons/"
-								+ OLmapPOI[j].img
+								+ OLmapPOI[j].img,
+						label : OLmapPOI[j].rowId
 					});
 			feat.data = {
 				name : OLmapPOI[j].txt,
-				id : OLmapPOI[j].rowId
+				rowId : OLmapPOI[j].rowId
 			};
 			features.push(feat);
 		}
@@ -524,4 +532,3 @@ var yEnable = false;
 
 /* register olInit to run with onload event. */
 addInitEvent(olInit);
-

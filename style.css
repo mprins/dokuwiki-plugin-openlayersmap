@@ -148,3 +148,6 @@ div#olToolbar {
 .olPrintOnly {
 	display: none;
 }
+.olPOItable .icon {
+	align: center;
+}
