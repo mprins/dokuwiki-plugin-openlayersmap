@@ -16,7 +16,7 @@
 .olContainer {
 	border: 1px solid #888888;
 	width: auto;
-	float: left; /* misschien lost dit breedte op */
+	float: left;
 }
 
 #olmap {
@@ -64,15 +64,16 @@
 	
 }
 
+/*
 .olControlOverviewMapElement {
 	background-color: #DDDDDD;
 	padding: 5px;
-	filter: alpha(opacity =     80);
+	filter: alpha(opacity = 80);
 	-moz-opacity: .8;
 	-khtml-opacity: .8;
 	opacity: .8;
 }
-
+*/
 div#olToolbar {
 	float: left;
 	background-color: #EEEEEE;
@@ -138,4 +139,12 @@ div#olToolbar {
 	background-image: url("lib/img/icon_query.png");
 	background-position: center;
 	background-repeat: no-repeat;
+}
+
+.olPOItable {
+	
+}
+
+.olPrintOnly {
+	display: none;
 }

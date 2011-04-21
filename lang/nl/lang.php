@@ -1,5 +1,6 @@
+<?php
 /*
- * Copyright (c) 2008-2011 Mark C. Prins <mc.prins@gmail.com>
+ * Copyright (c) 2011 Mark C. Prins <mc.prins@gmail.com>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -13,49 +14,11 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-.olContainer {
-	page-break-before: always ';
-}
 
-div#olToolbar,.olToolbar div,.olControlLayerSwitcher,.olStatusBarPermalink,.olControlPanZoomBar,.olStatusBarScale
-	{
-	display: none; 
-	/* visibility: hidden; */
-}
-
-.olPOItable {
-	display: '';
-	page-break-after: always;
-	margin: 1;
-	padding: 1;
-	border: 1;
-	border-color: __border__
-}
-
-.olPrintOnly {
-	display: '';
-}
-
-.olPOItable .olPOITblHeader {
-	
-}
-
-.olPOItable .olPOITblBody {
-	
-}
-
-.olPOItable .olPOITblFooter {
-	
-}
-
-.olPOItable .icon {
-	
-}
-
-.olPOItable .lat,.olPOItable .lon {
-	
-}
-
-.olPOItable .desc {
-	
-}
+/**
+ * Dutch language file for openlayersmap plugin
+ *
+ * @author mark
+ * @license BSD license
+ */
+$lang['olmapPOItitle'] = 'Locaties in de kaart';

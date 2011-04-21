@@ -48,31 +48,42 @@ function onFeatureSelect(feature) {
 	// 'this' is selectFeature control
 	var pPos = selectedFeature.geometry.getBounds().getCenterLonLat();
 	// != OpenLayers.Geometry.Point
-	if (selectedFeature.geometry.CLASS_NAME == "OpenLayers.Geometry.LineString"){
-		try{
+	if (selectedFeature.geometry.CLASS_NAME == "OpenLayers.Geometry.LineString") {
+		try {
 			// for lines make the popup show at the cursor position
-			pPos = feature.layer.map.getLonLatFromViewPortPx(this.handlers.feature.evt.xy);
-		} catch (anErr){
-			console.warn("unable to get event position; reverting to boundingbox center.");
+			pPos = feature.layer.map
+					.getLonLatFromViewPortPx(this.handlers.feature.evt.xy);
+		} catch (anErr) {
+			console
+					.warn("unable to get event position; reverting to boundingbox center.");
 			pPos = selectedFeature.geometry.getBounds().getCenterLonLat();
 		}
 	}
 
-	var pContent="";
-	if (feature.data.name !=undefined) {
-		pContent+="<div style=''>" + feature.data.name + "<br /></div>";		}
-	if (feature.data.ele !=undefined) {
-		pContent+="<div style=''>elevation: " + feature.data.ele + "<br /></div>";}
-	if (feature.data.type !=undefined) { 
-		pContent+="<div style=''>" + feature.data.type + "<br /></div>";}
-	if (feature.data.time !=undefined) { 
-		pContent+="<div style=''>time: " + feature.data.time + "<br /></div>";}
-	if (feature.data.description !=undefined) { 
-		pContent+="<div style=''>" + feature.data.description + "</div>";}
-	if(pContent.length>0){
-		var popup = new OpenLayers.Popup.FramedCloud(
-				"olPopup", pPos, null, pContent, null, true, 
-				function() {
+	var pContent = "";
+	if (feature.data.description != undefined) {
+		pContent += "<div style=''>" + feature.data.id + ": </div>";
+	}
+	if (feature.data.name != undefined) {
+		pContent += "<div style=''>" + feature.data.name + "<br /></div>";
+	}
+	if (feature.data.ele != undefined) {
+		pContent += "<div style=''>elevation: " + feature.data.ele
+				+ "<br /></div>";
+	}
+	if (feature.data.type != undefined) {
+		pContent += "<div style=''>" + feature.data.type + "<br /></div>";
+	}
+	if (feature.data.time != undefined) {
+		pContent += "<div style=''>time: " + feature.data.time + "<br /></div>";
+	}
+	if (feature.data.description != undefined) {
+		pContent += "<div style=''>" + feature.data.description + "</div>";
+	}
+
+	if (pContent.length > 0) {
+		var popup = new OpenLayers.Popup.FramedCloud("olPopup", pPos, null,
+				pContent, null, true, function() {
 					selectControl.unselect(selectedFeature);
 				});
 		feature.popup = popup;
@@ -87,17 +98,43 @@ function onFeatureSelect(feature) {
  *            the un-selected feature
  */
 function onFeatureUnselect(feature) {
-	if(feature.popup!=null){
+	if (feature.popup != null) {
 		feature.layer.map.removePopup(feature.popup);
 		feature.popup.destroy();
 		feature.popup = null;
 	}
 }
 
+// TODO IE7 and lower don't have document.getElementsByClassName so we make one; seems to conflict with openlayers prototypes?
+// Object.prototype.getElementsByClassName = document.getElementsByClassName =
+// document.getElementsByClassName
+// || function(className) {
+// className = className.replace(/\s+/g, ' ').replace(
+// /^\s|![A-Za-z0-9-_\s]|\s$/g, '').split(' ');
+// for ( var i = 0, elements = this.getElementsByTagName('*'), elementsLength =
+// elements.length, b = [], classNameLength = className.length, passed = true; i
+// < elementsLength; i++, passed = true) {
+// for ( var j = 0; j < classNameLength && passed; j++) {
+// passed = (new RegExp(
+// '(^|\\\s)' + className[j] + '(\\\s|$)', 'i'))
+// .test(elements[i].className);
+// }
+// if (passed) {
+// b.push(elements[i]);
+// }
+// }
+// return b;
+// };
+
 /** init. */
 function olInit() {
-	if (!olEnable) {
-		return;
+	// hide the table with POI
+	// var tbls = getElementsByClass('olPOItable', document, 'table');
+	var tbls = getElementsByClass('olPOItable', null, null);
+	// var tbls = getElementsByClassName('olPOItable');
+	// console.log(tbls);
+	for (i = 0; i < tbls.length; i++) {
+		tbls[i].className = 'olPOItable olPrintOnly';
 	}
 }
 
@@ -107,10 +144,10 @@ function olInit() {
  * @param {Object}mapOpts
  *            MapOptions hash {id:'olmap', lat:6710200, lon:506500, zoom:13,
  *            toolbar:1, statusbar:1, controls:1, poihoverstyle:1, baselyr:'',
- *            kmlfile:'', gpxfile:''}
+ *            kmlfile:'', gpxfile:'', summary:''}
  * @param {Array}OLmapPOI
  *            array with POI's [ {lat:6710300,lon:506000,txt:'instap
- *            punt',angle:180,opacity:.9,img:''},... ]);
+ *            punt',angle:180,opacity:.9,img:'', rowId:n},... ]);
  * 
  */
 function createMap(mapOpts, OLmapPOI) {
@@ -119,34 +156,48 @@ function createMap(mapOpts, OLmapPOI) {
 	}
 	OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
 	OpenLayers.Util.onImageLoadErrorColor = "transparent";
+	// http://mapbox.com/documentation/adding-tiles-your-site/openlayers-themes
+	// OpenLayers.ImgPath = '';
+
 	var extent = new OpenLayers.Bounds();
 
 	var mOpts = {
-			projection :new OpenLayers.Projection("EPSG:900913"),
-			displayProjection :new OpenLayers.Projection("EPSG:4326"),
-			units :"m",
-			maxResolution :156543.0339,
-			maxExtent :new OpenLayers.Bounds(-20037508.3392, -20037508.3392,
-					20037508.3392, 20037508.3392),
-					controls : [],
-					numZoomLevels :19
+		projection : new OpenLayers.Projection("EPSG:900913"),
+		displayProjection : new OpenLayers.Projection("EPSG:4326"),
+		units : "m",
+		maxResolution : 156543.0339,
+		maxExtent : new OpenLayers.Bounds(-20037508.3392, -20037508.3392,
+				20037508.3392, 20037508.3392),
+		controls : [],
+		numZoomLevels : 19
 	};
 	var m = new OpenLayers.Map(mapOpts.id, mOpts);
 	/* OSM maps */
-	m.addLayer(new OpenLayers.Layer.OSM("OpenStreetMap"),
-			{transitionEffect: "resize"});
+	m.addLayer(new OpenLayers.Layer.OSM("OpenStreetMap"), {
+		transitionEffect : "resize"
+	});
 	m.addLayer(new OpenLayers.Layer.OSM("t@h",
-	"http://tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png"),
-	{transitionEffect: "resize"});
-	m.addLayer(new OpenLayers.Layer.OSM("cycle map", 
-	"http://andy.sandbox.cloudmade.com/tiles/cycle/${z}/${x}/${y}.png"),
-	{transitionEffect: "resize"});
-	m.addLayer(new OpenLayers.Layer.OSM("cloudmade map",
-			"http://tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png",
-			{transitionEffect: "resize"}));
+			"http://tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png"), {
+		transitionEffect : "resize"
+	});
+	m
+			.addLayer(
+					new OpenLayers.Layer.OSM("cycle map",
+							"http://andy.sandbox.cloudmade.com/tiles/cycle/${z}/${x}/${y}.png"),
+					{
+						transitionEffect : "resize"
+					});
+	m
+			.addLayer(new OpenLayers.Layer.OSM(
+					"cloudmade map",
+					"http://tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png",
+					{
+						transitionEffect : "resize"
+					}));
 	m.addLayer(new OpenLayers.Layer.OSM("hike and bike map",
-			"http://toolserver.org/tiles/hikebike/${z}/${x}/${y}.png",
-			{transitionEffect: "resize"}));
+			"http://toolserver.org/tiles/hikebike/${z}/${x}/${y}.png", {
+				transitionEffect : "resize"
+			}));
 	/* open aerial map */
 	/*
 	 * turn this off; project is asleep:
@@ -162,24 +213,24 @@ function createMap(mapOpts, OLmapPOI) {
 	if (gEnable) {
 		try {
 			m.addLayer(new OpenLayers.Layer.Google("google relief", {
-				type :G_PHYSICAL_MAP,
-				'sphericalMercator' :true,
-				transitionEffect: "resize"
+				type : G_PHYSICAL_MAP,
+				'sphericalMercator' : true,
+				transitionEffect : "resize"
 			}));
 			m.addLayer(new OpenLayers.Layer.Google("google sat", {
-				type :G_SATELLITE_MAP,
-				'sphericalMercator' :true,
-				transitionEffect: "resize"
+				type : G_SATELLITE_MAP,
+				'sphericalMercator' : true,
+				transitionEffect : "resize"
 			}));
 			m.addLayer(new OpenLayers.Layer.Google("google hybrid", {
-				type :G_HYBRID_MAP,
-				'sphericalMercator' :true,
-				transitionEffect: "resize"
+				type : G_HYBRID_MAP,
+				'sphericalMercator' : true,
+				transitionEffect : "resize"
 			}));
 			m.addLayer(new OpenLayers.Layer.Google("google normal", {
-				type :G_NORMAL_MAP,
-				'sphericalMercator' :true,
-				transitionEffect: "resize"
+				type : G_NORMAL_MAP,
+				'sphericalMercator' : true,
+				transitionEffect : "resize"
 			}));
 		} catch (ol_err1) {
 		}
@@ -188,9 +239,9 @@ function createMap(mapOpts, OLmapPOI) {
 	if (yEnable) {
 		try {
 			m.addLayer(new OpenLayers.Layer.Yahoo("yahoo", {
-				'type' :YAHOO_MAP_HYB,
-				'sphericalMercator' :true,
-				transitionEffect: resize
+				'type' : YAHOO_MAP_HYB,
+				'sphericalMercator' : true,
+				transitionEffect : resize
 			}));
 		} catch (ol_err2) {
 		}
@@ -199,9 +250,9 @@ function createMap(mapOpts, OLmapPOI) {
 	if (veEnable) {
 		try {
 			m.addLayer(new OpenLayers.Layer.VirtualEarth("ve", {
-				'type' :VEMapStyle.Hybrid,
-				'sphericalMercator' :true,
-				transitionEffect: resize
+				'type' : VEMapStyle.Hybrid,
+				'sphericalMercator' : true,
+				transitionEffect : resize
 			}));
 		} catch (ol_err3) {
 		}
@@ -215,9 +266,13 @@ function createMap(mapOpts, OLmapPOI) {
 	if (mapOpts.controls === 1) {
 		/* add base controls to map */
 		m.addControl(new OpenLayers.Control.LayerSwitcher());
-		m.addControl(new OpenLayers.Control.ScaleLine({geodesic: true}));
+		m.addControl(new OpenLayers.Control.ScaleLine({
+			geodesic : true
+		}));
 		m.addControl(new OpenLayers.Control.PanZoomBar());
-		m.addControl(new OpenLayers.Control.Graticule({visible:false}));
+		m.addControl(new OpenLayers.Control.Graticule({
+			visible : false
+		}));
 		// TODO optioneel overzichts kaart toevoegen
 		// var overViewOpts = {layers: [wms.clone()],size: new
 		// OpenLayers.Size(120,120),projection: new
@@ -241,20 +296,20 @@ function createMap(mapOpts, OLmapPOI) {
 
 	if (mapOpts.statusbar === 1) {
 		// statusbar control: permalink
-		m.addControl(new OpenLayers.Control.Permalink(
-				mapOpts.id + '-statusbar-link-ref'));
+		m.addControl(new OpenLayers.Control.Permalink(mapOpts.id
+				+ '-statusbar-link-ref'));
 		// statusbar control: mouse pos.
 		// TODO kijken naar afronding met aNumber.toFixed(0)
-		m.addControl(new OpenLayers.Control.MousePosition( {
-			'div' :OpenLayers.Util
-			.getElement(mapOpts.id + '-statusbar-mouseposition')
+		m.addControl(new OpenLayers.Control.MousePosition({
+			'div' : OpenLayers.Util.getElement(mapOpts.id
+					+ '-statusbar-mouseposition')
 		}));
 		// statusbar control: scale
-		m.addControl(new OpenLayers.Control.Scale(
-				mapOpts.id + '-statusbar-scale'));
+		m.addControl(new OpenLayers.Control.Scale(mapOpts.id
+				+ '-statusbar-scale'));
 		// statusbar control: attribution
-		m.addControl(new OpenLayers.Control.Attribution( {
-			'div' :OpenLayers.Util.getElement(mapOpts.id + '-statusbar-text')
+		m.addControl(new OpenLayers.Control.Attribution({
+			'div' : OpenLayers.Util.getElement(mapOpts.id + '-statusbar-text')
 		}));
 		// statusbar control: projection
 		OpenLayers.Util.getElement(mapOpts.id + '-statusbar-projection').innerHTML = m.displayProjection;
@@ -264,71 +319,79 @@ function createMap(mapOpts, OLmapPOI) {
 
 	if (mapOpts.toolbar === 1) {
 		// buttons + panel
-		var zoomin = new OpenLayers.Control.ZoomBox( {
-			title :"Zoom in"
+		var zoomin = new OpenLayers.Control.ZoomBox({
+			title : "Zoom in"
 		});
-		var zoomout = new OpenLayers.Control.ZoomBox( {
-			out :true,
-			title :"Zoom uit",
-			displayClass :"olControlZoomOut"
+		var zoomout = new OpenLayers.Control.ZoomBox({
+			out : true,
+			title : "Zoom uit",
+			displayClass : "olControlZoomOut"
 		});
-		var pan = new OpenLayers.Control.DragPan( {
-			title :"Verschuif"
+		var pan = new OpenLayers.Control.DragPan({
+			title : "Verschuif"
 		});
 		// icon_query.png
 		var nav = new OpenLayers.Control.NavigationHistory();
 		m.addControl(nav);
-		var panel = new OpenLayers.Control.Panel( {
-			defaultControl :zoomin,
-			displayClass :"olToolbar",
-			"div" :OpenLayers.Util.getElement(mapOpts.id + "-olToolbar")
+		var panel = new OpenLayers.Control.Panel({
+			defaultControl : zoomin,
+			displayClass : "olToolbar",
+			"div" : OpenLayers.Util.getElement(mapOpts.id + "-olToolbar")
 		});
-		panel.addControls( [ zoomin, zoomout, pan ]);
-		panel.addControls( [ nav.next, nav.previous ]);
+		panel.addControls([ zoomin, zoomout, pan ]);
+		panel.addControls([ nav.next, nav.previous ]);
 		m.addControl(panel);
 	} else {
 		OpenLayers.Util.getElement(mapOpts.id + '-olToolbar').display = 'none';
 	}
-	
+
 	// add overlays
 	m.addLayer(new OpenLayers.Layer.OSM("Hillshade",
-			"http://toolserver.org/~cmarqu/hill/${z}/${x}/${y}.png",
-			{transitionEffect: "resize",isBaseLayer: false,
-        transparent: true, visibility: false}));
+			"http://toolserver.org/~cmarqu/hill/${z}/${x}/${y}.png", {
+				transitionEffect : "resize",
+				isBaseLayer : false,
+				transparent : true,
+				visibility : false
+			}));
 
 	var DocBase = DOKU_BASE;
 	if (OLmapPOI.length > 0) {
 		var markers = new OpenLayers.Layer.Vector(
 				"POI",
 				{
-					styleMap :new OpenLayers.StyleMap({
-						"default" : {
-						externalGraphic:"${img}",
-						graphicHeight:16,
-						graphicWidth:16,
-						graphicXOffset:0,
-						graphicYOffset:-8,
-						graphicOpacity:"${opacity}",
-						rotation:"${angle}",
-						backgroundGraphic:DocBase + "lib/plugins/openlayersmap/icons/marker_shadow.png",
-						backgroundXOffset:0,
-						backgroundYOffset:-4,
-						backgroundRotation:"${angle}",
-						pointRadius:10
-					},
-					"select":{
-						cursor:"crosshair",
-						externalGraphic:DocBase	+ "lib/plugins/openlayersmap/icons/marker-red.png",
-						graphicHeight:16,
-						graphicWidth:16,
-						graphicXOffset:0,
-						graphicYOffset:-8,											
-						graphicOpacity:1.0,
-						rotation:"${angle}"
+					styleMap : new OpenLayers.StyleMap(
+							{
+								"default" : {
+									externalGraphic : "${img}",
+									graphicHeight : 16,
+									graphicWidth : 16,
+									graphicXOffset : 0,
+									graphicYOffset : -8,
+									graphicOpacity : "${opacity}",
+									rotation : "${angle}",
+									backgroundGraphic : DocBase
+											+ "lib/plugins/openlayersmap/icons/marker_shadow.png",
+									backgroundXOffset : 0,
+									backgroundYOffset : -4,
+									backgroundRotation : "${angle}",
+									pointRadius : 10
+								},
+								"select" : {
+									cursor : "crosshair",
+									externalGraphic : DocBase
+											+ "lib/plugins/openlayersmap/icons/marker-red.png",
+									graphicHeight : 16,
+									graphicWidth : 16,
+									graphicXOffset : 0,
+									graphicYOffset : -8,
+									graphicOpacity : 1.0,
+									rotation : "${angle}"
+								}
+							}),
+					isBaseLayer : false,
+					rendererOptions : {
+						yOrdering : true
 					}
-					}),
-					isBaseLayer:false,
-					rendererOptions:{yOrdering :true}
 				});
 
 		m.addLayer(markers);
@@ -338,12 +401,16 @@ function createMap(mapOpts, OLmapPOI) {
 			var feat = new OpenLayers.Feature.Vector(
 					new OpenLayers.Geometry.Point(OLmapPOI[j].lon,
 							OLmapPOI[j].lat).transform(m.displayProjection,
-									m.projection), {
-						angle:OLmapPOI[j].angle,
-						opacity:OLmapPOI[j].opacity,
-						img:DocBase + "lib/plugins/openlayersmap/icons/" + OLmapPOI[j].img
+							m.projection), {
+						angle : OLmapPOI[j].angle,
+						opacity : OLmapPOI[j].opacity,
+						img : DocBase + "lib/plugins/openlayersmap/icons/"
+								+ OLmapPOI[j].img
 					});
-			feat.data = {name:OLmapPOI[j].txt};
+			feat.data = {
+				name : OLmapPOI[j].txt,
+				id : OLmapPOI[j].rowId
+			};
 			features.push(feat);
 		}
 		markers.addFeatures(features);
@@ -353,23 +420,28 @@ function createMap(mapOpts, OLmapPOI) {
 
 	/* GPX layer */
 	if (mapOpts.gpxfile.length > 0) {
-		var layerGPX = new OpenLayers.Layer.GML("GPS route",
-				DocBase + "lib/exe/fetch.php?media=" + mapOpts.gpxfile, {
+		var layerGPX = new OpenLayers.Layer.GML("GPS route", DocBase
+				+ "lib/exe/fetch.php?media=" + mapOpts.gpxfile, {
 			format : OpenLayers.Format.GPX,
-			formatOptions: {	
-			extractWaypoints:true,
-			extractTracks:true,
-			extractStyles: true, 
-			extractAttributes: true,
-			handleHeight:true,
-			maxDepth: 3
-		},
-		style : {strokeColor:"#0000FF", strokeWidth:3, strokeOpacity:0.7, 
-			pointRadius:4, fillColor: "#0099FF", fillOpacity:0.7 /*
-																	 * ,
-																	 * label:"${name}"
-																	 */},
-			 projection : new OpenLayers.Projection("EPSG:4326")
+			formatOptions : {
+				extractWaypoints : true,
+				extractTracks : true,
+				extractStyles : true,
+				extractAttributes : true,
+				handleHeight : true,
+				maxDepth : 3
+			},
+			style : {
+				strokeColor : "#0000FF",
+				strokeWidth : 3,
+				strokeOpacity : 0.7,
+				pointRadius : 4,
+				fillColor : "#0099FF",
+				fillOpacity : 0.7
+			/*
+			 * , label:"${name}"
+			 */},
+			projection : new OpenLayers.Projection("EPSG:4326")
 		});
 		m.addLayer(layerGPX);
 		layerGPX.events.register('loadend', m, function() {
@@ -381,45 +453,47 @@ function createMap(mapOpts, OLmapPOI) {
 
 	/* KML layer */
 	if (mapOpts.kmlfile.length > 0) {
-		var layerKML = new OpenLayers.Layer.GML("KML file",
-				DocBase + "lib/exe/fetch.php?media=" + mapOpts.kmlfile, {
+		var layerKML = new OpenLayers.Layer.GML("KML file", DocBase
+				+ "lib/exe/fetch.php?media=" + mapOpts.kmlfile, {
 			format : OpenLayers.Format.KML,
-			formatOptions: {
-			extractStyles: true, 
-			extractAttributes: true,
-			maxDepth: 3
-		},
-		style:{label:"${name}"},
-		projection : new OpenLayers.Projection("EPSG:4326")
+			formatOptions : {
+				extractStyles : true,
+				extractAttributes : true,
+				maxDepth : 3
+			},
+			style : {
+				label : "${name}"
+			},
+			projection : new OpenLayers.Projection("EPSG:4326")
 		});
 		m.addLayer(layerKML);
 		layerKML.events.register('loadend', m, function() {
 			extent.extend(layerKML.getDataExtent());
 			m.zoomToExtent(extent);
 		});
-	}	
+	}
 
 	// selectcontrol for layers
-	if((m.getLayersByClass('OpenLayers.Layer.GML').length > 0)
-			|| m.getLayersByClass('OpenLayers.Layer.Vector').length > 0){
-		selectControl = new OpenLayers.Control.SelectFeature(
-				(m.getLayersByClass('OpenLayers.Layer.Vector')).concat(m.getLayersByClass('OpenLayers.Layer.GML')), 
-				{	
-					multiple: true,
-					hover :mapOpts.poihoverstyle,
-					onSelect :onFeatureSelect,
-					onUnselect :onFeatureUnselect
-				});
+	if ((m.getLayersByClass('OpenLayers.Layer.GML').length > 0)
+			|| m.getLayersByClass('OpenLayers.Layer.Vector').length > 0) {
+		selectControl = new OpenLayers.Control.SelectFeature((m
+				.getLayersByClass('OpenLayers.Layer.Vector')).concat(m
+				.getLayersByClass('OpenLayers.Layer.GML')), {
+			multiple : true,
+			hover : mapOpts.poihoverstyle,
+			onSelect : onFeatureSelect,
+			onUnselect : onFeatureUnselect
+		});
 		m.addControl(selectControl);
 		selectControl.activate();
 	}
 
 	// change/set alternative baselyr
-	try{
+	try {
 		m.setBaseLayer(m.getLayersByName(mapOpts.baselyr)[0]);
-	}catch(ol_err4){
+	} catch (ol_err4) {
 		m.setBaseLayer(m.layers[0]);
-	}		
+	}
 	return m;
 }
 
@@ -450,3 +524,4 @@ var yEnable = false;
 
 /* register olInit to run with onload event. */
 addInitEvent(olInit);
+
