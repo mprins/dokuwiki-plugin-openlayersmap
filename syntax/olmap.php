@@ -32,7 +32,7 @@ require_once (DOKU_PLUGIN . 'syntax.php');
  * need to inherit from this class
  */
 class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
-	/** defaults of the recognized attributes of the olmap tag. */
+	/** defaults of the known attributes of the olmap tag. */
 	private $dflt = array (
 		'id' => 'olmap',
 		'width' => '550px',
@@ -54,25 +54,19 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		 * Return the type of syntax this plugin defines.
 		 * @Override
 		 */
-		function getType() {
-			return 'substition';
-		}
+		function getType() {return 'substition';}
 
 		/**
 		 * Defines how this syntax is handled regarding paragraphs.
 		 * @Override
 		 */
-		function getPType() {
-			return 'block';
-		}
+		function getPType() {return 'block';}
 
 		/**
 		 * Returns a number used to determine in which order modes are added.
 		 * @Override
 		 */
-		function getSort() {
-			return 901;
-		}
+		function getSort() {return 901;}
 
 		/**
 		 * This function is inherited from Doku_Parser_Mode.
@@ -99,6 +93,19 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 			$gmap = $this->_extract_params($str_params);
 			$overlay = $this->_extract_points($str_points);
+
+			$imgUrl = "{{";
+			// use mapquest open for now
+			$imgUrl .= $this->_getMapQuest($gmap,$overlay);
+			// dw specific params
+			$imgUrl .="&.png?".$gmap['width']."x".$gmap['height'];
+			$imgUrl .= "&nolink";
+			$imgUrl .= "|".$gmap['summary']." }}";
+
+			// remove 'px'
+			$imgUrl = str_replace("px", "",$imgUrl);
+
+			$imgUrl=p_render("xhtml", p_get_instructions($imgUrl), $info);
 
 			$mapid = $gmap['id'];
 
@@ -143,7 +150,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			}
 			$js .= "createMap({" . $param . " },[$poi]);";
 
-			return array($mapid,$style,$js,$mainLat,$mainLon,$poitable,$gmap['summary']);
+			return array($mapid,$style,$js,$mainLat,$mainLon,$poitable,$gmap['summary'],$imgUrl);
 		}
 
 		/**
@@ -152,7 +159,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		 */
 		function render($mode, &$renderer, $data) {
 			static $initialised = false; // set to true after script initialisation
-			list ($mapid, $style, $param, $mainLat, $mainLon, $poitable, $poitabledesc) = $data;
+			list ($mapid, $style, $param, $mainLat, $mainLon, $poitable, $poitabledesc, $staticImgUrl) = $data;
 
 			if ($mode == 'xhtml') {
 				$olscript = '';
@@ -196,7 +203,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$yscript
 				$scriptEnable
 			    <div id='olContainer' class='olContainer'>
-			        <div id='$mapid-olToolbar' class='olToolbar'></div>
+			    <span id='$mapid-static' class='olStaticMap'>$staticImgUrl</span>
+				<div id='$mapid-olToolbar' class='olToolbar'></div>
 			        <div style='clear:both;'></div>
 			        <div id='$mapid' $style ></div>
 			        <div id='$mapid-olStatusBar' class='olStatusBarContainer'>
@@ -214,8 +222,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			    var $mapid = $param 
 			   //--><!]]></script>";
 
-				// render a (hidden) table of the POI for the print and a11y presentation
-				$renderer->doc .= '
+			    // render a (hidden) table of the POI for the print and a11y presentation
+			    $renderer->doc .= '
  	<table class="olPOItable inline" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
 		<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
 		<thead class="olPOITblHeader">
@@ -230,7 +238,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		<tbody class="olPOITblBody">'.$poitable.'</tbody>
 		<tfoot class="olPOITblFooter"><tr><td colspan="5">'.$poitabledesc.'</td></tr></tfoot>
 	</table>';
-				//TODO no tfoot when $poitabledesc is empty
+			    //TODO no tfoot when $poitabledesc is empty
 
 			} elseif ($mode == 'metadata') {
 				// render metadata if available
@@ -250,7 +258,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		 * @param   string    $str_params   string of key="value" pairs
 		 * @return  array                   associative array of parameters key=>value
 		 */
-		function _extract_params($str_params) {
+		private function _extract_params($str_params) {
 			$param = array ();
 			preg_match_all('/(\w*)="(.*?)"/us', $str_params, $param, PREG_SET_ORDER);
 			// parse match for instructions, break into key value pairs
@@ -276,7 +284,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		 * @param   string    $str_points   multi-line string of lat,lon,text triplets
 		 * @return  array                   multi-dimensional array of lat,lon,text triplets
 		 */
-		function _extract_points($str_points) {
+		private function _extract_points($str_points) {
 			$point = array ();
 			//preg_match_all('/^([+-]?[0-9].*?),\s*([+-]?[0-9].*?),(.*?),(.*?),(.*?),(.*)$/um', $str_points, $point, PREG_SET_ORDER);
 			/*
@@ -302,5 +310,35 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$overlay[] = array($lat, $lon, $text, $angle, $opacity, $img);
 			}
 			return $overlay;
+		}
+
+		/**
+		 * Create a MapQuest static map API image url.
+		 * @param array $gmap
+		 * @param array $overlay
+		 */
+		private function _getMapQuest($gmap,$overlay) {
+			$imgUrl = "http://open.mapquestapi.com/staticmap/v3/getmap?";
+			$imgUrl .= "size=".$gmap['width'].",".$gmap['height'];
+			$imgUrl .= "&center=".$gmap['lat'].",".$gmap['lon'];
+
+			if ($gmap['zoom']>16) {
+				$imgUrl .= "&zoom=16";
+			} else			{
+				$imgUrl .= "&zoom=".$gmap['zoom'];
+			}
+			// TODO mapquest allows using one image url with a multiplier $NUMBER eg:
+			// $NUMBER = 2
+			// $imgUrl .= DOKU_URL."/".DOKU_PLUGIN."/".getPluginName()."/icons/".$img.",$NUMBER,C,".$lat1.",".$lon1.",0,0,0,0,C,".$lat2.",".$lon2.",0,0,0,0";
+			if (!empty ($overlay)) {
+				$imgUrl .= "&xis=";
+				foreach ($overlay as $data) {
+					list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
+					$imgUrl .= DOKU_URL."lib/plugins/openlayersmap/icons/".$img.",1,C,".$lat.",".$lon.",0,0,0,0,";
+				}
+				$imgUrl = substr($imgUrl,0,-1);
+				$imgUrl .= "&imageType=png&type=map";
+			}
+			return $imgUrl;
 		}
 }

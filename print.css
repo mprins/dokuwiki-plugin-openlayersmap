@@ -17,21 +17,25 @@
 	page-break-before: always;
 }
 
-div#olToolbar,.olToolbar div,.olControlLayerSwitcher,.olStatusBarPermalink,.olControlPanZoomBar,.olStatusBarScale,.olStatusBarMouseposition,.olStatusBarProjection
+div#olToolbar,.olToolbar,.olControlLayerSwitcher,.olStatusBarPermalink,.olControlPanZoomBar,.olStatusBarMouseposition,.olStatusBarProjection
 	{
 	display: none;
 	/* visibility: hidden; */
 }
 
 .olPOItable {
-	display: '';
+	display: inline;
 	margin: 1;
 	padding: 1;
 	border: 1px solid __border__;
 }
 
 .olPrintOnly {
-	display: '';
+	display: inline;
+}
+
+.olStaticMap {
+	display: inline;
 }
 
 .olPOITblHeader {

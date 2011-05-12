@@ -137,6 +137,13 @@ function olInit() {
 	for (i = 0; i < tbls.length; i++) {
 		tbls[i].className = tbls[i].className + ' olPrintOnly';
 	}
+	
+	// hide the static image
+	var statImg = getElementsByClass('olStaticMap', null, null);
+	for (i = 0; i < statImg.length; i++) {
+		statImg[i].style.display = 'none';
+	}
+	
 }
 
 /**
@@ -376,12 +383,14 @@ function createMap(mapOpts, OLmapPOI) {
 									backgroundYOffset : -4,
 									backgroundRotation : "${angle}",
 									pointRadius : 10,
-									fontSize : "12px",
-									// fontFamily: "Courier New, monospace",
-									labelXOffset : 5,
-									labelYOffset : 5,
+									labelXOffset : 8,
+									labelYOffset : 8,
 									labelAlign : "lb",
-									label : "${label}"
+									label : "${label}",
+									// fontColor : "",
+									fontFamily: "monospace",
+									fontSize : "12px",
+									fontWeight : "bold"
 								},
 								"select" : {
 									cursor : "crosshair",
