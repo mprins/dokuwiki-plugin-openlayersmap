@@ -25,3 +25,8 @@ $lang['olScriptUrl'] = 'URL & query string to access OpenLayers API. The default
 $lang['googleScriptUrl'] = 'URL & query string to access Google Maps API.';
 $lang['veScriptUrl'] = 'URL & query string to access Virtual Earth API.';
 $lang['yahooScriptUrl'] = 'URL & query string to access Yahoo Maps API.';
+// don't need this anymore $lang['googleAPIKey'] = 'Google Maps API key.';
+$lang['bingAPIKey'] = 'bing Maps API key.';
+$lang['iconUrlOverload'] = 'URL for map icons when using static maps on a non-internet host';
+
+

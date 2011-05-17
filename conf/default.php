@@ -28,3 +28,6 @@ $conf['veScriptUrl'] = '';
 // http://api.maps.yahoo.com/ajaxymap?v=3.0&appid=euzuro-openlayers
 $conf['yahooScriptUrl'] = '';
 $conf['olScriptUrl'] = DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js';
+$conf['bingAPIKey'] = '';
+// don't need this anymore $conf['googleAPIKey'] = '';
+$conf['iconUrlOverload'] = '';

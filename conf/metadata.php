@@ -33,3 +33,12 @@ $meta['veScriptUrl'] = array (
 $meta['yahooScriptUrl'] = array (
 	'string'
 );
+$meta['bingAPIKey'] = array (
+	'string'
+);
+$meta['iconUrlOverload'] = array (
+	'string'
+);
+
+// don't need this anymore $meta['googleAPIKey'] = array ('string');
+

@@ -25,3 +25,6 @@ $lang['olScriptUrl'] = 'URL & query string voor toegang tot OpenLayers API. De d
 $lang['googleScriptUrl'] = 'URL & query string voor toegang tot Google Maps API.';
 $lang['veScriptUrl'] = 'URL & query string voor toegang tot Virtual Earth API.';
 $lang['yahooScriptUrl'] = 'URL & query string voor toegang tot Yahoo Maps API.';
+// don't need this anymore $lang['googleAPIKey'] = 'Google Maps API key.';
+$lang['bingAPIKey'] = 'bing Maps API key.';
+$lang['iconUrlOverload'] = 'URL voor kaart ikonen bij gebruik van statische kaarten op een non-internet host';

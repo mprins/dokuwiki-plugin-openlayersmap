@@ -94,17 +94,21 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$gmap = $this->_extract_params($str_params);
 			$overlay = $this->_extract_points($str_points);
 
-			$imgUrl = "{{";
-			// use mapquest open for now
-			$imgUrl .= $this->_getMapQuest($gmap,$overlay);
+				
+			// use mapquest
+			// $imgUrl = "{{".$this->_getMapQuest($gmap,$overlay);
+			// use bing
+			// $imgUrl = "{{".$this->_getBing($gmap, $overlay);
+			// use google
+			$imgUrl = "{{".$this->_getGoogle($gmap, $overlay);
+
 			// dw specific params
 			$imgUrl .="&.png?".$gmap['width']."x".$gmap['height'];
-			$imgUrl .= "&nolink";
+			//$imgUrl .= "&nolink";
 			$imgUrl .= "|".$gmap['summary']." }}";
-
 			// remove 'px'
 			$imgUrl = str_replace("px", "",$imgUrl);
-
+				
 			$imgUrl=p_render("xhtml", p_get_instructions($imgUrl), $info);
 
 			$mapid = $gmap['id'];
@@ -202,8 +206,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$vscript
 				$yscript
 				$scriptEnable
-			    <div id='olContainer' class='olContainer'>
 			    <span id='$mapid-static' class='olStaticMap'>$staticImgUrl</span>
+				<div id='olContainer' class='olContainer'>
 				<div id='$mapid-olToolbar' class='olToolbar'></div>
 			        <div style='clear:both;'></div>
 			        <div id='$mapid' $style ></div>
@@ -222,8 +226,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			    var $mapid = $param 
 			   //--><!]]></script>";
 
-			    // render a (hidden) table of the POI for the print and a11y presentation
-			    $renderer->doc .= '
+				// render a (hidden) table of the POI for the print and a11y presentation
+				$renderer->doc .= '
  	<table class="olPOItable inline" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
 		<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
 		<thead class="olPOITblHeader">
@@ -238,7 +242,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		<tbody class="olPOITblBody">'.$poitable.'</tbody>
 		<tfoot class="olPOITblFooter"><tr><td colspan="5">'.$poitabledesc.'</td></tr></tfoot>
 	</table>';
-			    //TODO no tfoot when $poitabledesc is empty
+				//TODO no tfoot when $poitabledesc is empty
 
 			} elseif ($mode == 'metadata') {
 				// render metadata if available
@@ -318,10 +322,15 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		 * @param array $overlay
 		 */
 		private function _getMapQuest($gmap,$overlay) {
-			$imgUrl = "http://open.mapquestapi.com/staticmap/v3/getmap?";
-			$imgUrl .= "size=".$gmap['width'].",".$gmap['height'];
-			$imgUrl .= "&center=".$gmap['lat'].",".$gmap['lon'];
-
+		$sUrl=$this->getConf('iconUrlOverload');
+			if (!$sUrl){
+				$sUrl=DOKU_URL;
+			}
+			
+			$imgUrl = "http://open.mapquestapi.com/staticmap/v3/getmap";
+			$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
+			$imgUrl .= "&size=".str_replace("px", "",$gmap['width']).",".str_replace("px", "",$gmap['height']);
+			// max level for mapquest is 16
 			if ($gmap['zoom']>16) {
 				$imgUrl .= "&zoom=16";
 			} else			{
@@ -334,11 +343,72 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$imgUrl .= "&xis=";
 				foreach ($overlay as $data) {
 					list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
-					$imgUrl .= DOKU_URL."lib/plugins/openlayersmap/icons/".$img.",1,C,".$lat.",".$lon.",0,0,0,0,";
+					$imgUrl .= $sUrl."lib/plugins/openlayersmap/icons/".$img.",1,C,".$lat.",".$lon.",0,0,0,0,";
 				}
 				$imgUrl = substr($imgUrl,0,-1);
-				$imgUrl .= "&imageType=png&type=map";
 			}
+			$imgUrl .= "&imageType=png&type=map";
+			dbglog($imgUrl,'olmap::_getMapQuest: MapQuest image url is:');
+			return $imgUrl;
+		}
+
+		private function _getGoogle($gmap, $overlay){
+			$sUrl=$this->getConf('iconUrlOverload');
+			if (!$sUrl){
+				$sUrl=DOKU_URL;
+			}
+			
+			//http://maps.google.com/maps/api/staticmap?center=51.565690,5.456756&zoom=16&size=600x400&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker.png|label:1|51.565690,5.456756&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker-blue.png|51.566197,5.458966|label:2&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.567177,5.457909|label:3&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.566283,5.457330|label:4&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.565630,5.457695|label:5&sensor=false&format=png&maptype=roadmap
+			$imgUrl = "http://maps.google.com/maps/api/staticmap";
+			$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
+			$imgUrl .= "&size=".str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
+			// don't need this $imgUrl .= "&key=".$this->getConf('googleAPIKey');
+			// max is 21 (== building scale), but that's overkill..
+			if ($gmap['zoom']>16) {
+				$imgUrl .= "&zoom=16";
+			} else			{
+				$imgUrl .= "&zoom=".$gmap['zoom'];
+			}
+
+			if (!empty ($overlay)) {
+				$rowId=0;
+				foreach ($overlay as $data) {
+					list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
+					//$imgUrl .= "&markers=icon:".DOKU_URL."lib/plugins/openlayersmap/icons/".$img."|".$lat.",".$lon."|label:".++$rowId;
+					$imgUrl .= "&markers=icon%3a".$sUrl."lib/plugins/openlayersmap/icons/".$img."%7c".$lat.",".$lon."%7clabel%3a".++$rowId;
+				}
+			}
+			$imgUrl .= "&format=png&maptype=roadmap&sensor=false";
+			global $conf;
+			$imgUrl .= "&language=".$conf['lang'];
+			dbglog($imgUrl,'olmap::_getGoogle: Google image url is:');
+			return $imgUrl;
+		}
+
+		/**
+		 *
+		 * Create a bing maps static image url w/ the poi.
+		 * @param array $gmap
+		 * @param array $overlay
+		 */
+		private function _getBing($gmap, $overlay){
+			// TODO since bing does not provide declutter or autozoom/fit we need to determine the bbox based on the poi and lat/lon ourselves
+			//http://dev.virtualearth.net/REST/v1/Imagery/Map/Road/51.56573,5.45690/12?mapSize=400,400&key=Agm4PJzDOGz4Oy9CYKPlV-UtgmsfL2-zeSyfYjRhf57OQB_oj87j5pncKZSay5qY
+			$imgUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/Road/".$gmap['lat'].",".$gmap['lon']."/".$gmap['zoom'];
+			$imgUrl .= "?ms=".str_replace("px", "",$gmap['width']).",".str_replace("px", "",$gmap['height']);
+			// create a bing api key at https://www.bingmapsportal.com/application
+			$imgUrl .= "&key=".$this->getConf('bingAPIKey');
+			if (!empty ($overlay)) {
+				$rowId=0;
+				foreach ($overlay as $data) {
+					list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
+					// // TODO icon style lookup, see: http://msdn.microsoft.com/en-us/library/ff701719.aspx for iconStyle
+					$iconStyle=32;
+					$rowId++;
+					$imgUrl .= "&pp=$lat,$lon;$iconStyle;$rowId";
+				}
+			}
+			dbglog($imgUrl,'olmap::_getBing: bing image url is:');
 			return $imgUrl;
 		}
 }
