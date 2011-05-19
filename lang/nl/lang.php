@@ -22,3 +22,9 @@
  * @license BSD license
  */
 $lang['olmapPOItitle'] = 'Locaties in de kaart';
+$lang['olmapPOIlatTitle']='latitude in decimale graden';
+$lang['olmapPOIlonTitle']='longitude in decimale graden';
+$lang['olmapPOIicon']='symbool';
+$lang['olmapPOIlat']='latitude';
+$lang['olmapPOIlon']='longitude';
+$lang['olmapPOItxt']='beschrijving';
