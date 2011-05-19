@@ -94,21 +94,29 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$gmap = $this->_extract_params($str_params);
 			$overlay = $this->_extract_points($str_points);
 
-				
-			// use mapquest
-			// $imgUrl = "{{".$this->_getMapQuest($gmap,$overlay);
-			// use bing
-			// $imgUrl = "{{".$this->_getBing($gmap, $overlay);
-			// use google
-			$imgUrl = "{{".$this->_getGoogle($gmap, $overlay);
+			$imgUrl = "{{";
+			// choose maptype based on tag
+			if (strpos($gmap['baselyr'],'google')>0){
+				// use google
+				$imgUrl .= $this->_getGoogle($gmap, $overlay);
+			}elseif ((strpos($gmap['baselyr'],'ve')>0)){
+				// use bing
+				$imgUrl .= $this->_getBing($gmap, $overlay);
+			}else {
+				// use mapquest
+				// $imgUrl .=$this->_getMapQuest($gmap,$overlay);
+				// use http://staticmap.openstreetmap.de
+				$imgUrl .=$this->_getStaticOSM($gmap,$overlay);
 
-			// dw specific params
+			}
+
+			// append dw specific params
 			$imgUrl .="&.png?".$gmap['width']."x".$gmap['height'];
 			//$imgUrl .= "&nolink";
 			$imgUrl .= "|".$gmap['summary']." }}";
 			// remove 'px'
 			$imgUrl = str_replace("px", "",$imgUrl);
-				
+
 			$imgUrl=p_render("xhtml", p_get_instructions($imgUrl), $info);
 
 			$mapid = $gmap['id'];
@@ -198,6 +206,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					$scriptEnable .= $yscript ? ' yEnable = true;' : ' yEnable = false;';
 					$scriptEnable .= $vscript ? ' veEnable = true;' : ' veEnable = false;';
 					$scriptEnable .= $gscript ? ' gEnable = true;' : ' gEnable = false;';
+					$scriptEnable .= 'mqEnable=true;';
 					$scriptEnable .= "\n" . '//--><!]]>' . "\n" . '</script>';
 				}
 				$renderer->doc .= "
@@ -228,7 +237,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 				// render a (hidden) table of the POI for the print and a11y presentation
 				$renderer->doc .= '
- 	<table class="olPOItable inline" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
+ 	<table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
 		<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
 		<thead class="olPOITblHeader">
 			<tr>
@@ -309,7 +318,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$angle = is_numeric($angle) ? $angle : 0;
 				$opacity = is_numeric($opacity) ? $opacity : 0.8;
 				$img = trim($img);
-				// TODO validate & set up default img?
+				// TODO validate using exist & set up default img?
 				$text = addslashes(str_replace("\n", "", p_render("xhtml", p_get_instructions($text), $info)));
 				$overlay[] = array($lat, $lon, $text, $angle, $opacity, $img);
 			}
@@ -322,11 +331,24 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		 * @param array $overlay
 		 */
 		private function _getMapQuest($gmap,$overlay) {
-		$sUrl=$this->getConf('iconUrlOverload');
+			$sUrl=$this->getConf('iconUrlOverload');
 			if (!$sUrl){
 				$sUrl=DOKU_URL;
 			}
-			
+			switch ($gmap['baselyr']){
+				case 'mq hybrid':
+					$maptype='hyb (Hybrid)';
+					break;
+				case 'mq sat':
+					$maptype='sat (Satellite)';
+					break;
+				case 'mq normal':
+				default:
+					$maptype='map';
+					break;
+			}
+
+
 			$imgUrl = "http://open.mapquestapi.com/staticmap/v3/getmap";
 			$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
 			$imgUrl .= "&size=".str_replace("px", "",$gmap['width']).",".str_replace("px", "",$gmap['height']);
@@ -347,8 +369,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				}
 				$imgUrl = substr($imgUrl,0,-1);
 			}
-			$imgUrl .= "&imageType=png&type=map";
-			dbglog($imgUrl,'olmap::_getMapQuest: MapQuest image url is:');
+			$imgUrl .= "&imageType=png&type=".$maptype;
+			dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getMapQuest: MapQuest image url is:');
 			return $imgUrl;
 		}
 
@@ -357,12 +379,27 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			if (!$sUrl){
 				$sUrl=DOKU_URL;
 			}
-			
+			switch ($gmap['baselyr']){
+				case 'google hybrid':
+					$maptype='hybrid';
+					break;
+				case 'google sat':
+					$maptype='satellite';
+					break;
+				case 'google relief':
+					$maptype='terrain';
+					break;
+				case 'google normal':
+				default:
+					$maptype='roadmap';
+					break;
+			}
+
 			//http://maps.google.com/maps/api/staticmap?center=51.565690,5.456756&zoom=16&size=600x400&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker.png|label:1|51.565690,5.456756&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker-blue.png|51.566197,5.458966|label:2&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.567177,5.457909|label:3&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.566283,5.457330|label:4&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.565630,5.457695|label:5&sensor=false&format=png&maptype=roadmap
 			$imgUrl = "http://maps.google.com/maps/api/staticmap";
 			$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
 			$imgUrl .= "&size=".str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
-			// don't need this $imgUrl .= "&key=".$this->getConf('googleAPIKey');
+			// don't need this anymore $imgUrl .= "&key=".$this->getConf('googleAPIKey');
 			// max is 21 (== building scale), but that's overkill..
 			if ($gmap['zoom']>16) {
 				$imgUrl .= "&zoom=16";
@@ -374,14 +411,13 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$rowId=0;
 				foreach ($overlay as $data) {
 					list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
-					//$imgUrl .= "&markers=icon:".DOKU_URL."lib/plugins/openlayersmap/icons/".$img."|".$lat.",".$lon."|label:".++$rowId;
 					$imgUrl .= "&markers=icon%3a".$sUrl."lib/plugins/openlayersmap/icons/".$img."%7c".$lat.",".$lon."%7clabel%3a".++$rowId;
 				}
 			}
-			$imgUrl .= "&format=png&maptype=roadmap&sensor=false";
+			$imgUrl .= "&format=png&maptype=".$maptype."&sensor=false";
 			global $conf;
 			$imgUrl .= "&language=".$conf['lang'];
-			dbglog($imgUrl,'olmap::_getGoogle: Google image url is:');
+			dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getGoogle: Google image url is:');
 			return $imgUrl;
 		}
 
@@ -392,9 +428,23 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		 * @param array $overlay
 		 */
 		private function _getBing($gmap, $overlay){
+			switch ($gmap['baselyr']){
+				case 've hybrid':
+					$maptype='AerialWithLabels';
+					break;
+				case 've sat':
+					$maptype='Aerial';
+					break;
+				case 've normal':
+				case 've':
+				default:
+					$maptype='Road';
+					break;
+			}
+
 			// TODO since bing does not provide declutter or autozoom/fit we need to determine the bbox based on the poi and lat/lon ourselves
 			//http://dev.virtualearth.net/REST/v1/Imagery/Map/Road/51.56573,5.45690/12?mapSize=400,400&key=Agm4PJzDOGz4Oy9CYKPlV-UtgmsfL2-zeSyfYjRhf57OQB_oj87j5pncKZSay5qY
-			$imgUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/Road/".$gmap['lat'].",".$gmap['lon']."/".$gmap['zoom'];
+			$imgUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/".$maptype."/".$gmap['lat'].",".$gmap['lon']."/".$gmap['zoom'];
 			$imgUrl .= "?ms=".str_replace("px", "",$gmap['width']).",".str_replace("px", "",$gmap['height']);
 			// create a bing api key at https://www.bingmapsportal.com/application
 			$imgUrl .= "&key=".$this->getConf('bingAPIKey');
@@ -402,13 +452,49 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$rowId=0;
 				foreach ($overlay as $data) {
 					list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
-					// // TODO icon style lookup, see: http://msdn.microsoft.com/en-us/library/ff701719.aspx for iconStyle
+					// TODO icon style lookup, see: http://msdn.microsoft.com/en-us/library/ff701719.aspx for iconStyle
+					// NOTE: the max number of pushpins is 18!
 					$iconStyle=32;
 					$rowId++;
 					$imgUrl .= "&pp=$lat,$lon;$iconStyle;$rowId";
 				}
 			}
-			dbglog($imgUrl,'olmap::_getBing: bing image url is:');
+			dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getBing: bing image url is:');
 			return $imgUrl;
+		}
+
+		/**
+		 *
+		 * Create a static OSM map image url w/ the poi from http://staticmap.openstreetmap.de (staticMapLite)
+		 * @param array $gmap
+		 * @param array $overlay
+		 */
+		private function _getStaticOSM($gmap, $overlay){
+			//http://staticmap.openstreetmap.de/staticmap.php?center=47.000622235634,10.117187497601&zoom=5&size=500x350
+			// &markers=48.999812532766,8.3593749976708,lightblue1|43.154850037315,17.499999997306,lightblue1|49.487527053077,10.820312497573,ltblu-pushpin|47.951071133739,15.917968747369,ol-marker|47.921629720114,18.027343747285,ol-marker-gold|47.951071133739,19.257812497236,ol-marker-blue|47.180141361692,19.257812497236,ol-marker-green
+			$imgUrl = "http://staticmap.openstreetmap.de/staticmap.php";
+			$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
+			$imgUrl .= "&size=".str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
+			if ($gmap['zoom']>16) {
+				$imgUrl .= "&zoom=16";
+			} else			{
+				$imgUrl .= "&zoom=".$gmap['zoom'];
+			}
+
+			if (!empty ($overlay)) {
+				$rowId=0;
+				$imgUrl .= "&markers=";
+				foreach ($overlay as $data) {
+					list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
+					$rowId++;
+					$iconStyle = "lightblue$rowId";
+					$imgUrl .= "$lat,$lon,$iconStyle%7c";
+				}
+				$imgUrl = substr($imgUrl,0,-3);
+			}
+
+			dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: bing image url is:');
+			return $imgUrl;
+
 		}
 }

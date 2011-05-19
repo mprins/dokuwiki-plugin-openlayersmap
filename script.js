@@ -130,20 +130,25 @@ function onFeatureUnselect(feature) {
 /** init. */
 function olInit() {
 	// hide the table with POI
-	// var tbls = getElementsByClass('olPOItable', document, 'table');
-	var tbls = getElementsByClass('olPOItable', null, null);
 	// var tbls = getElementsByClassName('olPOItable');
-	// console.log(tbls);
+	var tbls = getElementsByClass('olPOItable', null, null);
 	for (i = 0; i < tbls.length; i++) {
-		tbls[i].className = tbls[i].className + ' olPrintOnly';
+		// tbls[i].className = tbls[i].className + ' olPrintOnly';
+		//tbls[i].className = 'olPOItable olPrintOnly';
+		tbls[i].style.display = 'none';
 	}
-	
+
 	// hide the static image
-	var statImg = getElementsByClass('olStaticMap', null, null);
-	for (i = 0; i < statImg.length; i++) {
-		statImg[i].style.display = 'none';
+	var statImgs = getElementsByClass('olStaticMap', null, null);
+	for (i = 0; i < statImgs.length; i++) {
+		statImgs[i].style.display = 'none';
 	}
-	
+
+	// show the dynamic map
+	var dynMaps = getElementsByClass('olContainer', null, null);
+	for (i = 0; i < dynMaps.length; i++) {
+		dynMaps[i].style.display = 'inline';
+	}
 }
 
 /**
@@ -206,6 +211,35 @@ function createMap(mapOpts, OLmapPOI) {
 			"http://toolserver.org/tiles/hikebike/${z}/${x}/${y}.png", {
 				transitionEffect : "resize"
 			}));
+
+	if (mqEnable) {
+		m
+				.addLayer(new OpenLayers.Layer.OSM(
+						"MapQuest road",
+						[
+								"http://otile1.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png",
+								"http://otile2.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png",
+								"http://otile3.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png",
+								"http://otile4.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png" ],
+						{
+							transitionEffect : "resize",
+							attribution : 'Data CC-By-SA by <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>'
+									+ ' Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'
+						}));
+		m
+				.addLayer(new OpenLayers.Layer.OSM(
+						"MapQuest aerial",
+						[
+								"http://oatile1.mqcdn.com/naip/${z}/${x}/${y}.jpg",
+								"http://oatile2.mqcdn.com/naip/${z}/${x}/${y}.jpg",
+								"http://oatile3.mqcdn.com/naip/${z}/${x}/${y}.jpg",
+								"http://oatile4.mqcdn.com/naip/${z}/${x}/${y}.jpg" ],
+						{
+							transitionEffect : "resize",
+							attribution : 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'
+						}));
+	}
+
 	/* open aerial map */
 	/*
 	 * turn this off; project is asleep:
@@ -388,7 +422,7 @@ function createMap(mapOpts, OLmapPOI) {
 									labelAlign : "lb",
 									label : "${label}",
 									// fontColor : "",
-									fontFamily: "monospace",
+									fontFamily : "monospace",
 									fontSize : "12px",
 									fontWeight : "bold"
 								},
@@ -520,6 +554,12 @@ function createMap(mapOpts, OLmapPOI) {
  * @type {Boolean}
  */
 var olEnable = false;
+/**
+ * MapQuest tiles flag.
+ * 
+ * @type {Boolean}
+ */
+var mqEnable = false;
 /**
  * google map api flag.
  * 

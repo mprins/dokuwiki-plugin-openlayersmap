@@ -14,7 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 .olContainer {
-	page-break-before: always;
+	display: none;
+	/* page-break-before: always;*/
 }
 
 div#olToolbar,.olToolbar,.olControlLayerSwitcher,.olStatusBarPermalink,.olControlPanZoomBar,.olStatusBarMouseposition,.olStatusBarProjection
@@ -28,6 +29,7 @@ div#olToolbar,.olToolbar,.olControlLayerSwitcher,.olStatusBarPermalink,.olContro
 	margin: 1;
 	padding: 1;
 	border: 1px solid __border__;
+	width:99%;
 }
 
 .olPrintOnly {

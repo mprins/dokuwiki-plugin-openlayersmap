@@ -17,6 +17,7 @@
 	border: 1px solid #888888;
 	width: auto;
 	float: left;
+	display: none;
 }
 
 #olmap {
@@ -142,15 +143,21 @@ div#olToolbar {
 }
 
 .olPOItable {
-	
+	display: inline;
+	margin: 1;
+	padding: 1;
+	border: 1px solid __border__;
+	width:99%;
 }
 
 .olPrintOnly {
 	display: none;
 }
+
 .olPOItable .icon {
 	align: center;
 }
 
-.olStaticMap{
+.olStaticMap {
+	
 }
