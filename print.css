@@ -18,7 +18,7 @@
 	/* page-break-before: always;*/
 }
 
-div#olToolbar,.olToolbar,.olControlLayerSwitcher,.olStatusBarPermalink,.olControlPanZoomBar,.olStatusBarMouseposition,.olStatusBarProjection
+div#olToolbar,.olToolbar,.olControlLayerSwitcher,.olStatusBarPermalink,.olControlPanZoomBar,.olStatusBarMouseposition,.olStatusBarProjection, .olControlOverviewMapElement
 	{
 	display: none;
 	/* visibility: hidden; */
