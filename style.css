@@ -141,8 +141,8 @@ div#olToolbar {
 
 .olPOItable {
 	display: inline;
-	margin: 1;
-	padding: 1;
+	margin: 1px;
+	padding: 1px;
 	border: 1px solid __border__;
 	width:99%;
 }
@@ -152,7 +152,7 @@ div#olToolbar {
 }
 
 .olPOItable .icon {
-	align: center;
+	text-align: center;
 }
 
 .olStaticMap {
