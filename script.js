@@ -130,24 +130,24 @@ function onFeatureUnselect(feature) {
 /** init. */
 function olInit() {
 	// hide the table with POI
-	// var tbls = getElementsByClassName('olPOItable');
-	var tbls = getElementsByClass('olPOItable', null, null);
+	var tbls = getElementsByClass('olPOItableSpan', null, null);
 	for (i = 0; i < tbls.length; i++) {
-		// tbls[i].className = tbls[i].className + ' olPrintOnly';
-		//tbls[i].className = 'olPOItable olPrintOnly';
-		tbls[i].style.display = 'none';
+		// tbls[i].style.display = 'none';
+		tbls[i].className += ' olPrintOnly';
 	}
 
-	// hide the static image
+	// hide the static map image
 	var statImgs = getElementsByClass('olStaticMap', null, null);
 	for (i = 0; i < statImgs.length; i++) {
-		statImgs[i].style.display = 'none';
+		// statImgs[i].style.display = 'none';
+		statImgs[i].className += ' olPrintOnly';
 	}
 
 	// show the dynamic map
 	var dynMaps = getElementsByClass('olContainer', null, null);
 	for (i = 0; i < dynMaps.length; i++) {
-		dynMaps[i].style.display = 'inline';
+		// dynMaps[i].style.display = 'inline';
+		dynMaps[i].className += ' olWebOnly';
 	}
 }
 

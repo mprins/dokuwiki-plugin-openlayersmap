@@ -13,31 +13,24 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-.olContainer {
-	display: none;
-	/* page-break-before: always;*/
-}
-
-div#olToolbar,.olToolbar,.olControlLayerSwitcher,.olStatusBarPermalink,.olControlPanZoomBar,.olStatusBarMouseposition,.olStatusBarProjection, .olControlOverviewMapElement
+div#olToolbar,.olToolbar,.olControlLayerSwitcher,.olStatusBarPermalink,.olControlPanZoomBar,.olStatusBarMouseposition,.olStatusBarProjection,.olControlOverviewMapElement
 	{
 	display: none;
-	/* visibility: hidden; */
 }
 
 .olPOItable {
-	display: inline;
 	margin: 1px;
 	padding: 1px;
 	border: 1px solid __border__;
-	width:99%;
+	width: 99%;
 }
 
 .olPrintOnly {
 	display: inline;
 }
 
-.olStaticMap {
-	display: inline;
+.olWebOnly {
+	display: none;
 }
 
 .olPOITblHeader {
@@ -70,4 +63,9 @@ div#olToolbar,.olToolbar,.olControlLayerSwitcher,.olStatusBarPermalink,.olContro
 
 .olPOItable .txt {
 	
+}
+
+.olStaticMap {
+	page-break-before: always;
+	page-break-after: always;
 }

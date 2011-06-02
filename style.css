@@ -17,6 +17,7 @@
 	border: 1px solid #888888;
 	width: auto;
 	float: left;
+	/* initially hidden */
 	display: none;
 }
 
@@ -75,7 +76,7 @@
 div#olToolbar {
 	float: left;
 	background-color: #EEEEEE;
-	border: 1px solid #000000;
+	border: 1px solid __border__;
 	padding: 0px;
 }
 
@@ -139,16 +140,23 @@ div#olToolbar {
 	background-repeat: no-repeat;
 }
 
-.olPOItable {
+.olPOItableSpan {
 	display: inline;
+}
+
+.olPOItable {
 	margin: 1px;
 	padding: 1px;
 	border: 1px solid __border__;
-	width:99%;
+	width: 99%;
 }
 
 .olPrintOnly {
 	display: none;
+}
+
+.olWebOnly {
+	display: inline;
 }
 
 .olPOItable .icon {

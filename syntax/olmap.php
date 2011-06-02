@@ -230,14 +230,11 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			            <div id='$mapid-statusbar-text' class='olStatusBar olStatusBarText'>txt</div>
 			        </div>
 			    </div>
-			    <p>&nbsp;</p>
-			    <script type='text/javascript'><!--//--><![CDATA[//><!--
-			    var $mapid = $param 
-			   //--><!]]></script>";
+			    <p>&nbsp;</p>";
 
 				// render a (hidden) table of the POI for the print and a11y presentation
 				$renderer->doc .= '
- 	<table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
+ 	<span class="olPOItableSpan" id="'.$mapid.'-table-span"><table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
 		<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
 		<thead class="olPOITblHeader">
 			<tr>
@@ -250,8 +247,13 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		</thead>
 		<tbody class="olPOITblBody">'.$poitable.'</tbody>
 		<tfoot class="olPOITblFooter"><tr><td colspan="5">'.$poitabledesc.'</td></tr></tfoot>
-	</table>';
+	</table></span>';
 				//TODO no tfoot when $poitabledesc is empty
+
+				// render inline mapscript
+				$renderer->doc .="<script type='text/javascript'><!--//--><![CDATA[//><!--
+			    var $mapid = $param 
+			   //--><!]]></script>";
 
 			} elseif ($mode == 'metadata') {
 				// render metadata if available
