@@ -112,7 +112,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 			// append dw specific params
 			$imgUrl .="&.png?".$gmap['width']."x".$gmap['height'];
-			//$imgUrl .= "&nolink";
+			$imgUrl .= "&nolink";
 			$imgUrl .= "|".$gmap['summary']." }}";
 			// remove 'px'
 			$imgUrl = str_replace("px", "",$imgUrl);
@@ -153,7 +153,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					$rowId++;
 					$poi .= ", {lat: $lat, lon: $lon, txt: '$text', angle: $angle, opacity: $opacity, img: '$img', rowId: $rowId}";
 					$poitable .='<tr>'."\n".'<td class="rowId">'.$rowId.'</td>
-							<td class="icon"><img src="/lib/plugins/openlayersmap/icons/'.$img.'" alt="icon"></td>
+							<td class="icon"><img src="'.DOKU_BASE.'/lib/plugins/openlayersmap/icons/'.$img.'" alt="icon"></td>
 							<td class="lat" title="'.$this->getLang('olmapPOIlatTitle').'">'.$lat.'</td>
 							<td class="lon" title="'.$this->getLang('olmapPOIlonTitle').'">'.$lon.'</td>
 							<td class="txt">'.$text.'</td>'."\n".'</tr>';
