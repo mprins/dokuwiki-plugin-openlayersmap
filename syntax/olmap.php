@@ -60,7 +60,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		 * Defines how this syntax is handled regarding paragraphs.
 		 * @Override
 		 */
-		function getPType() {return 'block';}
+		function getPType() {return 'block';} //normal block stack
 
 		/**
 		 * Returns a number used to determine in which order modes are added.
@@ -113,7 +113,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			// append dw specific params
 			$imgUrl .="&.png?".$gmap['width']."x".$gmap['height'];
 			$imgUrl .= "&nolink";
-			$imgUrl .= "|".$gmap['summary']." }}";
+			$imgUrl .= " |".$gmap['summary']." }} ";
 			// remove 'px'
 			$imgUrl = str_replace("px", "",$imgUrl);
 
@@ -152,15 +152,20 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
 					$rowId++;
 					$poi .= ", {lat: $lat, lon: $lon, txt: '$text', angle: $angle, opacity: $opacity, img: '$img', rowId: $rowId}";
-					$poitable .='<tr>'."\n".'<td class="rowId">'.$rowId.'</td>
-							<td class="icon"><img src="'.DOKU_BASE.'/lib/plugins/openlayersmap/icons/'.$img.'" alt="icon"></td>
-							<td class="lat" title="'.$this->getLang('olmapPOIlatTitle').'">'.$lat.'</td>
-							<td class="lon" title="'.$this->getLang('olmapPOIlonTitle').'">'.$lon.'</td>
-							<td class="txt">'.$text.'</td>'."\n".'</tr>';
+					$poitable .='
+			<tr>
+				<td class="rowId">'.$rowId.'</td>
+				<td class="icon"><img src="'.DOKU_BASE.'/lib/plugins/openlayersmap/icons/'.$img.'" alt="icon" /></td>
+				<td class="lat" title="'.$this->getLang('olmapPOIlatTitle').'">'.$lat.'</td>
+				<td class="lon" title="'.$this->getLang('olmapPOIlonTitle').'">'.$lon.'</td>
+				<td class="txt">'.$text.'</td>
+			</tr>';
 				}
 				$poi = substr($poi, 2);
 			}
 			$js .= "createMap({" . $param . " },[$poi]);";
+			// unescape the json
+			$poitable = stripslashes($poitable);
 
 			return array($mapid,$style,$js,$mainLat,$mainLon,$poitable,$gmap['summary'],$imgUrl);
 		}
@@ -206,16 +211,16 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					$scriptEnable .= $yscript ? ' yEnable = true;' : ' yEnable = false;';
 					$scriptEnable .= $vscript ? ' veEnable = true;' : ' veEnable = false;';
 					$scriptEnable .= $gscript ? ' gEnable = true;' : ' gEnable = false;';
-					$scriptEnable .= 'mqEnable=true;';
+					$scriptEnable .= 'mqEnable = true;';
 					$scriptEnable .= "\n" . '//--><!]]>' . "\n" . '</script>';
 				}
-				$renderer->doc .= "
-				$olscript
+				$renderer->doc .= "				$olscript
 				$gscript
 				$vscript
 				$yscript
-				$scriptEnable
-			    <span id='$mapid-static' class='olStaticMap'>$staticImgUrl</span>
+				$scriptEnable";
+				
+			    $renderer->doc .= "				<div id='$mapid-static' class='olStaticMap'>$staticImgUrl</div>
 				<div id='olContainer' class='olContainer'>
 				<div id='$mapid-olToolbar' class='olToolbar'></div>
 			        <div style='clear:both;'></div>
@@ -229,12 +234,11 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			            <div id='$mapid-statusbar-projection' class='olStatusBar olStatusBarProjection'>proj</div>
 			            <div id='$mapid-statusbar-text' class='olStatusBar olStatusBarText'>txt</div>
 			        </div>
-			    </div>
-			    <p>&nbsp;</p>";
+			    </div>";
+				//<p>&nbsp;</p>";
 
 				// render a (hidden) table of the POI for the print and a11y presentation
-				$renderer->doc .= '
- 	<span class="olPOItableSpan" id="'.$mapid.'-table-span"><table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
+				$renderer->doc .= ' 	<div class="olPOItableSpan" id="'.$mapid.'-table-span"><table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
 		<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
 		<thead class="olPOITblHeader">
 			<tr>
@@ -245,13 +249,13 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				<th class="txt" scope="col">'.$this->getLang('olmapPOItxt').'</th>
 			</tr>
 		</thead>
-		<tbody class="olPOITblBody">'.$poitable.'</tbody>
 		<tfoot class="olPOITblFooter"><tr><td colspan="5">'.$poitabledesc.'</td></tr></tfoot>
-	</table></span>';
+		<tbody class="olPOITblBody">'.$poitable.'</tbody>
+	</table></div>';
 				//TODO no tfoot when $poitabledesc is empty
 
 				// render inline mapscript
-				$renderer->doc .="<script type='text/javascript'><!--//--><![CDATA[//><!--
+				$renderer->doc .="				<script type='text/javascript'><!--//--><![CDATA[//><!--
 			    var $mapid = $param 
 			   //--><!]]></script>";
 
