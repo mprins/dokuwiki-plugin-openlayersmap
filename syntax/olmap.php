@@ -223,8 +223,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			    $renderer->doc .= "				<div id='$mapid-static' class='olStaticMap'>$staticImgUrl</div>
 				<div id='olContainer' class='olContainer'>
 				<div id='$mapid-olToolbar' class='olToolbar'></div>
-			        <div style='clear:both;'></div>
-			        <div id='$mapid' $style ></div>
+			        <div class='olClearBoth'></div>
+			        <div id='$mapid' $style class='olMap'></div>
 			        <div id='$mapid-olStatusBar' class='olStatusBarContainer'>
 			            <div id='$mapid-statusbar-scale' class='olStatusBar olStatusBarScale'>scale</div>
 			            <div id='$mapid-statusbar-link' class='olStatusBar olStatusBarPermalink'>
