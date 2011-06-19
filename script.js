@@ -28,14 +28,14 @@
  * @type {OpenLayers.Control.SelectFeature}
  * @private
  */
-var selectControl;
+var selectControl,
 /**
  * Openlayers bounds used for managing the map extent.
  * 
  * @type {OpenLayers.Bounds}
  * @private
  */
-var extent;
+extent;
 
 /**
  * handle feature select event.
@@ -172,9 +172,10 @@ function createMap(mapOpts, OLmapPOI) {
 	// http://mapbox.com/documentation/adding-tiles-your-site/openlayers-themes
 	// OpenLayers.ImgPath = '';
 
-	var extent = new OpenLayers.Bounds();
-
-	var mOpts = {
+	/** dynamic map extent. */
+	var extent = new OpenLayers.Bounds(),
+	/** map options. */
+	mOpts = {
 		projection : new OpenLayers.Projection("EPSG:900913"),
 		displayProjection : new OpenLayers.Projection("EPSG:4326"),
 		units : "m",
@@ -183,9 +184,11 @@ function createMap(mapOpts, OLmapPOI) {
 				20037508.3392, 20037508.3392),
 		controls : [],
 		numZoomLevels : 19
-	};
-	var m = new OpenLayers.Map(mapOpts.id, mOpts);
-	/* OSM maps */
+	},
+	/** map. */
+	m = new OpenLayers.Map(mapOpts.id, mOpts);
+	
+	/* add OSM map layers */
 	m.addLayer(new OpenLayers.Layer.OSM("OpenStreetMap"), {
 		transitionEffect : "resize"
 	});
@@ -211,7 +214,7 @@ function createMap(mapOpts, OLmapPOI) {
 			"http://toolserver.org/tiles/hikebike/${z}/${x}/${y}.png", {
 				transitionEffect : "resize"
 			}));
-
+/* add MapQuest map layers*/
 	if (mqEnable) {
 		m
 				.addLayer(new OpenLayers.Layer.OSM(
@@ -240,7 +243,7 @@ function createMap(mapOpts, OLmapPOI) {
 						}));
 	}
 
-	/* open aerial map */
+	/* open aerial map layers*/
 	/*
 	 * turn this off; project is asleep:
 	 * https://sourceforge.net/tracker/?func=detail&aid=2897327&group_id=239475&atid=1110186
@@ -278,16 +281,16 @@ function createMap(mapOpts, OLmapPOI) {
 		}
 	}
 
-	if (yEnable) {
-		try {
-			m.addLayer(new OpenLayers.Layer.Yahoo("yahoo", {
-				'type' : YAHOO_MAP_HYB,
-				'sphericalMercator' : true,
-				transitionEffect : resize
-			}));
-		} catch (ol_err2) {
-		}
-	}
+//	if (yEnable) {
+//		try {
+//			m.addLayer(new OpenLayers.Layer.Yahoo("yahoo", {
+//				'type' : YAHOO_MAP_HYB,
+//				'sphericalMercator' : true,
+//				transitionEffect : resize
+//			}));
+//		} catch (ol_err2) {
+//		}
+//	}
 
 	if (veEnable) {
 		try {
@@ -553,31 +556,31 @@ function createMap(mapOpts, OLmapPOI) {
  * 
  * @type {Boolean}
  */
-var olEnable = false;
+var olEnable = false,
 /**
  * MapQuest tiles flag.
  * 
  * @type {Boolean}
  */
-var mqEnable = false;
+mqEnable = false,
 /**
  * google map api flag.
  * 
  * @type {Boolean}
  */
-var gEnable = false;
+gEnable = false,
 /**
  * virtual earth map api flag.
  * 
  * @type {Boolean}
  */
-var veEnable = false;
+veEnable = false;
 /**
  * yahoo map api flag.
  * 
  * @type {Boolean}
  */
-var yEnable = false;
+//yEnable = false;
 
 /* register olInit to run with onload event. */
 addInitEvent(olInit);

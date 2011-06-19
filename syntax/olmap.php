@@ -185,8 +185,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$gEnable = false;
 				$vscript = '';
 				$vEnable = false;
-				$yscript = '';
-				$yEnable = false;
+				//$yscript = '';
+				//$yEnable = false;
 
 				$scriptEnable = '';
 
@@ -199,8 +199,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					$vscript = $this->getConf('veScriptUrl');
 					$vscript = $vscript ? '<script type="text/javascript" src="' . $vscript . '"></script>' : "";
 
-					$yscript = $this->getConf('yahooScriptUrl');
-					$yscript = $yscript ? '<script type="text/javascript" src="' . $yscript . '"></script>' : "";
+					//$yscript = $this->getConf('yahooScriptUrl');
+					//$yscript = $yscript ? '<script type="text/javascript" src="' . $yscript . '"></script>' : "";
 
 					$olscript = $this->getConf('olScriptUrl');
 					$olscript = $olscript ? '<script type="text/javascript" src="' . $olscript . '"></script>' : "";
@@ -208,7 +208,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 					$scriptEnable = '<script type="text/javascript">' . "\n" . '<!--//--><![CDATA[//><!--' . "\n";
 					$scriptEnable .= $olscript ? 'olEnable = true;' : 'olEnable = false;';
-					$scriptEnable .= $yscript ? ' yEnable = true;' : ' yEnable = false;';
+					//$scriptEnable .= $yscript ? ' yEnable = true;' : ' yEnable = false;';
 					$scriptEnable .= $vscript ? ' veEnable = true;' : ' veEnable = false;';
 					$scriptEnable .= $gscript ? ' gEnable = true;' : ' gEnable = false;';
 					$scriptEnable .= 'mqEnable = true;';
@@ -217,7 +217,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$renderer->doc .= "				$olscript
 				$gscript
 				$vscript
-				$yscript
+				//$yscript
 				$scriptEnable";
 				
 			    $renderer->doc .= "				<div id='$mapid-static' class='olStaticMap'>$staticImgUrl</div>

@@ -30,9 +30,9 @@ $meta['googleScriptUrl'] = array (
 $meta['veScriptUrl'] = array (
 	'string'
 );
-$meta['yahooScriptUrl'] = array (
-	'string'
-);
+//$meta['yahooScriptUrl'] = array (
+//	'string'
+//);
 $meta['bingAPIKey'] = array (
 	'string'
 );
