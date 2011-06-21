@@ -217,7 +217,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$renderer->doc .= "				$olscript
 				$gscript
 				$vscript
-				//$yscript
 				$scriptEnable";
 				
 			    $renderer->doc .= "				<div id='$mapid-static' class='olStaticMap'>$staticImgUrl</div>
@@ -234,8 +233,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			            <div id='$mapid-statusbar-projection' class='olStatusBar olStatusBarProjection'>proj</div>
 			            <div id='$mapid-statusbar-text' class='olStatusBar olStatusBarText'>txt</div>
 			        </div>
-			    </div>";
-				//<p>&nbsp;</p>";
+			    </div><div class='olClearBoth'></div>";
 
 				// render a (hidden) table of the POI for the print and a11y presentation
 				$renderer->doc .= ' 	<div class="olPOItableSpan" id="'.$mapid.'-table-span"><table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">

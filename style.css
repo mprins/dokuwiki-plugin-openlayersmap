@@ -69,6 +69,22 @@
 	font-style: italic;
 }
 
+.olControlPanZoomBar {
+	opacity: 0.5;
+}
+
+.olControlPanZoomBar:hover {
+	opacity: 1.0;
+}
+
+.olControlLayerSwitcher {
+	opacity: 0.5;
+}
+
+.olControlLayerSwitcher:hover {
+	opacity: 1.0;
+}
+
 .olStatusBarText {
 	
 }
@@ -145,6 +161,25 @@ div#olToolbar {
 	background-image: url("lib/img/icon_query.png");
 	background-position: center;
 	background-repeat: no-repeat;
+}
+
+.olHandlerBoxZoomBox {
+	border: 2px solid #9900FF;
+	position: absolute;
+	background-color: #9900FF;
+	opacity: 0.50;
+	font-size: 1px;
+	filter: alpha(opacity =           50);
+	border-bottom-color: #6B00B3;
+	border-right-color: #6B00B3;
+	border-top-color: #C266FF;
+	border-left-color: #C266FF;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	box-shadow: 2px 2px 2px #000;
+	-moz-box-shadow: 2px 2px 2px #000;
+	-webkit-box-shadow: 2px 2px 2px #000;
 }
 
 .olPOItableSpan {
