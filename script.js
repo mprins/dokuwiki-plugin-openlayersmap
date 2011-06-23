@@ -54,8 +54,7 @@ function onFeatureSelect(feature) {
 			pPos = feature.layer.map
 					.getLonLatFromViewPortPx(this.handlers.feature.evt.xy);
 		} catch (anErr) {
-			console
-					.warn("unable to get event position; reverting to boundingbox center.");
+			OpenLayers.Console.warn("unable to get event position; reverting to boundingbox center.");
 			pPos = selectedFeature.geometry.getBounds().getCenterLonLat();
 		}
 	}
@@ -105,57 +104,92 @@ function onFeatureUnselect(feature) {
 	}
 }
 
-// TODO IE7 and lower don't have document.getElementsByClassName so we make one;
-// seems to conflict with openlayers prototypes?
-// Object.prototype.getElementsByClassName = document.getElementsByClassName =
-// document.getElementsByClassName
-// || function(className) {
-// className = className.replace(/\s+/g, ' ').replace(
-// /^\s|![A-Za-z0-9-_\s]|\s$/g, '').split(' ');
-// for ( var i = 0, elements = this.getElementsByTagName('*'), elementsLength =
-// elements.length, b = [], classNameLength = className.length, passed = true; i
-// < elementsLength; i++, passed = true) {
-// for ( var j = 0; j < classNameLength && passed; j++) {
-// passed = (new RegExp(
-// '(^|\\\s)' + className[j] + '(\\\s|$)', 'i'))
-// .test(elements[i].className);
-// }
-// if (passed) {
-// b.push(elements[i]);
-// }
-// }
-// return b;
-// };
-
 /** init. */
 function olInit() {
 	// iterator
 	var _i = 0;
-	// hide the table with POI
+	// hide the table with POI by giving it a print only style
 	var tbls = getElementsByClass('olPOItableSpan', null, null);
 	for (_i = 0; _i < tbls.length; _i++) {
 		// tbls[i].style.display = 'none';
 		tbls[_i].className += ' olPrintOnly';
 	}
-	// hide the static map image
+	// hide the static map image by giving it a print only style
 	var statImgs = getElementsByClass('olStaticMap', null, null);
 	for (_i = 0; _i < statImgs.length; _i++) {
 		// statImgs[i].style.display = 'none';
 		statImgs[_i].className += ' olPrintOnly';
 	}
-	// show the dynamic map
-	var dynMaps = getElementsByClass('olContainer', null, null);
-	for (_i = 0; _i < dynMaps.length; _i++) {
-		// dynMaps[i].style.display = 'inline';
-		dynMaps[_i].className += ' olWebOnly';
+	// show the dynamic map but only in the browser, this element is not here
+	// when we load the page
+	// var dynMaps = getElementsByClass('olContainer', null, null);
+	// for (_i = 0; _i < dynMaps.length; _i++) {
+	// // dynMaps[i].style.display = 'inline';
+	// dynMaps[_i].className += ' olWebOnly';
+	// }
+}
+
+/**
+ * creates a DocumentFragment to insert into the dom.
+ * 
+ * @param mapid
+ *            id for the map div
+ * @param width
+ *            width for the map div
+ * @param height
+ *            height for the map div
+ * @returns a {DocumentFragment} element that can be injected into the dom
+ */
+function olCreateMaptag(mapid, width, height) {
+	var mEl = '<div id="olContainer" class="olContainer olWebOnly">'
+			+ '<div id="'
+			+ mapid
+			+ '-olToolbar" class="olToolbar"></div>'
+			+ '<div class="olClearBoth"></div>'
+			+ '<div id="'
+			+ mapid
+			+ '" style="width:'
+			+ width
+			+ ';height:'
+			+ height
+			+ ';" class="olMap"></div>'
+			+ '<div id="'
+			+ mapid
+			+ '-olStatusBar" class="olStatusBarContainer">'
+			+ '<div id="'
+			+ mapid
+			+ '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>'
+			+ '<div id="'
+			+ mapid
+			+ '-statusbar-link" class="olStatusBar olStatusBarPermalink"><a href="" id="'
+			+ mapid
+			+ '-statusbar-link-ref">map link</a></div>'
+			+ '<div id="'
+			+ mapid
+			+ '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>'
+			+ '<div id="'
+			+ mapid
+			+ '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>'
+			+ '<div id="'
+			+ mapid
+			+ '-statusbar-text" class="olStatusBar olStatusBarText">txt</div>'
+			+ '</div>\n</div>',
+	// fragment
+	frag = document.createDocumentFragment(),
+	// temp node
+	temp = document.createElement('div');
+	temp.innerHTML = mEl;
+	while (temp.firstChild) {
+		frag.appendChild(temp.firstChild);
 	}
+	return frag;
 }
 
 /**
  * create the map based on the params given.
  * 
  * @param {Object}mapOpts
- *            MapOptions hash {id:'olmap', lat:6710200, lon:506500, zoom:13,
+ *            MapOptions hash {id:'olmap', width:500px, height:500px, lat:6710200, lon:506500, zoom:13,
  *            toolbar:1, statusbar:1, controls:1, poihoverstyle:1, baselyr:'',
  *            kmlfile:'', gpxfile:'', summary:''}
  * @param {Array}OLmapPOI
@@ -178,9 +212,17 @@ function createMap(mapOpts, OLmapPOI) {
 		// "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 		this.src = DocBase + "lib/plugins/openlayersmap/lib/img/blank.gif";
 	};
-
 	// http://mapbox.com/documentation/adding-tiles-your-site/openlayers-themes
 	// OpenLayers.ImgPath = '';
+
+	// find map element
+	var cleartag = document.getElementById(mapOpts.id + '-clearer');
+	if (cleartag === null) {
+		return;
+	}
+
+	var fragment = olCreateMaptag(mapOpts.id, mapOpts.width, mapOpts.height);
+	cleartag.parentNode.insertBefore(fragment, cleartag);
 
 	/** dynamic map extent. */
 	var extent = new OpenLayers.Bounds(),

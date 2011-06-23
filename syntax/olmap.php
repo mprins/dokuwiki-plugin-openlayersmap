@@ -96,18 +96,18 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 			$imgUrl = "{{";
 			// choose maptype based on tag
-			if (strpos($gmap['baselyr'],'google')>0){
+			if (stripos($gmap['baselyr'],'google')>0){
 				// use google
 				$imgUrl .= $this->_getGoogle($gmap, $overlay);
-			}elseif ((strpos($gmap['baselyr'],'ve')>0)){
+			}elseif (stripos($gmap['baselyr'],'ve')>0){
 				// use bing
 				$imgUrl .= $this->_getBing($gmap, $overlay);
-			}else {
+			}elseif (stripos($gmap['baselyr'],'mapquest')>0){
 				// use mapquest
-				// $imgUrl .=$this->_getMapQuest($gmap,$overlay);
+				$imgUrl .=$this->_getMapQuest($gmap,$overlay);
+			}else {
 				// use http://staticmap.openstreetmap.de
 				$imgUrl .=$this->_getStaticOSM($gmap,$overlay);
-
 			}
 
 			// append dw specific params
@@ -122,16 +122,16 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$mapid = $gmap['id'];
 
 			// determine width and height (inline styles) for the map image
-			if ($gmap['width'] || $gmap['height']) {
-				$style = $gmap['width'] ? 'width: ' . $gmap['width'] . ";" : "";
-				$style .= $gmap['height'] ? 'height: ' . $gmap['height'] . ";" : "";
-				$style = "style='$style'";
-			} else {
-				$style = '';
-			}
+			//if ($gmap['width'] || $gmap['height']) {
+			//	$style = $gmap['width'] ? 'width: ' . $gmap['width'] . ";" : "";
+			//	$style .= $gmap['height'] ? 'height: ' . $gmap['height'] . ";" : "";
+			//	$style = "style='$style'";
+			//} else {
+			//	$style = '';
+			//}
 
 			// unset gmap values for width and height - they don't go into javascript
-			unset ($gmap['width'], $gmap['height']);
+			//unset ($gmap['width'], $gmap['height']);
 
 			// create a javascript parameter string for the map
 			$param = '';
@@ -167,7 +167,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			// unescape the json
 			$poitable = stripslashes($poitable);
 
-			return array($mapid,$style,$js,$mainLat,$mainLon,$poitable,$gmap['summary'],$imgUrl);
+			return array($mapid,$js,$mainLat,$mainLon,$poitable,$gmap['summary'],$imgUrl);
 		}
 
 		/**
@@ -176,7 +176,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		 */
 		function render($mode, &$renderer, $data) {
 			static $initialised = false; // set to true after script initialisation
-			list ($mapid, $style, $param, $mainLat, $mainLon, $poitable, $poitabledesc, $staticImgUrl) = $data;
+			list ($mapid, $param, $mainLat, $mainLon, $poitable, $poitabledesc, $staticImgUrl) = $data;
 
 			if ($mode == 'xhtml') {
 				$olscript = '';
@@ -218,22 +218,9 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$gscript
 				$vscript
 				$scriptEnable";
-				
-			    $renderer->doc .= "				<div id='$mapid-static' class='olStaticMap'>$staticImgUrl</div>
-				<div id='olContainer' class='olContainer'>
-				<div id='$mapid-olToolbar' class='olToolbar'></div>
-			        <div class='olClearBoth'></div>
-			        <div id='$mapid' $style class='olMap'></div>
-			        <div id='$mapid-olStatusBar' class='olStatusBarContainer'>
-			            <div id='$mapid-statusbar-scale' class='olStatusBar olStatusBarScale'>scale</div>
-			            <div id='$mapid-statusbar-link' class='olStatusBar olStatusBarPermalink'>
-			                <a href='' id='$mapid-statusbar-link-ref'>map link</a>
-			            </div>
-			            <div id='$mapid-statusbar-mouseposition' class='olStatusBar olStatusBarMouseposition'></div>
-			            <div id='$mapid-statusbar-projection' class='olStatusBar olStatusBarProjection'>proj</div>
-			            <div id='$mapid-statusbar-text' class='olStatusBar olStatusBarText'>txt</div>
-			        </div>
-			    </div><div class='olClearBoth'></div>";
+
+				$renderer->doc .= "				<div id='$mapid-static' class='olStaticMap'>$staticImgUrl</div>
+			    <div id='$mapid-clearer' class='olClearBoth'></div>";
 
 				// render a (hidden) table of the POI for the print and a11y presentation
 				$renderer->doc .= ' 	<div class="olPOItableSpan" id="'.$mapid.'-table-span"><table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
