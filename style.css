@@ -19,25 +19,24 @@
 
 .olContainer {
 	border: 1px solid __border__;
+	background-color: __background_neu__;
 	width: auto;
 	float: left;
-	/* initially hidden */
-	display: none;
 }
 
 .olMap {
 	border: 1px solid __border__;
+	cursor: default;
 }
-
+/*
 #olmap {
 	width: 550px;
 	height: 450px;
 }
-
+*/
 .olStatusBarContainer {
 	background-color: __background_alt__;
-	border: 1px solid __border__;
-	font-size: smaller;
+	font-size: x-small;
 	overflow: hidden;
 }
 
@@ -82,27 +81,119 @@
 	opacity: 1.0;
 }
 
+.olControlNoSelect {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.olCursorWait {
+	cursor: wait;
+}
+
+.olDragDown {
+	cursor: move;
+}
+
+.olDrawBox {
+	cursor: crosshair;
+}
+
+.olCursorQuery {
+	cursor: help;
+}
+
+.olPopupCloseBox {
+	background: url("lib/img/close.gif") no-repeat;
+	cursor: pointer;
+}
+
+.olControlScaleLine {
+	display: block;
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+	font-size: xx-small;
+}
+
+.olControlScaleLineBottom {
+	border: solid 2px black;
+	border-bottom: none;
+	margin-top: -2px;
+	text-align: center;
+}
+
+.olControlScaleLineTop {
+	border: solid 2px black;
+	border-top: none;
+	text-align: center;
+}
+
 .olControlLayerSwitcher {
+	position: absolute;
+	top: 25px;
+	right: 0;
+	width: 20em;
+	margin-top: 3px;
+	margin-left: 3px;
+	margin-bottom: 3px;
+	background-color: transparent;
 	opacity: 0.5;
+	border: 1px solid __border__;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-o-border-radius: 3px;
+	-khtml-border-radius: 3px;
 }
 
 .olControlLayerSwitcher:hover {
 	opacity: 1.0;
 }
 
-
-/*
-.olControlOverviewMapElement {
+.olControlLayerSwitcher .layersDiv {
+	padding-top: 5px;
+	padding-left: 10px;
+	padding-bottom: 5px;
+	padding-right: 75px;
 	background-color: __background_neu__;
-	padding: 5px;
-	opacity: .8;
+	width: 100%;
+	height: 100%;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-o-border-radius: 3px;
+	-khtml-border-radius: 3px;
 }
-*/
-div#olToolbar {
-	float: left;
+
+.olControlLayerSwitcher .layersDiv .baseLbl,.olControlLayerSwitcher .layersDiv .dataLbl
+	{
+	margin-top: 3px;
+	/*margin-left: 3px;*/
+	margin-bottom: 3px;
+	background-color: __background_alt__;
+	font-weight: bold;
+	padding-left: 10px;
+}
+
+.olControlLayerSwitcher .layersDiv .baseLayersDiv,.olControlLayerSwitcher .layersDiv .dataLayersDiv
+	{
+	padding-left: 10px;
+	border: 1px solid __border__;
+}
+
+.olControlLayerSwitcher .maximizeDiv,.olControlLayerSwitcher .minimizeDiv
+	{
+	top: 0px;
+	right: -1px;
+	cursor: pointer;
+}
+
+.olControlLayerSwitcher .minimizeDiv {
 	background-color: __background_alt__;
 	border: 1px solid __border__;
-	padding: 0px;
 }
 
 .olToolbar div {
@@ -114,10 +205,10 @@ div#olToolbar {
 }
 
 .olToolbar .olControlZoomBoxItemActive {
-	background-color: __background_neu__;
 	background-image: url("lib/img/icon_zoomin.png");
 	background-position: center;
 	background-repeat: no-repeat;
+	border: 1px solid __border__;
 }
 
 .olToolbar .olControlZoomBoxItemInactive {
@@ -127,10 +218,10 @@ div#olToolbar {
 }
 
 .olToolbar .olControlZoomOutItemActive {
-	background-color: __background_neu__;
 	background-image: url("lib/img/icon_zoomout.png");
 	background-position: center;
 	background-repeat: no-repeat;
+	border: 1px solid __border__;
 }
 
 .olToolbar .olControlZoomOutItemInactive {
@@ -140,10 +231,10 @@ div#olToolbar {
 }
 
 .olToolbar .olControlDragPanItemActive {
-	background-color: __background_neu__;
 	background-image: url("lib/img/icon_pan.png");
 	background-position: center;
 	background-repeat: no-repeat;
+	border: 1px solid __border__;
 }
 
 .olToolbar .olControlDragPanItemInactive {
@@ -153,10 +244,10 @@ div#olToolbar {
 }
 
 .olToolbar .olControlFeatureInfoItemActive {
-	background-color: __background_neu__;
 	background-image: url("lib/img/icon_query.png");
 	background-position: center;
 	background-repeat: no-repeat;
+	border: 1px solid __border__;
 }
 
 .olToolbar .olControlFeatureInfoItemInactive {
@@ -165,13 +256,36 @@ div#olToolbar {
 	background-repeat: no-repeat;
 }
 
+.olToolbar .olControlNavigationHistory {
+	background-image: url("lib/img/navigation_history.png");
+	background-repeat: no-repeat;
+	width: 24px;
+	height: 24px;
+}
+
+.olToolbar .olControlNavigationHistoryPreviousItemActive {
+	background-position: 0 0;
+}
+
+.olToolbar .olControlNavigationHistoryPreviousItemInactive {
+	background-position: 0 -24px;
+}
+
+.olToolbar .olControlNavigationHistoryNextItemActive {
+	background-position: -24px 0;
+}
+
+.olToolbar .olControlNavigationHistoryNextItemInactive {
+	background-position: -24px -24px;
+}
+
 .olHandlerBoxZoomBox {
 	border: 2px solid #9900FF;
 	position: absolute;
 	background-color: #9900FF;
 	opacity: 0.50;
 	font-size: 1px;
-	filter: alpha(opacity =           50);
+	filter: alpha(opacity = 50);
 	border-bottom-color: #6B00B3;
 	border-right-color: #6B00B3;
 	border-top-color: #C266FF;
@@ -179,9 +293,13 @@ div#olToolbar {
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
+	-o-border-radius: 3px;
+	-khtml-border-radius: 3px;
 	box-shadow: 2px 2px 2px #000;
 	-moz-box-shadow: 2px 2px 2px #000;
 	-webkit-box-shadow: 2px 2px 2px #000;
+	-khtml-box-shadow: 2px 2px 2px #000;
+	-o-box-shadow: 2px 2px 2px #000;
 }
 
 .olPOItableSpan {
@@ -209,4 +327,56 @@ div#olToolbar {
 
 .olStaticMap {
 	
+}
+
+.olControlOverviewMapElement {
+	background-color: __background_neu__;
+	border: 1px solid __border__;
+	padding: 4px;
+	border-radius: 3px 0 0 0;
+	-moz-border-radius: 3px 0 0 0;
+	-webkit-border-radius: 3px 0 0 0;
+	-o-border-radius: 3px 0 0 0;
+	-khtml-border-radius: 3px 0 0 0;
+}
+
+.olControlOverviewMapContainer {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+.olControlOverviewMapMinimizeButton {
+	right: 0;
+	bottom: 112px;
+	cursor: pointer;
+	background-color: __background_alt__;
+	border: 1px solid __border__;
+	z-index: 1005;
+}
+
+.olControlOverviewMapMaximizeButton {
+	right: 0;
+	bottom: 112px;
+	cursor: pointer;
+	opacity: 0.5;
+}
+
+.olControlOverviewMapMaximizeButton:hover {
+	opacity: 1.0;
+}
+
+.olControlOverviewMapExtentRectangle {
+	overflow: hidden;
+	background-image: url("lib/img/blank.gif");
+	cursor: move;
+	border: 2px dotted red;
+}
+
+.olControlOverviewMapRectReplacement {
+	overflow: hidden;
+	cursor: move;
+	background-image: url("lib/img/overview_replacement.gif");
+	background-repeat: no-repeat;
+	background-position: center;
 }
