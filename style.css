@@ -28,12 +28,7 @@
 	border: 1px solid __border__;
 	cursor: default;
 }
-/*
-#olmap {
-	width: 550px;
-	height: 450px;
-}
-*/
+
 .olStatusBarContainer {
 	background-color: __background_alt__;
 	font-size: x-small;
