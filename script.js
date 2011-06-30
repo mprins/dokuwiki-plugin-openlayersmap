@@ -214,6 +214,9 @@ function createMap(mapOpts, OLmapPOI) {
 		// "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 		this.src = DocBase + "lib/plugins/openlayersmap/lib/img/blank.gif";
 	};
+
+	// OpenLayers.Layer.Vector.prototype.renderers = ["SVG2", "VML", "Canvas"];
+
 	// http://mapbox.com/documentation/adding-tiles-your-site/openlayers-themes
 	// OpenLayers.ImgPath = '';
 
@@ -231,69 +234,77 @@ function createMap(mapOpts, OLmapPOI) {
 
 	/** map. */
 	m = new OpenLayers.Map(mapOpts.id, {
-		projection : new OpenLayers.Projection("EPSG:900913"),
-		displayProjection : new OpenLayers.Projection("EPSG:4326"),
-		units : "m",
+		projection : new OpenLayers.Projection('EPSG:900913'),
+		displayProjection : new OpenLayers.Projection('EPSG:4326'),
+		units : 'm',
 		maxResolution : 156543.0339,
-		maxExtent : new OpenLayers.Bounds(-20037508.3392, -20037508.3392,
-				20037508.3392, 20037508.3392),
+		maxExtent : new OpenLayers.Bounds(-20037508.34, -20037508.34,
+				20037508.34, 20037508.34),
+		numZoomLevels : 19,
+		// panDuration : 100,
 		controls : [ /* new OpenLayers.Control.LoadingPanel(), */
 		new OpenLayers.Control.KeyboardDefaults(),
 				new OpenLayers.Control.Navigation({
-					documentDrag : true,
 					dragPanOptions : {
-						interval : 1,
 						enableKinetic : true
 					}
 				}), new OpenLayers.Control.ScaleLine({
 					geodesic : true
 				}) ],
-		numZoomLevels : 19,
 		theme : null
 	});
+	if (osmEnable) {
+		/* add OSM map layers */
+		m.addLayer(new OpenLayers.Layer.OSM("OpenStreetMap"), {
+			transitionEffect : 'resize',
+			visibility : false
+		});
 
-	/* add OSM map layers */
-	m.addLayer(new OpenLayers.Layer.OSM("OpenStreetMap"), {
-		transitionEffect : 'resize',
-		visibility : false
-	});
-	m.addLayer(new OpenLayers.Layer.OSM("t@h", [
-			"http://a.tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png",
-			"http://b.tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png",
-			"http://c.tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png" ]),
-			{
-				transitionEffect : 'resize',
-				visibility : false
-			});
-	m
-			.addLayer(
-					new OpenLayers.Layer.OSM(
-							"cycle map",
-							[
-									// "http://andy.sandbox.cloudmade.com/tiles/cycle/${z}/${x}/${y}.png",
-									"http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-									"http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-									"http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png" ]),
-					{
-						transitionEffect : 'resize',
-						attribution : 'Data CC-By-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
-								+ 'Tiles <a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
-								+ '<img src="http://opencyclemap.org/favicon.ico" heigth="16" width="16"/>',
-						visibility : false
-					});
-	m
-			.addLayer(new OpenLayers.Layer.OSM(
-					"cloudmade map",
-					"http://tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png",
-					{
-						transitionEffect : 'resize',
-						visibility : false
-					}));
-	m.addLayer(new OpenLayers.Layer.OSM("hike and bike map",
-			"http://toolserver.org/tiles/hikebike/${z}/${x}/${y}.png", {
-				transitionEffect : 'resize',
-				visibility : false
-			}));
+		m
+				.addLayer(
+						new OpenLayers.Layer.OSM(
+								"t@h",
+								[
+										"http://a.tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png",
+										"http://b.tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png",
+										"http://c.tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png" ]),
+						{
+							transitionEffect : 'resize',
+							visibility : false
+						});
+
+		m
+				.addLayer(
+						new OpenLayers.Layer.OSM(
+								"cycle map",
+								[
+										// "http://andy.sandbox.cloudmade.com/tiles/cycle/${z}/${x}/${y}.png",
+										"http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+										"http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+										"http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png" ]),
+						{
+							transitionEffect : 'resize',
+							attribution : 'Data CC-By-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
+									+ 'Tiles <a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
+									+ '<img src="http://opencyclemap.org/favicon.ico" heigth="16" width="16"/>',
+							visibility : false
+						});
+
+		m
+				.addLayer(new OpenLayers.Layer.OSM(
+						"cloudmade map",
+						"http://tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png",
+						{
+							transitionEffect : 'resize',
+							visibility : false
+						}));
+
+		m.addLayer(new OpenLayers.Layer.OSM("hike and bike map",
+				"http://toolserver.org/tiles/hikebike/${z}/${x}/${y}.png", {
+					transitionEffect : 'resize',
+					visibility : false
+				}));
+	}
 	/*
 	 * add MapQuest map layers, see:
 	 * http://developer.mapquest.com/web/products/open/map
@@ -328,7 +339,8 @@ function createMap(mapOpts, OLmapPOI) {
 							transitionEffect : 'resize',
 							attribution : 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>'
 									+ '<img src="http://developer.mapquest.com/content/osm/mq_logo.png" heigth="16" width="16">',
-							visibility : false
+							visibility : false,
+							numZoomLevels : 12
 						}));
 	}
 
@@ -347,30 +359,34 @@ function createMap(mapOpts, OLmapPOI) {
 	if (gEnable) {
 		try {
 			m.addLayer(new OpenLayers.Layer.Google("google relief", {
-				type : G_PHYSICAL_MAP,
-				sphericalMercator : true,
-				transitionEffect : 'resize',
+				type : google.maps.MapTypeId.TERRAIN,
+				// transitionEffect : 'resize',
+				numZoomLevels : 16,
+				animationEnabled : true,
 				visibility : false
 			}));
 			m.addLayer(new OpenLayers.Layer.Google("google sat", {
-				type : G_SATELLITE_MAP,
-				sphericalMercator : true,
-				transitionEffect : 'resize',
+				type : google.maps.MapTypeId.SATELLITE,
+				// transitionEffect : 'resize',
+				// numZoomLevels : 22,
+				animationEnabled : true,
 				visibility : false
 			}));
 			m.addLayer(new OpenLayers.Layer.Google("google hybrid", {
-				type : G_HYBRID_MAP,
-				sphericalMercator : true,
-				transitionEffect : 'resize',
+				type : google.maps.MapTypeId.HYBRID,
+				// transitionEffect : 'resize',
+				// numZoomLevels : 20,
+				animationEnabled : true,
 				visibility : false
 			}));
 			m.addLayer(new OpenLayers.Layer.Google("google normal", {
-				type : G_NORMAL_MAP,
-				sphericalMercator : true,
-				transitionEffect : 'resize',
+				// transitionEffect : 'resize',
+				// numZoomLevels : 20,
+				animationEnabled : true,
 				visibility : false
 			}));
 		} catch (ol_err1) {
+			Openlayers.Console.userError('Error loading Google maps' + ol_err1);
 		}
 	}
 
@@ -659,7 +675,13 @@ gEnable = false,
  * 
  * @type {Boolean}
  */
-veEnable = false;
+veEnable = false,
+/**
+ * OSM tiles flag.
+ * 
+ * @type {Boolean}
+ */
+osmEnable = true;
 /**
  * yahoo map api flag.
  * 

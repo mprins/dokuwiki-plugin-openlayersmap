@@ -39,6 +39,16 @@ $meta['bingAPIKey'] = array (
 $meta['iconUrlOverload'] = array (
 	'string'
 );
+$meta['enableMapQuest'] = array (
+	'onoff'
+);
+$meta['enableGoogle'] = array (
+	'onoff'
+);
+$meta['enableOSM'] = array (
+	'onoff'
+);
+
 
 // don't need this anymore $meta['googleAPIKey'] = array ('string');
 

@@ -22,11 +22,13 @@
  */
 
 $lang['olScriptUrl'] = 'URL & query string to access OpenLayers API. The default is <plugins>/openlayersmap/lib/OpenLayers.js';
-$lang['googleScriptUrl'] = 'URL & query string to access Google Maps API.';
+$lang['googleScriptUrl'] = 'URL & query string to access Google Maps API. DEPRECATED please remove.';
 $lang['veScriptUrl'] = 'URL & query string to access Virtual Earth API.';
 //$lang['yahooScriptUrl'] = 'URL & query string to access Yahoo Maps API.';
 // don't need this anymore $lang['googleAPIKey'] = 'Google Maps API key.';
 $lang['bingAPIKey'] = 'bing Maps API key.';
 $lang['iconUrlOverload'] = 'URL for map icons when using static maps on a non-internet host';
-
+$lang['enableMapQuest'] = 'Enable the use of MapQuest as basemap provider';
+$lang['enableGoogle'] = 'Enable the use of Google as basemap provider';
+$lang['enableOSM'] = 'Enable the use of OpenStreetMap as basemap provider';
 
