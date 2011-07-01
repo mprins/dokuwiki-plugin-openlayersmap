@@ -130,18 +130,18 @@
 	position: absolute;
 	top: 25px;
 	right: 0;
-	width: 20em;
+	width: 17em;
 	margin-top: 3px;
 	margin-left: 3px;
 	margin-bottom: 3px;
 	background-color: transparent;
 	opacity: 0.5;
 	border: 1px solid __border__;
-	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	-o-border-radius: 3px;
 	-khtml-border-radius: 3px;
+	border-radius: 3px;
 }
 
 .olControlLayerSwitcher:hover {
@@ -156,11 +156,11 @@
 	background-color: __background_neu__;
 	width: 100%;
 	height: 100%;
-	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	-o-border-radius: 3px;
 	-khtml-border-radius: 3px;
+	border-radius: 3px;
 }
 
 .olControlLayerSwitcher .layersDiv .baseLbl,.olControlLayerSwitcher .layersDiv .dataLbl
@@ -280,21 +280,21 @@
 	background-color: #9900FF;
 	opacity: 0.50;
 	font-size: 1px;
-	filter: alpha(opacity = 50);
+	filter: alpha(opacity =         50);
 	border-bottom-color: #6B00B3;
 	border-right-color: #6B00B3;
 	border-top-color: #C266FF;
 	border-left-color: #C266FF;
-	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	-o-border-radius: 3px;
 	-khtml-border-radius: 3px;
-	box-shadow: 2px 2px 2px #000;
+	border-radius: 3px;
 	-moz-box-shadow: 2px 2px 2px #000;
 	-webkit-box-shadow: 2px 2px 2px #000;
 	-khtml-box-shadow: 2px 2px 2px #000;
 	-o-box-shadow: 2px 2px 2px #000;
+	box-shadow: 2px 2px 2px #000;
 }
 
 .olPOItableSpan {
@@ -328,11 +328,11 @@
 	background-color: __background_neu__;
 	border: 1px solid __border__;
 	padding: 4px;
-	border-radius: 3px 0 0 0;
 	-moz-border-radius: 3px 0 0 0;
 	-webkit-border-radius: 3px 0 0 0;
 	-o-border-radius: 3px 0 0 0;
 	-khtml-border-radius: 3px 0 0 0;
+	border-radius: 3px 0 0 0;
 }
 
 .olControlOverviewMapContainer {
