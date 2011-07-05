@@ -34,3 +34,4 @@ $conf['iconUrlOverload'] = '';
 $conf['enableMapQuest'] = 1;
 $conf['enableGoogle'] = 0;
 $conf['enableOSM'] = 1;
+$conf['olMapStyle'] = 'classic';

@@ -81,6 +81,7 @@ function onFeatureSelect(feature) {
 	}
 
 	if (pContent.length > 0) {
+		// only show when there is something to show...
 		var popup = new OpenLayers.Popup.FramedCloud("olPopup", pPos, null,
 				pContent, null, true, function() {
 					selectControl.unselect(selectedFeature);
@@ -106,27 +107,19 @@ function onFeatureUnselect(feature) {
 
 /** init. */
 function olInit() {
-	// iterator
 	var _i = 0;
-	// hide the table with POI by giving it a print only style
+	// hide the table(s) with POI by giving it a print only style
 	var tbls = getElementsByClass('olPOItableSpan', null, null);
 	for (_i = 0; _i < tbls.length; _i++) {
 		// tbls[i].style.display = 'none';
 		tbls[_i].className += ' olPrintOnly';
 	}
-	// hide the static map image by giving it a print only style
+	// hide the static map image(s) by giving it a print only style
 	var statImgs = getElementsByClass('olStaticMap', null, null);
 	for (_i = 0; _i < statImgs.length; _i++) {
 		// statImgs[i].style.display = 'none';
 		statImgs[_i].className += ' olPrintOnly';
 	}
-	// show the dynamic map but only in the browser, this element is not here
-	// when we load the page
-	// var dynMaps = getElementsByClass('olContainer', null, null);
-	// for (_i = 0; _i < dynMaps.length; _i++) {
-	// // dynMaps[i].style.display = 'inline';
-	// dynMaps[_i].className += ' olWebOnly';
-	// }
 }
 
 /**
@@ -203,7 +196,6 @@ function createMap(mapOpts, OLmapPOI) {
 	if (!olEnable) {
 		return;
 	}
-
 	var DocBase = DOKU_BASE;
 
 	OpenLayers.IMAGE_RELOAD_ATTEMPTS = 4;
@@ -216,9 +208,6 @@ function createMap(mapOpts, OLmapPOI) {
 	};
 
 	// OpenLayers.Layer.Vector.prototype.renderers = ["SVG2", "VML", "Canvas"];
-
-	// http://mapbox.com/documentation/adding-tiles-your-site/openlayers-themes
-	// OpenLayers.ImgPath = '';
 
 	// find map element location
 	var cleartag = document.getElementById(mapOpts.id + '-clearer');

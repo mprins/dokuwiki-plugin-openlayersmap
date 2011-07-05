@@ -216,7 +216,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 				$olscript = $this->getConf('olScriptUrl');
 				$olscript = $olscript ? '<script type="text/javascript" src="' . $olscript . '"></script>' : "";
-				$olscript = str_replace('DOKU_PLUGIN', DOKU_PLUGIN, $olscript);
+				$olscript = str_replace('DOKU_BASE/', DOKU_BASE, $olscript);
 
 				$scriptEnable = '<script type="text/javascript">' . "\n" . '<!--//--><![CDATA[//><!--' . "\n";
 				$scriptEnable .= $olscript ? 'olEnable = true;' : 'olEnable = false;';
@@ -225,6 +225,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$scriptEnable .= 'gEnable = '.($gEnable ? 'true' : 'false').';';
 				$scriptEnable .= 'osmEnable = '.($osmEnable ? 'true' : 'false').';';
 				$scriptEnable .= 'mqEnable = '.($mqEnable ? 'true' : 'false').';';
+				$scriptEnable .= 'OpenLayers.ImgPath = "'.DOKU_BASE.'lib/plugins/openlayersmap/lib/'.$this->getConf('olMapStyle').'/";';
 				$scriptEnable .= "\n" . '//--><!]]>' . "\n" . '</script>';
 			}
 			$renderer->doc .= "
