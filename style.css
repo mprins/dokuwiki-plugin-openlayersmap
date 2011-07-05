@@ -13,10 +13,6 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-.olClearBoth {
-	clear: both;
-}
-
 .olContainer {
 	border: 1px solid __border__;
 	background-color: __background_neu__;
@@ -33,6 +29,8 @@
 	background-color: __background_alt__;
 	font-size: x-small;
 	overflow: hidden;
+	text-align: left;
+	/*clear: both;*/
 }
 
 .olStatusBar {
@@ -280,7 +278,7 @@
 	background-color: #9900FF;
 	opacity: 0.50;
 	font-size: 1px;
-	filter: alpha(opacity =         50);
+	filter: alpha(opacity = 50);
 	border-bottom-color: #6B00B3;
 	border-right-color: #6B00B3;
 	border-top-color: #C266FF;
@@ -343,7 +341,7 @@
 
 .olControlOverviewMapMinimizeButton {
 	right: 0;
-	bottom: 112px;
+	bottom: 132px;
 	cursor: pointer;
 	background-color: __background_alt__;
 	border: 1px solid __border__;
@@ -352,7 +350,7 @@
 
 .olControlOverviewMapMaximizeButton {
 	right: 0;
-	bottom: 112px;
+	bottom: 132px;
 	cursor: pointer;
 	opacity: 0.5;
 }

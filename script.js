@@ -147,7 +147,7 @@ function olCreateMaptag(mapid, width, height) {
 			+ '<div id="'
 			+ mapid
 			+ '-olToolbar" class="olToolbar"></div>'
-			+ '<div class="olClearBoth"></div>'
+			+ '<div class="clearer"></div>'
 			+ '<div id="'
 			+ mapid
 			+ '" style="width:'
@@ -434,7 +434,8 @@ function createMap(mapOpts, OLmapPOI) {
 			visible : false
 		}));
 
-		// add overlays
+		// add hillshade, since this is off by default only add when we have a
+		// layerswitcher
 		m.addLayer(new OpenLayers.Layer.OSM("Hillshade",
 				"http://toolserver.org/~cmarqu/hill/${z}/${x}/${y}.png", {
 					transitionEffect : 'resize',
@@ -446,11 +447,12 @@ function createMap(mapOpts, OLmapPOI) {
 				}));
 
 		m.addControl(new OpenLayers.Control.OverviewMap({
-			size : new OpenLayers.Size(120, 120),
+			size : new OpenLayers.Size(140, 140),
 			mapOptions : {
 				theme : null
 			},
-			layers : [ m.baseLayer.clone() ]
+			layers : [ m.baseLayer.clone() ],
+			minRectSize : 10
 		}));
 	}
 
