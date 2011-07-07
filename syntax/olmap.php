@@ -349,13 +349,13 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$sUrl=DOKU_URL;
 		}
 		switch ($gmap['baselyr']){
-			case 'mq hybrid':
+			case 'mapquest hybrid':
 				$maptype='hyb (Hybrid)';
 				break;
-			case 'mq sat':
+			case 'mapquest aerial':
 				$maptype='sat (Satellite)';
 				break;
-			case 'mq normal':
+			case 'mapquest road':
 			default:
 				$maptype='map';
 				break;
@@ -386,11 +386,11 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		return $imgUrl;
 	}
 	/**
-	*
-	* Create a Google maps static image url w/ the poi.
-	* @param array $gmap
-	* @param array $overlay
-	*/
+	 *
+	 * Create a Google maps static image url w/ the poi.
+	 * @param array $gmap
+	 * @param array $overlay
+	 */
 	private function _getGoogle($gmap, $overlay){
 		$sUrl=$this->getConf('iconUrlOverload');
 		if (!$sUrl){
@@ -447,12 +447,15 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	private function _getBing($gmap, $overlay){
 		switch ($gmap['baselyr']){
 			case 've hybrid':
+			case 'bing hybrid':
 				$maptype='AerialWithLabels';
 				break;
 			case 've sat':
+			case 'bing sat':
 				$maptype='Aerial';
 				break;
 			case 've normal':
+			case 've road':
 			case 've':
 			default:
 				$maptype='Road';

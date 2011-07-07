@@ -318,7 +318,7 @@ function createMap(mapOpts, OLmapPOI) {
 		// Levels 12+ are provided only in the United States (lower 48).
 		m
 				.addLayer(new OpenLayers.Layer.OSM(
-						"mapquest aerial",
+						"mapquest sat",
 						[
 								"http://oatile1.mqcdn.com/naip/${z}/${x}/${y}.jpg",
 								"http://oatile2.mqcdn.com/naip/${z}/${x}/${y}.jpg",
