@@ -109,6 +109,9 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		}elseif (stripos($gmap['baselyr'],'ve')>0){
 			// use bing
 			$imgUrl .= $this->_getBing($gmap, $overlay);
+		}elseif (stripos($gmap['baselyr'],'bing')>0){
+			// use bing
+			$imgUrl .= $this->_getBing($gmap, $overlay);
 		}elseif (stripos($gmap['baselyr'],'mapquest')>0){
 			// use mapquest
 			$imgUrl .=$this->_getMapQuest($gmap,$overlay);
@@ -358,7 +361,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				break;
 		}
 
-
 		$imgUrl = "http://open.mapquestapi.com/staticmap/v3/getmap";
 		$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
 		$imgUrl .= "&size=".str_replace("px", "",$gmap['width']).",".str_replace("px", "",$gmap['height']);
@@ -383,7 +385,12 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getMapQuest: MapQuest image url is:');
 		return $imgUrl;
 	}
-
+	/**
+	*
+	* Create a Google maps static image url w/ the poi.
+	* @param array $gmap
+	* @param array $overlay
+	*/
 	private function _getGoogle($gmap, $overlay){
 		$sUrl=$this->getConf('iconUrlOverload');
 		if (!$sUrl){
@@ -433,7 +440,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 	/**
 	 *
-	 * Create a bing maps static image url w/ the poi.
+	 * Create a Bing maps static image url w/ the poi.
 	 * @param array $gmap
 	 * @param array $overlay
 	 */
