@@ -22,13 +22,14 @@
  */
 
 $lang['olScriptUrl'] = 'URL & query string to access OpenLayers API. The default is DOKU_BASE/lib/plugins/openlayersmap/lib/OpenLayers.js';
-$lang['googleScriptUrl'] = 'URL & query string to access Google Maps API. DEPRECATED please remove.';
-$lang['veScriptUrl'] = 'URL & query string to access Virtual Earth API.';
+$lang['googleScriptUrl'] = 'URL & query string to access Google Maps API. <em>DEPRECATED please remove. Replaced by v3 of the Google API</em>';
+$lang['veScriptUrl'] = 'URL & query string to access Virtual Earth API. <em>DEPRECATED please remove. Replaced by Bing<em>';
 //$lang['yahooScriptUrl'] = 'URL & query string to access Yahoo Maps API.';
 // don't need this anymore $lang['googleAPIKey'] = 'Google Maps API key.';
-$lang['bingAPIKey'] = 'bing Maps API key.';
+$lang['bingAPIKey'] = 'Bing Maps API key. Get your key at: http://bingmapsportal.com/';
 $lang['iconUrlOverload'] = 'URL for map icons when using static maps on a non-internet host';
 $lang['enableMapQuest'] = 'Enable the use of MapQuest as basemap provider';
 $lang['enableGoogle'] = 'Enable the use of Google as basemap provider';
+$lang['enableBing'] = 'Enable the use of Bing as basemap provider';
 $lang['enableOSM'] = 'Enable the use of OpenStreetMap as basemap provider';
 $lang['olMapStyle'] = 'Controls style of the map';

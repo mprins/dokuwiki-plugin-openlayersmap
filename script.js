@@ -344,8 +344,8 @@ function createMap(mapOpts, OLmapPOI) {
 	 * sphericalMercator: true, transitionEffect: 'resize'} ));
 	 */
 
-	/* controle of google/yahoo/ve api's beschikbaar zijn.. */
 	if (gEnable) {
+		/* load google maps */
 		try {
 			m.addLayer(new OpenLayers.Layer.Google("google relief", {
 				type : google.maps.MapTypeId.TERRAIN,
@@ -368,7 +368,7 @@ function createMap(mapOpts, OLmapPOI) {
 				animationEnabled : true,
 				visibility : false
 			}));
-			m.addLayer(new OpenLayers.Layer.Google("google normal", {
+			m.addLayer(new OpenLayers.Layer.Google("google road", {
 				// transitionEffect : 'resize',
 				// numZoomLevels : 20,
 				animationEnabled : true,
@@ -399,8 +399,41 @@ function createMap(mapOpts, OLmapPOI) {
 				visibility : false
 			}));
 		} catch (ol_err3) {
+			Openlayers.Console.userError('Error loading Virtual Earth maps: '
+					+ ol_err3);
 		}
 	}
+
+	if (bEnable && bApiKey !== '') {
+		try {
+			/* add Bing tiles */
+			m.addLayer(new OpenLayers.Layer.Bing({
+				key : bApiKey,
+				type : "Road",
+				name : 'bing road',
+				transitionEffect : 'resize',
+				visibility : false
+			}));
+			m.addLayer(new OpenLayers.Layer.Bing({
+				key : bApiKey,
+				type : "Aerial",
+				name : 'bing sat',
+				transitionEffect : 'resize',
+				visibility : false
+			}));
+			m.addLayer(new OpenLayers.Layer.Bing({
+				key : bApiKey,
+				type : "AerialWithLabels",
+				name : "bing hybrid",
+				transitionEffect : 'resize',
+				visibility : false
+			}));
+		} catch (ol_errBing) {
+			Openlayers.Console.userError('Error loading Bing maps: '
+					+ ol_errBing);
+		}
+	}
+
 	m.setCenter(new OpenLayers.LonLat(mapOpts.lon, mapOpts.lat).transform(
 			m.displayProjection, m.projection), mapOpts.zoom);
 	extent.extend(m.getExtent());
@@ -667,6 +700,18 @@ gEnable = false,
  * @type {Boolean}
  */
 veEnable = false,
+/**
+ * Bing tiles flag.
+ * 
+ * @type {Boolean}
+ */
+bEnable = false,
+/**
+ * Bing API key.
+ * 
+ * @type {String}
+ */
+bApiKey = '',
 /**
  * OSM tiles flag.
  * 

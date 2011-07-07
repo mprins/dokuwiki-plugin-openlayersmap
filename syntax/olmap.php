@@ -196,6 +196,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			//$yEnable = false;
 			$mqEnable = $this->getConf('enableMapQuest');
 			$osmEnable = $this->getConf('enableOSM');
+			$enableBing = $this->getConf('enableBing');
 
 			$scriptEnable = '';
 
@@ -225,6 +226,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$scriptEnable .= 'gEnable = '.($gEnable ? 'true' : 'false').';';
 				$scriptEnable .= 'osmEnable = '.($osmEnable ? 'true' : 'false').';';
 				$scriptEnable .= 'mqEnable = '.($mqEnable ? 'true' : 'false').';';
+				$scriptEnable .= 'bEnable = '.($enableBing ? 'true' : 'false').';';
+				$scriptEnable .= 'bApiKey="'.$this->getConf('bingAPIKey').'";';
 				$scriptEnable .= 'OpenLayers.ImgPath = "'.DOKU_BASE.'lib/plugins/openlayersmap/lib/'.$this->getConf('olMapStyle').'/";';
 				$scriptEnable .= "\n" . '//--><!]]>' . "\n" . '</script>';
 			}

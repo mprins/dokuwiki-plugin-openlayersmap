@@ -24,6 +24,27 @@
 $meta['olScriptUrl'] = array (
 	'string'
 );
+$meta['enableOSM'] = array (
+	'onoff'
+);
+$meta['enableMapQuest'] = array (
+	'onoff'
+);
+$meta['enableGoogle'] = array (
+	'onoff'
+);
+$meta['enableBing'] = array (
+	'onoff'
+);
+$meta['bingAPIKey'] = array (
+	'string'
+);
+$meta['olMapStyle'] = array (
+	'multichoice','_choices' => array('classic','dark')
+);
+$meta['iconUrlOverload'] = array (
+	'string'
+);
 $meta['googleScriptUrl'] = array (
 	'string'
 );
@@ -33,25 +54,4 @@ $meta['veScriptUrl'] = array (
 //$meta['yahooScriptUrl'] = array (
 //	'string'
 //);
-$meta['bingAPIKey'] = array (
-	'string'
-);
-$meta['iconUrlOverload'] = array (
-	'string'
-);
-$meta['enableMapQuest'] = array (
-	'onoff'
-);
-$meta['enableGoogle'] = array (
-	'onoff'
-);
-$meta['enableOSM'] = array (
-	'onoff'
-);
-$meta['olMapStyle'] = array (
-	'multichoice','_choices' => array('classic','dark')
-);
-
-
-// don't need this anymore $meta['googleAPIKey'] = array ('string');
 

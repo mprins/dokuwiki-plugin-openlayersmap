@@ -22,13 +22,14 @@
  */
 
 $lang['olScriptUrl'] = 'URL & query string voor toegang tot OpenLayers API. De default is DOKU_BASE/lib/plugins/openlayersmap/lib/OpenLayers.js';
-$lang['googleScriptUrl'] = 'URL & query string voor toegang tot Google Maps API. DEPRECATED verwijderen aub.';
-$lang['veScriptUrl'] = 'URL & query string voor toegang tot Virtual Earth API.';
+$lang['googleScriptUrl'] = 'URL & query string voor toegang tot Google Maps API. <em>DEPRECATED verwijderen aub. Vervangen door v3 van de Google API.</em>';
+$lang['veScriptUrl'] = 'URL & query string voor toegang tot Virtual Earth API. <em>DEPRECATED verwijderen aub. Vervangen door Bing.</em>';
 //$lang['yahooScriptUrl'] = 'URL & query string voor toegang tot Yahoo Maps API.';
 // don't need this anymore $lang['googleAPIKey'] = 'Google Maps API key.';
-$lang['bingAPIKey'] = 'bing Maps API key.';
+$lang['bingAPIKey'] = 'Bing Maps API sleutel. Haal een eigen sleutel op: http://bingmapsportal.com/';
 $lang['iconUrlOverload'] = 'URL voor kaart ikonen bij gebruik van statische kaarten op een non-internet host';
 $lang['enableMapQuest'] = 'Maak gebruik van MapQuest als basiskaart mogelijk';
 $lang['enableGoogle'] = 'Maak gebruik van Google als basiskaart mogelijk';
+$lang['enableBing'] = 'Maak gebruik van Bing als basiskaart mogelijk';
 $lang['enableOSM'] = 'Maak gebruik van OpenStreetMap als basiskaart mogelijk';
 $lang['olMapStyle'] = 'Stijl van de knoppen in de kaart';
