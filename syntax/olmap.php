@@ -265,7 +265,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$renderer->doc .="				<script type='text/javascript'><!--//--><![CDATA[//><!--
 			    var $mapid = $param 
 			   //--><!]]></script>";
-
+			return true;
 		} elseif ($mode == 'metadata') {
 			// render metadata if available
 			if (!(($this->dflt['lat']==$mainLat)||($thisdflt['lon']==$mainLon))){
