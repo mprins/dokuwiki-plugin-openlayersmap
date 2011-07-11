@@ -40,7 +40,7 @@ $meta['bingAPIKey'] = array (
 	'string'
 );
 $meta['olMapStyle'] = array (
-	'multichoice','_choices' => array('classic','dark')
+	'multichoice','_choices' => array('classic','dark','grey')
 );
 $meta['iconUrlOverload'] = array (
 	'string'
