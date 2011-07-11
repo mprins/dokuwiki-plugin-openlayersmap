@@ -107,17 +107,22 @@ function onFeatureUnselect(feature) {
 
 /** init. */
 function olInit() {
+	// check if the browser has css support
+	var css = getElementsByClass('olCSSsupported', null, null);
+	if (css.length < 1) {
+		olCSSEnable = false;
+		return;
+	}
+
 	var _i = 0;
 	// hide the table(s) with POI by giving it a print only style
 	var tbls = getElementsByClass('olPOItableSpan', null, null);
 	for (_i = 0; _i < tbls.length; _i++) {
-		// tbls[i].style.display = 'none';
 		tbls[_i].className += ' olPrintOnly';
 	}
 	// hide the static map image(s) by giving it a print only style
 	var statImgs = getElementsByClass('olStaticMap', null, null);
 	for (_i = 0; _i < statImgs.length; _i++) {
-		// statImgs[i].style.display = 'none';
 		statImgs[_i].className += ' olPrintOnly';
 	}
 }
@@ -196,6 +201,10 @@ function createMap(mapOpts, OLmapPOI) {
 	if (!olEnable) {
 		return;
 	}
+	if (!olCSSEnable) {
+		return;
+	}
+	
 	var DocBase = DOKU_BASE;
 
 	OpenLayers.IMAGE_RELOAD_ATTEMPTS = 4;
@@ -717,7 +726,13 @@ bApiKey = '',
  * 
  * @type {Boolean}
  */
-osmEnable = true;
+osmEnable = true,
+/**
+ * CSS support flag.
+ * 
+ * @type {Boolean}
+ */
+olCSSEnable = true;
 /**
  * yahoo map api flag.
  * 
