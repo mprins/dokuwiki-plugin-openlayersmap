@@ -209,7 +209,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				// 				$gscript = $this->getConf('googleScriptUrl');
 				// 				$gscript = $gscript ? '<script type="text/javascript" src="' . $gscript . '"></script>' : "";
 				if($gEnable){
-					$gscript ='<script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>';
+					$gscript ='<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>';
 				}
 
 				$vscript = $this->getConf('veScriptUrl');
@@ -242,7 +242,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 			$renderer->doc .= '
 				<div id="'.$mapid.'-static" class="olStaticMap">'.$staticImgUrl.'</div>
-				<div id="'.$mapid.'-clearer" class="clearer"></div>';
+				<div id="'.$mapid.'-clearer" class="clearer"><p>&nbsp;</p></div>';
 
 			// render a (hidden) table of the POI for the print and a11y presentation
 			$renderer->doc .= ' 	<div class="olPOItableSpan" id="'.$mapid.'-table-span"><table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">

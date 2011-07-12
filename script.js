@@ -104,26 +104,32 @@ function onFeatureUnselect(feature) {
 		feature.popup = null;
 	}
 }
+/**
+ * Test for css support in the browser by sniffing for a class we added using
+ * javascript added by the action plugin; this is an edge case because browsers
+ * that support javascript generally support css as well.
+ * 
+ * @returns {Boolean} true when the browser supports css (and implicitly
+ *          javascript)
+ */
+function olTestCSSsupport() {
+	return (((getElementsByClass('olCSSsupported', null, null))).length > 0);
+}
 
 /** init. */
 function olInit() {
-	// check if the browser has css support
-	var css = getElementsByClass('olCSSsupported', null, null);
-	if (css.length < 1) {
-		olCSSEnable = false;
-		return;
-	}
-
-	var _i = 0;
-	// hide the table(s) with POI by giving it a print only style
-	var tbls = getElementsByClass('olPOItableSpan', null, null);
-	for (_i = 0; _i < tbls.length; _i++) {
-		tbls[_i].className += ' olPrintOnly';
-	}
-	// hide the static map image(s) by giving it a print only style
-	var statImgs = getElementsByClass('olStaticMap', null, null);
-	for (_i = 0; _i < statImgs.length; _i++) {
-		statImgs[_i].className += ' olPrintOnly';
+	if (olEnable) {
+		var _i = 0;
+		// hide the table(s) with POI by giving it a print only style
+		var tbls = getElementsByClass('olPOItableSpan', null, null);
+		for (_i = 0; _i < tbls.length; _i++) {
+			tbls[_i].className += ' olPrintOnly';
+		}
+		// hide the static map image(s) by giving it a print only style
+		var statImgs = getElementsByClass('olStaticMap', null, null);
+		for (_i = 0; _i < statImgs.length; _i++) {
+			statImgs[_i].className += ' olPrintOnly';
+		}
 	}
 }
 
@@ -201,10 +207,11 @@ function createMap(mapOpts, OLmapPOI) {
 	if (!olEnable) {
 		return;
 	}
-	if (!olCSSEnable) {
+	if (!olTestCSSsupport()) {
+		olEnable = false;
 		return;
 	}
-	
+
 	var DocBase = DOKU_BASE;
 
 	OpenLayers.IMAGE_RELOAD_ATTEMPTS = 4;
