@@ -60,24 +60,24 @@ function onFeatureSelect(feature) {
 		}
 	}
 
-	var pContent = "";
+	var pContent = '<div clas="spacer">&nbsp;</div>';
 	if (feature.data.rowId !== undefined) {
-		pContent += "<div style=''>" + feature.data.rowId + ": </div>";
+		pContent += '<span class="rowId">' + feature.data.rowId + ': </span>';
 	}
 	if (feature.data.name !== undefined) {
-		pContent += "<div style=''>" + feature.data.name + "</div>";
+		pContent += '<span class="txt">' + feature.data.name + '</span>';
 	}
 	if (feature.data.ele !== undefined) {
-		pContent += "<div style=''>elevation: " + feature.data.ele + "</div>";
+		pContent += "<div>elevation: " + feature.data.ele + "</div>";
 	}
 	if (feature.data.type !== undefined) {
-		pContent += "<div style=''>" + feature.data.type + "></div>";
+		pContent += "<div>" + feature.data.type + "></div>";
 	}
 	if (feature.data.time !== undefined) {
-		pContent += "<div style=''>time: " + feature.data.time + "</div>";
+		pContent += "<div>time: " + feature.data.time + "</div>";
 	}
 	if (feature.data.description !== undefined) {
-		pContent += "<div style=''>" + feature.data.description + "</div>";
+		pContent += "<div>" + feature.data.description + "</div>";
 	}
 
 	if (pContent.length > 0) {
@@ -519,19 +519,21 @@ function createMap(mapOpts, OLmapPOI) {
 
 	if (mapOpts.toolbar === 1) {
 		// add buttons + panel
-		var zoomin = new OpenLayers.Control.ZoomBox({
+		var /* zoom in btn */
+		zoomin = new OpenLayers.Control.ZoomBox({
 			title : "Zoom in"
-		}), /**/zoomout = new OpenLayers.Control.ZoomBox({
+		}), /* zoom out btn */
+		zoomout = new OpenLayers.Control.ZoomBox({
 			out : true,
 			title : "Zoom uit",
 			displayClass : "olControlZoomOut"
-		}), /**/pan = new OpenLayers.Control.DragPan({
+		}), /* pan btn */pan = new OpenLayers.Control.DragPan({
 			title : "Verschuif"
 		}), /* do "nothing" button... */info = new OpenLayers.Control.Button({
 			type : OpenLayers.Control.TYPE_TOOL,
-			displayClass : "olControlFeatureInfo"
-		/* , trigger : selectControl.activate() */
-		}), /* navigation history */
+			displayClass : "olControlFeatureInfo",
+			title : "Info"
+		}), /* navigation history btns */
 		nav = new OpenLayers.Control.NavigationHistory();
 		m.addControl(nav);
 		var panel = new OpenLayers.Control.Panel({
@@ -594,7 +596,6 @@ function createMap(mapOpts, OLmapPOI) {
 						yOrdering : true
 					}
 				});
-
 		m.addLayer(markers);
 		var features = [];
 		var lonLat;

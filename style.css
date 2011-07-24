@@ -102,6 +102,18 @@
 	cursor: pointer;
 }
 
+.olFramedCloudPopupContent {
+	
+}
+
+.txt p {
+	display: inline;
+}
+
+.rowId {
+	border: 1px dotted __border__;
+}
+
 .olControlScaleLine {
 	display: block;
 	position: absolute;
@@ -145,8 +157,7 @@
 	opacity: 1.0;
 }
 
-.olControlLayerSwitcher .layersDiv {
-	/*top right bottom left*/
+.olControlLayerSwitcher .layersDiv { /*top right bottom left*/
 	/* padding-top: 5px;	padding-left: 10px;	padding-bottom: 5px;	padding-right: 75px;	*/
 	padding: 5px 75px 5px 10px;
 	background-color: __background_neu__;
@@ -277,8 +288,8 @@
 	font-size: 1px;
 	opacity: 0.50;
 	/*IE specific */
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: alpha(opacity = 50);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity =         50);
 	border-bottom-color: #6B00B3;
 	border-right-color: #6B00B3;
 	border-top-color: #C266FF;
