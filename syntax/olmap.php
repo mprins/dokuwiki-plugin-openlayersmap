@@ -350,17 +350,18 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		}
 		switch ($gmap['baselyr']){
 			case 'mapquest hybrid':
-				$maptype='hyb (Hybrid)';
+				$maptype='hyb';
 				break;
 			case 'mapquest sat':
-				$maptype='sat (Satellite)';
+				$maptype='sat';
 				break;
 			case 'mapquest road':
 			default:
 				$maptype='map';
 				break;
 		}
-
+		// TODO use bestfit option
+		// 		see: http://open.mapquestapi.com/staticmap/
 		$imgUrl = "http://open.mapquestapi.com/staticmap/v3/getmap";
 		$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
 		$imgUrl .= "&size=".str_replace("px", "",$gmap['width']).",".str_replace("px", "",$gmap['height']);
@@ -411,7 +412,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$maptype='roadmap';
 				break;
 		}
-
+		// TODO use viewport / visible instead of center/zoom,
+		//		see: https://code.google.com/intl/nl/apis/maps/documentation/staticmaps/#ImplicitPositioning
 		//http://maps.google.com/maps/api/staticmap?center=51.565690,5.456756&zoom=16&size=600x400&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker.png|label:1|51.565690,5.456756&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker-blue.png|51.566197,5.458966|label:2&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.567177,5.457909|label:3&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.566283,5.457330|label:4&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.565630,5.457695|label:5&sensor=false&format=png&maptype=roadmap
 		$imgUrl = "http://maps.google.com/maps/api/staticmap";
 		$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
@@ -466,11 +468,13 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$maptype='Road';
 				break;
 		}
-
-		// TODO since bing does not provide declutter or autozoom/fit we need to determine the bbox based on the poi and lat/lon ourselves
+		$bbox=$this->_calcBBOX($overlay, $gmap['lat'], $gmap['lon']);
 		//http://dev.virtualearth.net/REST/v1/Imagery/Map/Road/51.56573,5.45690/12?mapSize=400,400&key=Agm4PJzDOGz4Oy9CYKPlV-UtgmsfL2-zeSyfYjRhf57OQB_oj87j5pncKZSay5qY
-		$imgUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/".$maptype."/".$gmap['lat'].",".$gmap['lon']."/".$gmap['zoom'];
-		$imgUrl .= "?ms=".str_replace("px", "",$gmap['width']).",".str_replace("px", "",$gmap['height']);
+
+		//$imgUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/".$maptype."/".$gmap['lat'].",".$gmap['lon']."/".$gmap['zoom'];
+		$imgUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/".$maptype."/";
+		$imgUrl .= "?mapArea=".$bbox['minlat'].",".$bbox['minlon'].",".$bbox['maxlat'].",".$bbox['maxlon']."&declutter=1";
+		$imgUrl .= "&ms=".str_replace("px", "",$gmap['width']).",".str_replace("px", "",$gmap['height']);
 		// create a bing api key at https://www.bingmapsportal.com/application
 		$imgUrl .= "&key=".$this->getConf('bingAPIKey');
 		if (!empty ($overlay)) {
@@ -478,9 +482,13 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			foreach ($overlay as $data) {
 				list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
 				// TODO icon style lookup, see: http://msdn.microsoft.com/en-us/library/ff701719.aspx for iconStyle
-				// NOTE: the max number of pushpins is 18!
+
 				$iconStyle=32;
 				$rowId++;
+				// NOTE: the max number of pushpins is 18!
+				if ($rowId==18) {
+					break;
+				}
 				$imgUrl .= "&pp=$lat,$lon;$iconStyle;$rowId";
 			}
 		}
@@ -536,6 +544,18 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: bing image url is:');
 		return $imgUrl;
+	}
 
+	private function _calcBBOX($overlay, $lat, $lon){
+		$lats[] = $lat;
+		$lons[] = $lon;
+		foreach ($overlay as $data) {
+			list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
+			$lats[] = $lat;
+			$lons[] = $lon;
+		}
+		sort($lats);
+		sort($lons);
+		return array('minlat'=>$lats[0], 'minlon'=>$lons[0], 'maxlat'=>$lats[count($lats)-1], 'maxlon'=>$lons[count($lats)-1]);
 	}
 }
