@@ -103,19 +103,19 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 		$imgUrl = "{{";
 		// choose maptype based on tag
-		if (stripos($gmap['baselyr'],'google')>0){
+		if (stripos($gmap['baselyr'],'google') !== false){
 			// use google
 			$imgUrl .= $this->_getGoogle($gmap, $overlay);
-		}elseif (stripos($gmap['baselyr'],'ve')>0){
+		} elseif (stripos($gmap['baselyr'],'ve') !== false){
 			// use bing
 			$imgUrl .= $this->_getBing($gmap, $overlay);
-		}elseif (stripos($gmap['baselyr'],'bing')>0){
+		} elseif (stripos($gmap['baselyr'],'bing') !== false){
 			// use bing
 			$imgUrl .= $this->_getBing($gmap, $overlay);
-		}elseif (stripos($gmap['baselyr'],'mapquest')>0){
+		} elseif (stripos($gmap['baselyr'],'mapquest') !== false){
 			// use mapquest
 			$imgUrl .=$this->_getMapQuest($gmap,$overlay);
-		}else {
+		} else {
 			// use http://staticmap.openstreetmap.de
 			$imgUrl .=$this->_getStaticOSM($gmap,$overlay);
 		}
@@ -445,6 +445,10 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	 * @param array $overlay
 	 */
 	private function _getBing($gmap, $overlay){
+		if(!$this->getConf('bingAPIKey')){
+			// in case there is no Bing api key
+			$this->_getMapQuest($gmap, $overlay);
+		}
 		switch ($gmap['baselyr']){
 			case 've hybrid':
 			case 'bing hybrid':
@@ -514,7 +518,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				break;
 			default:
 				$maptype='';
-				break;
+			break;
 		}
 		$imgUrl .= "&maptype=".$maptype;
 
