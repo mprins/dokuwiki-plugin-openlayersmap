@@ -352,7 +352,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			case 'mapquest hybrid':
 				$maptype='hyb (Hybrid)';
 				break;
-			case 'mapquest aerial':
+			case 'mapquest sat':
 				$maptype='sat (Satellite)';
 				break;
 			case 'mapquest road':
@@ -406,7 +406,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			case 'google relief':
 				$maptype='terrain';
 				break;
-			case 'google normal':
+			case 'google road':
 			default:
 				$maptype='roadmap';
 				break;
@@ -457,6 +457,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			case 've normal':
 			case 've road':
 			case 've':
+			case 'bing road':
 			default:
 				$maptype='Road';
 				break;
@@ -500,6 +501,22 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		} else			{
 			$imgUrl .= "&zoom=".$gmap['zoom'];
 		}
+
+		switch ($gmap['baselyr']){
+			case 'mapnik':
+				$maptype='mapnik';
+				break;
+			case 't@h':
+				$maptype='osmarenderer';
+				break;
+			case 'cycle map':
+				$maptype='cycle';
+				break;
+			default:
+				$maptype='';
+				break;
+		}
+		$imgUrl .= "&maptype=".$maptype;
 
 		if (!empty ($overlay)) {
 			$rowId=0;
