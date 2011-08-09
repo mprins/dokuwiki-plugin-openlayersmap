@@ -105,7 +105,7 @@ function onFeatureUnselect(feature) {
 	}
 }
 /**
- * Test for css support in the browser by sniffing for a class we added using
+ * Test for css support in the browser by sniffing for a css class we added using
  * javascript added by the action plugin; this is an edge case because browsers
  * that support javascript generally support css as well.
  * 
@@ -114,23 +114,6 @@ function onFeatureUnselect(feature) {
  */
 function olTestCSSsupport() {
 	return (((getElementsByClass('olCSSsupported', null, null))).length > 0);
-}
-
-/** init. */
-function olInit() {
-	if (olEnable) {
-		var _i = 0;
-		// hide the table(s) with POI by giving it a print only style
-		var tbls = getElementsByClass('olPOItableSpan', null, null);
-		for (_i = 0; _i < tbls.length; _i++) {
-			tbls[_i].className += ' olPrintOnly';
-		}
-		// hide the static map image(s) by giving it a print only style
-		var statImgs = getElementsByClass('olStaticMap', null, null);
-		for (_i = 0; _i < statImgs.length; _i++) {
-			statImgs[_i].className += ' olPrintOnly';
-		}
-	}
 }
 
 /**
@@ -700,6 +683,11 @@ function createMap(mapOpts, OLmapPOI) {
  */
 var olEnable = false,
 /**
+ * array with data for each map in the page.
+ * @type {Array}
+ */
+olMapData = [],
+/**
  * MapQuest tiles flag.
  * 
  * @type {Boolean}
@@ -747,5 +735,28 @@ olCSSEnable = true;
  * @type {Boolean}
  */
 // yEnable = false;
+
+/** init. */
+function olInit() {
+	if (olEnable) {
+		var _i = 0;
+		// create the maps in the page
+		for(_i = 0; _i < olMapData.length; _i++){
+			createMap(olMapData[_i][0],olMapData[_i][1]);
+		}		
+		
+		// hide the table(s) with POI by giving it a print-only style
+		var tbls = getElementsByClass('olPOItableSpan', null, null);
+		for (_i = 0; _i < tbls.length; _i++) {
+			tbls[_i].className += ' olPrintOnly';
+		}
+		// hide the static map image(s) by giving it a print only style
+		var statImgs = getElementsByClass('olStaticMap', null, null);
+		for (_i = 0; _i < statImgs.length; _i++) {
+			statImgs[_i].className += ' olPrintOnly';
+		}
+	}
+}
+
 /* register olInit to run with onload event. */
 addInitEvent(olInit);

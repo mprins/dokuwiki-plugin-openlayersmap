@@ -116,32 +116,21 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			// use mapquest
 			$imgUrl .=$this->_getMapQuest($gmap,$overlay);
 		} else {
-			// use http://staticmap.openstreetmap.de
+			// use http://staticmap.openstreetmap.de "staticMapLite"
 			$imgUrl .=$this->_getStaticOSM($gmap,$overlay);
 		}
-
+		// TODO implementation for http://ojw.dev.openstreetmap.org/StaticMapDev/
+		
 		// append dw specific params
 		$imgUrl .="&.png?".$gmap['width']."x".$gmap['height'];
 		$imgUrl .= "&nolink";
-		$imgUrl .= " |".$gmap['summary']." }} ";
+		$imgUrl .= " |".$gmap['summary']."}} ";
 		// remove 'px'
 		$imgUrl = str_replace("px", "",$imgUrl);
 
 		$imgUrl=p_render("xhtml", p_get_instructions($imgUrl), $info);
 
 		$mapid = $gmap['id'];
-
-		// determine width and height (inline styles) for the map image
-		// if ($gmap['width'] || $gmap['height']) {
-		//	$style = $gmap['width'] ? 'width: ' . $gmap['width'] . ";" : "";
-		//	$style .= $gmap['height'] ? 'height: ' . $gmap['height'] . ";" : "";
-		//	$style = "style='$style'";
-		// } else {
-		//	$style = '';
-		//}
-
-		// unset gmap values for width and height - they don't go into javascript
-		// unset ($gmap['width'], $gmap['height']);
 
 		// create a javascript parameter string for the map
 		$param = '';
@@ -173,7 +162,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			}
 			$poi = substr($poi, 2);
 		}
-		$js .= "createMap({" . $param . " },[$poi]);";
+		//$js .= "createMap({" . $param . " },[$poi]);";
+		$js .= "[{" . $param . " },[$poi]];";
 		// unescape the json
 		$poitable = stripslashes($poitable);
 
@@ -186,6 +176,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	 */
 	function render($mode, &$renderer, $data) {
 		static $initialised = false; // set to true after script initialisation
+		static $mapnumber = 0; // incremeted for each map tag in the page source
 		list ($mapid, $param, $mainLat, $mainLon, $poitable, $poitabledesc, $staticImgUrl) = $data;
 
 		if ($mode == 'xhtml') {
@@ -206,8 +197,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			if (!$initialised) {
 				$initialised = true;
 				// render necessary script tags
-				// 				$gscript = $this->getConf('googleScriptUrl');
-				// 				$gscript = $gscript ? '<script type="text/javascript" src="' . $gscript . '"></script>' : "";
 				if($gEnable){
 					$gscript ='<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>';
 				}
@@ -262,9 +251,11 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			//TODO no tfoot when $poitabledesc is empty
 
 			// render inline mapscript
-			$renderer->doc .="				<script type='text/javascript'><!--//--><![CDATA[//><!--
-			    var $mapid = $param 
+			$renderer->doc .="				<script type='text/javascript'><!--//--><![CDATA[//><!--";
+			    // var $mapid = $param  
+			$renderer->doc .="				olMapData[$mapnumber] = $param
 			   //--><!]]></script>";
+			$mapnumber++;
 			return true;
 		} elseif ($mode == 'metadata') {
 			// render metadata if available
@@ -353,24 +344,32 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$maptype='hyb';
 				break;
 			case 'mapquest sat':
-				$maptype='sat';
+				// $maptype='sat'
+				// because sat coverage is very limited use 'hyb' instead of 'sat' so we don't get a blank map
+				$maptype='hyb';
 				break;
 			case 'mapquest road':
 			default:
 				$maptype='map';
 				break;
 		}
-		// TODO use bestfit option
-		// 		see: http://open.mapquestapi.com/staticmap/
-		$imgUrl = "http://open.mapquestapi.com/staticmap/v3/getmap";
-		$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
-		$imgUrl .= "&size=".str_replace("px", "",$gmap['width']).",".str_replace("px", "",$gmap['height']);
-		// max level for mapquest is 16
-		if ($gmap['zoom']>16) {
-			$imgUrl .= "&zoom=16";
-		} else			{
-			$imgUrl .= "&zoom=".$gmap['zoom'];
+		$imgUrl = "http://open.mapquestapi.com/staticmap/v3/getmap?declutter=true&";
+		if (count($overlay)< 1){
+			$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
+			//max level for mapquest is 16
+			if ($gmap['zoom']>16) {
+				$imgUrl .= "&zoom=16";
+			} else			{
+				$imgUrl .= "&zoom=".$gmap['zoom'];
+			}
 		}
+		// use bestfit instead of center/zoom, needs upperleft/lowerright corners
+		//$bbox=$this->_calcBBOX($overlay, $gmap['lat'], $gmap['lon']);
+		//$imgUrl .= "bestfit=".$bbox['minlat'].",".$bbox['maxlon'].",".$bbox['maxlat'].",".$bbox['minlon'];
+
+		// TODO declutter option works well for square maps but not for rectangular, maybe compensate for that or compensate the mbr..
+		$imgUrl .= "&size=".str_replace("px", "",$gmap['width']).",".str_replace("px", "",$gmap['height']);
+
 		// TODO mapquest allows using one image url with a multiplier $NUMBER eg:
 		// $NUMBER = 2
 		// $imgUrl .= DOKU_URL."/".DOKU_PLUGIN."/".getPluginName()."/icons/".$img.",$NUMBER,C,".$lat1.",".$lon1.",0,0,0,0,C,".$lat2.",".$lon2.",0,0,0,0";
@@ -378,7 +377,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$imgUrl .= "&xis=";
 			foreach ($overlay as $data) {
 				list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
-				$imgUrl .= $sUrl."lib/plugins/openlayersmap/icons/".$img.",1,C,".$lat.",".$lon.",0,0,0,0,";
+				//$imgUrl .= $sUrl."lib/plugins/openlayersmap/icons/".$img.",1,C,".$lat.",".$lon.",0,0,0,0,";
+				$imgUrl .= $sUrl."lib/plugins/openlayersmap/icons/".$img.",1,C,".$lat.",".$lon.",";
 			}
 			$imgUrl = substr($imgUrl,0,-1);
 		}
@@ -412,13 +412,12 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$maptype='roadmap';
 				break;
 		}
-		// TODO use viewport / visible instead of center/zoom,
+		// TODO maybe use viewport / visible instead of center/zoom,
 		//		see: https://code.google.com/intl/nl/apis/maps/documentation/staticmaps/#ImplicitPositioning
 		//http://maps.google.com/maps/api/staticmap?center=51.565690,5.456756&zoom=16&size=600x400&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker.png|label:1|51.565690,5.456756&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker-blue.png|51.566197,5.458966|label:2&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.567177,5.457909|label:3&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.566283,5.457330|label:4&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.565630,5.457695|label:5&sensor=false&format=png&maptype=roadmap
-		$imgUrl = "http://maps.google.com/maps/api/staticmap";
-		$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
+		$imgUrl = "http://maps.google.com/maps/api/staticmap?sensor=false";
 		$imgUrl .= "&size=".str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
-		// don't need this anymore $imgUrl .= "&key=".$this->getConf('googleAPIKey');
+		$imgUrl .= "&center=".$gmap['lat'].",".$gmap['lon'];
 		// max is 21 (== building scale), but that's overkill..
 		if ($gmap['zoom']>16) {
 			$imgUrl .= "&zoom=16";
@@ -433,7 +432,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$imgUrl .= "&markers=icon%3a".$sUrl."lib/plugins/openlayersmap/icons/".$img."%7c".$lat.",".$lon."%7clabel%3a".++$rowId;
 			}
 		}
-		$imgUrl .= "&format=png&maptype=".$maptype."&sensor=false";
+		$imgUrl .= "&format=png&maptype=".$maptype;
 		global $conf;
 		$imgUrl .= "&language=".$conf['lang'];
 		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getGoogle: Google image url is:');
@@ -469,20 +468,18 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				break;
 		}
 		$bbox=$this->_calcBBOX($overlay, $gmap['lat'], $gmap['lon']);
-		//http://dev.virtualearth.net/REST/v1/Imagery/Map/Road/51.56573,5.45690/12?mapSize=400,400&key=Agm4PJzDOGz4Oy9CYKPlV-UtgmsfL2-zeSyfYjRhf57OQB_oj87j5pncKZSay5qY
-
 		//$imgUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/".$maptype."/".$gmap['lat'].",".$gmap['lon']."/".$gmap['zoom'];
 		$imgUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/".$maptype."/";
-		$imgUrl .= "?mapArea=".$bbox['minlat'].",".$bbox['minlon'].",".$bbox['maxlat'].",".$bbox['maxlon']."&declutter=1";
+		$imgUrl .= "?mapArea=".$bbox['minlat'].",".$bbox['minlon'].",".$bbox['maxlat'].",".$bbox['maxlon'];
+		// TODO declutter option works well for square maps but not for rectangular, maybe compensate for that or compensate the mbr..
+		$imgUrl .= "&declutter=1";
 		$imgUrl .= "&ms=".str_replace("px", "",$gmap['width']).",".str_replace("px", "",$gmap['height']);
-		// create a bing api key at https://www.bingmapsportal.com/application
 		$imgUrl .= "&key=".$this->getConf('bingAPIKey');
 		if (!empty ($overlay)) {
 			$rowId=0;
 			foreach ($overlay as $data) {
 				list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
 				// TODO icon style lookup, see: http://msdn.microsoft.com/en-us/library/ff701719.aspx for iconStyle
-
 				$iconStyle=32;
 				$rowId++;
 				// NOTE: the max number of pushpins is 18!
@@ -545,7 +542,14 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: bing image url is:');
 		return $imgUrl;
 	}
-
+	/**
+	 * Calculate the minimum bbox for a start location + poi.
+	 *
+	 * @param array $overlay  multi-dimensional array of array($lat, $lon, $text, $angle, $opacity, $img)
+	 * @param float $lat latitude for map center
+	 * @param float $lon longitude for map center
+	 * @return multitype:float array describing the mbr and center point
+	 */
 	private function _calcBBOX($overlay, $lat, $lon){
 		$lats[] = $lat;
 		$lons[] = $lon;
@@ -556,6 +560,11 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		}
 		sort($lats);
 		sort($lons);
-		return array('minlat'=>$lats[0], 'minlon'=>$lons[0], 'maxlat'=>$lats[count($lats)-1], 'maxlon'=>$lons[count($lats)-1]);
+		// TODO: make edge/wrap around cases work
+		$centerlat = $lats[0]+($lats[count($lats)-1]-$lats[0]);
+		$centerlon = $lons[0]+($lons[count($lats)-1]-$lons[0]);
+		return array('minlat'=>$lats[0], 'minlon'=>$lons[0],
+						'maxlat'=>$lats[count($lats)-1], 'maxlon'=>$lons[count($lats)-1],
+						'centerlat'=>$centerlat,'centerlon'=>$centerlon);
 	}
 }

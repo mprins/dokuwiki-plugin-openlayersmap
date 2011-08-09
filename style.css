@@ -21,7 +21,7 @@
 }
 
 .olMap {
-	border: 1px solid __border__;
+	/* border: 1px solid __border__;*/
 	cursor: default;
 }
 
@@ -197,7 +197,9 @@
 	background-color: __background_alt__;
 	border: 1px solid __border__;
 }
-
+.olToolbar{
+	height: 28px;
+}
 .olToolbar div {
 	display: block;
 	width: 24px;
