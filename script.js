@@ -17,7 +17,7 @@
 /**
  * @fileoverview Javascript voor OpenLayers plugin.
  * 
- * @requires {lib/OpenLayers.js} or other full openlayers build
+ * @requires {lib/OpenLayers.js} or a full openlayers build
  * @author Mark C. Prins <mc.prins@gmail.com>
  * 
  */
@@ -28,14 +28,7 @@
  * @type {OpenLayers.Control.SelectFeature}
  * @private
  */
-var selectControl,
-/**
- * Openlayers bounds used for managing the map extent.
- * 
- * @type {OpenLayers.Bounds}
- * @private
- */
-extent;
+var selectControl;
 
 /**
  * handle feature select event.
@@ -484,12 +477,10 @@ function createMap(mapOpts, OLmapPOI) {
 		// statusbar control: mouse pos.
 		// TODO kijken naar afronding met aNumber.toFixed(0)
 		m.addControl(new OpenLayers.Control.MousePosition({
-			'div' : OpenLayers.Util.getElement(mapOpts.id
-					+ '-statusbar-mouseposition')
+			'div' : OpenLayers.Util.getElement(mapOpts.id + '-statusbar-mouseposition')
 		}));
 		// statusbar control: scale
-		m.addControl(new OpenLayers.Control.Scale(mapOpts.id
-				+ '-statusbar-scale'));
+		m.addControl(new OpenLayers.Control.Scale(mapOpts.id + '-statusbar-scale'));
 		// statusbar control: attribution
 		m.addControl(new OpenLayers.Control.Attribution({
 			'div' : OpenLayers.Util.getElement(mapOpts.id + '-statusbar-text')
@@ -676,6 +667,42 @@ function createMap(mapOpts, OLmapPOI) {
 	return m;
 }
 
+var olTimerId = -1;
+/** init. */
+function olInit() {
+	if(navigator.userAgent.indexOf('MSIE')!= -1){
+		//console.log("need to sleep");
+		if(olTimerId==-1){
+			olTimerId = setTimeout ( "olInit()", 3000 );
+			olEnable = false;
+		} else {
+			//console.log("done sleeping");
+			clearTimeout ( olTimerId );
+			olEnable = true;
+		}
+	}
+	
+	if (olEnable) {
+		var _i = 0;
+		// create the maps in the page
+		for(_i = 0; _i < olMapData.length; _i++){
+			//console.log(olMapData);
+			createMap(olMapData[_i].mapOpts,olMapData[_i].poi);
+		}
+		
+		// hide the table(s) with POI by giving it a print-only style
+		var tbls = getElementsByClass('olPOItableSpan', null, null);
+		for (_i = 0; _i < tbls.length; _i++) {
+			tbls[_i].className += ' olPrintOnly';
+		}
+		// hide the static map image(s) by giving it a print only style
+		var statImgs = getElementsByClass('olStaticMap', null, null);
+		for (_i = 0; _i < statImgs.length; _i++) {
+			statImgs[_i].className += ' olPrintOnly';
+		}
+	}
+}
+
 /**
  * ol api flag.
  * 
@@ -686,7 +713,7 @@ var olEnable = false,
  * array with data for each map in the page.
  * @type {Array}
  */
-olMapData = [],
+olMapData = new Array(),
 /**
  * MapQuest tiles flag.
  * 
@@ -736,27 +763,6 @@ olCSSEnable = true;
  */
 // yEnable = false;
 
-/** init. */
-function olInit() {
-	if (olEnable) {
-		var _i = 0;
-		// create the maps in the page
-		for(_i = 0; _i < olMapData.length; _i++){
-			createMap(olMapData[_i][0],olMapData[_i][1]);
-		}		
-		
-		// hide the table(s) with POI by giving it a print-only style
-		var tbls = getElementsByClass('olPOItableSpan', null, null);
-		for (_i = 0; _i < tbls.length; _i++) {
-			tbls[_i].className += ' olPrintOnly';
-		}
-		// hide the static map image(s) by giving it a print only style
-		var statImgs = getElementsByClass('olStaticMap', null, null);
-		for (_i = 0; _i < statImgs.length; _i++) {
-			statImgs[_i].className += ' olPrintOnly';
-		}
-	}
-}
 
 /* register olInit to run with onload event. */
 addInitEvent(olInit);

@@ -197,9 +197,7 @@
 	background-color: __background_alt__;
 	border: 1px solid __border__;
 }
-.olToolbar{
-	height: 28px;
-}
+/*.olToolbar{height: 28px;} */
 .olToolbar div {
 	display: block;
 	width: 24px;
@@ -291,7 +289,7 @@
 	opacity: 0.50;
 	/*IE specific */
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: alpha(opacity =         50);
+	filter: alpha(opacity = 50);
 	border-bottom-color: #6B00B3;
 	border-right-color: #6B00B3;
 	border-top-color: #C266FF;

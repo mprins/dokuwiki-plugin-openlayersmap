@@ -163,7 +163,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$poi = substr($poi, 2);
 		}
 		//$js .= "createMap({" . $param . " },[$poi]);";
-		$js .= "[{" . $param . " },[$poi]];";
+		//$js .= "[{" . $param . " },[$poi]];";
+		$js .= "{mapOpts:{" . $param . " },poi:[$poi]};";
 		// unescape the json
 		$poitable = stripslashes($poitable);
 
@@ -251,10 +252,10 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			//TODO no tfoot when $poitabledesc is empty
 
 			// render inline mapscript
-			$renderer->doc .="				<script type='text/javascript'><!--//--><![CDATA[//><!--";
-			    // var $mapid = $param  
-			$renderer->doc .="				olMapData[$mapnumber] = $param
-			   //--><!]]></script>";
+			$renderer->doc .="\n		<script type='text/javascript'><!--//--><![CDATA[//><!--\n";
+				// var $mapid = $param  
+			$renderer->doc .="		olMapData[$mapnumber] = $param
+				//--><!]]></script>";
 			$mapnumber++;
 			return true;
 		} elseif ($mode == 'metadata') {
