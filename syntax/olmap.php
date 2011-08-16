@@ -120,7 +120,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$imgUrl .=$this->_getStaticOSM($gmap,$overlay);
 		}
 		// TODO implementation for http://ojw.dev.openstreetmap.org/StaticMapDev/
-		
+
 		// append dw specific params
 		$imgUrl .="&.png?".$gmap['width']."x".$gmap['height'];
 		$imgUrl .= "&nolink";
@@ -199,7 +199,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$initialised = true;
 				// render necessary script tags
 				if($gEnable){
-					$gscript ='<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>';
+					$gscript ='<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>';
 				}
 
 				$vscript = $this->getConf('veScriptUrl');
@@ -229,13 +229,13 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$vscript
 			$olscript
 			$scriptEnable";
-
-			$renderer->doc .= '
-				<div id="'.$mapid.'-static" class="olStaticMap">'.$staticImgUrl.'</div>
-				<div id="'.$mapid.'-clearer" class="clearer"><p>&nbsp;</p></div>';
-
-			// render a (hidden) table of the POI for the print and a11y presentation
-			$renderer->doc .= ' 	<div class="olPOItableSpan" id="'.$mapid.'-table-span"><table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
+			if ($this->getConf('enableA11y')){
+				$renderer->doc .= '				<div id="'.$mapid.'-static" class="olStaticMap">'.$staticImgUrl.'</div>';
+			}
+			$renderer->doc .= '				<div id="'.$mapid.'-clearer" class="clearer"><p>&nbsp;</p></div>';
+			if ($this->getConf('enableA11y')){
+				// render a (hidden) table of the POI for the print and a11y presentation
+				$renderer->doc .= ' 	<div class="olPOItableSpan" id="'.$mapid.'-table-span"><table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
 		<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
 		<thead class="olPOITblHeader">
 			<tr>
@@ -249,11 +249,12 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		<tfoot class="olPOITblFooter"><tr><td colspan="5">'.$poitabledesc.'</td></tr></tfoot>
 		<tbody class="olPOITblBody">'.$poitable.'</tbody>
 	</table></div>';
-			//TODO no tfoot when $poitabledesc is empty
 
+				//TODO no tfoot when $poitabledesc is empty
+			}
 			// render inline mapscript
 			$renderer->doc .="\n		<script type='text/javascript'><!--//--><![CDATA[//><!--\n";
-				// var $mapid = $param  
+			// var $mapid = $param
 			$renderer->doc .="		olMapData[$mapnumber] = $param
 				//--><!]]></script>";
 			$mapnumber++;

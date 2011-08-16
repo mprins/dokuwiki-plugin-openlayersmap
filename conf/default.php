@@ -34,3 +34,4 @@ $conf['enableGoogle'] = 0;
 $conf['enableOSM'] = 1;
 $conf['enableBing'] = 0;
 $conf['olMapStyle'] = 'classic';
+$conf['enableA11y'] = 1;

@@ -33,3 +33,4 @@ $lang['enableGoogle'] = 'Enable the use of Google as basemap provider';
 $lang['enableBing'] = 'Enable the use of Bing as basemap provider';
 $lang['enableOSM'] = 'Enable the use of OpenStreetMap as basemap provider';
 $lang['olMapStyle'] = 'Controls style of the map';
+$lang['enableA11y'] = 'Enable a11y/print output (static map, legend table)';

@@ -54,4 +54,7 @@ $meta['veScriptUrl'] = array (
 //$meta['yahooScriptUrl'] = array (
 //	'string'
 //);
+$meta['enableA11y'] = array (
+	'onoff'
+);
 

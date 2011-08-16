@@ -33,3 +33,4 @@ $lang['enableGoogle'] = 'Maak gebruik van Google als basiskaart mogelijk';
 $lang['enableBing'] = 'Maak gebruik van Bing als basiskaart mogelijk';
 $lang['enableOSM'] = 'Maak gebruik van OpenStreetMap als basiskaart mogelijk';
 $lang['olMapStyle'] = 'Stijl van de knoppen in de kaart';
+$lang['enableA11y'] = 'Maak a11y/print output (statische kaart, legenda tabel) mogelijk';
