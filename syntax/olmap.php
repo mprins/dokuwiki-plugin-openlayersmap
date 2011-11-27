@@ -93,8 +93,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		// break matched cdata into its components
 		list ($str_params, $str_points) = explode('>', substr($match, 7, -9), 2);
 		// get the lat/lon for adding them to the metadata (used by geotag)
-		preg_match('(lat[:|=]\"\d*\.\d*\")',$match,$mainLat);
-		preg_match('(lon[:|=]\"\d*\.\d*\")',$match,$mainLon);
+		preg_match('(lat[:|=]\"-?\d*\.\d*\")',$match,$mainLat);
+		preg_match('(lon[:|=]\"-?\d*\.\d*\")',$match,$mainLon);
 		$mainLat=substr($mainLat[0],5,-1);
 		$mainLon=substr($mainLon[0],5,-1);
 
