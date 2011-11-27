@@ -106,7 +106,8 @@ function onFeatureUnselect(feature) {
  *          javascript)
  */
 function olTestCSSsupport() {
-	return (((getElementsByClass('olCSSsupported', null, null))).length > 0);
+	//return (((getElementsByClass('olCSSsupported', null, null))).length > 0);
+	return (jQuery('.olCSSsupported').length > 0);
 }
 
 /**
@@ -691,12 +692,14 @@ function olInit() {
 		}
 		
 		// hide the table(s) with POI by giving it a print-only style
-		var tbls = getElementsByClass('olPOItableSpan', null, null);
+		//var tbls = getElementsByClass('olPOItableSpan', null, null);
+		var tbls = jQuery('.olPOItableSpan');
 		for (_i = 0; _i < tbls.length; _i++) {
 			tbls[_i].className += ' olPrintOnly';
 		}
 		// hide the static map image(s) by giving it a print only style
-		var statImgs = getElementsByClass('olStaticMap', null, null);
+		//var statImgs = getElementsByClass('olStaticMap', null, null);
+		var statImgs = jQuery('.olStaticMap');
 		for (_i = 0; _i < statImgs.length; _i++) {
 			statImgs[_i].className += ' olPrintOnly';
 		}
@@ -765,4 +768,5 @@ olCSSEnable = true;
 
 
 /* register olInit to run with onload event. */
-addInitEvent(olInit);
+//addInitEvent(olInit);
+jQuery(olInit);
