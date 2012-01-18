@@ -1,6 +1,6 @@
 base    openlayersmap
 author  Mark C. Prins
-email   mc.prins@gmail.com
+email   mprins@users.sf.net
 date    ${buildNumber} (${project.version})
 name    OpenLayers Map with OpenStreetMap, Google, VirtualEarth or Yahoo
 desc    Add maps to your wiki pages
