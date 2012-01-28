@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2011 Mark C. Prins <mc.prins@gmail.com>
+ * Copyright (c) 2008-2012 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -225,10 +225,13 @@ function createMap(mapOpts, OLmapPOI) {
 		numZoomLevels : 19,
 		// panDuration : 100,
 		controls : [ /* new OpenLayers.Control.LoadingPanel(), */
-		new OpenLayers.Control.KeyboardDefaults(),
+				new OpenLayers.Control.KeyboardDefaults(),
 				new OpenLayers.Control.Navigation({
 					dragPanOptions : {
 						enableKinetic : true
+					},
+					pinchZoomOptions : {
+						autoActivate : true // default
 					}
 				}), new OpenLayers.Control.ScaleLine({
 					geodesic : true
