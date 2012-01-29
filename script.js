@@ -53,7 +53,7 @@ function onFeatureSelect(feature) {
 		}
 	}
 
-	var pContent = '<div clas="spacer">&nbsp;</div>';
+	var pContent = '<div class="spacer">&nbsp;</div>';
 	if (feature.data.rowId !== undefined) {
 		pContent += '<span class="rowId">' + feature.data.rowId + ': </span>';
 	}
@@ -61,16 +61,16 @@ function onFeatureSelect(feature) {
 		pContent += '<span class="txt">' + feature.data.name + '</span>';
 	}
 	if (feature.data.ele !== undefined) {
-		pContent += "<div>elevation: " + feature.data.ele + "</div>";
+		pContent += '<div class="ele">elevation: ' + feature.data.ele + '</div>';
 	}
 	if (feature.data.type !== undefined) {
-		pContent += "<div>" + feature.data.type + "></div>";
+		pContent += '<div>' + feature.data.type + '</div>';
 	}
 	if (feature.data.time !== undefined) {
-		pContent += "<div>time: " + feature.data.time + "</div>";
+		pContent += '<div class="time">time: ' + feature.data.time + '</div>';
 	}
 	if (feature.data.description !== undefined) {
-		pContent += "<div>" + feature.data.description + "</div>";
+		pContent += '<div class="desc">' + feature.data.description + '</div>';
 	}
 
 	if (pContent.length > 0) {
@@ -599,19 +599,30 @@ function createMap(mapOpts, OLmapPOI) {
 		m.zoomToExtent(extent);
 	}
 
+	/*
+            map.addLayer(new OpenLayers.Layer.Vector("GML", {
+                protocol: new OpenLayers.Protocol.HTTP({
+                    url: "gml/polygon.xml",
+                    format: new OpenLayers.Format.GML()
+                }),
+                strategies: [new OpenLayers.Strategy.Fixed()]
+            }));
+			*/
+	
 	/* GPX layer */
 	if (mapOpts.gpxfile.length > 0) {
-		var layerGPX = new OpenLayers.Layer.GML("GPS route", DocBase
-				+ "lib/exe/fetch.php?media=" + mapOpts.gpxfile, {
-			format : OpenLayers.Format.GPX,
-			formatOptions : {
-				extractWaypoints : true,
-				extractTracks : true,
-				extractStyles : true,
-				extractAttributes : true,
-				handleHeight : true,
-				maxDepth : 3
-			},
+		var layerGPX = new OpenLayers.Layer.Vector("GPS route", {
+			protocol: new OpenLayers.Protocol.HTTP({
+				url: DocBase + "lib/exe/fetch.php?media=" + mapOpts.gpxfile, 
+				format : new OpenLayers.Format.GPX({
+					extractWaypoints : true,
+					extractTracks : true,
+					extractStyles : true,
+					extractAttributes : true,
+					handleHeight : true,
+					maxDepth : 3
+				})
+			}),
 			style : {
 				strokeColor : "#0000FF",
 				strokeWidth : 3,
@@ -621,8 +632,10 @@ function createMap(mapOpts, OLmapPOI) {
 				fillOpacity : 0.7
 			/*
 			 * , label:"${name}"
-			 */},
-			projection : new OpenLayers.Projection("EPSG:4326")
+			 */
+			},
+			projection : new OpenLayers.Projection("EPSG:4326"),
+			strategies: [new OpenLayers.Strategy.Fixed()]
 		});
 		m.addLayer(layerGPX);
 		layerGPX.events.register('loadend', m, function() {
@@ -634,18 +647,20 @@ function createMap(mapOpts, OLmapPOI) {
 
 	/* KML layer */
 	if (mapOpts.kmlfile.length > 0) {
-		var layerKML = new OpenLayers.Layer.GML("KML file", DocBase
-				+ "lib/exe/fetch.php?media=" + mapOpts.kmlfile, {
-			format : OpenLayers.Format.KML,
-			formatOptions : {
-				extractStyles : true,
-				extractAttributes : true,
-				maxDepth : 3
-			},
+		var layerKML = new OpenLayers.Layer.Vector("KML file", {
+			protocol: new OpenLayers.Protocol.HTTP({
+				url: DocBase + "lib/exe/fetch.php?media=" + mapOpts.kmlfile, 
+				format : new OpenLayers.Format.KML({
+					extractStyles : true,
+					extractAttributes : true,
+					maxDepth : 3
+				})
+			}),
 			style : {
 				label : "${name}"
 			},
-			projection : new OpenLayers.Projection("EPSG:4326")
+			projection : new OpenLayers.Projection("EPSG:4326"),
+			strategies: [new OpenLayers.Strategy.Fixed()]
 		});
 		m.addLayer(layerKML);
 		layerKML.events.register('loadend', m, function() {

@@ -105,7 +105,7 @@
 .olFramedCloudPopupContent {
 	
 }
-
+/* popup and legend styles */
 .txt p {
 	display: inline;
 }
@@ -113,6 +113,9 @@
 .rowId {
 	border: 1px dotted __border__;
 }
+.ele {}
+.time {}
+.desc {}
 
 .olControlScaleLine {
 	display: block;
