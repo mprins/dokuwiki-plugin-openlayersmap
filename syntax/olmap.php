@@ -199,7 +199,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$initialised = true;
 				// render necessary script tags
 				if($gEnable){
-					$gscript ='<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>';
+					$gscript ='<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.6&amp;sensor=false"></script>';
 				}
 
 				$vscript = $this->getConf('veScriptUrl');
