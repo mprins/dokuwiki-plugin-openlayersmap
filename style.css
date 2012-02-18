@@ -19,6 +19,10 @@
 	width: auto;
 	float: left;
 }
+/* work around a case of style reset, setting it on the container breaks the overview map. See: http://www.dokuwiki.org/plugin:openlayersmap?rev=1329438681&do=diff */
+.olContainer img {
+	max-width: none;
+}
 
 .olMap {
 	/* border: 1px solid __border__;*/
