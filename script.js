@@ -178,7 +178,7 @@ function createMap(mapOpts, OLmapPOI) {
 		this.src = DocBase + "lib/plugins/openlayersmap/lib/img/blank.gif";
 	};
 
-	// OpenLayers.Layer.Vector.prototype.renderers = ["SVG2", "VML", "Canvas"];
+	OpenLayers.Layer.Vector.prototype.renderers = ["SVG", "VML"];
 
 	// find map element location
 	var cleartag = document.getElementById(mapOpts.id + '-clearer');
