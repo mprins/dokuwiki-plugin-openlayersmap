@@ -173,12 +173,12 @@ function createMap(mapOpts, OLmapPOI) {
 	OpenLayers.Util.onImageLoadErrorColor = 'transparent';
 	OpenLayers.Util.onImageLoadError = function() {
 		/* transparent gif */
-		// IE 8 complains w/ stack overflow... this.src =
-		// "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
-		this.src = DocBase + "lib/plugins/openlayersmap/lib/img/blank.gif";
+		// IE 8 complains w/ stack overflow...
+		this.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAQAIBRAA7";
+		// this.src = DocBase + "lib/plugins/openlayersmap/lib/img/blank.gif";
 	};
 
-	OpenLayers.Layer.Vector.prototype.renderers = ["SVG", "VML"];
+	// OpenLayers.Layer.Vector.prototype.renderers = ["SVG", "VML"];
 
 	// find map element location
 	var cleartag = document.getElementById(mapOpts.id + '-clearer');
@@ -230,19 +230,49 @@ function createMap(mapOpts, OLmapPOI) {
 		m.addLayer(new OpenLayers.Layer.OSM(
 				"OpenStreetMap", null, {
 					transitionEffect : 'resize',
-					// visibility : false
 					visibility : mapOpts.baselyr == "OpenStreetMap"
 				}));
-
-		m.addLayer(new OpenLayers.Layer.OSM(
-				"t@h", "http://tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png", {
-					transitionEffect : 'resize',
-					visibility : mapOpts.baselyr == "t@h",
-					tileOptions : {
-						crossOriginKeyword : null
-					}
-				}));
-
+		/*
+		 * Tiles@Home was deprecated in 03-2012 m.addLayer(new
+		 * OpenLayers.Layer.OSM( "t@h",
+		 * "http://tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png", {
+		 * transitionEffect : 'resize', visibility : mapOpts.baselyr == "t@h",
+		 * tileOptions : { crossOriginKeyword : null } }));
+		 */
+		m
+				.addLayer(new OpenLayers.Layer.OSM(
+						"transport",
+						[
+								"http://a.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
+								"http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
+								"http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png" ],
+						{
+							transitionEffect : 'resize',
+							attribution : 'Data CC-By-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
+									+ 'Tiles <a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
+									+ '<img src="http://opencyclemap.org/favicon.ico" heigth="16" width="16"/>',
+							visibility : mapOpts.baselyr == "transport",
+							tileOptions : {
+								crossOriginKeyword : null
+							}
+						}));
+		m
+				.addLayer(new OpenLayers.Layer.OSM(
+						"landscape",
+						[
+								"http://a.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
+								"http://b.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
+								"http://c.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png" ],
+						{
+							transitionEffect : 'resize',
+							attribution : 'Data CC-By-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
+									+ 'Tiles <a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
+									+ '<img src="http://opencyclemap.org/favicon.ico" heigth="16" width="16"/>',
+							visibility : mapOpts.baselyr == "transport",
+							tileOptions : {
+								crossOriginKeyword : null
+							}
+						}));
 		m
 				.addLayer(new OpenLayers.Layer.OSM(
 						"cycle map",
@@ -264,9 +294,15 @@ function createMap(mapOpts, OLmapPOI) {
 		m
 				.addLayer(new OpenLayers.Layer.OSM(
 						"cloudmade map",
-						"http://tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png",
+						[
+								"http://a.tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png",
+								"http://b.tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png",
+								"http://c.tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png" ],
 						{
 							transitionEffect : 'resize',
+							attribution : 'Tiles (c) 2012 <a target="_blank" href="http://cloudmade.com">CloudMade</a>'
+									+ ' Data CC-BY-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
+									+ '<img src="http://cloudmade.com/favicon.ico" heigth="16" width="16"/>',
 							visibility : mapOpts.baselyr == "cloudmade map",
 							tileOptions : {
 								crossOriginKeyword : null
@@ -476,7 +512,14 @@ function createMap(mapOpts, OLmapPOI) {
 					size : new OpenLayers.Size(
 							140, 140),
 					mapOptions : {
-						theme : null
+						theme : null,
+						projection : new OpenLayers.Projection(
+								'EPSG:900913'),
+						displayProjection : new OpenLayers.Projection(
+								'EPSG:4326'),
+						maxResolution : 156543.0339,
+						maxExtent : new OpenLayers.Bounds(
+								-20037508.34, -20037508.34, 20037508.34, 20037508.34)
 					},
 					layers : [ m.baseLayer.clone() ],
 					minRectSize : 10
@@ -711,13 +754,13 @@ var olTimerId = -1;
 /** init. */
 function olInit() {
 	if (navigator.userAgent.indexOf('MSIE') != -1) {
-		//console.log("need to sleep");
+		// console.log("need to sleep");
 		if (olTimerId == -1) {
 			olTimerId = setTimeout(
 					"olInit()", 3000);
 			olEnable = false;
 		} else {
-			//console.log("done sleeping");
+			// console.log("done sleeping");
 			clearTimeout(olTimerId);
 			olEnable = true;
 		}
