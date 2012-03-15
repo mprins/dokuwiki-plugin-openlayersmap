@@ -24,6 +24,11 @@
 	max-width: none;
 }
 
+.olImageLoadError {
+	background-color: transparent !important;
+	/* optionally: display: none !important; */
+}
+
 .olMap {
 	/* border: 1px solid __border__;*/
 	cursor: default;

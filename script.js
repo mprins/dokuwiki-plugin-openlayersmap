@@ -169,14 +169,14 @@ function createMap(mapOpts, OLmapPOI) {
 
 	var DocBase = DOKU_BASE;
 
-	OpenLayers.IMAGE_RELOAD_ATTEMPTS = 4;
-	OpenLayers.Util.onImageLoadErrorColor = 'transparent';
-	OpenLayers.Util.onImageLoadError = function() {
-		/* transparent gif */
-		// IE 8 complains w/ stack overflow...
-		this.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAQAIBRAA7";
-		// this.src = DocBase + "lib/plugins/openlayersmap/lib/img/blank.gif";
-	};
+	OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
+	// OpenLayers.Util.onImageLoadErrorColor = 'transparent';
+	//OpenLayers.Util.onImageLoadError = function() {
+	//	/* transparent gif */
+	//	// IE 8 complains w/ stack overflow...
+	//	this.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAQAIBRAA7";
+	//	// this.src = DocBase + "lib/plugins/openlayersmap/lib/img/blank.gif";
+	//};
 
 	// OpenLayers.Layer.Vector.prototype.renderers = ["SVG", "VML"];
 
