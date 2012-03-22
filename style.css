@@ -26,7 +26,7 @@
 
 .olImageLoadError {
 	background-color: transparent !important;
-	/* optionally: display: none !important; */
+	display: none !important;
 }
 
 .olMap {
@@ -52,6 +52,13 @@
 	padding: 4px 1px 4px 1px;
 	position: relative;
 	overflow: hidden;
+}
+
+.olStatusBar  img{
+	vertical-align: middle;
+	height: 15px; 
+	width: 15px;
+	line-height: 15px;
 }
 
 .olStatusBarScale {
