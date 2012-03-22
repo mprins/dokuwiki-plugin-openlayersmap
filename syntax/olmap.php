@@ -212,7 +212,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$olscript = $olscript ? '<script type="text/javascript" src="' . $olscript . '"></script>' : "";
 				$olscript = str_replace('DOKU_BASE/', DOKU_BASE, $olscript);
 
-				$scriptEnable = '<script type="text/javascript">' . "\n" . '<!--//--><![CDATA[//><!--' . "\n";
+				$scriptEnable = '<script type="text/javascript"><!--//--><![CDATA[//><!--' . "\n";
 				$scriptEnable .= $olscript ? 'olEnable = true;' : 'olEnable = false;';
 				//$scriptEnable .= $yscript ? ' yEnable = true;' : ' yEnable = false;';
 				$scriptEnable .= $vscript ? ' veEnable = true;' : ' veEnable = false;';
@@ -222,7 +222,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$scriptEnable .= 'bEnable = '.($enableBing ? 'true' : 'false').';';
 				$scriptEnable .= 'bApiKey="'.$this->getConf('bingAPIKey').'";';
 				$scriptEnable .= 'OpenLayers.ImgPath = "'.DOKU_BASE.'lib/plugins/openlayersmap/lib/'.$this->getConf('olMapStyle').'/";';
-				$scriptEnable .= "\n" . '//--><!]]>' . "\n" . '</script>';
+				$scriptEnable .= "\n" . '//--><!]]></script>';
 			}
 			$renderer->doc .= "
 			$gscript
@@ -256,7 +256,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$renderer->doc .="\n		<script type='text/javascript'><!--//--><![CDATA[//><!--\n";
 			// var $mapid = $param
 			$renderer->doc .="		olMapData[$mapnumber] = $param
-				//--><!]]></script>";
+		//--><!]]></script>";
 			$mapnumber++;
 			return true;
 		} elseif ($mode == 'metadata') {
