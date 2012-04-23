@@ -75,7 +75,7 @@ function onFeatureSelect(feature) {
 	if (pContent.length > 0) {
 		// only show when there is something to show...
 		var popup = new OpenLayers.Popup.FramedCloud(
-				"olPopup", pPos, null, pContent, null, true, function() {
+				"olPopup", pPos, null, pContent, null, !0, function() {
 					selectControl.unselect(selectedFeature);
 				});
 		feature.popup = popup;
@@ -121,19 +121,36 @@ function olTestCSSsupport() {
  * @returns a {DocumentFragment} element that can be injected into the dom
  */
 function olCreateMaptag(mapid, width, height) {
-	var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">' + '<div id="'
-			+ mapid + '-olToolbar" class="olToolbar"></div>' + '<div class="clearer"></div>'
-			+ '<div id="' + mapid + '" style="width:' + width + ';height:' + height
-			+ ';" class="olMap"></div>' + '<div id="' + mapid
-			+ '-olStatusBar" class="olStatusBarContainer">' + '<div id="' + mapid
-			+ '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>' + '<div id="'
-			+ mapid + '-statusbar-link" class="olStatusBar olStatusBarPermalink"><a href="" id="'
-			+ mapid + '-statusbar-link-ref">map link</a></div>' + '<div id="' + mapid
-			+ '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>'
-			+ '<div id="' + mapid
-			+ '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>'
-			+ '<div id="' + mapid
-			+ '-statusbar-text" class="olStatusBar olStatusBarText">txt</div>' + '</div>\n</div>',
+	var mEl =
+			'<div id="'
+					+ mapid
+					+ '-olContainer" class="olContainer olWebOnly">'
+					+ '<div id="'
+					+ mapid
+					+ '-olToolbar" class="olToolbar"></div>'
+					+ '<div class="clearer"></div>'
+					+ '<div id="'
+					+ mapid
+					+ '" style="width:'
+					+ width
+					+ ';height:'
+					+ height
+					+ ';" class="olMap"></div>'
+					+ '<div id="' + mapid
+					+ '-olStatusBar" class="olStatusBarContainer">'
+					+ '<div id="' + mapid
+					+ '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>'
+					+ '<div id="' + mapid
+					+ '-statusbar-link" class="olStatusBar olStatusBarPermalink"><a href="" id="'
+					+ mapid
+					+ '-statusbar-link-ref">map link</a></div>'
+					+ '<div id="' + mapid
+					+ '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>'
+					+ '<div id="' + mapid
+					+ '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>'
+					+ '<div id="' + mapid
+					+ '-statusbar-text" class="olStatusBar olStatusBarText">txt</div>'
+					+ '</div>\n</div>',
 	// fragment
 	frag = document.createDocumentFragment(),
 	// temp node
@@ -163,7 +180,7 @@ function createMap(mapOpts, OLmapPOI) {
 		return;
 	}
 	if (!olTestCSSsupport()) {
-		olEnable = false;
+		olEnable = !1;
 		return;
 	}
 
@@ -171,12 +188,13 @@ function createMap(mapOpts, OLmapPOI) {
 
 	OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
 	// OpenLayers.Util.onImageLoadErrorColor = 'transparent';
-	//OpenLayers.Util.onImageLoadError = function() {
-	//	/* transparent gif */
-	//	// IE 8 complains w/ stack overflow...
-	//	this.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAQAIBRAA7";
-	//	// this.src = DocBase + "lib/plugins/openlayersmap/lib/img/blank.gif";
-	//};
+	// OpenLayers.Util.onImageLoadError = function() {
+	// /* transparent gif */
+	// // IE 8 complains w/ stack overflow...
+	// this.src =
+	// "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAQAIBRAA7";
+	// // this.src = DocBase + "lib/plugins/openlayersmap/lib/img/blank.gif";
+	// };
 
 	// OpenLayers.Layer.Vector.prototype.renderers = ["SVG", "VML"];
 
@@ -195,63 +213,57 @@ function createMap(mapOpts, OLmapPOI) {
 	var extent = new OpenLayers.Bounds(),
 
 	/** map. */
-	m = new OpenLayers.Map(
-			mapOpts.id, {
-				projection : new OpenLayers.Projection(
-						'EPSG:900913'),
-				displayProjection : new OpenLayers.Projection(
-						'EPSG:4326'),
-				units : 'm',
-				maxResolution : 156543.0339,
-				maxExtent : new OpenLayers.Bounds(
-						-20037508.34, -20037508.34, 20037508.34, 20037508.34),
-				numZoomLevels : 19,
-				// panDuration : 100,
-				controls : [ /* new OpenLayers.Control.LoadingPanel(), */
-						new OpenLayers.Control.KeyboardDefaults(),
-						new OpenLayers.Control.Navigation(
-								{
-									dragPanOptions : {
-										enableKinetic : true
-									},
-									pinchZoomOptions : {
-										autoActivate : true
-									// default
-									}
-								}), new OpenLayers.Control.ScaleLine(
-								{
-									geodesic : true
-								}) ],
-				theme : null
-			});
+	m =
+			new OpenLayers.Map(
+					{
+						div : mapOpts.id,
+						projection : 'EPSG:900913',
+						displayProjection : new OpenLayers.Projection(
+								"EPSG:4326"),
+						// units : 'm',
+						// maxResolution : 156543.0339,
+						// maxExtent : new OpenLayers.Bounds(-20037508.34,
+						// -20037508.34,
+						// 20037508.34, 20037508.34),
+						numZoomLevels : 22,
+						controls : [
+								new OpenLayers.Control.ArgParser(),
+								new OpenLayers.Control.KeyboardDefaults(),
+								new OpenLayers.Control.Navigation(
+										{
+											dragPanOptions : {
+												enableKinetic : !0
+											}
+										}), new OpenLayers.Control.ScaleLine(
+										{
+											geodesic : !0
+										})
+						],
+						theme : null
+					});
 
 	if (osmEnable) {
 		/* add OSM map layers */
 		m.addLayer(new OpenLayers.Layer.OSM(
 				"OpenStreetMap", null, {
 					transitionEffect : 'resize',
-					visibility : mapOpts.baselyr == "OpenStreetMap"
+					visibility : mapOpts.baselyr === "OpenStreetMap"
 				}));
-		/*
-		 * Tiles@Home was deprecated in 03-2012 m.addLayer(new
-		 * OpenLayers.Layer.OSM( "t@h",
-		 * "http://tah.openstreetmap.org/Tiles/tile/${z}/${x}/${y}.png", {
-		 * transitionEffect : 'resize', visibility : mapOpts.baselyr == "t@h",
-		 * tileOptions : { crossOriginKeyword : null } }));
-		 */
+
 		m
 				.addLayer(new OpenLayers.Layer.OSM(
 						"transport",
 						[
 								"http://a.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
 								"http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
-								"http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png" ],
+								"http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png"
+						],
 						{
 							transitionEffect : 'resize',
 							attribution : 'Data CC-By-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
 									+ 'Tiles <a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
-									+ '<img src="http://opencyclemap.org/favicon.ico" heigth="16" width="16"/>',
-							visibility : mapOpts.baselyr == "transport",
+									+ '<img src="http://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
+							visibility : mapOpts.baselyr === "transport",
 							tileOptions : {
 								crossOriginKeyword : null
 							}
@@ -262,13 +274,14 @@ function createMap(mapOpts, OLmapPOI) {
 						[
 								"http://a.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
 								"http://b.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
-								"http://c.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png" ],
+								"http://c.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png"
+						],
 						{
 							transitionEffect : 'resize',
 							attribution : 'Data CC-By-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
 									+ 'Tiles <a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
-									+ '<img src="http://opencyclemap.org/favicon.ico" heigth="16" width="16"/>',
-							visibility : mapOpts.baselyr == "transport",
+									+ '<img src="http://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
+							visibility : mapOpts.baselyr === "transport",
 							tileOptions : {
 								crossOriginKeyword : null
 							}
@@ -276,16 +289,17 @@ function createMap(mapOpts, OLmapPOI) {
 		m
 				.addLayer(new OpenLayers.Layer.OSM(
 						"cycle map",
-						[// "http://andy.sandbox.cloudmade.com/tiles/cycle/${z}/${x}/${y}.png",
+						[
 								"http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
 								"http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-								"http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png" ],
+								"http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png"
+						],
 						{
 							transitionEffect : 'resize',
 							attribution : 'Data CC-By-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
 									+ 'Tiles <a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
-									+ '<img src="http://opencyclemap.org/favicon.ico" heigth="16" width="16"/>',
-							visibility : mapOpts.baselyr == "cycle map",
+									+ '<img src="http://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
+							visibility : mapOpts.baselyr === "cycle map",
 							tileOptions : {
 								crossOriginKeyword : null
 							}
@@ -297,13 +311,14 @@ function createMap(mapOpts, OLmapPOI) {
 						[
 								"http://a.tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png",
 								"http://b.tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png",
-								"http://c.tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png" ],
+								"http://c.tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png"
+						],
 						{
 							transitionEffect : 'resize',
-							attribution : 'Tiles (c) 2012 <a target="_blank" href="http://cloudmade.com">CloudMade</a>'
-									+ ' Data CC-BY-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
-									+ '<img src="http://cloudmade.com/favicon.ico" heigth="16" width="16"/>',
-							visibility : mapOpts.baselyr == "cloudmade map",
+							attribution : 'Tiles &copy; 2012 <a target="_blank" href="http://cloudmade.com">CloudMade</a>'
+									+ '<img src="http://cloudmade.com/favicon.ico" alt="CloudMade logo"/>'
+									+ ' Data CC-BY-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>',
+							visibility : mapOpts.baselyr === "cloudmade map",
 							tileOptions : {
 								crossOriginKeyword : null
 							}
@@ -312,7 +327,7 @@ function createMap(mapOpts, OLmapPOI) {
 		m.addLayer(new OpenLayers.Layer.OSM(
 				"hike and bike map", "http://toolserver.org/tiles/hikebike/${z}/${x}/${y}.png", {
 					transitionEffect : 'resize',
-					visibility : mapOpts.baselyr == "hike and bike map",
+					visibility : mapOpts.baselyr === "hike and bike map",
 					tileOptions : {
 						crossOriginKeyword : null
 					}
@@ -330,13 +345,14 @@ function createMap(mapOpts, OLmapPOI) {
 								"http://otile1.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png",
 								"http://otile2.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png",
 								"http://otile3.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png",
-								"http://otile4.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png" ],
+								"http://otile4.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png"
+						],
 						{
 							transitionEffect : 'resize',
 							attribution : 'Data CC-By-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
 									+ 'Tiles <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>'
-									+ '<img src="http://developer.mapquest.com/content/osm/mq_logo.png" heigth="14" width="14" alt="logo"/>',
-							visibility : mapOpts.baselyr == "mapquest road",
+									+ '<img src="http://developer.mapquest.com/content/osm/mq_logo.png" alt="MapQuest logo"/>',
+							visibility : mapOpts.baselyr === "mapquest road",
 							tileOptions : {
 								crossOriginKeyword : null
 							}
@@ -350,29 +366,19 @@ function createMap(mapOpts, OLmapPOI) {
 								"http://oatile1.mqcdn.com/naip/${z}/${x}/${y}.jpg",
 								"http://oatile2.mqcdn.com/naip/${z}/${x}/${y}.jpg",
 								"http://oatile3.mqcdn.com/naip/${z}/${x}/${y}.jpg",
-								"http://oatile4.mqcdn.com/naip/${z}/${x}/${y}.jpg" ],
+								"http://oatile4.mqcdn.com/naip/${z}/${x}/${y}.jpg"
+						],
 						{
 							transitionEffect : 'resize',
 							attribution : 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>'
-									+ '<img src="http://developer.mapquest.com/content/osm/mq_logo.png" heigth="16" width="16">',
-							visibility : mapOpts.baselyr == "mapquest sat",
+									+ '<img src="http://developer.mapquest.com/content/osm/mq_logo.png" alt="MapQuest logo"/>',
+							visibility : mapOpts.baselyr === "mapquest sat",
 							numZoomLevels : 12,
 							tileOptions : {
 								crossOriginKeyword : null
 							}
 						}));
 	}
-
-	/* open aerial map layers */
-	/*
-	 * turn this off; project is asleep:
-	 * https://sourceforge.net/tracker/?func=detail&aid=2897327&group_id=239475&atid=1110186
-	 * m.addLayer(new OpenLayers.Layer.XYZ("OpenAerialMap",
-	 * "http://tile.openaerialmap.org/tiles/1.0.0/openaerialmap-900913/${z}/${x}/${y}.jpg",
-	 * {name: "OpenStreetMap", attribution: "Data CC-By by <a
-	 * href='http://www.openaerialmap.org/licensing/'>OpenAerialMap</a>",
-	 * sphericalMercator: true, transitionEffect: 'resize'} ));
-	 */
 
 	if (gEnable) {
 		/* load google maps */
@@ -382,85 +388,79 @@ function createMap(mapOpts, OLmapPOI) {
 						type : google.maps.MapTypeId.TERRAIN,
 						// transitionEffect : 'resize',
 						numZoomLevels : 16,
-						animationEnabled : true,
-						visibility : mapOpts.baselyr == "google relief"
+						animationEnabled : !0,
+						visibility : mapOpts.baselyr === "google relief"
 					}));
 			m.addLayer(new OpenLayers.Layer.Google(
 					"google sat", {
 						type : google.maps.MapTypeId.SATELLITE,
 						// transitionEffect : 'resize',
 						// numZoomLevels : 22,
-						animationEnabled : true,
-						visibility : mapOpts.baselyr == "google sat"
+						animationEnabled : !0,
+						visibility : mapOpts.baselyr === "google sat"
 					}));
 			m.addLayer(new OpenLayers.Layer.Google(
 					"google hybrid", {
 						type : google.maps.MapTypeId.HYBRID,
 						// transitionEffect : 'resize',
 						// numZoomLevels : 20,
-						animationEnabled : true,
-						visibility : mapOpts.baselyr == "google hybrid"
+						animationEnabled : !0,
+						visibility : mapOpts.baselyr === "google hybrid"
 					}));
 			m.addLayer(new OpenLayers.Layer.Google(
 					"google road", {
 						// transitionEffect : 'resize',
 						// numZoomLevels : 20,
-						animationEnabled : true,
-						visibility : mapOpts.baselyr == "google road"
+						animationEnabled : !0,
+						visibility : mapOpts.baselyr === "google road"
 					}));
 		} catch (ol_err1) {
 			Openlayers.Console.userError('Error loading Google maps' + ol_err1);
 		}
 	}
 
-	// if (yEnable) {
-	// try {
-	// m.addLayer(new OpenLayers.Layer.Yahoo("yahoo", {
-	// 'type' : YAHOO_MAP_HYB,
-	// 'sphericalMercator' : true,
-	// transitionEffect : resize
-	// }));
-	// } catch (ol_err2) {
-	// }
-	// }
-
-	/*
-	 * TODO! if (veEnable) { try { m.addLayer(new
-	 * OpenLayers.Layer.VirtualEarth("ve", { type : VEMapStyle.Hybrid,
-	 * sphericalMercator : true, transitionEffect : 'resize', visibility : false
-	 * })); } catch (ol_err3) { Openlayers.Console.userError('Error loading
-	 * Virtual Earth maps: ' + ol_err3); } }
-	 */
 	if (bEnable && bApiKey !== '') {
 		try {
 			/* add Bing tiles */
-			m.addLayer(new OpenLayers.Layer.Bing(
-					{
-						key : bApiKey,
-						type : "Road",
-						name : 'bing road',
-						transitionEffect : 'resize',
-						visibility : mapOpts.baselyr == "bing road",
-						wrapDateLine : true
-					}));
-			m.addLayer(new OpenLayers.Layer.Bing(
-					{
-						key : bApiKey,
-						type : "Aerial",
-						name : 'bing sat',
-						transitionEffect : 'resize',
-						visibility : mapOpts.baselyr == "bing sat",
-						wrapDateLine : true
-					}));
-			m.addLayer(new OpenLayers.Layer.Bing(
-					{
-						key : bApiKey,
-						type : "AerialWithLabels",
-						name : "bing hybrid",
-						transitionEffect : 'resize',
-						visibility : mapOpts.baselyr == "bing hybrid",
-						wrapDateLine : true
-					}));
+			m
+					.addLayer(new OpenLayers.Layer.Bing(
+							{
+								key : bApiKey,
+								type : "Road",
+								name : 'bing road',
+								transitionEffect : 'resize',
+								visibility : mapOpts.baselyr === "bing road",
+								wrapDateLine : !0,
+								attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
+										+ 'Bing™</a><img src="http://www.bing.com/favicon.ico" alt="Bing logo"/> ${copyrights}'
+										+ '<a target="_blank" href="http://www.microsoft.com/maps/product/terms.html">Terms of Use</a>'
+							}));
+			m
+					.addLayer(new OpenLayers.Layer.Bing(
+							{
+								key : bApiKey,
+								type : "Aerial",
+								name : 'bing sat',
+								transitionEffect : 'resize',
+								visibility : mapOpts.baselyr === "bing sat",
+								wrapDateLine : !0,
+								attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
+										+ 'Bing™</a><img src="http://www.bing.com/favicon.ico" alt="Bing logo"/> ${copyrights}'
+										+ '<a target="_blank" href="http://www.microsoft.com/maps/product/terms.html">Terms of Use</a>'
+							}));
+			m
+					.addLayer(new OpenLayers.Layer.Bing(
+							{
+								key : bApiKey,
+								type : "AerialWithLabels",
+								name : "bing hybrid",
+								transitionEffect : 'resize',
+								visibility : mapOpts.baselyr === "bing hybrid",
+								wrapDateLine : !0,
+								attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
+										+ 'Bing™</a><img src="http://www.bing.com/favicon.ico" alt="Bing logo"/> ${copyrights}'
+										+ '<a target="_blank" href="http://www.microsoft.com/maps/product/terms.html">Terms of Use</a>'
+							}));
 		} catch (ol_errBing) {
 			Openlayers.Console.userError('Error loading Bing maps: ' + ol_errBing);
 		}
@@ -481,15 +481,11 @@ function createMap(mapOpts, OLmapPOI) {
 
 	if (mapOpts.controls === 1) {
 		/* add base controls to map */
-		m.addControl(new OpenLayers.Control.LayerSwitcher(
-				{
-					roundedCorner : false,
-					roundedCornerColor : null
-				}));
+		m.addControl(new OpenLayers.Control.LayerSwitcher());
 		m.addControl(new OpenLayers.Control.PanZoomBar());
 		m.addControl(new OpenLayers.Control.Graticule(
 				{
-					visible : false
+					visible : !1
 				}));
 
 		// add hillshade, since this is off by default only add when we have a
@@ -497,10 +493,10 @@ function createMap(mapOpts, OLmapPOI) {
 		m.addLayer(new OpenLayers.Layer.OSM(
 				"Hillshade", "http://toolserver.org/~cmarqu/hill/${z}/${x}/${y}.png", {
 					transitionEffect : 'resize',
-					isBaseLayer : false,
-					transparent : true,
-					visibility : false,
-					displayOutsideMaxExtent : true,
+					isBaseLayer : !1, // false
+					transparent : !0, // true
+					visibility : !1,
+					displayOutsideMaxExtent : !0,
 					attribution : '',
 					tileOptions : {
 						crossOriginKeyword : null
@@ -509,19 +505,11 @@ function createMap(mapOpts, OLmapPOI) {
 
 		m.addControl(new OpenLayers.Control.OverviewMap(
 				{
-					size : new OpenLayers.Size(
-							140, 140),
-					mapOptions : {
-						theme : null,
-						projection : new OpenLayers.Projection(
-								'EPSG:900913'),
-						displayProjection : new OpenLayers.Projection(
-								'EPSG:4326'),
-						maxResolution : 156543.0339,
-						maxExtent : new OpenLayers.Bounds(
-								-20037508.34, -20037508.34, 20037508.34, 20037508.34)
-					},
-					layers : [ m.baseLayer.clone() ],
+					size : new OpenLayers.Size(140, 140),
+					//mapOptions : {
+					//	theme : null ,
+					//	maxResolution: null // see: https://github.com/openlayers/openlayers/issues/399
+					//},
 					minRectSize : 10
 				}));
 	}
@@ -545,7 +533,8 @@ function createMap(mapOpts, OLmapPOI) {
 					'div' : OpenLayers.Util.getElement(mapOpts.id + '-statusbar-text')
 				}));
 		// statusbar control: projection
-		OpenLayers.Util.getElement(mapOpts.id + '-statusbar-projection').innerHTML = m.displayProjection;
+		OpenLayers.Util.getElement(mapOpts.id + '-statusbar-projection').innerHTML =
+				m.displayProjection;
 	} else {
 		OpenLayers.Util.getElement(mapOpts.id + '-olStatusBar').display = 'none';
 	}
@@ -559,7 +548,7 @@ function createMap(mapOpts, OLmapPOI) {
 				}), /* zoom out btn */
 		zoomout = new OpenLayers.Control.ZoomBox(
 				{
-					out : true,
+					out : !0,
 					title : "Zoom uit",
 					displayClass : "olControlZoomOut"
 				}), /* pan btn */pan = new OpenLayers.Control.DragPan(
@@ -580,58 +569,60 @@ function createMap(mapOpts, OLmapPOI) {
 					"div" : OpenLayers.Util.getElement(mapOpts.id + "-olToolbar")
 				});
 		panel.addControls([
-				zoomin, zoomout, pan, info, nav.next, nav.previous ]);
-		// panel.addControls([ nav.next, nav.previous ]);
+				zoomin, zoomout, pan, info, nav.next, nav.previous
+		]);
 		m.addControl(panel);
 	} else {
 		OpenLayers.Util.getElement(mapOpts.id + '-olToolbar').display = 'none';
 	}
 
 	if (OLmapPOI.length > 0) {
-		var markers = new OpenLayers.Layer.Vector(
-				"POI", {
-					styleMap : new OpenLayers.StyleMap(
-							{
-								"default" : {
-									externalGraphic : "${img}",
-									graphicHeight : 16,
-									graphicWidth : 16,
-									graphicXOffset : 0,
-									graphicYOffset : -8,
-									graphicOpacity : "${opacity}",
-									rotation : "${angle}",
-									backgroundGraphic : DocBase
-											+ "lib/plugins/openlayersmap/icons/marker_shadow.png",
-									backgroundXOffset : 0,
-									backgroundYOffset : -4,
-									backgroundRotation : "${angle}",
-									pointRadius : 10,
-									labelXOffset : 8,
-									labelYOffset : 8,
-									labelAlign : "lb",
-									label : "${label}",
-									// fontColor : "",
-									fontFamily : "monospace",
-									fontSize : "12px",
-									fontWeight : "bold"
-								},
-								"select" : {
-									cursor : "crosshair",
-									externalGraphic : DocBase
-											+ "lib/plugins/openlayersmap/icons/marker-red.png",
-									graphicHeight : 16,
-									graphicWidth : 16,
-									graphicXOffset : 0,
-									graphicYOffset : -8,
-									graphicOpacity : 1.0,
-									rotation : "${angle}"
-								}
-							}),
-					isBaseLayer : false,
-					rendererOptions : {
-						yOrdering : true
-					}
-				});
+		var markers =
+				new OpenLayers.Layer.Vector(
+						"POI",
+						{
+							styleMap : new OpenLayers.StyleMap(
+									{
+										"default" : {
+											externalGraphic : "${img}",
+											graphicHeight : 16,
+											graphicWidth : 16,
+											graphicXOffset : 0,
+											graphicYOffset : -8,
+											graphicOpacity : "${opacity}",
+											rotation : "${angle}",
+											backgroundGraphic : DocBase
+													+ "lib/plugins/openlayersmap/icons/marker_shadow.png",
+											backgroundXOffset : 0,
+											backgroundYOffset : -4,
+											backgroundRotation : "${angle}",
+											pointRadius : 10,
+											labelXOffset : 8,
+											labelYOffset : 8,
+											labelAlign : "lb",
+											label : "${label}",
+											// fontColor : "",
+											fontFamily : "monospace",
+											fontSize : "12px",
+											fontWeight : "bold"
+										},
+										"select" : {
+											cursor : "crosshair",
+											externalGraphic : DocBase
+													+ "lib/plugins/openlayersmap/icons/marker-red.png",
+											graphicHeight : 16,
+											graphicWidth : 16,
+											graphicXOffset : 0,
+											graphicYOffset : -8,
+											graphicOpacity : 1.0,
+											rotation : "${angle}"
+										}
+									}),
+							isBaseLayer : !1,
+							rendererOptions : {
+								yOrdering : !0
+							}
+						});
 		m.addLayer(markers);
 		var features = [];
 		var lonLat;
@@ -672,11 +663,11 @@ function createMap(mapOpts, OLmapPOI) {
 								url : DocBase + "lib/exe/fetch.php?media=" + mapOpts.gpxfile,
 								format : new OpenLayers.Format.GPX(
 										{
-											extractWaypoints : true,
-											extractTracks : true,
-											extractStyles : true,
-											extractAttributes : true,
-											handleHeight : true,
+											extractWaypoints : !0,
+											extractTracks : !0,
+											extractStyles : !0,
+											extractAttributes : !0,
+											handleHeight : !0,
 											maxDepth : 3
 										})
 							}),
@@ -687,13 +678,13 @@ function createMap(mapOpts, OLmapPOI) {
 						pointRadius : 4,
 						fillColor : "#0099FF",
 						fillOpacity : 0.7
-					/*
-					 * , label:"${name}"
-					 */
+					// , label:"${name}"
 					},
 					projection : new OpenLayers.Projection(
 							"EPSG:4326"),
-					strategies : [ new OpenLayers.Strategy.Fixed() ]
+					strategies : [
+						new OpenLayers.Strategy.Fixed()
+					]
 				});
 		m.addLayer(layerGPX);
 		layerGPX.events.register(
@@ -713,8 +704,8 @@ function createMap(mapOpts, OLmapPOI) {
 								url : DocBase + "lib/exe/fetch.php?media=" + mapOpts.kmlfile,
 								format : new OpenLayers.Format.KML(
 										{
-											extractStyles : true,
-											extractAttributes : true,
+											extractStyles : !0,
+											extractAttributes : !0,
 											maxDepth : 3
 										})
 							}),
@@ -723,7 +714,9 @@ function createMap(mapOpts, OLmapPOI) {
 					},
 					projection : new OpenLayers.Projection(
 							"EPSG:4326"),
-					strategies : [ new OpenLayers.Strategy.Fixed() ]
+					strategies : [
+						new OpenLayers.Strategy.Fixed()
+					]
 				});
 		m.addLayer(layerKML);
 		layerKML.events.register(
@@ -736,13 +729,14 @@ function createMap(mapOpts, OLmapPOI) {
 	// selectcontrol for layers
 	if ((m.getLayersByClass('OpenLayers.Layer.GML').length > 0)
 			|| m.getLayersByClass('OpenLayers.Layer.Vector').length > 0) {
-		selectControl = new OpenLayers.Control.SelectFeature(
-				(m.getLayersByClass('OpenLayers.Layer.Vector')).concat(m
-						.getLayersByClass('OpenLayers.Layer.GML')), {
-					hover : mapOpts.poihoverstyle,
-					onSelect : onFeatureSelect,
-					onUnselect : onFeatureUnselect
-				});
+		selectControl =
+				new OpenLayers.Control.SelectFeature(
+						(m.getLayersByClass('OpenLayers.Layer.Vector')).concat(m
+								.getLayersByClass('OpenLayers.Layer.GML')), {
+							hover : mapOpts.poihoverstyle,
+							onSelect : onFeatureSelect,
+							onUnselect : onFeatureUnselect
+						});
 		m.addControl(selectControl);
 		selectControl.activate();
 	}
@@ -753,16 +747,16 @@ var olTimerId = -1;
 
 /** init. */
 function olInit() {
-	if (navigator.userAgent.indexOf('MSIE') != -1) {
+	if (navigator.userAgent.indexOf('MSIE') !== -1) {
 		// console.log("need to sleep");
-		if (olTimerId == -1) {
+		if (olTimerId === -1) {
 			olTimerId = setTimeout(
 					"olInit()", 3000);
-			olEnable = false;
+			olEnable = !1;
 		} else {
 			// console.log("done sleeping");
 			clearTimeout(olTimerId);
-			olEnable = true;
+			olEnable = !0;
 		}
 	}
 
@@ -795,37 +789,37 @@ function olInit() {
  * 
  * @type {Boolean}
  */
-var olEnable = false,
+var olEnable = !1,
 /**
  * array with data for each map in the page.
  * 
  * @type {Array}
  */
-olMapData = new Array(),
+olMapData = [],
 /**
  * MapQuest tiles flag.
  * 
  * @type {Boolean}
  */
-mqEnable = false,
+mqEnable = !1,
 /**
  * google map api flag.
  * 
  * @type {Boolean}
  */
-gEnable = false,
+gEnable = !1,
 /**
  * virtual earth map api flag.
  * 
  * @type {Boolean}
  */
-veEnable = false,
+veEnable = !1,
 /**
  * Bing tiles flag.
  * 
  * @type {Boolean}
  */
-bEnable = false,
+bEnable = !1,
 /**
  * Bing API key.
  * 
@@ -837,13 +831,13 @@ bApiKey = '',
  * 
  * @type {Boolean}
  */
-osmEnable = true,
+osmEnable = !0,
 /**
  * CSS support flag.
  * 
  * @type {Boolean}
  */
-olCSSEnable = true;
+olCSSEnable = !0;
 /**
  * yahoo map api flag.
  * 
