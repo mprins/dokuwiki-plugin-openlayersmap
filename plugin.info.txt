@@ -3,5 +3,5 @@ author  Mark C. Prins
 email   mprins@users.sf.net
 date    ${buildNumber} (${project.version})
 name    OpenLayers Map with OpenStreetMap, Google or Bing
-desc    Add maps to your wiki pages
+desc    Add maps to your wiki pages, uses OpenLayers v. ${openlayers.checkout.version}
 url     http://www.dokuwiki.org/plugin:openlayersmap
