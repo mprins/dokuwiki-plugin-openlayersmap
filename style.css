@@ -29,8 +29,7 @@
 	display: none !important;
 }
 
-.olMap {
-	/* border: 1px solid __border__;*/
+.olMap { /* border: 1px solid __border__;*/
 	cursor: default;
 }
 
@@ -48,15 +47,14 @@
 	border-right: 1px solid __border__;
 	display: inline;
 	/* top right bottom left */
-	/* padding-top: 4px;	padding-bottom: 4px;	padding-left: 1px;	padding-right: 1px; */
 	padding: 4px 1px 4px 1px;
 	position: relative;
 	overflow: hidden;
 }
 
-.olStatusBar  img{
+.olStatusBar  img {
 	vertical-align: top;
-	height: 15px; 
+	height: 15px;
 	width: 15px;
 	line-height: 15px;
 }
@@ -70,7 +68,7 @@
 }
 
 .olStatusBarMouseposition {
-	
+
 }
 
 .olStatusBarProjection {
@@ -78,7 +76,7 @@
 }
 
 .olStatusBarText {
-	
+
 }
 
 .olControlPanZoomBar {
@@ -93,6 +91,7 @@
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-o-user-select: none;
+	-ms-user-select: none;
 	user-select: none;
 }
 
@@ -118,7 +117,7 @@
 }
 
 .olFramedCloudPopupContent {
-	
+
 }
 /* popup and legend styles */
 .txt p {
@@ -128,9 +127,18 @@
 .rowId {
 	border: 1px dotted __border__;
 }
-.ele {}
-.time {}
-.desc {}
+
+.ele {
+
+}
+
+.time {
+
+}
+
+.desc {
+
+}
 
 .olControlScaleLine {
 	display: block;
@@ -166,7 +174,6 @@
 	border: 1px solid __border__;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
-	-o-border-radius: 3px;
 	border-radius: 3px;
 }
 
@@ -175,21 +182,18 @@
 }
 
 .olControlLayerSwitcher .layersDiv { /*top right bottom left*/
-	/* padding-top: 5px;	padding-left: 10px;	padding-bottom: 5px;	padding-right: 75px;	*/
 	padding: 5px 75px 5px 10px;
 	background-color: __background_neu__;
 	width: 100%;
 	height: 100%;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
-	-o-border-radius: 3px;
 	border-radius: 3px;
 }
 
 .olControlLayerSwitcher .layersDiv .baseLbl,.olControlLayerSwitcher .layersDiv .dataLbl
 	{
 	margin-top: 3px;
-	/*margin-left: 3px;*/
 	margin-bottom: 3px;
 	background-color: __background_alt__;
 	font-weight: bold;
@@ -213,7 +217,9 @@
 	background-color: __background_alt__;
 	border: 1px solid __border__;
 }
+
 /*.olToolbar{height: 28px;} */
+
 .olToolbar div {
 	display: block;
 	width: 24px;
@@ -312,11 +318,9 @@
 	border-left-color: #C266FF;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
-	-o-border-radius: 3px;
 	border-radius: 3px;
 	-moz-box-shadow: 2px 2px 2px #000;
 	-webkit-box-shadow: 2px 2px 2px #000;
-	-o-box-shadow: 2px 2px 2px #000;
 	box-shadow: 2px 2px 2px #000;
 }
 
@@ -344,7 +348,7 @@
 }
 
 .olStaticMap {
-	
+
 }
 
 .olControlOverviewMapElement {
@@ -353,7 +357,6 @@
 	padding: 4px;
 	-moz-border-radius: 3px 0 0 0;
 	-webkit-border-radius: 3px 0 0 0;
-	-o-border-radius: 3px 0 0 0;
 	border-radius: 3px 0 0 0;
 }
 
