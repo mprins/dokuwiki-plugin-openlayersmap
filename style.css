@@ -40,6 +40,7 @@
 	text-align: left;
 	height: 16px;
 	width: auto;
+	border-top: 1px solid __border__;
 	/* clear: both; */
 }
 
@@ -76,7 +77,7 @@
 }
 
 .olStatusBarText {
-
+	border-right: 0;
 }
 
 .olControlPanZoomBar {
@@ -218,7 +219,7 @@
 	border: 1px solid __border__;
 }
 
-/*.olToolbar{height: 28px;} */
+/*.olToolbar{height: 28px; border-bottom: 1px solid __border__;} */
 
 .olToolbar div {
 	display: block;
