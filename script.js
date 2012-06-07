@@ -18,7 +18,7 @@
  * @fileoverview Javascript voor OpenLayers plugin.
  *
  * @requires {lib/OpenLayers.js} or a full openlayers build
- * @author Mark C. Prins <mc.prins@gmail.com>
+ * @author Mark C. Prins <mprins@users.sf.net>
  *
  */
 
@@ -121,18 +121,20 @@ function olTestCSSsupport() {
  * @returns a {DocumentFragment} element that can be injected into the dom
  */
 function olCreateMaptag(mapid, width, height) {
-	var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">'
+	// TODO: use OpenLayers.i18n()
+	var mEl = '<div><a class="olAccesskey" href="" accesskey="1" onclick="document.getElementById(&quot;' + mapid + '&quot;).focus(); return false;" title="Activate map">Activate map</a></div>'
+			+ '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">'
 			+ '<div id="' + mapid + '-olToolbar" class="olToolbar"></div>'
 			+ '<div class="clearer"></div>'
-			+ '<div id="' + mapid + '" style="width:' + width + ';height:' + height + ';" class="olMap"></div>'
+			+ '<div id="' + mapid + '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap"></div>'
 			+ '<div id="' + mapid + '-olStatusBar" class="olStatusBarContainer">'
 			+ '<div id="' + mapid + '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>'
 			+ '<div id="' + mapid + '-statusbar-link" class="olStatusBar olStatusBarPermalink">'
-			+ '<a href="" id="' + mapid + '-statusbar-link-ref">map link</a></div>'
+			+ '<a href="" id="' + mapid + '-statusbar-link-ref">link</a></div>'
 			+ '<div id="' + mapid + '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>'
 			+ '<div id="' + mapid + '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>'
 			+ '<div id="' + mapid + '-statusbar-text" class="olStatusBar olStatusBarText">txt</div>'
-			+ '</div>\n</div>',
+			+ '</div></div>',
 	// fragment
 	frag = document.createDocumentFragment(),
 	// temp node
@@ -190,7 +192,7 @@ function createMap(mapOpts, OLmapPOI) {
 		displayProjection : new OpenLayers.Projection("EPSG:4326"),
 		numZoomLevels : 22,
 		controls : [ new OpenLayers.Control.ArgParser(),
-				new OpenLayers.Control.KeyboardDefaults(),
+				new OpenLayers.Control.KeyboardDefaults({observeElement: mapOpts.id}),
 				new OpenLayers.Control.Navigation({
 					dragPanOptions : {
 						enableKinetic : !0
@@ -442,8 +444,7 @@ function createMap(mapOpts, OLmapPOI) {
 
 	if (mapOpts.statusbar === 1) {
 		// statusbar control: permalink
-		m.addControl(new OpenLayers.Control.Permalink(mapOpts.id
-				+ '-statusbar-link-ref'));
+		m.addControl(new OpenLayers.Control.Permalink(mapOpts.id + '-statusbar-link-ref'));
 		// statusbar control: mouse pos.
 		// TODO kijken naar afronding met aNumber.toFixed(0)
 		m.addControl(new OpenLayers.Control.MousePosition({

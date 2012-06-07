@@ -29,8 +29,13 @@
 	display: none !important;
 }
 
-.olMap { /* border: 1px solid __border__;*/
+.olMap { 
+	border: 1px solid __border__;
 	cursor: default;
+}
+
+.olMap:active { 
+	border: 2px solid __border__;
 }
 
 .olStatusBarContainer {
@@ -216,7 +221,7 @@
 
 .olControlLayerSwitcher .minimizeDiv {
 	background-color: __background_alt__;
-	border: 1px solid __border__;
+	/*border: 1px solid __border__;*/
 }
 
 /*.olToolbar{height: 28px; border-bottom: 1px solid __border__;} */
@@ -407,4 +412,12 @@
 	-moz-transition: opacity 0.2s linear;
 	-o-transition: opacity 0.2s linear;
 	transition: opacity 0.2s linear;
+}
+
+a.olAccesskey {
+	color: __background__ !important;
+}
+
+a.olAccesskey:focus {
+	color: __text__ !important;
 }
