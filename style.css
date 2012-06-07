@@ -35,7 +35,7 @@
 }
 
 .olMap:active { 
-	border: 2px solid __border__;
+	border: 1px solid __border__;
 }
 
 .olStatusBarContainer {
