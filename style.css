@@ -29,24 +29,23 @@
 	display: none !important;
 }
 
-.olMap { 
-	border: 1px solid __border__;
+.olMap {
+	border-top: 1px solid __border__;
 	cursor: default;
 }
 
-.olMap:active { 
-	border: 1px solid __border__;
+/* on some browsers the outline is partly hidden by the .olContainer; this way we work around that.*/
+.olMap:active,.olMap:focus {
+	outline-style: double;
 }
 
 .olStatusBarContainer {
 	background-color: __background_alt__;
 	font-size: x-small;
-	overflow: hidden;
+	overflow-x: hidden;
 	text-align: left;
 	height: 16px;
-	width: auto;
 	border-top: 1px solid __border__;
-	/* clear: both; */
 }
 
 .olStatusBar {
@@ -58,7 +57,7 @@
 	overflow: hidden;
 }
 
-.olStatusBar  img {
+.olStatusBar img {
 	vertical-align: top;
 	height: 15px;
 	width: 15px;
@@ -225,7 +224,6 @@
 }
 
 /*.olToolbar{height: 28px; border-bottom: 1px solid __border__;} */
-
 .olToolbar div {
 	display: block;
 	width: 24px;
@@ -316,7 +314,6 @@
 	font-size: 1px;
 	opacity: 0.50;
 	/*IE specific */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 	filter: alpha(opacity = 50);
 	border-bottom-color: #6B00B3;
 	border-right-color: #6B00B3;
