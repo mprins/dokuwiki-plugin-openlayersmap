@@ -22,9 +22,9 @@
  */
 
 if (!defined('DOKU_INC'))
-define('DOKU_INC', realpath(dirname(__FILE__) . '/../../') . '/');
+	define('DOKU_INC', realpath(dirname(__FILE__) . '/../../') . '/');
 if (!defined('DOKU_PLUGIN'))
-define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+	define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 require_once (DOKU_PLUGIN . 'syntax.php');
 
 /**
@@ -32,22 +32,23 @@ require_once (DOKU_PLUGIN . 'syntax.php');
  * need to inherit from this class
  */
 class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
+
 	/** defaults of the known attributes of the olmap tag. */
 	private $dflt = array (
-		'id'		=> 'olmap',
-		'width'		=> '550px',
-		'height'	=> '450px',
-		'lat'		=> 50.0,
-		'lon'		=> 5.1,
-		'zoom'		=> 12,
-		'toolbar'	=> true,
-		'statusbar'	=> true,
-		'controls'	=> true,
-		'poihoverstyle'	=> false,
-		'baselyr'	=>'OpenStreetMap',
+			'id'		=> 'olmap',
+			'width'		=> '550px',
+			'height'	=> '450px',
+			'lat'		=> 50.0,
+			'lon'		=> 5.1,
+			'zoom'		=> 12,
+			'toolbar'	=> true,
+			'statusbar'	=> true,
+			'controls'	=> true,
+			'poihoverstyle'	=> false,
+			'baselyr'	=>'OpenStreetMap',
 	 	'gpxfile'	=> '',
- 		'kmlfile'	=> '',
-		'summary'	=>''
+			'kmlfile'	=> '',
+			'summary'	=>''
 	);
 
 	/**
@@ -112,14 +113,12 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		} elseif (stripos($gmap['baselyr'],'bing') !== false){
 			// use bing
 			$imgUrl .= $this->_getBing($gmap, $overlay);
-		} elseif (stripos($gmap['baselyr'],'mapquest') !== false){
+			//} elseif (stripos($gmap['baselyr'],'mapquest') !== false){
 			// use mapquest
-			$imgUrl .=$this->_getMapQuest($gmap,$overlay);
+			//	$imgUrl .=$this->_getMapQuest($gmap,$overlay);
 		} else {
-			// use http://staticmap.openstreetmap.de "staticMapLite"
 			$imgUrl .=$this->_getStaticOSM($gmap,$overlay);
 		}
-		// TODO implementation for http://ojw.dev.openstreetmap.org/StaticMapDev/
 
 		// append dw specific params
 		$imgUrl .="&.png?".$gmap['width']."x".$gmap['height'];
@@ -152,13 +151,13 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$rowId++;
 				$poi .= ", {lat: $lat, lon: $lon, txt: '$text', angle: $angle, opacity: $opacity, img: '$img', rowId: $rowId}";
 				$poitable .='
-			<tr>
+				<tr>
 				<td class="rowId">'.$rowId.'</td>
 				<td class="icon"><img src="'.DOKU_BASE.'/lib/plugins/openlayersmap/icons/'.$img.'" alt="icon" /></td>
 				<td class="lat" title="'.$this->getLang('olmapPOIlatTitle').'">'.$lat.'</td>
 				<td class="lon" title="'.$this->getLang('olmapPOIlonTitle').'">'.$lon.'</td>
 				<td class="txt">'.$text.'</td>
-			</tr>';
+				</tr>';
 			}
 			$poi = substr($poi, 2);
 		}
@@ -187,8 +186,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$gEnable = $this->getConf('enableGoogle');
 			$vscript = '';
 			$vEnable = false;
-			//$yscript = '';
-			//$yEnable = false;
 			$mqEnable = $this->getConf('enableMapQuest');
 			$osmEnable = $this->getConf('enableOSM');
 			$enableBing = $this->getConf('enableBing');
@@ -205,16 +202,12 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$vscript = $this->getConf('veScriptUrl');
 				$vscript = $vscript ? '<script type="text/javascript" src="' . $vscript . '"></script>' : "";
 
-				//$yscript = $this->getConf('yahooScriptUrl');
-				//$yscript = $yscript ? '<script type="text/javascript" src="' . $yscript . '"></script>' : "";
-
 				$olscript = $this->getConf('olScriptUrl');
 				$olscript = $olscript ? '<script type="text/javascript" src="' . $olscript . '"></script>' : "";
 				$olscript = str_replace('DOKU_BASE/', DOKU_BASE, $olscript);
 
 				$scriptEnable = '<script type="text/javascript"><!--//--><![CDATA[//><!--' . "\n";
 				$scriptEnable .= $olscript ? 'olEnable = true;' : 'olEnable = false;';
-				//$scriptEnable .= $yscript ? ' yEnable = true;' : ' yEnable = false;';
 				$scriptEnable .= $vscript ? ' veEnable = true;' : ' veEnable = false;';
 				$scriptEnable .= 'gEnable = '.($gEnable ? 'true' : 'false').';';
 				$scriptEnable .= 'osmEnable = '.($osmEnable ? 'true' : 'false').';';
@@ -236,19 +229,19 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			if ($this->getConf('enableA11y')){
 				// render a (hidden) table of the POI for the print and a11y presentation
 				$renderer->doc .= ' 	<div class="olPOItableSpan" id="'.$mapid.'-table-span"><table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
-		<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
-		<thead class="olPOITblHeader">
-			<tr>
+				<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
+				<thead class="olPOITblHeader">
+				<tr>
 				<th class="rowId" scope="col">id</th>
 				<th class="icon" scope="col">'.$this->getLang('olmapPOIicon').'</th>
 				<th class="lat" scope="col" title="'.$this->getLang('olmapPOIlatTitle').'">'.$this->getLang('olmapPOIlat').'</th>
 				<th class="lon" scope="col" title="'.$this->getLang('olmapPOIlonTitle').'">'.$this->getLang('olmapPOIlon').'</th>
 				<th class="txt" scope="col">'.$this->getLang('olmapPOItxt').'</th>
-			</tr>
-		</thead>
-		<tfoot class="olPOITblFooter"><tr><td colspan="5">'.$poitabledesc.'</td></tr></tfoot>
-		<tbody class="olPOITblBody">'.$poitable.'</tbody>
-	</table></div>';
+				</tr>
+				</thead>
+				<tfoot class="olPOITblFooter"><tr><td colspan="5">'.$poitabledesc.'</td></tr></tfoot>
+				<tbody class="olPOITblBody">'.$poitable.'</tbody>
+				</table></div>';
 
 				//TODO no tfoot when $poitabledesc is empty
 			}
@@ -256,7 +249,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$renderer->doc .="\n		<script type='text/javascript'><!--//--><![CDATA[//><!--\n";
 			// var $mapid = $param
 			$renderer->doc .="		olMapData[$mapnumber] = $param
-		//--><!]]></script>";
+			//--><!]]></script>";
 			$mapnumber++;
 			return true;
 		} elseif ($mode == 'metadata') {
@@ -498,34 +491,57 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	/**
 	 *
 	 * Create a static OSM map image url w/ the poi from http://staticmap.openstreetmap.de (staticMapLite)
+	 * use http://staticmap.openstreetmap.de "staticMapLite" or a local version
 	 * @param array $gmap
 	 * @param array $overlay
+	 *
+	 * @todo implementation for http://ojw.dev.openstreetmap.org/StaticMapDev/
 	 */
 	private function _getStaticOSM($gmap, $overlay){
 		//http://staticmap.openstreetmap.de/staticmap.php?center=47.000622235634,10.117187497601&zoom=5&size=500x350
 		// &markers=48.999812532766,8.3593749976708,lightblue1|43.154850037315,17.499999997306,lightblue1|49.487527053077,10.820312497573,ltblu-pushpin|47.951071133739,15.917968747369,ol-marker|47.921629720114,18.027343747285,ol-marker-gold|47.951071133739,19.257812497236,ol-marker-blue|47.180141361692,19.257812497236,ol-marker-green
-		$imgUrl = "http://staticmap.openstreetmap.de/staticmap.php";
+		//$imgUrl = "http://staticmap.openstreetmap.de/staticmap.php";
+		//$imgUrl ="http://localhost:8888/lib/plugins/openlayersmap/staticmap/map.php";
+		global $conf;
+		// TODO make this configurable, it fails when the server can't go on the internet
+		$imgUrl =$conf['baseurl']."/lib/plugins/openlayersmap/staticmap/map.php";
 		$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
 		$imgUrl .= "&size=".str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
 		if ($gmap['zoom']>16) {
+			// actually this could even be 18, but that seems overkill
 			$imgUrl .= "&zoom=16";
-		} else			{
+		} else {
 			$imgUrl .= "&zoom=".$gmap['zoom'];
 		}
 
 		switch ($gmap['baselyr']){
 			case 'mapnik':
-				$maptype='mapnik';
+				// fall through
+			case 'openstreetmap':
+				$maptype='openstreetmap';
 				break;
-			case 't@h':
-				$maptype='osmarenderer';
+			case 'transport':
+				$maptype='transport';
+				break;
+			case 'landscape':
+				$maptype='landscape';
 				break;
 			case 'cycle map':
 				$maptype='cycle';
 				break;
+			case 'hike and bike map':
+				$maptype='hikeandbike';
+				break;
+			case 'mapquest hybrid':
+				// fall through
+			case 'mapquest road':
+				// fall through
+			case 'mapquest sat':
+				$maptype='mapquest';
+				break;
 			default:
 				$maptype='';
-			break;
+				break;
 		}
 		$imgUrl .= "&maptype=".$maptype;
 
@@ -535,13 +551,14 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			foreach ($overlay as $data) {
 				list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
 				$rowId++;
-				$iconStyle = "lightblue$rowId";
+				//$iconStyle = "lightblue$rowId";
+				$iconStyle = substr($img, 0,strlen($img)-4);
 				$imgUrl .= "$lat,$lon,$iconStyle%7c";
 			}
 			$imgUrl = substr($imgUrl,0,-3);
 		}
 
-		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: bing image url is:');
+		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: osm image url is:');
 		return $imgUrl;
 	}
 	/**
@@ -566,7 +583,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		$centerlat = $lats[0]+($lats[count($lats)-1]-$lats[0]);
 		$centerlon = $lons[0]+($lons[count($lats)-1]-$lons[0]);
 		return array('minlat'=>$lats[0], 'minlon'=>$lons[0],
-						'maxlat'=>$lats[count($lats)-1], 'maxlon'=>$lons[count($lats)-1],
-						'centerlat'=>$centerlat,'centerlon'=>$centerlon);
+				'maxlat'=>$lats[count($lats)-1], 'maxlon'=>$lons[count($lats)-1],
+				'centerlat'=>$centerlat,'centerlon'=>$centerlon);
 	}
 }
