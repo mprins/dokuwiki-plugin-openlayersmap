@@ -35,7 +35,7 @@
 }
 
 /* on some browsers the outline is partly hidden by the .olContainer; this way we work around that.*/
-.olMap:active,.olMap:focus {
+.olMap:focus {
 	outline-style: double;
 }
 
