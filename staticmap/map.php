@@ -82,27 +82,29 @@ class staticMapLite {
 	protected $markerBaseDir = '../icons';
 	protected $markerPrototypes = array(
 			// found at http://www.mapito.net/map-marker-icons.html
+			// these are 17x19 px with a pointer at the bottom left
 			'lighblue' => array('regex'=>'/^lightblue([0-9]+)$/',
 					'extension'=>'.png',
 					'shadow'=>false,
 					'offsetImage'=>'0,-19',
 					'offsetShadow'=>false
 			),
-			// openlayers std markers
+			// openlayers std markers are 21x25px
 			'ol-marker'=> array('regex'=>'/^marker(|-blue|-gold|-green|-red)+$/',
 					'extension'=>'.png',
 					'shadow'=>'marker_shadow.png',
 					'offsetImage'=>'-10,-25',
 					'offsetShadow'=>'-1,-13'
 			),
-			'ww_icon'=> array('regex'=>'/^ww\w+$/',
+			// these are 16x16 px
+			'ww_icon'=> array('regex'=>'/ww_\S+$/',
 					'extension'=>'.png',
-					'shadow'=>'false',
+					'shadow'=>false,
 					'offsetImage'=>'-8,-8',
-					'offsetShadow'=>'false'
+					'offsetShadow'=>false
 			),
-			// assume these are 16x16 px, this is here to prevent crashes, side effect, same setup for all icons..
-			'rest' => array('regex'=>'/.+/',
+			// assume these are 16x16 px
+			'rest' => array('regex'=>'/^(?!lightblue([0-9]+)$)(?!(ww_\S+$))(?!marker(|-blue|-gold|-green|-red)+$)(.*)/',
 					'extension'=>'.png',
 					'shadow'=>'marker_shadow.png',
 					'offsetImage'=>'-8,-8',
@@ -113,10 +115,11 @@ class staticMapLite {
 	// TODO config options to admin
 	// this may fail in some set-ups where the data directory was moved
 	// cache options
-	protected $useTileCache = true;
+	protected $useTileCache = true; //$conf['plugin']['openlayersmap']['useTileCache']
 	protected $tileCacheBaseDir =  '../../../../data/cache/olmaptiles';
-	protected $useMapCache = false;
+	protected $useMapCache = false; //$conf['plugin']['openlayersmap']['useMapCache']
 	protected $mapCacheBaseDir = '../../../../data/cache/olmapmaps';
+	protected $mediaBaseDir ='../../../../data/media';
 	protected $mapCacheID = '';
 	protected $mapCacheFile = '';
 	protected $mapCacheExtension = 'png';
@@ -242,8 +245,6 @@ class staticMapLite {
 						if($markerShadow){
 							list($markerShadowOffsetX, $markerShadowOffsetY)  = split(",",$markerPrototype['offsetShadow']);
 						}
-						// get out after 1st match
-						break;
 					}
 				}
 			}
@@ -433,6 +434,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
 		// TODO make this a configurable list
 		if ($_SERVER['REMOTE_ADDR']=='127.0.0.1') {
 			// only allow acces from localhost and not from anyone else
+			$map = new staticMapLite();
+			print $map->showMap();
+		}elseif ((strpos($conf['baseurl'],$_SERVER['REMOTE_ADDR']) !== false)) {
+			// only allow acces from local server and not from anyone else
 			$map = new staticMapLite();
 			print $map->showMap();
 		}else{
