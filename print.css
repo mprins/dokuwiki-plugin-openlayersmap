@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-.olToolbar,.olControlLayerSwitcher,.olStatusBarPermalink,.olControlPanZoomBar,.olStatusBarMouseposition,.olStatusBarProjection,.olControlOverviewMapElement,.olAccesskey 
+.olToolbar,.olControlLayerSwitcher,.olStatusBarPermalink,.olControlPanZoomBar,.olStatusBarMouseposition,.olStatusBarProjection,.olControlOverviewMapElement,.olAccesskey
 	{
 	display: none;
 }
@@ -65,7 +65,9 @@
 
 }
 
-.olStaticMap {
+.olStaticMap { /*?? page-break-inside: auto | avoid | inherit */
+	/* http://david.latapie.name/blog/page-break-in-css-print-how-to-get-rid-of-accidental-blank-pages/ */
+	/* http://www.w3.org/TR/CSS21/page.html */
 	page-break-before: always;
 	page-break-after: always;
 }

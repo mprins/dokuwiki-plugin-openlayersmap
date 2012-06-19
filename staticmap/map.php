@@ -34,44 +34,47 @@ class staticMapLite {
 	protected $maxHeight = 1024;
 	protected $tileSize = 256;
 
-	// TODO merge w/ $copyrightInfo into one structure
-	protected $tileSrcUrl = array(
-			'openstreetmap' => 'http://tile.openstreetmap.org/{Z}/{X}/{Y}.png',
-			'transport' => 'http://tile2.opencyclemap.org/transport/{Z}/{X}/{Y}.png',
-			'landscape' => 'http://tile3.opencyclemap.org/landscape/{Z}/{X}/{Y}.png',
-			'cycle' => 'http://tile.opencyclemap.org/cycle/{Z}/{X}/{Y}.png',
-			'cloudmade' => 'http://a.tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/{Z}/{X}/{Y}.png',
-			'hikeandbike' => 'http://toolserver.org/tiles/hikebike/{Z}/{X}/{Y}.png',
-			//'piste' => 'http://openpistemap.org/tiles/contours/{Z}/{X}/{Y}.png',
-			//'sea' => 'http://tiles.openseamap.org/sport/{Z}/{X}/{Y}.png',
-			'mapquest' =>'http://otile3.mqcdn.com/tiles/1.0.0/osm/{Z}/{X}/{Y}.png'
-	);
-
-	protected $copyrightInfo = array(
+	protected $tileInfo = array(
+			// OSM sources
 			'openstreetmap'=>array(
 					'txt'=>'(c) OpenStreetMap CC-BY-SA',
-					'logo'=>'osm_logo.png'),
+					'logo'=>'osm_logo.png',
+					'url'=>'http://tile.openstreetmap.org/{Z}/{X}/{Y}.png'),
+			'cloudmade' =>array(
+					'txt'=>'(c) OpenStreetMap CC-BY-SA',
+					'logo'=>'osm_logo.png',
+					'url'=> 'http://a.tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/{Z}/{X}/{Y}.png'),
+			// OCM sources
 			'cycle'=>array(
 					'txt'=>'OpenCycleMap tiles',
-					'logo'=>'cycle_logo.png'),
+					'logo'=>'cycle_logo.png',
+					'url'=>'http://tile.opencyclemap.org/cycle/{Z}/{X}/{Y}.png'),
 			'transport'=>array(
 					'txt'=>'OpenCycleMap tiles',
-					'logo'=>'cycle_logo.png'),
+					'logo'=>'cycle_logo.png',
+					'url'=>'http://tile2.opencyclemap.org/transport/{Z}/{X}/{Y}.png'),
 			'landscape'=>array(
 					'txt'=>'OpenCycleMap tiles',
-					'logo'=>'cycle_logo.png'),
+					'logo'=>'cycle_logo.png',
+					'url'=>'http://tile3.opencyclemap.org/landscape/{Z}/{X}/{Y}.png'),
+			// H&B sources
 			'hikeandbike'=>array(
 					'txt'=>'Hike & Bike Map',
-					'logo'=>'hb_logo.png'),
+					'logo'=>'hnb_logo.png',
+					'url'=>'http://toolserver.org/tiles/hikebike/{Z}/{X}/{Y}.png'),
 			//'piste'=>array(
 			//		'txt'=>'OpenPisteMap tiles',
-			//		'logo'=>'piste_logo.png'),
+			//		'logo'=>'piste_logo.png',
+			//		'url'=>''),
 			//'sea'=>array(
 			//		'txt'=>'OpenSeaMap tiles',
-			//		'logo'=>'sea_logo.png'),
+			//		'logo'=>'sea_logo.png',
+			//		'url'=>''),
+			// MapQuest; not sure if this is according to TOS
 			'mapquest'=>array(
 					'txt'=>'MapQuest tiles',
-					'logo'=>'mq_logo.png')
+					'logo'=>'mq_logo.png',
+					'url'=>'http://otile3.mqcdn.com/tiles/1.0.0/osm/{Z}/{X}/{Y}.png')
 	);
 	protected $tileDefaultSrc = 'openstreetmap';
 
@@ -98,7 +101,7 @@ class staticMapLite {
 					'offsetImage'=>'-8,-8',
 					'offsetShadow'=>'false'
 			),
-			// asuume these are 16x16 px
+			// assume these are 16x16 px, this is here to prevent crashes, side effect, same setup for all icons..
 			'rest' => array('regex'=>'/.+/',
 					'extension'=>'.png',
 					'shadow'=>'marker_shadow.png',
@@ -159,7 +162,7 @@ class staticMapLite {
 			}
 		}
 		if($_GET['maptype']){
-			if(array_key_exists($_GET['maptype'],$this->tileSrcUrl)) $this->maptype = $_GET['maptype'];
+			if(array_key_exists($_GET['maptype'],$this->tileInfo)) $this->maptype = $_GET['maptype'];
 		}
 	}
 
@@ -193,7 +196,7 @@ class staticMapLite {
 
 		for($x=$startX; $x<=$endX; $x++){
 			for($y=$startY; $y<=$endY; $y++){
-				$url = str_replace(array('{Z}','{X}','{Y}'),array($this->zoom, $x, $y), $this->tileSrcUrl[$this->maptype]);
+				$url = str_replace(array('{Z}','{X}','{Y}'),array($this->zoom, $x, $y), $this->tileInfo[$this->maptype]['url']);
 				$tileData = $this->fetchTile($url);
 				if($tileData){
 					$tileImage = imagecreatefromstring($tileData);
@@ -230,6 +233,7 @@ class staticMapLite {
 			if($markerType){
 				foreach($this->markerPrototypes as $markerPrototype){
 					if(preg_match($markerPrototype['regex'],$markerType,$matches)){
+						error_log('found a match for: '.$markerType.' using regex: '.$markerPrototype['regex']);
 						$markerFilename = $matches[0].$markerPrototype['extension'];
 						if($markerPrototype['offsetImage']){
 							list($markerImageOffsetX, $markerImageOffsetY)  = split(",",$markerPrototype['offsetImage']);
@@ -238,6 +242,8 @@ class staticMapLite {
 						if($markerShadow){
 							list($markerShadowOffsetX, $markerShadowOffsetY)  = split(",",$markerPrototype['offsetShadow']);
 						}
+						// get out after 1st match
+						break;
 					}
 				}
 			}
@@ -338,7 +344,7 @@ class staticMapLite {
 	 * add copyright and origin notice and icons to the map.
 	 */
 	public function copyrightNotice(){
-		$logoImg = imagecreatefrompng($this->copyrightInfo['openstreetmap']['logo']);
+		$logoImg = imagecreatefrompng($this->tileInfo['openstreetmap']['logo']);
 		$textcolor = imagecolorallocate($this->image, 0, 0, 0);
 		$bgcolor = imagecolorallocate($this->image, 200, 200, 200);
 
@@ -351,12 +357,12 @@ class staticMapLite {
 				imagesx($logoImg),
 				imagesy($logoImg)
 		);
-		imagestring ($this->image , 1 , imagesx($logoImg)+2 , imagesy($this->image)-imagesy($logoImg)+1 , $this->copyrightInfo['openstreetmap']['txt'],$bgcolor );
-		imagestring ($this->image , 1 , imagesx($logoImg)+1 , imagesy($this->image)-imagesy($logoImg) , $this->copyrightInfo['openstreetmap']['txt'] ,$textcolor );
+		imagestring ($this->image , 1 , imagesx($logoImg)+2 , imagesy($this->image)-imagesy($logoImg)+1 , $this->tileInfo['openstreetmap']['txt'],$bgcolor );
+		imagestring ($this->image , 1 , imagesx($logoImg)+1 , imagesy($this->image)-imagesy($logoImg) , $this->tileInfo['openstreetmap']['txt'] ,$textcolor );
 
 		// additional tile source info, ie. who created/hosted the tiles
 		if ($this->maptype!='openstreetmap') {
-			$iconImg = imagecreatefrompng($this->copyrightInfo[$this->maptype]['logo']);
+			$iconImg = imagecreatefrompng($this->tileInfo[$this->maptype]['logo']);
 			imagecopy($this->image,
 					$iconImg,
 					imagesx($logoImg)+1,
@@ -366,8 +372,8 @@ class staticMapLite {
 					imagesx($iconImg),
 					imagesy($iconImg)
 			);
-			imagestring ($this->image , 1 , imagesx($logoImg)+imagesx($iconImg)+4 , imagesy($this->image)-ceil(imagesy($logoImg)/2)+1 , $this->copyrightInfo[$this->maptype]['txt'],$bgcolor );
-			imagestring ($this->image , 1 , imagesx($logoImg)+imagesx($iconImg)+3 , imagesy($this->image)-ceil(imagesy($logoImg)/2) , $this->copyrightInfo[$this->maptype]['txt'] ,$textcolor );
+			imagestring ($this->image , 1 , imagesx($logoImg)+imagesx($iconImg)+4 , imagesy($this->image)-ceil(imagesy($logoImg)/2)+1 , $this->tileInfo[$this->maptype]['txt'],$bgcolor );
+			imagestring ($this->image , 1 , imagesx($logoImg)+imagesx($iconImg)+3 , imagesy($this->image)-ceil(imagesy($logoImg)/2) , $this->tileInfo[$this->maptype]['txt'] ,$textcolor );
 		}
 	}
 
@@ -436,8 +442,5 @@ switch ($_SERVER['REQUEST_METHOD']) {
 		break;
 	default:
 		header('HTTP/1.1 501 Not Implemented');
-		print 'The requested method (HTTP .'$_SERVER["REQUEST_METHOD"]'.) is not implemented.';
+		print 'The requested method (HTTP '.$_SERVER["REQUEST_METHOD"].') is not implemented.';
 }
-
-
-?>
