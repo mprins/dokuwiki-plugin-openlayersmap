@@ -22,10 +22,10 @@
  */
 
 // http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTS6gjckBmeABOGXIUiOiZObZESPg
-$conf['googleScriptUrl'] = '';
+// $conf['googleScriptUrl'] = '';
 // http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1
-$conf['veScriptUrl'] = '';
-//$conf['yahooScriptUrl'] = '';
+// $conf['veScriptUrl'] = '';
+// $conf['yahooScriptUrl'] = '';
 $conf['olScriptUrl'] = DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js';
 $conf['bingAPIKey'] = '';
 $conf['iconUrlOverload'] = '';
@@ -35,3 +35,5 @@ $conf['enableOSM'] = 1;
 $conf['enableBing'] = 0;
 $conf['olMapStyle'] = 'classic';
 $conf['enableA11y'] = 1;
+$conf['useTileCache'] = 1;
+$conf['useMapCache'] = 0;

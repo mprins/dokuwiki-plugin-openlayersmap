@@ -24,8 +24,8 @@
  */
 
 $lang['olScriptUrl'] = 'URL para acceso a OpenLayers API. Por defecto es DOKU_BASE/lib/plugins/openlayersmap/lib/OpenLayers.js';
-$lang['googleScriptUrl'] = 'URL para acceso a Google Maps API. <em>OBSOLETO por favor eliminalo. Reemplazado por la V3 de Google API</em>';
-$lang['veScriptUrl'] = 'URL & para acceso a Virtual Earth API. <em>OBSOLETO por favor eliminalo. Reemplazado por Bing<em>';
+//$lang['googleScriptUrl'] = 'URL para acceso a Google Maps API. <em>OBSOLETO por favor eliminalo. Reemplazado por la V3 de Google API</em>';
+//$lang['veScriptUrl'] = 'URL & para acceso a Virtual Earth API. <em>OBSOLETO por favor eliminalo. Reemplazado por Bing<em>';
 //$lang['yahooScriptUrl'] = 'URL & cadena de consulta para acceder a Yahoo Maps API.';
 //no se necesita nunca más $lang['googleAPIKey'] = 'Google Maps API key.';
 $lang['bingAPIKey'] = 'Bing Maps API key. Consigue tu clave en: https://www.bingmapsportal.com/application';
@@ -36,3 +36,5 @@ $lang['enableBing'] = 'Habilita Bing como proveedor de mapas';
 $lang['enableOSM'] = 'Habilita OpenStreetMap como proveedor de mapas';
 $lang['olMapStyle'] = 'Estilo de los Controles del mapa';
 $lang['enableA11y'] = 'Habilita a11y/print para mapa estático, tabla de nombres';
+$lang['useTileCache'] = 'FIXME needs translation';
+$lang['useMapCache'] = 'FIXME needs translation';

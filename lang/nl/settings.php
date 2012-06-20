@@ -22,8 +22,8 @@
  */
 
 $lang['olScriptUrl'] = 'URL & query string voor toegang tot OpenLayers API. De default is DOKU_BASE/lib/plugins/openlayersmap/lib/OpenLayers.js';
-$lang['googleScriptUrl'] = 'URL & query string voor toegang tot Google Maps API. <em>DEPRECATED verwijderen aub. Vervangen door v3 van de Google API.</em>';
-$lang['veScriptUrl'] = 'URL & query string voor toegang tot Virtual Earth API. <em>DEPRECATED verwijderen aub. Vervangen door Bing.</em>';
+//$lang['googleScriptUrl'] = 'URL & query string voor toegang tot Google Maps API. <em>DEPRECATED verwijderen aub. Vervangen door v3 van de Google API.</em>';
+//$lang['veScriptUrl'] = 'URL & query string voor toegang tot Virtual Earth API. <em>DEPRECATED verwijderen aub. Vervangen door Bing.</em>';
 //$lang['yahooScriptUrl'] = 'URL & query string voor toegang tot Yahoo Maps API.';
 // don't need this anymore $lang['googleAPIKey'] = 'Google Maps API key.';
 $lang['bingAPIKey'] = 'Bing Maps API sleutel. Haal een eigen sleutel op: https://www.bingmapsportal.com/application';
@@ -34,3 +34,5 @@ $lang['enableBing'] = 'Maak gebruik van Bing als basiskaart mogelijk';
 $lang['enableOSM'] = 'Maak gebruik van OpenStreetMap als basiskaart mogelijk';
 $lang['olMapStyle'] = 'Stijl van de knoppen in de kaart';
 $lang['enableA11y'] = 'Maak a11y/print output (statische kaart, legenda tabel) mogelijk';
+$lang['useTileCache'] = 'Gebruik tile cache voor statische kaart';
+$lang['useMapCache'] = 'Gebruik map cache voor statische kaart';

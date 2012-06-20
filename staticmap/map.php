@@ -26,10 +26,10 @@ require_once '../../../../conf/local.php';
  *
  * USAGE:
  *
- *  map.php?center=40.714728,-73.998672&zoom=14&size=512x512&maptype=cycle&markers=40.702147,-74.015794,lightblue1|40.711614,-74.012318,lightblue2|40.718217,-73.998284,lightblue3
+ *  map.php?center=40.714728,-73.998672&zoom=14&size=512x512&maptype=cycle&markers=40.702147,-74.015794,lightblue1|40.711614,-74.012318,lightblue2|40.718217,-73.998284,lightblue3&gpx=&kml=
  */
 class staticMapLite {
-	// these should not be changed
+	// these should probably not be changed
 	protected $maxWidth = 1024;
 	protected $maxHeight = 1024;
 	protected $tileSize = 256;
@@ -111,13 +111,14 @@ class staticMapLite {
 					'offsetShadow'=>'-1,-1'
 			)
 	);
+	protected $kmlFileName, $gpxFileName;
 
 	// TODO config options to admin
 	// this may fail in some set-ups where the data directory was moved
 	// cache options
-	protected $useTileCache = true; //$conf['plugin']['openlayersmap']['useTileCache']
+	protected $useTileCache = true; //conf['plugin']['openlayersmap']['useTileCache']
 	protected $tileCacheBaseDir =  '../../../../data/cache/olmaptiles';
-	protected $useMapCache = false; //$conf['plugin']['openlayersmap']['useMapCache']
+	protected $useMapCache = false;//$conf['plugin']['openlayersmap']['useMapCache']
 	protected $mapCacheBaseDir = '../../../../data/cache/olmapmaps';
 	protected $mediaBaseDir ='../../../../data/media';
 	protected $mapCacheID = '';
@@ -166,6 +167,12 @@ class staticMapLite {
 		}
 		if($_GET['maptype']){
 			if(array_key_exists($_GET['maptype'],$this->tileInfo)) $this->maptype = $_GET['maptype'];
+		}
+		if($_GET['kml']){
+			$this->kmlFileName = $this->mediaBaseDir.str_replace(":","/",$_GET['kml']);
+		}
+		if($_GET['gpx']){
+			$this->gpxFileName = $this->mediaBaseDir.str_replace(":","/",$_GET['gpx']);
 		}
 	}
 
@@ -248,6 +255,7 @@ class staticMapLite {
 					}
 				}
 			}
+			/* don't need this, we always have icons in the url
 			// check required files or set default
 			if($markerFilename == '' || !file_exists($this->markerBaseDir.'/'.$markerFilename)){
 				$markerIndex++;
@@ -255,6 +263,8 @@ class staticMapLite {
 				$markerImageOffsetX = 0;
 				$markerImageOffsetY = -19;
 			}
+			*/
+			
 			// create img resource
 			if(file_exists($this->markerBaseDir.'/'.$markerFilename)){
 				$markerImg = imagecreatefrompng($this->markerBaseDir.'/'.$markerFilename);
@@ -338,7 +348,20 @@ class staticMapLite {
 			$this->writeTileToCache($url,$tile);
 		}
 		return $tile;
+	}
+	
+	/**
+	 * Draw gpx trace on the map.
+	 */
+	public function drawGPX(){
+		//TODO implementation
+	}
 
+	/**
+	 * Draw kml trace on the map.
+	 */
+	public function drawKML(){
+		//TODO implementation
 	}
 
 	/**
@@ -394,6 +417,8 @@ class staticMapLite {
 		$this->initCoords();
 		$this->createBaseMap();
 		if(count($this->markers))$this->placeMarkers();
+		if(file_exists($this->kmlFileName)) $this->drawKML();
+		if(file_exists($this->gpxFileName)) $this->drawGPX();
 		$this->copyrightNotice();
 	}
 

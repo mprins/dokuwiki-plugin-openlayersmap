@@ -46,7 +46,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			'controls'	=> true,
 			'poihoverstyle'	=> false,
 			'baselyr'	=>'OpenStreetMap',
-	 	'gpxfile'	=> '',
+			'gpxfile'	=> '',
 			'kmlfile'	=> '',
 			'summary'	=>''
 	);
@@ -125,7 +125,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		$imgUrl .= "&nolink";
 		$imgUrl .= " |".$gmap['summary']."}} ";
 		// remove 'px'
-		$imgUrl = str_replace("px", "",$imgUrl);
+		// this breaks the gpx in the url. $imgUrl = str_replace("px", "",$imgUrl);
 
 		$imgUrl=p_render("xhtml", p_get_instructions($imgUrl), $info);
 
@@ -557,6 +557,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			}
 			$imgUrl = substr($imgUrl,0,-3);
 		}
+		$imgUrl .= '&kml='.$gmap['kmlfile'];
+		$imgUrl .= '&gpx='.$gmap['gpxfile'];
 
 		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: osm image url is:');
 		return $imgUrl;
