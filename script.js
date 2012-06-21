@@ -252,18 +252,33 @@ function createMap(mapOpts, OLmapPOI) {
 						crossOriginKeyword : null
 					}
 				}));
-
+		// CloudMade Fine Line
 		m.addLayer(new OpenLayers.Layer.OSM("cloudmade map",
 				[
-						"http://a.tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png",
-						"http://b.tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png",
-						"http://c.tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/${z}/${x}/${y}.png" ],
+						"http://a.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png",
+						"http://b.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png",
+						"http://c.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png" ],
 				{
 					transitionEffect : "resize",
 					attribution : 'Tiles &copy; 2012 <a target="_blank" href="http://cloudmade.com">CloudMade</a>'
 							+ '<img src="http://cloudmade.com/favicon.ico" alt="CloudMade logo"/>'
 							+ ' Data CC-BY-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>',
 					visibility : mapOpts.baselyr === "cloudmade map",
+					tileOptions : {
+						crossOriginKeyword : null
+					}
+				}));
+		m.addLayer(new OpenLayers.Layer.OSM("cloudmade fresh",
+				[
+						"http://a.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/${z}/${x}/${y}.png",
+						"http://b.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/${z}/${x}/${y}.png",
+						"http://c.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/${z}/${x}/${y}.png" ],
+				{
+					transitionEffect : "resize",
+					attribution : 'Tiles &copy; 2012 <a target="_blank" href="http://cloudmade.com">CloudMade</a>'
+							+ '<img src="http://cloudmade.com/favicon.ico" alt="CloudMade logo"/>'
+							+ ' Data CC-BY-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>',
+					visibility : mapOpts.baselyr === "cloudmade fresh",
 					tileOptions : {
 						crossOriginKeyword : null
 					}

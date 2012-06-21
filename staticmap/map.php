@@ -19,7 +19,13 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+//require_once '../conf/default.php';
+// load local config
 require_once '../../../../conf/local.php';
+//require_once '../../../../inc/confutils.php';
+//require_once '../../../../inc/HTTPClient.php';
+
+
 /**
  * @author Mark C. Prins <mprins@users.sf.net>
  * @author Gerhard Koch <gerhard.koch AT ymail.com>
@@ -40,10 +46,15 @@ class staticMapLite {
 					'txt'=>'(c) OpenStreetMap CC-BY-SA',
 					'logo'=>'osm_logo.png',
 					'url'=>'http://tile.openstreetmap.org/{Z}/{X}/{Y}.png'),
+			// cloudmade
 			'cloudmade' =>array(
-					'txt'=>'(c) OpenStreetMap CC-BY-SA',
-					'logo'=>'osm_logo.png',
-					'url'=> 'http://a.tile.cloudmade.com/2f59745a6b525b4ebdb100891d5b6711/3/256/{Z}/{X}/{Y}.png'),
+					'txt'=>'CloudMade tiles',
+					'logo'=>'cloudmade_logo.png',
+					'url'=> 'http://b.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/{Z}/{X}/{Y}.png'),
+			'fresh' =>array(
+					'txt'=>'CloudMade tiles',
+					'logo'=>'cloudmade_logo.png',
+					'url'=> 'http://c.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{Z}/{X}/{Y}.png'),
 			// OCM sources
 			'cycle'=>array(
 					'txt'=>'OpenCycleMap tiles',
@@ -70,7 +81,7 @@ class staticMapLite {
 			//		'txt'=>'OpenSeaMap tiles',
 			//		'logo'=>'sea_logo.png',
 			//		'url'=>''),
-			// MapQuest; not sure if this is according to TOS
+			// MapQuest
 			'mapquest'=>array(
 					'txt'=>'MapQuest tiles',
 					'logo'=>'mq_logo.png',
@@ -111,24 +122,26 @@ class staticMapLite {
 					'offsetShadow'=>'-1,-1'
 			)
 	);
-	protected $kmlFileName, $gpxFileName;
+	protected $kmlFileName, $gpxFileName, $centerX, $centerY, $offsetX, $offsetY;
+	protected $zoom, $lat, $lon, $width, $height, $markers, $image, $maptype, $conf;
+
 
 	// TODO config options to admin
 	// this may fail in some set-ups where the data directory was moved
 	// cache options
-	protected $useTileCache = true; //conf['plugin']['openlayersmap']['useTileCache']
+	protected $useTileCache ;//= true;
 	protected $tileCacheBaseDir =  '../../../../data/cache/olmaptiles';
-	protected $useMapCache = false;//$conf['plugin']['openlayersmap']['useMapCache']
+	protected $useMapCache ;//= false;
 	protected $mapCacheBaseDir = '../../../../data/cache/olmapmaps';
 	protected $mediaBaseDir ='../../../../data/media';
 	protected $mapCacheID = '';
 	protected $mapCacheFile = '';
 	protected $mapCacheExtension = 'png';
-	// other vars
-	protected $zoom, $lat, $lon, $width, $height, $markers, $image, $maptype;
-	protected $centerX, $centerY, $offsetX, $offsetY;
 
-	public function __construct(){
+
+
+
+	public function __construct($conf){
 		$this->zoom = 0;
 		$this->lat = 0;
 		$this->lon = 0;
@@ -136,6 +149,9 @@ class staticMapLite {
 		$this->height = 350;
 		$this->markers = array();
 		$this->maptype = $this->tileDefaultSrc;
+		$this->conf = $conf;
+		$this->useTileCache = $conf['plugin']['openlayersmap']['useTileCache'];
+		$this->useMapCache =  $conf['plugin']['openlayersmap']['useMapCache'];
 	}
 
 	public function parseParams(){
@@ -147,7 +163,7 @@ class staticMapLite {
 		list($this->lat,$this->lon) = split(',',$_GET['center']);
 		$this->lat = floatval($this->lat);
 		$this->lon = floatval($this->lon);
-		// get zoom from GET paramter
+		// get size from GET paramter
 		if($_GET['size']){
 			list($this->width, $this->height) = split('x',$_GET['size']);
 			$this->width = intval($this->width);
@@ -168,9 +184,11 @@ class staticMapLite {
 		if($_GET['maptype']){
 			if(array_key_exists($_GET['maptype'],$this->tileInfo)) $this->maptype = $_GET['maptype'];
 		}
+		// get the kml
 		if($_GET['kml']){
 			$this->kmlFileName = $this->mediaBaseDir.str_replace(":","/",$_GET['kml']);
 		}
+		// get the gpx
 		if($_GET['gpx']){
 			$this->gpxFileName = $this->mediaBaseDir.str_replace(":","/",$_GET['gpx']);
 		}
@@ -256,15 +274,15 @@ class staticMapLite {
 				}
 			}
 			/* don't need this, we always have icons in the url
-			// check required files or set default
+			 // check required files or set default
 			if($markerFilename == '' || !file_exists($this->markerBaseDir.'/'.$markerFilename)){
-				$markerIndex++;
-				$markerFilename = 'lightblue'.$markerIndex.'.png';
-				$markerImageOffsetX = 0;
-				$markerImageOffsetY = -19;
+			$markerIndex++;
+			$markerFilename = 'lightblue'.$markerIndex.'.png';
+			$markerImageOffsetX = 0;
+			$markerImageOffsetY = -19;
 			}
 			*/
-			
+
 			// create img resource
 			if(file_exists($this->markerBaseDir.'/'.$markerFilename)){
 				$markerImg = imagecreatefrompng($this->markerBaseDir.'/'.$markerFilename);
@@ -335,11 +353,12 @@ class staticMapLite {
 		file_put_contents($filename, $data);
 	}
 
+
 	public function fetchTile($url){
 		if($this->useTileCache && ($cached = $this->checkTileCache($url))) return $cached;
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0");
+		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; DokuWikiSpatial HTTP Client; '.PHP_OS.')');
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 		curl_setopt($ch, CURLOPT_URL, $url);
 		$tile = curl_exec($ch);
@@ -349,12 +368,25 @@ class staticMapLite {
 		}
 		return $tile;
 	}
-	
+	/*
+	 public function fetchTile($url){
+	if($this->useTileCache && ($cached = $this->checkTileCache($url))) return $cached;
+	$http = new DokuHTTPClient();
+	$tile= $http->get($url);
+	if($tile && $this->useTileCache){
+	$this->writeTileToCache($url,$tile);
+	}
+	return $tile;
+	}
+	*/
+
 	/**
 	 * Draw gpx trace on the map.
 	 */
 	public function drawGPX(){
 		//TODO implementation
+		//determine bbox gpx
+
 	}
 
 	/**
@@ -451,19 +483,32 @@ class staticMapLite {
 	}
 }
 
+/** recursive version of array_key_exists.*/
+function array_key_exists_r($needle, $haystack) {
+	$result = array_key_exists($needle, $haystack);
+	if ($result) return $result;
+	foreach ($haystack as $v) {
+		if (is_array($v)) {
+			$result = array_key_exists_r($needle, $v);
+		}
+		if ($result) return $result;
+	}
+	return $result;
+}
+
+
 switch ($_SERVER['REQUEST_METHOD']) {
 	// only support GET
 	case 'GET':
 		// check $_SERVER['SERVER_NAME']);
 		// TODO will fail in ipv6 environment
 		// TODO make this a configurable list
-		if ($_SERVER['REMOTE_ADDR']=='127.0.0.1') {
+		if (($_SERVER['REMOTE_ADDR']=='127.0.0.1') || ((strpos($conf['baseurl'],$_SERVER['REMOTE_ADDR']) !== false))) {
 			// only allow acces from localhost and not from anyone else
-			$map = new staticMapLite();
-			print $map->showMap();
-		}elseif ((strpos($conf['baseurl'],$_SERVER['REMOTE_ADDR']) !== false)) {
-			// only allow acces from local server and not from anyone else
-			$map = new staticMapLite();
+			// read config and set default
+			if (!array_key_exists_r('useTileCache',$conf)) $conf['plugin']['openlayersmap']['useTileCache'] = true;
+			if (!array_key_exists_r('useMapCache',$conf)) $conf['plugin']['openlayersmap']['useMapCache'] = false;
+			$map = new staticMapLite($conf);
 			print $map->showMap();
 		}else{
 			header('HTTP/1.1 403 Forbidden');

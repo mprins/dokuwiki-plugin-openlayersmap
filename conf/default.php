@@ -37,3 +37,4 @@ $conf['olMapStyle'] = 'classic';
 $conf['enableA11y'] = 1;
 $conf['useTileCache'] = 1;
 $conf['useMapCache'] = 0;
+$conf['optionStaticMapGenerator'] = 'remote';

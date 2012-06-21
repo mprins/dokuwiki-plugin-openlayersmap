@@ -153,7 +153,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$poitable .='
 				<tr>
 				<td class="rowId">'.$rowId.'</td>
-				<td class="icon"><img src="'.DOKU_BASE.'/lib/plugins/openlayersmap/icons/'.$img.'" alt="icon" /></td>
+				<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/icons/'.$img.'" alt="icon" /></td>
 				<td class="lat" title="'.$this->getLang('olmapPOIlatTitle').'">'.$lat.'</td>
 				<td class="lon" title="'.$this->getLang('olmapPOIlonTitle').'">'.$lon.'</td>
 				<td class="txt">'.$text.'</td>
@@ -500,12 +500,20 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	private function _getStaticOSM($gmap, $overlay){
 		//http://staticmap.openstreetmap.de/staticmap.php?center=47.000622235634,10.117187497601&zoom=5&size=500x350
 		// &markers=48.999812532766,8.3593749976708,lightblue1|43.154850037315,17.499999997306,lightblue1|49.487527053077,10.820312497573,ltblu-pushpin|47.951071133739,15.917968747369,ol-marker|47.921629720114,18.027343747285,ol-marker-gold|47.951071133739,19.257812497236,ol-marker-blue|47.180141361692,19.257812497236,ol-marker-green
-		//$imgUrl = "http://staticmap.openstreetmap.de/staticmap.php";
-		//$imgUrl ="http://localhost:8888/lib/plugins/openlayersmap/staticmap/map.php";
 		global $conf;
-		// TODO make this configurable, it fails when the server can't go on the internet
-		$imgUrl =$conf['baseurl']."/lib/plugins/openlayersmap/staticmap/map.php";
-		$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
+
+		switch ( $this->getConf('optionStaticMapGenerator')){
+			case 'local':
+				$imgUrl =$conf['baseurl']."/lib/plugins/openlayersmap/staticmap/map.php";
+				$imgUrl .= '?kml='.$gmap['kmlfile'];
+				$imgUrl .= '&gpx='.$gmap['gpxfile'];
+				break;
+			case 'remote':
+			default:
+				$imgUrl = "http://staticmap.openstreetmap.de/staticmap.php";
+		}
+
+		$imgUrl .= "&center=".$gmap['lat'].",".$gmap['lon'];
 		$imgUrl .= "&size=".str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
 		if ($gmap['zoom']>16) {
 			// actually this could even be 18, but that seems overkill
@@ -516,7 +524,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 		switch ($gmap['baselyr']){
 			case 'mapnik':
-				// fall through
 			case 'openstreetmap':
 				$maptype='openstreetmap';
 				break;
@@ -529,13 +536,17 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			case 'cycle map':
 				$maptype='cycle';
 				break;
+			case 'cloudmade':
+				$maptype='cloudmade';
+				break;
+			case 'cloudmade fresh':
+				$maptype='fresh';
+				break;
 			case 'hike and bike map':
 				$maptype='hikeandbike';
 				break;
 			case 'mapquest hybrid':
-				// fall through
 			case 'mapquest road':
-				// fall through
 			case 'mapquest sat':
 				$maptype='mapquest';
 				break;
@@ -551,14 +562,12 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			foreach ($overlay as $data) {
 				list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
 				$rowId++;
-				//$iconStyle = "lightblue$rowId";
-				$iconStyle = substr($img, 0,strlen($img)-4);
+				if ($this->getConf('optionStaticMapGenerator')=='remote') $iconStyle = "lightblue$rowId";
+				if ($this->getConf('optionStaticMapGenerator')=='local') $iconStyle = substr($img, 0,strlen($img)-4);
 				$imgUrl .= "$lat,$lon,$iconStyle%7c";
 			}
 			$imgUrl = substr($imgUrl,0,-3);
 		}
-		$imgUrl .= '&kml='.$gmap['kmlfile'];
-		$imgUrl .= '&gpx='.$gmap['gpxfile'];
 
 		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: osm image url is:');
 		return $imgUrl;

@@ -56,3 +56,6 @@ $meta['useTileCache'] = array (
 $meta['useMapCache'] = array (
 	'onoff'
 );
+$meta['optionStaticMapGenerator'] = array (
+		'multichoice','_choices' => array('local','remote')
+);
