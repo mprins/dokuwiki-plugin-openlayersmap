@@ -50,11 +50,11 @@ class staticMapLite {
 			'cloudmade' =>array(
 					'txt'=>'CloudMade tiles',
 					'logo'=>'cloudmade_logo.png',
-					'url'=> 'http://b.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/{Z}/{X}/{Y}.png'),
+					'url'=> 'http://tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/{Z}/{X}/{Y}.png'),
 			'fresh' =>array(
 					'txt'=>'CloudMade tiles',
 					'logo'=>'cloudmade_logo.png',
-					'url'=> 'http://c.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{Z}/{X}/{Y}.png'),
+					'url'=> 'http://tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{Z}/{X}/{Y}.png'),
 			// OCM sources
 			'cycle'=>array(
 					'txt'=>'OpenCycleMap tiles',
