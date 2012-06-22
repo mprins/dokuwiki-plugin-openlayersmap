@@ -158,6 +158,7 @@ function olCreateMaptag(mapid, width, height) {
  *            array with POI's [ {lat:6710300,lon:506000,txt:'instap
  *            punt',angle:180,opacity:.9,img:'', rowId:n},... ]);
  *
+ * @return a reference to the map
  */
 function createMap(mapOpts, OLmapPOI) {
 	if (!olEnable) {
@@ -674,7 +675,7 @@ function olInit() {
 		var _i = 0;
 		// create the maps in the page
 		for (_i = 0; _i < olMapData.length; _i++) {
-			createMap(olMapData[_i].mapOpts, olMapData[_i].poi);
+			olMaps[olMapData[_i].mapOpts.id] = createMap(olMapData[_i].mapOpts, olMapData[_i].poi);
 		}
 
 		// hide the table(s) with POI by giving it a print-only style
@@ -699,11 +700,18 @@ function olInit() {
  */
 var olEnable = !1,
 /**
- * array with data for each map in the page.
+ * An array with data for each map in the page.
  *
  * @type {Array}
  */
 olMapData = [],
+/**
+ * Holds a reference to all of the maps on this page with the map's id as key.
+ * Can be used as an extension point.
+ *
+ * @type {Object}
+ */
+olMaps = new Object(),
 /**
  * MapQuest tiles flag.
  *
