@@ -176,7 +176,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	 */
 	function render($mode, &$renderer, $data) {
 		static $initialised = false; // set to true after script initialisation
-		static $mapnumber = 0; // incremeted for each map tag in the page source
+		static $mapnumber = 0; // incremented for each map tag in the page source
 		list ($mapid, $param, $mainLat, $mainLon, $poitable, $poitabledesc, $staticImgUrl) = $data;
 
 		if ($mode == 'xhtml') {
