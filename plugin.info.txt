@@ -1,7 +1,7 @@
-base    openlayersmap
+base    ${project.artifactId}
 author  Mark C. Prins
 email   mprins@users.sf.net
 date    ${buildNumber} (${project.version})
-name    OpenLayers Map with OpenStreetMap, Google or Bing
-desc    Add maps to your wiki pages, uses OpenLayers: ${openlayers.checkout.versiontype} ${openlayers.checkout.version}
-url     http://www.dokuwiki.org/plugin:openlayersmap
+name    ${project.name}
+desc    ${project.description}. Uses OpenLayers: ${openlayers.checkout.versiontype} ${openlayers.checkout.version}
+url     ${project.url}
