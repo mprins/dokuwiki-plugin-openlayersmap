@@ -34,6 +34,4 @@ $lang['enableBing'] = 'Maak gebruik van Bing als basiskaart mogelijk';
 $lang['enableOSM'] = 'Maak gebruik van OpenStreetMap als basiskaart mogelijk';
 $lang['olMapStyle'] = 'Stijl van de knoppen in de kaart';
 $lang['enableA11y'] = 'Maak a11y/print output (statische kaart, legenda tabel) mogelijk';
-$lang['useTileCache'] = 'Bewaar gedownloadde tiles voor statische kaarten. <b>aanbevolen</b>';
-$lang['useMapCache'] = 'Bewaar gemaakte statische kaarten.';
 $lang['optionStaticMapGenerator']='Lokale of externe statische kaart generator. <b>Gebruik van \'local\' faalt als de webserver het internet niet op kan.</b>';

@@ -36,6 +36,4 @@ $lang['enableBing'] = 'Habilita Bing como proveedor de mapas';
 $lang['enableOSM'] = 'Habilita OpenStreetMap como proveedor de mapas';
 $lang['olMapStyle'] = 'Estilo de los Controles del mapa';
 $lang['enableA11y'] = 'Habilita a11y/print para mapa estático, tabla de nombres';
-$lang['useTileCache'] = 'FIXME - Cache tiles for the static maps. <b>recommended</b>';
-$lang['useMapCache'] = 'FIXME - Cache created static maps';
 $lang['optionStaticMapGenerator']='FIXME - Local or remote static map compiler. <b>Using \'local\' fails when the server can\'t go on the internet.</b>';

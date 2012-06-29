@@ -45,15 +45,7 @@ $meta['olMapStyle'] = array (
 $meta['iconUrlOverload'] = array (
 	'string'
 );
-// $meta['googleScriptUrl'] = array ('string');
-// $meta['veScriptUrl'] = array ('string');
 $meta['enableA11y'] = array (
-	'onoff'
-);
-$meta['useTileCache'] = array (
-	'onoff'
-);
-$meta['useMapCache'] = array (
 	'onoff'
 );
 $meta['optionStaticMapGenerator'] = array (

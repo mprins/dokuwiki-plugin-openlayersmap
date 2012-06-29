@@ -725,12 +725,6 @@ mqEnable = !1,
  */
 gEnable = !1,
 /**
- * virtual earth map api flag.
- *
- * @type {Boolean}
- */
-veEnable = !1,
-/**
  * Bing tiles flag.
  *
  * @type {Boolean}
