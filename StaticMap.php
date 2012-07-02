@@ -153,8 +153,8 @@ class StaticMap {
 		$this->useTileCache = $this->tileCacheBaseDir !=='';
 		$this->mapCacheBaseDir = $mediaDir.'/olmapmaps';
 
-		$this->kmlFileName = $this->mediaBaseDir.str_replace(":","/",$kml);
-		$this->gpxFileName = $this->mediaBaseDir.str_replace(":","/",$gpx);
+		$this->kmlFileName = $kml;
+		$this->gpxFileName = $gpx;
 	}
 
 	/**
@@ -351,25 +351,10 @@ class StaticMap {
 			// can be Point or LineString
 			switch ($geom->geometryType()) {
 				case 'LineString':
-					// get first pair of points
-					for ($p = 1; $p < $geom->numGeometries(); $p++) {
-						$p1 = $geom->geometryN($p);
-						$p2 = $geom->geometryN($p+1);
-						// translate to paper space
-						$x1 = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($p1->x(), $this->zoom)));
-						$y1 = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($p1->y(), $this->zoom)));
-						$x2 = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($p2->x(), $this->zoom)));
-						$y2 = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($p2->y(), $this->zoom)));
-						// draw to image
-						imageline ( $this->image ,  $x1 ,  $y1 ,  $x2 ,  $y2 , $col );
-					}
+					$this->drawLineString($geom, $col);
 					break;
 				case 'Point':
-					// translate to paper space
-					$cx = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($geom->x(), $this->zoom)));
-					$cy = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($geom->y(), $this->zoom)));
-					// draw to image
-					imageellipse  ( $this->image ,  $cx ,  $cy , 16 /*width*/ , 16 /*height*/ , $col );
+					$this->drawPoint($geom, $col);
 					break;
 				default:
 					//do nothing
@@ -385,14 +370,16 @@ class StaticMap {
 		//TODO implementation
 		$kmlgeom = geoPHP::load(file_get_contents($this->kmlFileName),'kml');
 		// TODO get colour from kml node
-		$col = imagecolorallocate($this->image, 0, 0, 255);
+		$col = imagecolorallocate($this->image, 255, 0, 0);
 		
-		for ($i = 1; $i < $gpxgeom->numGeometries()+1; $i++) {
-			$geom = $gpxgeom->geometryN($i);
+		for ($i = 1; $i < $kmlgeom->numGeometries()+1; $i++) {
+			$geom = $kmlgeom->geometryN($i);
 			switch ($geom->geometryType()) {
 				case 'LineString':
+					$this->drawLineString($geom, $col);
 					break;
 				case 'Point':
+					$this->drawPoint($geom, $col);
 					break;
 				case 'Polygon':
 					break;
@@ -403,6 +390,29 @@ class StaticMap {
 		}
 	}
 
+	private function drawLineString($line, $colour){
+		for ($p = 1; $p < $line->numGeometries(); $p++) {
+			// get first pair of points
+			$p1 = $line->geometryN($p);
+			$p2 = $line->geometryN($p+1);
+			// translate to paper space
+			$x1 = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($p1->x(), $this->zoom)));
+			$y1 = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($p1->y(), $this->zoom)));
+			$x2 = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($p2->x(), $this->zoom)));
+			$y2 = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($p2->y(), $this->zoom)));
+			// draw to image
+			imageline ( $this->image ,  $x1 ,  $y1 ,  $x2 ,  $y2 , $colour );
+		}
+	}
+	
+	private function drawPoint($point, $colour){
+		// translate to paper space
+		$cx = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($point->x(), $this->zoom)));
+		$cy = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($point->y(), $this->zoom)));
+		// draw to image
+		imageellipse  ( $this->image ,  $cx ,  $cy , 14 /*width*/ , 14 /*height*/ , $colour );
+	}
+	
 	/**
 	 * add copyright and origin notice and icons to the map.
 	 */
