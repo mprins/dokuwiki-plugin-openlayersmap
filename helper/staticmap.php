@@ -76,6 +76,9 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 		if($width > $this->maxWidth) $width = $this->maxWidth;
 		$height = intval($height);
 		if($height > $this->maxHeight) $height = $this->maxHeight;
+		
+		$gpx = $conf['mediadir'].$gpx;
+		$kml = $conf['mediadir'].$kml;
 		// create map
 		$map = new StaticMap($lat, $lon, $zoom, $width, $height, $maptype, $markers, $gpx, $kml,
 				$conf['mediadir'],

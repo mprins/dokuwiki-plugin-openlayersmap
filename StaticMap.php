@@ -19,15 +19,12 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-
+include_once('geoPHP/geoPHP.inc');
 /**
  * @author Mark C. Prins <mprins@users.sf.net>
  * @author Gerhard Koch <gerhard.koch AT ymail.com>
  *
- * USAGE:
- *
- *  map.php?center=40.714728,-73.998672&zoom=14&size=512x512&maptype=cycle&markers=40.702147,-74.015794,lightblue1|40.711614,-74.012318,lightblue2|40.718217,-73.998284,lightblue3&gpx=&kml=
-*/
+ */
 class StaticMap {
 	// these should probably not be changed
 	protected $tileSize = 256;
@@ -346,8 +343,39 @@ class StaticMap {
 	 * Draw gpx trace on the map.
 	 */
 	public function drawGPX(){
-		//TODO implementation
-		//determine bbox gpx
+		$gpxgeom = geoPHP::load(file_get_contents($this->gpxFileName),'gpx');
+		$col = imagecolorallocate($this->image, 0, 0, 255);
+
+		for ($i = 1; $i < $gpxgeom->numGeometries()+1; $i++) {
+			$geom = $gpxgeom->geometryN($i);
+			// can be Point or LineString
+			switch ($geom->geometryType()) {
+				case 'LineString':
+					// get first pair of points
+					for ($p = 1; $p < $geom->numGeometries(); $p++) {
+						$p1 = $geom->geometryN($p);
+						$p2 = $geom->geometryN($p+1);
+						// translate to paper space
+						$x1 = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($p1->x(), $this->zoom)));
+						$y1 = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($p1->y(), $this->zoom)));
+						$x2 = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($p2->x(), $this->zoom)));
+						$y2 = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($p2->y(), $this->zoom)));
+						// draw to image
+						imageline ( $this->image ,  $x1 ,  $y1 ,  $x2 ,  $y2 , $col );
+					}
+					break;
+				case 'Point':
+					// translate to paper space
+					$cx = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($geom->x(), $this->zoom)));
+					$cy = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($geom->y(), $this->zoom)));
+					// draw to image
+					imageellipse  ( $this->image ,  $cx ,  $cy , 16 /*width*/ , 16 /*height*/ , $col );
+					break;
+				default:
+					//do nothing
+					break;
+			}
+		}
 	}
 
 	/**
@@ -355,6 +383,24 @@ class StaticMap {
 	 */
 	public function drawKML(){
 		//TODO implementation
+		$kmlgeom = geoPHP::load(file_get_contents($this->kmlFileName),'kml');
+		// TODO get colour from kml node
+		$col = imagecolorallocate($this->image, 0, 0, 255);
+		
+		for ($i = 1; $i < $gpxgeom->numGeometries()+1; $i++) {
+			$geom = $gpxgeom->geometryN($i);
+			switch ($geom->geometryType()) {
+				case 'LineString':
+					break;
+				case 'Point':
+					break;
+				case 'Polygon':
+					break;
+				default:
+					//do nothing
+					break;
+			}
+		}
 	}
 
 	/**
