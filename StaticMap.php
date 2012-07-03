@@ -367,11 +367,17 @@ class StaticMap {
 	 * Draw kml trace on the map.
 	 */
 	public function drawKML(){
-		//TODO implementation
 		$kmlgeom = geoPHP::load(file_get_contents($this->kmlFileName),'kml');
 		// TODO get colour from kml node
 		$col = imagecolorallocate($this->image, 255, 0, 0);
-		
+
+		//		print_r($kmlgeom->numGeometries().' geoms in de kml. ');
+		//		print_r('<br/>geom type: ');
+		//		print_r($kmlgeom->geometryType());
+
+
+		// should only run if its a collection
+		// there's a problem: when the $kmlgeom is eg. 1 linestring it wil draw all the vertices as point instead of a line.
 		for ($i = 1; $i < $kmlgeom->numGeometries()+1; $i++) {
 			$geom = $kmlgeom->geometryN($i);
 			switch ($geom->geometryType()) {
@@ -389,8 +395,13 @@ class StaticMap {
 			}
 		}
 	}
-
+	/**
+	 * Draw a line on the map.
+	 * @param LineString $line
+	 * @param int $colour
+	 */
 	private function drawLineString($line, $colour){
+		imagesetthickness($this->image,3);
 		for ($p = 1; $p < $line->numGeometries(); $p++) {
 			// get first pair of points
 			$p1 = $line->geometryN($p);
@@ -401,18 +412,32 @@ class StaticMap {
 			$x2 = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($p2->x(), $this->zoom)));
 			$y2 = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($p2->y(), $this->zoom)));
 			// draw to image
-			imageline ( $this->image ,  $x1 ,  $y1 ,  $x2 ,  $y2 , $colour );
+			imageline ( $this->image, $x1, $y1, $x2, $y2, $colour);
 		}
+		imagesetthickness($this->image,1);
 	}
-	
+	/**
+	 * Draw a point on the map.
+	 * @param Point $point
+	 * @param int $colour
+	 */
 	private function drawPoint($point, $colour){
+		imagesetthickness($this->image,3);
 		// translate to paper space
 		$cx = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($point->x(), $this->zoom)));
 		$cy = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($point->y(), $this->zoom)));
 		// draw to image
-		imageellipse  ( $this->image ,  $cx ,  $cy , 14 /*width*/ , 14 /*height*/ , $colour );
+		imageellipse($this->image, $cx, $cy,14 /*width*/, 14/*height*/, $colour);
+		imagesetthickness($this->image,1);
 	}
-	
+	/**
+	 * Draw a polygon on the map.
+	 * @param Polygon $polygon
+	 * @param int $colour
+	 */
+	private function drawPolygon($polygon, $colour){
+		//TODO implementation
+	}
 	/**
 	 * add copyright and origin notice and icons to the map.
 	 */

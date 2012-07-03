@@ -165,6 +165,23 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			}
 			$poi = substr($poi, 2);
 		}
+		if (!empty ($gmap['kmlfile'])) {
+			$poitable .='
+			<tr>
+			<td class="rowId"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/kml_file.png" alt="KML icon" /></td>
+			<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/kml_line.png" alt="icon" /></td>
+			<td class="txt" colspan="3">KML: '.$gmap['kmlfile'].'</td>
+			</tr>';
+		}
+		if (!empty ($gmap['gpxfile'])) {
+			$poitable .='
+			<tr>
+			<td class="rowId"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/gpx_file.png" alt="GPX icon" /></td>
+			<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/gpx_line.png" alt="icon" /></td>
+			<td class="txt" colspan="3">GPX: '.$gmap['gpxfile'].'</td>
+			</tr>';
+		}
+
 		$js .= "{mapOpts:{" . $param . " },poi:[$poi]};";
 		// unescape the json
 		$poitable = stripslashes($poitable);
@@ -221,7 +238,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			}
 			$renderer->doc .= '<div id="'.$mapid.'-clearer" class="clearer"><p>&nbsp;</p></div>';
 			if ($this->getConf('enableA11y')){
-				// render a (hidden) table of the POI for the print and a11y presentation
+				// render a (initially hidden) table of the POI for the print and a11y presentation
 				$renderer->doc .= '<div class="olPOItableSpan" id="'.$mapid.'-table-span"><table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
 				<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
 				<thead class="olPOITblHeader">

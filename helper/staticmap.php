@@ -65,7 +65,9 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 	 */
 	public function getMap($lat, $lon, $zoom, $size, $maptype, $markers, $gpx, $kml){
 		global $conf;
-		//dbglog($markers,'helper_plugin_openlayersmap_staticmap::getMap: markers :');
+		dbglog($markers,'helper_plugin_openlayersmap_staticmap::getMap: markers :');
+		dbglog($kml,'helper_plugin_openlayersmap_staticmap::getMap: kml :');
+		dbglog($gpx,'helper_plugin_openlayersmap_staticmap::getMap: gpx :');
 
 		// normalize zoom
 		$zoom = $zoom?intval($zoom):0;
@@ -76,17 +78,12 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 		if($width > $this->maxWidth) $width = $this->maxWidth;
 		$height = intval($height);
 		if($height > $this->maxHeight) $height = $this->maxHeight;
-		// validate gpx/kml
-		$kml=str_replace(":","/",$kml);
-		$kml=str_replace("[","/",$kml);
-		$kml=str_replace("]","/",$kml);
-		$gpx=str_replace(":","/",$gpx);
-		$gpx=str_replace("[","/",$gpx);
-		$gpx=str_replace("]","/",$gpx);
-		//TODO make sure we don't end up with a double file sep. char here
-		$gpx = $conf['mediadir'].'/'.$gpx;
-		$kml = $conf['mediadir'].'/'.$kml;
-		
+		// cleanup/validate gpx/kml
+		$kml = $this->mediaIdToPath($kml);
+		dbglog($kml,'helper_plugin_openlayersmap_staticmap::getMap: kml file:');
+		$gpx = $this->mediaIdToPath($gpx);
+		dbglog($gpx,'helper_plugin_openlayersmap_staticmap::getMap: gpx file:');
+
 		// create map
 		$map = new StaticMap($lat, $lon, $zoom, $width, $height, $maptype, $markers, $gpx, $kml,
 				$conf['mediadir'],
@@ -95,5 +92,25 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 		// return the media id url
 		$mediaId = str_replace('/', ':',  $map->getMap());
 		return $mediaId;
+	}
+
+	private function startsWith($haystack, $needle)	{
+		$length = strlen($needle);
+		return (substr($haystack, 0, $length) === $needle);
+	}
+
+	private function mediaIdToPath($id){
+		global $conf;
+		if(empty($id)) {
+			return "";
+		}
+		$id=str_replace("[[","",$id);
+		$id=str_replace("]]","",$id);
+		if($this->startsWith($id,':')) {
+			$id = substr($id, 1);
+		}
+		$id=str_replace(":","/",$id);
+
+		return $conf['mediadir'].'/'.$id;
 	}
 }
