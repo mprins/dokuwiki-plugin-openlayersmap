@@ -343,62 +343,65 @@ class StaticMap {
 	 * Draw gpx trace on the map.
 	 */
 	public function drawGPX(){
+		$col = imagecolorallocatealpha($this->image, 0, 0, 255, .4*127);
 		$gpxgeom = geoPHP::load(file_get_contents($this->gpxFileName),'gpx');
-		$col = imagecolorallocate($this->image, 0, 0, 255);
-
-		for ($i = 1; $i < $gpxgeom->numGeometries()+1; $i++) {
-			$geom = $gpxgeom->geometryN($i);
-			// can be Point or LineString
-			switch ($geom->geometryType()) {
-				case 'LineString':
-					$this->drawLineString($geom, $col);
-					break;
-				case 'Point':
-					$this->drawPoint($geom, $col);
-					break;
-				default:
-					//do nothing
-					break;
-			}
-		}
+		$this->drawGeometry($gpxgeom, $col);
 	}
 
 	/**
 	 * Draw kml trace on the map.
 	 */
 	public function drawKML(){
-		$kmlgeom = geoPHP::load(file_get_contents($this->kmlFileName),'kml');
 		// TODO get colour from kml node
-		$col = imagecolorallocate($this->image, 255, 0, 0);
-
-		//		print_r($kmlgeom->numGeometries().' geoms in de kml. ');
-		//		print_r('<br/>geom type: ');
-		//		print_r($kmlgeom->geometryType());
-
-
-		// should only run if its a collection
-		// there's a problem: when the $kmlgeom is eg. 1 linestring it wil draw all the vertices as point instead of a line.
-		for ($i = 1; $i < $kmlgeom->numGeometries()+1; $i++) {
-			$geom = $kmlgeom->geometryN($i);
-			switch ($geom->geometryType()) {
-				case 'LineString':
-					$this->drawLineString($geom, $col);
-					break;
-				case 'Point':
-					$this->drawPoint($geom, $col);
-					break;
-				case 'Polygon':
-					break;
-				default:
-					//do nothing
-					break;
-			}
+		$col = imagecolorallocatealpha($this->image, 255, 0, 0, .4*127);
+		//	if ($col === FALSE) {
+		//		$col = imagecolorallocate($this->image, 255, 0, 0);
+		//	}
+		$kmlgeom = geoPHP::load(file_get_contents($this->kmlFileName),'kml');
+		$this->drawGeometry($kmlgeom, $col);
+	}
+	/**
+	 * Draw geometry or geometry collection on the map.
+	 * @param Geometry $geom
+	 * @param int $colour drawing colour
+	 */
+	private function drawGeometry($geom, $colour){
+		switch ($geom->geometryType()) {
+			case 'GeometryCollection':
+				// recursively draw part of the collection
+				for ($i = 1; $i < $geom->numGeometries()+1; $i++) {
+					$_geom = $geom->geometryN($i);
+					$this->drawGeometry($_geom, $colour);
+				}
+				break;
+			case 'MultiPolygon':
+				// TODO implement / do nothing
+				break;
+			case 'MultiLineString':
+				// TODO implement / do nothing
+				break;
+			case 'MultiPoint':
+				// TODO implement / do nothing
+				break;
+			case 'Polygon':
+				$this->drawPolygon($geom, $colour);
+				break;
+			case 'LineString':
+				$this->drawLineString($geom, $colour);
+				break;
+			case 'Point':
+				$this->drawPoint($geom, $colour);
+				break;
+			default:
+				//do nothing
+				break;
 		}
 	}
+
 	/**
 	 * Draw a line on the map.
 	 * @param LineString $line
-	 * @param int $colour
+	 * @param int $colour drawing colour
 	 */
 	private function drawLineString($line, $colour){
 		imagesetthickness($this->image,3);
@@ -416,28 +419,55 @@ class StaticMap {
 		}
 		imagesetthickness($this->image,1);
 	}
+
 	/**
 	 * Draw a point on the map.
 	 * @param Point $point
-	 * @param int $colour
+	 * @param int $colour drawing colour
 	 */
 	private function drawPoint($point, $colour){
-		imagesetthickness($this->image,3);
+		imagesetthickness($this->image,2);
 		// translate to paper space
 		$cx = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($point->x(), $this->zoom)));
 		$cy = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($point->y(), $this->zoom)));
 		// draw to image
-		imageellipse($this->image, $cx, $cy,14 /*width*/, 14/*height*/, $colour);
+		// imageellipse($this->image, $cx, $cy,14 /*width*/, 14/*height*/, $colour);
+		imagefilledellipse ($this->image, $cx, $cy, 5, 5, $colour);
+		// We don't use imageellipse because the imagesetthickness function has
+		// no effect. So the better workaround is to use imagearc.
+		imagearc($this->image, $cx, $cy, 5, 5, 0, 359, $colour);
 		imagesetthickness($this->image,1);
 	}
+
 	/**
 	 * Draw a polygon on the map.
 	 * @param Polygon $polygon
-	 * @param int $colour
+	 * @param int $colour drawing colour
 	 */
 	private function drawPolygon($polygon, $colour){
-		//TODO implementation
+		//TODO implementation of drawing holes,
+		// maybe draw the polygon to an in-memory image and use imagecopy, draw polygon in col., draw holes in bgcol?
+
+		//print_r('Polygon:<br />');
+		//print_r($polygon);
+
+		$extPoints = array();
+		// extring is a linestring actually..
+		$extRing = $polygon->exteriorRing();
+
+		for ($i = 1; $i < $extRing->numGeometries(); $i++) {
+			$p1 = $extRing->geometryN($i);
+			$x = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($p1->x(), $this->zoom)));
+			$y = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($p1->y(), $this->zoom)));
+			$extPoints[]=$x;
+			$extPoints[]=$y;
+		}
+		//print_r('points:('.($i-1).')<br />');
+		//print_r($extPoints);
+		//imagepolygon ($this->image, $extPoints, $i-1, $colour );
+		imagefilledpolygon($this->image, $extPoints, $i-1, $colour );
 	}
+
 	/**
 	 * add copyright and origin notice and icons to the map.
 	 */
