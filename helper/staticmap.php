@@ -14,23 +14,19 @@
 * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
-
 if (!defined('DOKU_INC')) die();
-
 if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
-
 require_once DOKU_PLUGIN.'openlayersmap/StaticMap.php';
 /**
- * DokuWiki Plugin openlayersmap (staticmap Helper Component)
+ * DokuWiki Plugin openlayersmap (staticmap Helper Component). 
+ * This provides the interface to generate a static map based on predefined OSM layers.
  *
  * @author Mark Prins
  */
 class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 	private $maxWidth = 1024;
 	private $maxHeight = 1024;
-	/**
-	 * @override
-	 */
+
 	function getMethods(){
 		$result = array();
 		$result[] = array(
@@ -66,8 +62,6 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 	public function getMap($lat, $lon, $zoom, $size, $maptype, $markers, $gpx, $kml){
 		global $conf;
 		dbglog($markers,'helper_plugin_openlayersmap_staticmap::getMap: markers :');
-		dbglog($kml,'helper_plugin_openlayersmap_staticmap::getMap: kml :');
-		dbglog($gpx,'helper_plugin_openlayersmap_staticmap::getMap: gpx :');
 
 		// normalize zoom
 		$zoom = $zoom?intval($zoom):0;
@@ -99,6 +93,11 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 		return (substr($haystack, 0, $length) === $needle);
 	}
 
+	/**
+	 * Constructs the path to a file.
+	 * @param string $id the DW media id
+	 * @return the path to the file
+	 */
 	private function mediaIdToPath($id){
 		global $conf;
 		if(empty($id)) {
@@ -110,7 +109,6 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 			$id = substr($id, 1);
 		}
 		$id=str_replace(":","/",$id);
-
 		return $conf['mediadir'].'/'.$id;
 	}
 }

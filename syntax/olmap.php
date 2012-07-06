@@ -14,20 +14,15 @@
 * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
-
-/**
- * Plugin OL Maps: Allow Display of a OpenLayers Map in a wiki page.
- *
- * @author Mark Prins
- */
-
 if (!defined('DOKU_INC'))define('DOKU_INC', realpath(dirname(__FILE__) . '/../../') . '/');
 if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 require_once (DOKU_PLUGIN . 'syntax.php');
 
 /**
- * All DokuWiki plugins to extend the parser/rendering mechanism
- * need to inherit from this class
+ * DokuWiki Plugin openlayersmap (Syntax Component).
+ * Provides for display of an OpenLayers based map in a wiki page.
+ *
+ * @author Mark Prins
  */
 class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
@@ -52,43 +47,38 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	private $usingLocalStaticMap = false;
 
 	/**
-	 * Return the type of syntax this plugin defines.
-	 * @Override
+	 * (non-PHPdoc)
+	 * @see DokuWiki_Syntax_Plugin::getType()
 	 */
 	function getType() {
 		return 'substition';
 	}
 
 	/**
-	 * Defines how this syntax is handled regarding paragraphs.
-	 * @Override
+	 * (non-PHPdoc)
+	 * @see DokuWiki_Syntax_Plugin::getPType()
 	 */
 	function getPType() {
-		//normal block stack
 		return 'block';
 	}
 
 	/**
-	 * Returns a number used to determine in which order modes are added.
-	 * @Override
+	 * (non-PHPdoc)
+	 * @see Doku_Parser_Mode::getSort()
 	 */
 	function getSort() {
 		return 901;
 	}
-
 	/**
-	 * This function is inherited from Doku_Parser_Mode.
-	 * Here is the place to register the regular expressions needed
-	 * to match your syntax.
-	 * @Override
+	 * (non-PHPdoc)
+	 * @see Doku_Parser_Mode::connectTo()
 	 */
 	function connectTo($mode) {
 		$this->Lexer->addSpecialPattern('<olmap ?[^>\n]*>.*?</olmap>', $mode, 'plugin_openlayersmap_olmap');
 	}
-
 	/**
-	 * handle each olmap tag. prepare the matched syntax for use in the renderer.
-	 * @Override
+	 * (non-PHPdoc)
+	 * @see DokuWiki_Syntax_Plugin::handle()
 	 */
 	function handle($match, $state, $pos, &$handler) {
 		// break matched cdata into its components
@@ -170,7 +160,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			<tr>
 			<td class="rowId"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/kml_file.png" alt="KML icon" /></td>
 			<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/kml_line.png" alt="icon" /></td>
-			<td class="txt" colspan="3">KML: '.$gmap['kmlfile'].'</td>
+			<td class="txt" colspan="3">KML track: '.$this->getFileName($gmap['kmlfile']).'</td>
 			</tr>';
 		}
 		if (!empty ($gmap['gpxfile'])) {
@@ -178,7 +168,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			<tr>
 			<td class="rowId"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/gpx_file.png" alt="GPX icon" /></td>
 			<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/gpx_line.png" alt="icon" /></td>
-			<td class="txt" colspan="3">GPX: '.$gmap['gpxfile'].'</td>
+			<td class="txt" colspan="3">GPX track: '.$this->getFileName($gmap['gpxfile']).'</td>
 			</tr>';
 		}
 
@@ -190,8 +180,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	}
 
 	/**
-	 * render html tag/output. render the content.
-	 * @Override
+	 * (non-PHPdoc)
+	 * @see DokuWiki_Syntax_Plugin::render()
 	 */
 	function render($mode, &$renderer, $data) {
 		static $initialised = false; // set to true after script initialisation
@@ -258,15 +248,13 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			}
 			// render inline mapscript
 			$renderer->doc .="\n		<script type='text/javascript'><!--//--><![CDATA[//><!--\n";
-			// var $mapid = $param
 			$renderer->doc .="		olMapData[$mapnumber] = $param
 			//--><!]]></script>";
 			$mapnumber++;
 			return true;
 		} elseif ($mode == 'metadata') {
-			// render metadata if available
 			if (!(($this->dflt['lat']==$mainLat)||($thisdflt['lon']==$mainLon))){
-				// unless they are the default
+				// render metadata if available, unless they are the default
 				$renderer->meta['geo']['lat'] = $mainLat;
 				$renderer->meta['geo']['lon'] = $mainLon;
 			}
@@ -350,7 +338,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$maptype='hyb';
 				break;
 			case 'mapquest sat':
-				// $maptype='sat'
 				// because sat coverage is very limited use 'hyb' instead of 'sat' so we don't get a blank map
 				$maptype='hyb';
 				break;
@@ -392,8 +379,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getMapQuest: MapQuest image url is:');
 		return $imgUrl;
 	}
+
 	/**
-	 *
 	 * Create a Google maps static image url w/ the poi.
 	 * @param array $gmap
 	 * @param array $overlay
@@ -425,8 +412,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		$imgUrl .= "&size=".str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
 		$imgUrl .= "&center=".$gmap['lat'].",".$gmap['lon'];
 		// max is 21 (== building scale), but that's overkill..
-		if ($gmap['zoom']>16) {
-			$imgUrl .= "&zoom=16";
+		if ($gmap['zoom']>17) {
+			$imgUrl .= "&zoom=17";
 		} else			{
 			$imgUrl .= "&zoom=".$gmap['zoom'];
 		}
@@ -446,14 +433,13 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	}
 
 	/**
-	 *
 	 * Create a Bing maps static image url w/ the poi.
 	 * @param array $gmap
 	 * @param array $overlay
 	 */
 	private function _getBing($gmap, $overlay){
 		if(!$this->getConf('bingAPIKey')){
-			// in case there is no Bing api key
+			// in case there is no Bing api key we'll use MapQuest
 			$this->_getMapQuest($gmap, $overlay);
 		}
 		switch ($gmap['baselyr']){
@@ -500,7 +486,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	}
 
 	/**
-	 *
 	 * Create a static OSM map image url w/ the poi from http://staticmap.openstreetmap.de (staticMapLite)
 	 * use http://staticmap.openstreetmap.de "staticMapLite" or a local version
 	 * @param array $gmap
@@ -520,8 +505,10 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$imgUrl .= '&gpx='.$gmap['gpxfile'];
 				break;
 			case 'remote':
+				// fall through
 			default:
 				$imgUrl = "http://staticmap.openstreetmap.de/staticmap.php";
+				break;
 		}
 
 		$imgUrl .= "&center=".$gmap['lat'].",".$gmap['lon'];
@@ -626,5 +613,18 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		return array('minlat'=>$lats[0], 'minlon'=>$lons[0],
 				'maxlat'=>$lats[count($lats)-1], 'maxlon'=>$lons[count($lats)-1],
 				'centerlat'=>$centerlat,'centerlon'=>$centerlon);
+	}
+
+	/**
+	 * Figures out the base filename of a media path.
+	 * @param String $mediaLink
+	 */
+	private function getFileName($mediaLink){
+		$mediaLink=str_replace('[[','',$mediaLink);
+		$mediaLink=str_replace(']]','',$mediaLink);
+		$mediaLink = substr($mediaLink, 0, -4);
+		$parts=explode(':',$mediaLink);
+		$mediaLink = end($parts);
+		return str_replace('_',' ',$mediaLink);
 	}
 }

@@ -404,7 +404,7 @@ class StaticMap {
 	 * @param int $colour drawing colour
 	 */
 	private function drawLineString($line, $colour){
-		imagesetthickness($this->image,3);
+		imagesetthickness($this->image,2);
 		for ($p = 1; $p < $line->numGeometries(); $p++) {
 			// get first pair of points
 			$p1 = $line->geometryN($p);
@@ -430,12 +430,13 @@ class StaticMap {
 		// translate to paper space
 		$cx = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($point->x(), $this->zoom)));
 		$cy = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($point->y(), $this->zoom)));
+		$r = 5;
 		// draw to image
-		// imageellipse($this->image, $cx, $cy,14 /*width*/, 14/*height*/, $colour);
-		imagefilledellipse ($this->image, $cx, $cy, 5, 5, $colour);
-		// We don't use imageellipse because the imagesetthickness function has
+		// imageellipse($this->image, $cx, $cy,$r, $r, $colour);
+		imagefilledellipse ($this->image, $cx, $cy, $r, $r, $colour);
+		// don't use imageellipse because the imagesetthickness function has
 		// no effect. So the better workaround is to use imagearc.
-		imagearc($this->image, $cx, $cy, 5, 5, 0, 359, $colour);
+		imagearc($this->image, $cx, $cy, $r, $r, 0, 359, $colour);
 		imagesetthickness($this->image,1);
 	}
 
@@ -445,7 +446,7 @@ class StaticMap {
 	 * @param int $colour drawing colour
 	 */
 	private function drawPolygon($polygon, $colour){
-		//TODO implementation of drawing holes,
+		// TODO implementation of drawing holes,
 		// maybe draw the polygon to an in-memory image and use imagecopy, draw polygon in col., draw holes in bgcol?
 
 		//print_r('Polygon:<br />');
@@ -486,8 +487,8 @@ class StaticMap {
 				imagesx($logoImg),
 				imagesy($logoImg)
 		);
-		imagestring ($this->image , 1 , imagesx($logoImg)+2 , imagesy($this->image)-imagesy($logoImg)+1 , $this->tileInfo['openstreetmap']['txt'],$bgcolor );
-		imagestring ($this->image , 1 , imagesx($logoImg)+1 , imagesy($this->image)-imagesy($logoImg) , $this->tileInfo['openstreetmap']['txt'] ,$textcolor );
+		imagestring($this->image , 1, imagesx($logoImg)+2 ,imagesy($this->image)-imagesy($logoImg)+1 ,$this->tileInfo['openstreetmap']['txt'], $bgcolor );
+		imagestring($this->image , 1, imagesx($logoImg)+1 ,imagesy($this->image)-imagesy($logoImg) ,$this->tileInfo['openstreetmap']['txt'] ,$textcolor );
 
 		// additional tile source info, ie. who created/hosted the tiles
 		if ($this->maptype!='openstreetmap') {
@@ -501,10 +502,11 @@ class StaticMap {
 					imagesx($iconImg),
 					imagesy($iconImg)
 			);
-			imagestring ($this->image , 1 , imagesx($logoImg)+imagesx($iconImg)+4 , imagesy($this->image)-ceil(imagesy($logoImg)/2)+1 , $this->tileInfo[$this->maptype]['txt'],$bgcolor );
-			imagestring ($this->image , 1 , imagesx($logoImg)+imagesx($iconImg)+3 , imagesy($this->image)-ceil(imagesy($logoImg)/2) , $this->tileInfo[$this->maptype]['txt'] ,$textcolor );
+			imagestring($this->image, 1, imagesx($logoImg)+imagesx($iconImg)+4, imagesy($this->image)-ceil(imagesy($logoImg)/2)+1, $this->tileInfo[$this->maptype]['txt'], $bgcolor );
+			imagestring($this->image, 1, imagesx($logoImg)+imagesx($iconImg)+3, imagesy($this->image)-ceil(imagesy($logoImg)/2), $this->tileInfo[$this->maptype]['txt'], $textcolor );
 		}
 	}
+
 	/**
 	 * make the map.
 	 */
@@ -516,6 +518,7 @@ class StaticMap {
 		if(file_exists($this->gpxFileName)) $this->drawGPX();
 		$this->drawCopyright();
 	}
+
 	/**
 	 * get the map, this may return a reference to a cached copy.
 	 * @return string url relative to media dir
