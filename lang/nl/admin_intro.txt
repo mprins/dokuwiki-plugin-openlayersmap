@@ -1,0 +1,4 @@
+====== Wissen tilecaches en kaarten ======
+Deze pagina biedt de mogelijkheid de tijdelijk opgeslagen tiles en kaarten die gebruikt worden door de 'local' statische kaarten module te wissen. 
+
+Let op: als de kaarten zijn gewist dienen ook de pagina's waarin de kaarten ingebed zitten te worden vernieuwd door ze uit de cache te verwijderen, zie hiervoor: http://www.dokuwiki.org/caching.

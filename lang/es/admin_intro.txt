@@ -1,0 +1,4 @@
+====== Purge tilecaches and maps ======
+FIXME (translate) This page allows you to purge the cached tiles and maps that are used by the 'local' static maps backend.
+
+FIXME (translate) Note: after the maps have been purged the pages holding the maps also need to be purged. See: http://www.dokuwiki.org/caching.
