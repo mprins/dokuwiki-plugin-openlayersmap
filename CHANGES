@@ -1,2 +1,3 @@
 === version 3.0 ===
-  - A local static map generator was added.
+  - A local static map generator was added. Note that this requires php-curl and the geophp plugin.
+  - A management interface for the static map generator was added

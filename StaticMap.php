@@ -1,9 +1,8 @@
 <?php
-
 /*
  * Copyright (c) 2012 Mark C. Prins <mprins@users.sf.net>
 *
-* Based on staticMapLite 0.03 available at http://staticmaplite.svn.sourceforge.net/viewvc/staticmaplite/
+* In part based on staticMapLite 0.03 available at http://staticmaplite.svn.sourceforge.net/viewvc/staticmaplite/
 *
 * Copyright (c) 2009 Gerhard Koch <gerhard.koch AT ymail.com>
 *
@@ -19,7 +18,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-include_once('geoPHP/geoPHP.inc');
+include_once(realpath(dirname(__FILE__)).'/../geophp/geoPHP/geoPHP.inc');
 /**
  * @author Mark C. Prins <mprins@users.sf.net>
  * @author Gerhard Koch <gerhard.koch AT ymail.com>
@@ -122,7 +121,7 @@ class StaticMap {
 	protected $mapCacheExtension = 'png';
 
 	/**
-	 *
+	 * Constructor.
 	 * @param number $lat
 	 * @param number $lon
 	 * @param number $zoom
@@ -161,6 +160,7 @@ class StaticMap {
 	 *
 	 * @param number $long
 	 * @param number $zoom
+	 * @return number
 	 */
 	public function lonToTile($long, $zoom){
 		return (($long + 180) / 360) * pow(2, $zoom);
@@ -174,6 +174,7 @@ class StaticMap {
 	public function latToTile($lat, $zoom){
 		return (1 - log(tan($lat * pi()/180) + 1 / cos($lat* pi()/180)) / pi()) /2 * pow(2, $zoom);
 	}
+
 	/**
 	 *
 	 */

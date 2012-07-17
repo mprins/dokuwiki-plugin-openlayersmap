@@ -575,14 +575,16 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		}
 
 		if (!$my = &plugin_load('helper', 'openlayersmap_staticmap')){
-			dbglog($my,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: openlayersmap_staticmap plugin is false');
-			return false;
+			dbglog($my,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: openlayersmap_staticmap plugin is not available.');
+		}
+		if (!$geophp = &plugin_load('helper', 'openlayersmap_staticmap')){
+			dbglog($geophp,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: geophp plugin is not available.');
 		}
 
+		// default to external provider
+		$result= $imgUrl;
 		if ($this->getConf('optionStaticMapGenerator')=='local') {
 			$result = $my->getMap($gmap['lat'],$gmap['lon'],$gmap['zoom'],$size,$maptype,$markers,$gmap['gpxfile'],$gmap['kmlfile']);
-		}else{
-			$result= $imgUrl;
 		}
 
 		dbglog($result,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: osm image url is:');
