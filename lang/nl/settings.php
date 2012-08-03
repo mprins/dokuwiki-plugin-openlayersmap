@@ -35,3 +35,4 @@ $lang['enableOSM'] = 'Maak gebruik van OpenStreetMap als basiskaart mogelijk';
 $lang['olMapStyle'] = 'Stijl van de knoppen in de kaart';
 $lang['enableA11y'] = 'Maak a11y/print output (statische kaart, legenda tabel) mogelijk';
 $lang['optionStaticMapGenerator']='Lokale of externe statische kaart generator. <b>Gebruik van \'local\' faalt als de webserver het internet niet op kan.</b>';
+$lang['autoZoomMap'] = 'Zet automatisch zoomen aan voor de kaart';

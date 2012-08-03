@@ -439,8 +439,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	 */
 	private function _getBing($gmap, $overlay){
 		if(!$this->getConf('bingAPIKey')){
-			// in case there is no Bing api key we'll use MapQuest
-			$this->_getMapQuest($gmap, $overlay);
+			// in case there is no Bing api key we'll use OSM
+			$this->_getStaticOSM($gmap, $overlay);
 		}
 		switch ($gmap['baselyr']){
 			case 've hybrid':
@@ -459,12 +459,16 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$maptype='Road';
 				break;
 		}
-		$bbox=$this->_calcBBOX($overlay, $gmap['lat'], $gmap['lon']);
-		//$imgUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/".$maptype."/".$gmap['lat'].",".$gmap['lon']."/".$gmap['zoom'];
 		$imgUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/".$maptype."/";
-		$imgUrl .= "?mapArea=".$bbox['minlat'].",".$bbox['minlon'].",".$bbox['maxlat'].",".$bbox['maxlon'];
-		// TODO declutter option works well for square maps but not for rectangular, maybe compensate for that or compensate the mbr..
-		$imgUrl .= "&declutter=1";
+		if (!$this->getConf('autoZoomMap')){
+			$bbox=$this->_calcBBOX($overlay, $gmap['lat'], $gmap['lon']);
+			$imgUrl .= "?mapArea=".$bbox['minlat'].",".$bbox['minlon'].",".$bbox['maxlat'].",".$bbox['maxlon'];
+			$imgUrl .= "&declutter=1";
+			// or
+			//$imgUrl .= $gmap['lat'].",".$gmap['lon']."/".$gmap['zoom']."?";
+		}
+		if (strpos($imgUrl, "?") === false) $imgUrl .= "?";
+
 		$imgUrl .= "&ms=".str_replace("px", "",$gmap['width']).",".str_replace("px", "",$gmap['height']);
 		$imgUrl .= "&key=".$this->getConf('bingAPIKey');
 		if (!empty ($overlay)) {
@@ -474,7 +478,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				// TODO icon style lookup, see: http://msdn.microsoft.com/en-us/library/ff701719.aspx for iconStyle
 				$iconStyle=32;
 				$rowId++;
-				// NOTE: the max number of pushpins is 18!
+				// NOTE: the max number of pushpins is 18! or we have tuo use POST (http://msdn.microsoft.com/en-us/library/ff701724.aspx)
 				if ($rowId==18) {
 					break;
 				}

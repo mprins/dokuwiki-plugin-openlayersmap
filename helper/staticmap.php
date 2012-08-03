@@ -18,7 +18,7 @@ if (!defined('DOKU_INC')) die();
 if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 require_once DOKU_PLUGIN.'openlayersmap/StaticMap.php';
 /**
- * DokuWiki Plugin openlayersmap (staticmap Helper Component). 
+ * DokuWiki Plugin openlayersmap (staticmap Helper Component).
  * This provides the interface to generate a static map based on predefined OSM layers.
  *
  * @author Mark Prins
@@ -81,8 +81,10 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 		// create map
 		$map = new StaticMap($lat, $lon, $zoom, $width, $height, $maptype, $markers, $gpx, $kml,
 				$conf['mediadir'],
-				$conf['cachedir']
+				$conf['cachedir'],
+				$this->getConf('autoZoomMap')
 		);
+
 		// return the media id url
 		$mediaId = str_replace('/', ':',  $map->getMap());
 		return $mediaId;

@@ -51,3 +51,6 @@ $meta['enableA11y'] = array (
 $meta['optionStaticMapGenerator'] = array (
 		'multichoice','_choices' => array('local','remote')
 );
+$meta['autoZoomMap'] = array (
+		'onoff'
+);

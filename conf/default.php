@@ -30,3 +30,4 @@ $conf['enableBing'] = 0;
 $conf['olMapStyle'] = 'classic';
 $conf['enableA11y'] = 1;
 $conf['optionStaticMapGenerator'] = 'remote';
+$conf['autoZoomMap'] = 1;

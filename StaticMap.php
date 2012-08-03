@@ -113,7 +113,7 @@ class StaticMap {
 			)
 	);
 	protected $centerX, $centerY, $offsetX, $offsetY, $image;
-	protected $zoom, $lat, $lon, $width, $height, $markers, $maptype, $kmlFileName, $gpxFileName;
+	protected $zoom, $lat, $lon, $width, $height, $markers, $maptype, $kmlFileName, $gpxFileName, $autoZoomExtent;
 	protected $tileCacheBaseDir, $mapCacheBaseDir, $mediaBaseDir;
 	protected $useTileCache = true;
 	protected $mapCacheID = '';
@@ -122,38 +122,38 @@ class StaticMap {
 
 	/**
 	 * Constructor.
-	 * @param number $lat
-	 * @param number $lon
-	 * @param number $zoom
-	 * @param number $width
-	 * @param number $height
-	 * @param string $maptype
-	 * @param mixed $markers
-	 * @param string $gpx
-	 * @param string $kml
-	 * @param string $mediaDir
-	 * @param string $tileCacheBaseDir
+	 * @param float $lat Latitude (x) of center of map
+	 * @param float $lon Longitude (y) of center of map
+	 * @param int $zoom Zoomlevel
+	 * @param int $width Width in pixels
+	 * @param int $height Height in pixels
+	 * @param string $maptype Name of the map
+	 * @param mixed $markers array of markers
+	 * @param string $gpx GPX filename
+	 * @param string $kml KML filename
+	 * @param string $mediaDir Directory to store/cache maps
+	 * @param string $tileCacheBaseDir Directory to cache map tiles
+	 * @param boolean $autoZoomExtent Wheter or not to override zoom/lat/lon and zoom to the extent of gpx/kml and markers
 	 */
-	public function __construct($lat,$lon,$zoom,$width,$height,$maptype, $markers,$gpx,$kml,$mediaDir,$tileCacheBaseDir){
+	public function __construct($lat, $lon, $zoom, $width, $height, $maptype, $markers, $gpx, $kml, $mediaDir, $tileCacheBaseDir, $autoZoomExtent=TRUE){
 		$this->zoom = $zoom;
 		$this->lat = $lat;
 		$this->lon = $lon;
 		$this->width = $width;
 		$this->height = $height;
-		$this->markers = $markers;
-		$this->mediaBaseDir = $mediaDir;
 		// validate + set maptype
 		$this->maptype = $this->tileDefaultSrc;
 		if(array_key_exists($maptype,$this->tileInfo)) {
 			$this->maptype = $maptype;
 		}
-
+		$this->markers = $markers;
+		$this->kmlFileName = $kml;
+		$this->gpxFileName = $gpx;
+		$this->mediaBaseDir = $mediaDir;
 		$this->tileCacheBaseDir= $tileCacheBaseDir.'/olmaptiles';
 		$this->useTileCache = $this->tileCacheBaseDir !=='';
 		$this->mapCacheBaseDir = $mediaDir.'/olmapmaps';
-
-		$this->kmlFileName = $kml;
-		$this->gpxFileName = $gpx;
+		$this->autoZoomExtent = $autoZoomExtent;
 	}
 
 	/**
@@ -172,7 +172,7 @@ class StaticMap {
 	 * @return number
 	 */
 	public function latToTile($lat, $zoom){
-		return (1 - log(tan($lat * pi()/180) + 1 / cos($lat* pi()/180)) / pi()) /2 * pow(2, $zoom);
+		return (1 - log(tan($lat * pi()/180) + 1 / cos($lat* M_PI/180)) / M_PI) /2 * pow(2, $zoom);
 	}
 
 	/**
@@ -304,7 +304,7 @@ class StaticMap {
 	}
 
 	public function serializeParams(){
-		return join("&",array($this->zoom,$this->lat,$this->lon,$this->width,$this->height, serialize($this->markers),$this->maptype));
+		return join("&",array($this->zoom,$this->lat,$this->lon,$this->width,$this->height, serialize($this->markers),$this->maptype, $this->kmlFileName, $this->gpxFileName));
 	}
 
 	public function mapCacheIDToFilename(){
@@ -313,18 +313,30 @@ class StaticMap {
 		}
 		return $this->mapCacheFile.".".$this->mapCacheExtension;
 	}
-
+	/**
+	 * Recursively create the directory.
+	 * @param string $pathname The directory path.
+	 * @param int $mode File access mode. For more information on modes, read the details on the chmod manpage.
+	 */
 	public function mkdir_recursive($pathname, $mode){
 		is_dir(dirname($pathname)) || $this->mkdir_recursive(dirname($pathname), $mode);
 		return is_dir($pathname) || @mkdir($pathname, $mode);
 	}
 
+	/**
+	 * Write a tile into the cache.
+	 * @param string $url
+	 * @param mixed $data
+	 */
 	public function writeTileToCache($url, $data){
 		$filename = $this->tileUrlToFilename($url);
 		$this->mkdir_recursive(dirname($filename),0777);
 		file_put_contents($filename, $data);
 	}
-
+	/**
+	 * Fetch a tile and (if configured) store it in the cache.
+	 * @param string $url
+	 */
 	public function fetchTile($url){
 		if($this->useTileCache && ($cached = $this->checkTileCache($url))) return $cached;
 		$ch = curl_init();
@@ -353,11 +365,8 @@ class StaticMap {
 	 * Draw kml trace on the map.
 	 */
 	public function drawKML(){
-		// TODO get colour from kml node
+		// TODO get colour from kml node (not currently supported in geoPHP)
 		$col = imagecolorallocatealpha($this->image, 255, 0, 0, .4*127);
-		//	if ($col === FALSE) {
-		//		$col = imagecolorallocate($this->image, 255, 0, 0);
-		//	}
 		$kmlgeom = geoPHP::load(file_get_contents($this->kmlFileName),'kml');
 		$this->drawGeometry($kmlgeom, $col);
 	}
@@ -394,7 +403,7 @@ class StaticMap {
 				$this->drawPoint($geom, $colour);
 				break;
 			default:
-				//do nothing
+				//draw nothing
 				break;
 		}
 	}
@@ -479,30 +488,14 @@ class StaticMap {
 		$textcolor = imagecolorallocate($this->image, 0, 0, 0);
 		$bgcolor = imagecolorallocate($this->image, 200, 200, 200);
 
-		imagecopy($this->image,
-				$logoImg,
-				0,
-				imagesy($this->image)-imagesy($logoImg),
-				0,
-				0,
-				imagesx($logoImg),
-				imagesy($logoImg)
-		);
+		imagecopy($this->image, $logoImg, 0, imagesy($this->image)-imagesy($logoImg), 0, 0, imagesx($logoImg), imagesy($logoImg));
 		imagestring($this->image , 1, imagesx($logoImg)+2 ,imagesy($this->image)-imagesy($logoImg)+1 ,$this->tileInfo['openstreetmap']['txt'], $bgcolor );
 		imagestring($this->image , 1, imagesx($logoImg)+1 ,imagesy($this->image)-imagesy($logoImg) ,$this->tileInfo['openstreetmap']['txt'] ,$textcolor );
 
 		// additional tile source info, ie. who created/hosted the tiles
 		if ($this->maptype!='openstreetmap') {
 			$iconImg = imagecreatefrompng($logoBaseDir.$this->tileInfo[$this->maptype]['logo']);
-			imagecopy($this->image,
-					$iconImg,
-					imagesx($logoImg)+1,
-					imagesy($this->image)-imagesy($iconImg),
-					0,
-					0,
-					imagesx($iconImg),
-					imagesy($iconImg)
-			);
+			imagecopy($this->image, $iconImg, imagesx($logoImg)+1, imagesy($this->image)-imagesy($iconImg), 0, 0, imagesx($iconImg), imagesy($iconImg));
 			imagestring($this->image, 1, imagesx($logoImg)+imagesx($iconImg)+4, imagesy($this->image)-ceil(imagesy($logoImg)/2)+1, $this->tileInfo[$this->maptype]['txt'], $bgcolor );
 			imagestring($this->image, 1, imagesx($logoImg)+imagesx($iconImg)+3, imagesy($this->image)-ceil(imagesy($logoImg)/2), $this->tileInfo[$this->maptype]['txt'], $textcolor );
 		}
@@ -521,10 +514,51 @@ class StaticMap {
 	}
 
 	/**
+	 * Calculate the lat/lon/zoom values to make sure that alle of the markers and gpx/kml are on the map.
+	 * @param float $paddingFactor buffer constant to enlarge (>1.0) the zoom level
+	 */
+	private function autoZoom($paddingFactor=1.0){
+		$geoms = array();
+		if(count($this->markers)){
+			foreach($this->markers as $marker){
+				$geoms[] = new Point($marker['lon'],$marker['lat']);
+			}
+		}
+		if(file_exists($this->kmlFileName)){
+			$geoms[] = geoPHP::load(file_get_contents($this->kmlFileName),'kml');
+		}
+		if(file_exists($this->gpxFileName)) {
+			$geoms[] = geoPHP::load(file_get_contents($this->gpxFileName),'gpx');
+		}
+		if (count($geoms)<1) return;
+		$geom = new GeometryCollection($geoms);
+		$centroid=$geom->centroid();
+		$bbox=$geom->getBBox();
+
+		// determine vertical resolution, this depends on the distance from the equator
+		//	$vy00 = log(tan(M_PI*(0.25 + $centroid->getY()/360)));
+		$vy0 = log(tan(M_PI*(0.25 + $bbox['miny']/360)));
+		$vy1 = log(tan(M_PI*(0.25 + $bbox['maxy']/360)));
+		$zoomFactorPowered = ($this->height/2.0) / (40.7436654315252 * ($vy1 - $vy0));
+		$resolutionVertical = 360 / ($zoomFactorPowered * $this->tileSize);
+		// determine horizontal resolution
+		$resolutionHorizontal = ($bbox['maxx']-$bbox['minx']) / $this->width;
+
+		$resolution = max($resolutionHorizontal, $resolutionVertical) * $paddingFactor;
+		$zoom = log(360 / ($resolution * $this->tileSize), 2);
+
+		$this->zoom = floor($zoom);
+		$this->lon=$centroid->getX();
+		$this->lat=$centroid->getY();
+	}
+
+	/**
 	 * get the map, this may return a reference to a cached copy.
 	 * @return string url relative to media dir
 	 */
 	public function getMap(){
+		if($this->autoZoomExtent) $this->autoZoom() ;
+
 		// use map cache, so check cache for map
 		if(!$this->checkMapCache()){
 			// map is not in cache, needs to be build

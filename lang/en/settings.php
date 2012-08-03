@@ -35,3 +35,4 @@ $lang['enableOSM'] = 'Enable the use of OpenStreetMap as basemap provider';
 $lang['olMapStyle'] = 'Controls style of the map';
 $lang['enableA11y'] = 'Enable a11y/print output (static map, legend table)';
 $lang['optionStaticMapGenerator']='Local or remote static map compiler. <b>Using \'local\' fails when the server can\'t go on the internet.</b>';
+$lang['autoZoomMap'] = 'Enable auto zoom for the map';
