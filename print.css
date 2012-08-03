@@ -22,7 +22,7 @@
 	margin: 1px;
 	padding: 1px;
 	border: 1px solid __border__;
-	width: 99%;
+	width: 100%;
 }
 
 .olPrintOnly {
@@ -34,19 +34,19 @@
 }
 
 .olPOITblHeader {
-
+	
 }
 
 .olPOITblBody {
-
+	
 }
 
 .olPOITblFooter {
-
+	
 }
 
 .olPOItable .rowId {
-
+	
 }
 
 .olPOItable .icon {
@@ -54,15 +54,15 @@
 }
 
 .olPOItable .lat,.olPOItable .lon {
-
+	
 }
 
 .olPOITblCaption {
-
+	
 }
 
 .olPOItable .txt {
-
+	
 }
 
 .olStaticMap { /*?? page-break-inside: auto | avoid | inherit */
@@ -70,4 +70,10 @@
 	/* http://www.w3.org/TR/CSS21/page.html */
 	page-break-before: always;
 	page-break-after: always;
+}
+
+.olStaticMap p img {
+	min-width: 100%;
+	max-width: 100%;
+	height: auto;
 }
