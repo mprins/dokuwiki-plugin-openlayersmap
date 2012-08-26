@@ -346,7 +346,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$maptype='map';
 				break;
 		}
-		$imgUrl = "http://open.mapquestapi.com/staticmap/v3/getmap?declutter=true&";
+		$imgUrl = "http://open.mapquestapi.com/staticmap/v4/getmap?declutter=true&";
 		if (count($overlay)< 1){
 			$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
 			//max level for mapquest is 16
