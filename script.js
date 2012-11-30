@@ -301,10 +301,10 @@ function createMap(mapOpts, OLmapPOI) {
 	if (mqEnable) {
 		m.addLayer(new OpenLayers.Layer.OSM("mapquest road",
 				[
-						"http://otile1.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png",
-						"http://otile2.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png",
-						"http://otile3.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png",
-						"http://otile4.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.png" ],
+						"http://otile1.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.jpg",
+						"http://otile2.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.jpg",
+						"http://otile3.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.jpg",
+						"http://otile4.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.jpg" ],
 				{
 					transitionEffect : "resize",
 					attribution : 'Data CC-By-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
@@ -319,10 +319,10 @@ function createMap(mapOpts, OLmapPOI) {
 		// Levels 12+ are provided only in the United States (lower 48).
 		m.addLayer(new OpenLayers.Layer.OSM("mapquest sat",
 				[
-						"http://oatile1.mqcdn.com/naip/${z}/${x}/${y}.jpg",
-						"http://oatile2.mqcdn.com/naip/${z}/${x}/${y}.jpg",
-						"http://oatile3.mqcdn.com/naip/${z}/${x}/${y}.jpg",
-						"http://oatile4.mqcdn.com/naip/${z}/${x}/${y}.jpg" ],
+						"http://otile1.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+						"http://otile2.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+						"http://otile3.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+						"http://otile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg" ],
 				{
 					transitionEffect : "resize",
 					attribution : 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>'
