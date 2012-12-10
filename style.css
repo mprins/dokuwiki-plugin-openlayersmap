@@ -24,6 +24,16 @@
 	max-width: none;
 }
 
+/* GMaps should not set styles on its container */
+.olForeignContainer {
+	opacity: 1 !important;
+}
+
+/* Prevent tile scaling on Android 4 when d-pad keys are pressed */
+.olMapViewport > div > * {
+	outline-width: 0;
+}
+
 .olImageLoadError {
 	background-color: transparent !important;
 	display: none !important;
