@@ -46,7 +46,9 @@
 
 /* on some browsers the outline is partly hidden by the .olContainer; this way we work around that.*/
 .olMap:focus {
-	outline-style: double;
+	outline-style: solid;
+	outline-width: 1px;
+	outline-offset: 1px;
 }
 
 .olStatusBarContainer {
@@ -428,6 +430,7 @@ a.olAccesskey {
 a.olAccesskey:focus {
 	color: __text__ !important;
 }
+
 #olmap_purgeform p{
 	text-align: left;
 }
