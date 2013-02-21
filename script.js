@@ -301,10 +301,10 @@ function createMap(mapOpts, OLmapPOI) {
 	if (mqEnable) {
 		m.addLayer(new OpenLayers.Layer.OSM("mapquest road",
 				[
-						"http://otile1.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.jpg",
-						"http://otile2.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.jpg",
-						"http://otile3.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.jpg",
-						"http://otile4.mqcdn.com/tiles/1.0.0/osm/${z}/${x}/${y}.jpg" ],
+						"http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
+						"http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
+						"http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
+						"http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg" ],
 				{
 					transitionEffect : "resize",
 					attribution : 'Data CC-By-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
