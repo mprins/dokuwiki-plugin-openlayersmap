@@ -76,7 +76,7 @@ class StaticMap {
 			'mapquest'=>array(
 					'txt'=>'MapQuest tiles',
 					'logo'=>'mq_logo.png',
-					'url'=>'http://otile3.mqcdn.com/tiles/1.0.0/osm/{Z}/{X}/{Y}.png')
+					'url'=>'http://otile3.mqcdn.com/tiles/1.0.0/map/{Z}/{X}/{Y}.png')
 	);
 	protected $tileDefaultSrc = 'openstreetmap';
 
