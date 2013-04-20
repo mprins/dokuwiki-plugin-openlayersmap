@@ -581,7 +581,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		if (!$my = &plugin_load('helper', 'openlayersmap_staticmap')){
 			dbglog($my,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: openlayersmap_staticmap plugin is not available.');
 		}
-		if (!$geophp = &plugin_load('helper', 'openlayersmap_staticmap')){
+		if (!$geophp = &plugin_load('helper', 'geophp')){
 			dbglog($geophp,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: geophp plugin is not available.');
 		}
 

@@ -62,8 +62,9 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin {
 	/** add a snippet of javascript into the head to do a css operation we can check for lateron.*/
 	function insertCSSSniffer(Doku_Event &$event, $param) {
 		$event->data["script"][] = array (
-                     "type" => "text/javascript",
-                     "_data" => "document.documentElement.className += ' olCSSsupported';",
+						"type" => "text/javascript",
+						"charset" => "utf-8",
+						"_data" => "document.documentElement.className += ' olCSSsupported';",
 		);
 	}
 }
