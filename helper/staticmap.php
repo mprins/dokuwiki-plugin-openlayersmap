@@ -24,9 +24,16 @@ require_once DOKU_PLUGIN.'openlayersmap/StaticMap.php';
  * @author Mark Prins
  */
 class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
+	/** maximum width of the resulting image. */
 	private $maxWidth = 1024;
+	/** maximum heigth of the resulting image. */
 	private $maxHeight = 1024;
 
+	/**
+	 * Provide metadata of the public methods of this class.
+	 *
+	 * @return array Information to all provided methods.
+	 */
 	function getMethods(){
 		$result = array();
 		$result[] = array(
@@ -61,7 +68,7 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 	 */
 	public function getMap($lat, $lon, $zoom, $size, $maptype, $markers, $gpx, $kml){
 		global $conf;
-		dbglog($markers,'helper_plugin_openlayersmap_staticmap::getMap: markers :');
+		// dbglog($markers,'helper_plugin_openlayersmap_staticmap::getMap: markers :');
 
 		// normalize zoom
 		$zoom = $zoom?intval($zoom):0;
@@ -72,11 +79,12 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 		if($width > $this->maxWidth) $width = $this->maxWidth;
 		$height = intval($height);
 		if($height > $this->maxHeight) $height = $this->maxHeight;
+
 		// cleanup/validate gpx/kml
 		$kml = $this->mediaIdToPath($kml);
-		dbglog($kml,'helper_plugin_openlayersmap_staticmap::getMap: kml file:');
+		// dbglog($kml,'helper_plugin_openlayersmap_staticmap::getMap: kml file:');
 		$gpx = $this->mediaIdToPath($gpx);
-		dbglog($gpx,'helper_plugin_openlayersmap_staticmap::getMap: gpx file:');
+		// dbglog($gpx,'helper_plugin_openlayersmap_staticmap::getMap: gpx file:');
 
 		// create map
 		$map = new StaticMap($lat, $lon, $zoom, $width, $height, $maptype, $markers, $gpx, $kml,
