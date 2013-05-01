@@ -95,6 +95,9 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 
 		// return the media id url
 		$mediaId = str_replace('/', ':',  $map->getMap());
+		// 	if($this->startsWith($mediaId,':')) {
+		// 		$mediaId = substr($mediaId, 1);
+		// 	}
 		return $mediaId;
 	}
 

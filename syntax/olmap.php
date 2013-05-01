@@ -44,10 +44,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			'summary'	=> ''
 	);
 
-	private $usingLocalStaticMap = false;
-
 	/**
-	 * (non-PHPdoc)
 	 * @see DokuWiki_Syntax_Plugin::getType()
 	 */
 	function getType() {
@@ -55,7 +52,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	}
 
 	/**
-	 * (non-PHPdoc)
 	 * @see DokuWiki_Syntax_Plugin::getPType()
 	 */
 	function getPType() {
@@ -63,21 +59,20 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	}
 
 	/**
-	 * (non-PHPdoc)
 	 * @see Doku_Parser_Mode::getSort()
 	 */
 	function getSort() {
 		return 901;
 	}
+	
 	/**
-	 * (non-PHPdoc)
 	 * @see Doku_Parser_Mode::connectTo()
 	 */
 	function connectTo($mode) {
 		$this->Lexer->addSpecialPattern('<olmap ?[^>\n]*>.*?</olmap>', $mode, 'plugin_openlayersmap_olmap');
 	}
+	
 	/**
-	 * (non-PHPdoc)
 	 * @see DokuWiki_Syntax_Plugin::handle()
 	 */
 	function handle($match, $state, $pos, &$handler) {
@@ -91,6 +86,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 		$gmap = $this->_extract_params($str_params);
 		$overlay = $this->_extract_points($str_points);
+		$_firstimageID ='';
 
 		// choose maptype based on tag
 		$imgUrl = "{{";
@@ -112,17 +108,18 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$imgUrl .=$this->_getMapQuest($gmap,$overlay);
 				$imgUrl .="&.png";
 			} else{
-				$imgUrl .=$this->_getStaticOSM($gmap,$overlay);
+				$_firstimageID = $this->_getStaticOSM($gmap,$overlay);
+				$imgUrl .= $_firstimageID;
 			}
 		} else {
-			$imgUrl .=$this->_getStaticOSM($gmap,$overlay);
+			$_firstimageID = $this->_getStaticOSM($gmap,$overlay);
+			$imgUrl .= $_firstimageID;
 		}
 
 		// append dw p_render specific params and render
 		$imgUrl .="?".str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
 		$imgUrl .= "&nolink";
 		$imgUrl .= " |".$gmap['summary']." }}";
-		$imgUrl=p_render("xhtml", p_get_instructions($imgUrl), $info);
 
 		$mapid = $gmap['id'];
 		// create a javascript parameter string for the map
@@ -145,48 +142,51 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$rowId++;
 				$poi .= ", {lat: $lat, lon: $lon, txt: '$text', angle: $angle, opacity: $opacity, img: '$img', rowId: $rowId}";
 				$poitable .='
-				<tr>
-				<td class="rowId">'.$rowId.'</td>
-				<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/icons/'.$img.'" alt="icon" /></td>
-				<td class="lat" title="'.$this->getLang('olmapPOIlatTitle').'">'.$lat.'</td>
-				<td class="lon" title="'.$this->getLang('olmapPOIlonTitle').'">'.$lon.'</td>
-				<td class="txt">'.$text.'</td>
-				</tr>';
+						<tr>
+						<td class="rowId">'.$rowId.'</td>
+								<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/icons/'.$img.'" alt="icon" /></td>
+										<td class="lat" title="'.$this->getLang('olmapPOIlatTitle').'">'.$lat.'</td>
+												<td class="lon" title="'.$this->getLang('olmapPOIlonTitle').'">'.$lon.'</td>
+														<td class="txt">'.$text.'</td>
+																</tr>';
 			}
 			$poi = substr($poi, 2);
 		}
 		if (!empty ($gmap['kmlfile'])) {
 			$poitable .='
-			<tr>
-			<td class="rowId"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/kml_file.png" alt="KML icon" /></td>
-			<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/kml_line.png" alt="icon" /></td>
-			<td class="txt" colspan="3">KML track: '.$this->getFileName($gmap['kmlfile']).'</td>
-			</tr>';
+					<tr>
+					<td class="rowId"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/kml_file.png" alt="KML icon" /></td>
+							<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/kml_line.png" alt="icon" /></td>
+									<td class="txt" colspan="3">KML track: '.$this->getFileName($gmap['kmlfile']).'</td>
+											</tr>';
 		}
 		if (!empty ($gmap['gpxfile'])) {
 			$poitable .='
-			<tr>
-			<td class="rowId"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/gpx_file.png" alt="GPX icon" /></td>
-			<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/gpx_line.png" alt="icon" /></td>
-			<td class="txt" colspan="3">GPX track: '.$this->getFileName($gmap['gpxfile']).'</td>
-			</tr>';
+					<tr>
+					<td class="rowId"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/gpx_file.png" alt="GPX icon" /></td>
+							<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/gpx_line.png" alt="icon" /></td>
+									<td class="txt" colspan="3">GPX track: '.$this->getFileName($gmap['gpxfile']).'</td>
+											</tr>';
 		}
 
 		$js .= "{mapOpts:{" . $param . " },poi:[$poi]};";
 		// unescape the json
 		$poitable = stripslashes($poitable);
 
-		return array($mapid,$js,$mainLat,$mainLon,$poitable,$gmap['summary'],$imgUrl);
+		return array($mapid,$js,$mainLat,$mainLon,$poitable,$gmap['summary'],$imgUrl,$_firstimageID);
 	}
 
 	/**
-	 * (non-PHPdoc)
 	 * @see DokuWiki_Syntax_Plugin::render()
 	 */
 	function render($mode, &$renderer, $data) {
-		static $initialised = false; // set to true after script initialisation
-		static $mapnumber = 0; // incremented for each map tag in the page source
-		list ($mapid, $param, $mainLat, $mainLon, $poitable, $poitabledesc, $staticImgUrl) = $data;
+		// set to true after external scripts tags are written
+		static $initialised = false; 
+		// incremented for each map tag in the page source so we can keep track of each map in a page
+		static $mapnumber = 0; 
+		
+		// dbglog($data, 'olmap::render() data.');
+		list ($mapid, $param, $mainLat, $mainLon, $poitable, $poitabledesc, $staticImgUrl, $_firstimage) = $data;
 
 		if ($mode == 'xhtml') {
 			$olscript = '';
@@ -203,7 +203,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$initialised = true;
 				// render necessary script tags
 				if($gEnable){
-					$gscript ='<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.8&amp;sensor=false"></script>';
+					$gscript ='<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.11&amp;sensor=false"></script>';
 				}
 				$olscript = $this->getConf('olScriptUrl');
 				$olscript = $olscript ? '<script type="text/javascript" src="' . $olscript . '"></script>' : "";
@@ -223,40 +223,69 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$gscript
 			$olscript
 			$scriptEnable";
+			
 			if ($this->getConf('enableA11y')){
-				$renderer->doc .= '<div id="'.$mapid.'-static" class="olStaticMap">'.$staticImgUrl.'</div>';
+				$renderer->doc .= '<div id="'.$mapid.'-static" class="olStaticMap">'.p_render($mode, p_get_instructions($staticImgUrl), $info).'</div>';
 			}
 			$renderer->doc .= '<div id="'.$mapid.'-clearer" class="clearer"><p>&nbsp;</p></div>';
 			if ($this->getConf('enableA11y')){
 				// render a (initially hidden) table of the POI for the print and a11y presentation
 				$renderer->doc .= '<div class="olPOItableSpan" id="'.$mapid.'-table-span"><table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
-				<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
-				<thead class="olPOITblHeader">
-				<tr>
-				<th class="rowId" scope="col">id</th>
-				<th class="icon" scope="col">'.$this->getLang('olmapPOIicon').'</th>
-				<th class="lat" scope="col" title="'.$this->getLang('olmapPOIlatTitle').'">'.$this->getLang('olmapPOIlat').'</th>
-				<th class="lon" scope="col" title="'.$this->getLang('olmapPOIlonTitle').'">'.$this->getLang('olmapPOIlon').'</th>
-				<th class="txt" scope="col">'.$this->getLang('olmapPOItxt').'</th>
-				</tr>
-				</thead>';
+						<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
+								<thead class="olPOITblHeader">
+								<tr>
+								<th class="rowId" scope="col">id</th>
+								<th class="icon" scope="col">'.$this->getLang('olmapPOIicon').'</th>
+										<th class="lat" scope="col" title="'.$this->getLang('olmapPOIlatTitle').'">'.$this->getLang('olmapPOIlat').'</th>
+												<th class="lon" scope="col" title="'.$this->getLang('olmapPOIlonTitle').'">'.$this->getLang('olmapPOIlon').'</th>
+														<th class="txt" scope="col">'.$this->getLang('olmapPOItxt').'</th>
+																</tr>
+																</thead>';
 				if ($poitabledesc !=''){
 					$renderer->doc .='<tfoot class="olPOITblFooter"><tr><td colspan="5">'.$poitabledesc.'</td></tr></tfoot>';
 				}
 				$renderer->doc .='<tbody class="olPOITblBody">'.$poitable.'</tbody>
-				</table></div>';
+						</table></div>';
 			}
-			// render inline mapscript
+			// render inline mapscript parts
 			$renderer->doc .="\n		<script type='text/javascript'><!--//--><![CDATA[//><!--\n";
 			$renderer->doc .="		olMapData[$mapnumber] = $param
 			//--><!]]></script>";
 			$mapnumber++;
 			return true;
 		} elseif ($mode == 'metadata') {
-			if (!(($this->dflt['lat']==$mainLat)||($thisdflt['lon']==$mainLon))){
-				// render metadata if available, unless they are the default
+			if (!(($this->dflt['lat']==$mainLat) && ($thisdflt['lon']==$mainLon))){
+				// render geo metadata, unless they are the default
 				$renderer->meta['geo']['lat'] = $mainLat;
 				$renderer->meta['geo']['lon'] = $mainLon;
+				if ($geophp = &plugin_load('helper', 'geophp')){
+					// if we have the geoPHP helper, add the geohash
+					$renderer->meta['geo']['geohash'] = (new Point($mainLon,$mainLat))->out('geohash');
+				}
+			}
+				
+			if(($this->getConf('enableA11y')) && (!empty($_firstimage))){
+				// add map local image into relation/firstimage if not already filled and when it is a local image
+
+				//$metaresult = p_render($mode, p_get_instructions($staticImgUrl), $info);
+				//dbglog($metaresult,'olmap::render#rendering image relation metadata for metaresult');
+				//dbglog($info,'olmap::render#rendering info');
+
+				global $ID;
+				$rel = p_get_metadata($ID, 'relation', METADATA_RENDER_USING_CACHE);
+				$img = $rel['firstimage'];
+				if(empty($img)){
+					dbglog($_firstimage,'olmap::render#rendering image relation metadata for _firstimage');
+					// TODO this seems to never work; the firstimage entry in the .meta file is empty
+					$renderer->meta['relation']['firstimage'] = $_firstimage;
+					// but this works fine
+					// $renderer->meta['relation']['test_firstimage'] = $_firstimage;
+					
+					// TODO and neither does this; the firstimage entry in the .meta file is empty
+					// $relation = array('relation'=>array('firstimage'=>$_firstimage));
+					// dbglog($relation,'olmap::render#rendering image relation metadata for relation');
+					// p_set_metadata($ID, $relation, false, false);
+				}
 			}
 			return true;
 		}
@@ -376,7 +405,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$imgUrl = substr($imgUrl,0,-1);
 		}
 		$imgUrl .= "&imageType=png&type=".$maptype;
-		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getMapQuest: MapQuest image url is:');
+		//dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getMapQuest: MapQuest image url is:');
 		return $imgUrl;
 	}
 
@@ -428,7 +457,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		$imgUrl .= "&format=png&maptype=".$maptype;
 		global $conf;
 		$imgUrl .= "&language=".$conf['lang'];
-		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getGoogle: Google image url is:');
+		//dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getGoogle: Google image url is:');
 		return $imgUrl;
 	}
 
@@ -485,7 +514,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$imgUrl .= "&pp=$lat,$lon;$iconStyle;$rowId";
 			}
 		}
-		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getBing: bing image url is:');
+		//dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getBing: bing image url is:');
 		return $imgUrl;
 	}
 
@@ -502,14 +531,15 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		// &markers=48.999812532766,8.3593749976708,lightblue1|43.154850037315,17.499999997306,lightblue1|49.487527053077,10.820312497573,ltblu-pushpin|47.951071133739,15.917968747369,ol-marker|47.921629720114,18.027343747285,ol-marker-gold|47.951071133739,19.257812497236,ol-marker-blue|47.180141361692,19.257812497236,ol-marker-green
 		global $conf;
 
-		switch ( $this->getConf('optionStaticMapGenerator')){
+		switch ($this->getConf('optionStaticMapGenerator')){
 			case 'local':
-				$imgUrl =$conf['baseurl']."/lib/plugins/openlayersmap/staticmap/map.php";
+				// TODO this is not ever used see below..
+				$imgUrl =$conf['baseurl']."/lib/plugins/openlayersmap/StaticMap.php";
 				$imgUrl .= '?kml='.$gmap['kmlfile'];
 				$imgUrl .= '&gpx='.$gmap['gpxfile'];
 				break;
 			case 'remote':
-				// fall through
+				// fall through to default
 			default:
 				$imgUrl = "http://staticmap.openstreetmap.de/staticmap.php";
 				break;
@@ -591,7 +621,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$result = $my->getMap($gmap['lat'],$gmap['lon'],$gmap['zoom'],$size,$maptype,$markers,$gmap['gpxfile'],$gmap['kmlfile']);
 		}
 
-		dbglog($result,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: osm image url is:');
+		//dbglog($result,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: osm image url is:');
 		return $result;
 	}
 
