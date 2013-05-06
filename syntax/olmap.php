@@ -23,7 +23,7 @@ require_once (DOKU_PLUGIN . 'syntax.php');
  * Provides for display of an OpenLayers based map in a wiki page.
  *
  * @author Mark Prins
- */
+*/
 class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 	/** defaults of the known attributes of the olmap tag. */
@@ -46,7 +46,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 	/**
 	 * @see DokuWiki_Syntax_Plugin::getType()
-	 */
+	*/
 	function getType() {
 		return 'substition';
 	}
@@ -64,14 +64,14 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	function getSort() {
 		return 901;
 	}
-	
+
 	/**
 	 * @see Doku_Parser_Mode::connectTo()
 	 */
 	function connectTo($mode) {
 		$this->Lexer->addSpecialPattern('<olmap ?[^>\n]*>.*?</olmap>', $mode, 'plugin_openlayersmap_olmap');
 	}
-	
+
 	/**
 	 * @see DokuWiki_Syntax_Plugin::handle()
 	 */
@@ -181,10 +181,10 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	 */
 	function render($mode, &$renderer, $data) {
 		// set to true after external scripts tags are written
-		static $initialised = false; 
+		static $initialised = false;
 		// incremented for each map tag in the page source so we can keep track of each map in a page
-		static $mapnumber = 0; 
-		
+		static $mapnumber = 0;
+
 		// dbglog($data, 'olmap::render() data.');
 		list ($mapid, $param, $mainLat, $mainLon, $poitable, $poitabledesc, $staticImgUrl, $_firstimage) = $data;
 
@@ -209,7 +209,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$olscript = $olscript ? '<script type="text/javascript" src="' . $olscript . '"></script>' : "";
 				$olscript = str_replace('DOKU_BASE/', DOKU_BASE, $olscript);
 
-				$scriptEnable = '<script type="text/javascript"><!--//--><![CDATA[//><!--' . "\n";
+				$scriptEnable = '<script type="text/javascript" charset="utf-8">/*<![CDATA[*/';
 				$scriptEnable .= $olscript ? 'olEnable = true;' : 'olEnable = false;';
 				$scriptEnable .= 'gEnable = '.($gEnable ? 'true' : 'false').';';
 				$scriptEnable .= 'osmEnable = '.($osmEnable ? 'true' : 'false').';';
@@ -217,13 +217,13 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$scriptEnable .= 'bEnable = '.($enableBing ? 'true' : 'false').';';
 				$scriptEnable .= 'bApiKey="'.$this->getConf('bingAPIKey').'";';
 				$scriptEnable .= 'OpenLayers.ImgPath = "'.DOKU_BASE.'lib/plugins/openlayersmap/lib/'.$this->getConf('olMapStyle').'/";';
-				$scriptEnable .= "\n" . '//--><!]]></script>';
+				$scriptEnable .= '/*!]]>*/</script>';
 			}
 			$renderer->doc .= "
 			$gscript
 			$olscript
 			$scriptEnable";
-			
+
 			if ($this->getConf('enableA11y')){
 				$renderer->doc .= '<div id="'.$mapid.'-static" class="olStaticMap">'.p_render($mode, p_get_instructions($staticImgUrl), $info).'</div>';
 			}
@@ -231,26 +231,25 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			if ($this->getConf('enableA11y')){
 				// render a (initially hidden) table of the POI for the print and a11y presentation
 				$renderer->doc .= '<div class="olPOItableSpan" id="'.$mapid.'-table-span"><table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
-						<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
-								<thead class="olPOITblHeader">
-								<tr>
-								<th class="rowId" scope="col">id</th>
-								<th class="icon" scope="col">'.$this->getLang('olmapPOIicon').'</th>
-										<th class="lat" scope="col" title="'.$this->getLang('olmapPOIlatTitle').'">'.$this->getLang('olmapPOIlat').'</th>
-												<th class="lon" scope="col" title="'.$this->getLang('olmapPOIlonTitle').'">'.$this->getLang('olmapPOIlon').'</th>
-														<th class="txt" scope="col">'.$this->getLang('olmapPOItxt').'</th>
-																</tr>
-																</thead>';
+<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
+<thead class="olPOITblHeader">
+<tr>
+<th class="rowId" scope="col">id</th>
+<th class="icon" scope="col">'.$this->getLang('olmapPOIicon').'</th>
+<th class="lat" scope="col" title="'.$this->getLang('olmapPOIlatTitle').'">'.$this->getLang('olmapPOIlat').'</th>
+<th class="lon" scope="col" title="'.$this->getLang('olmapPOIlonTitle').'">'.$this->getLang('olmapPOIlon').'</th>
+<th class="txt" scope="col">'.$this->getLang('olmapPOItxt').'</th>
+</tr>
+</thead>';
 				if ($poitabledesc !=''){
 					$renderer->doc .='<tfoot class="olPOITblFooter"><tr><td colspan="5">'.$poitabledesc.'</td></tr></tfoot>';
 				}
 				$renderer->doc .='<tbody class="olPOITblBody">'.$poitable.'</tbody>
-						</table></div>';
+</table></div>';
 			}
 			// render inline mapscript parts
-			$renderer->doc .="\n		<script type='text/javascript'><!--//--><![CDATA[//><!--\n";
-			$renderer->doc .="		olMapData[$mapnumber] = $param
-			//--><!]]></script>";
+			$renderer->doc .='<script type="text/javascript" charset="utf-8">/*<![CDATA[*/';
+			$renderer->doc .=" olMapData[$mapnumber] = $param /*!]]>*/</script>";
 			$mapnumber++;
 			return true;
 		} elseif ($mode == 'metadata') {
@@ -263,28 +262,24 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					$renderer->meta['geo']['geohash'] = (new Point($mainLon,$mainLat))->out('geohash');
 				}
 			}
-				
+
 			if(($this->getConf('enableA11y')) && (!empty($_firstimage))){
 				// add map local image into relation/firstimage if not already filled and when it is a local image
-
-				//$metaresult = p_render($mode, p_get_instructions($staticImgUrl), $info);
-				//dbglog($metaresult,'olmap::render#rendering image relation metadata for metaresult');
-				//dbglog($info,'olmap::render#rendering info');
 
 				global $ID;
 				$rel = p_get_metadata($ID, 'relation', METADATA_RENDER_USING_CACHE);
 				$img = $rel['firstimage'];
-				if(empty($img)){
-					dbglog($_firstimage,'olmap::render#rendering image relation metadata for _firstimage');
-					// TODO this seems to never work; the firstimage entry in the .meta file is empty
-					$renderer->meta['relation']['firstimage'] = $_firstimage;
-					// but this works fine
-					// $renderer->meta['relation']['test_firstimage'] = $_firstimage;
-					
-					// TODO and neither does this; the firstimage entry in the .meta file is empty
+				if(empty($img) /* || $img == $_firstimage*/){
+					dbglog($_firstimage,'olmap::render#rendering image relation metadata for _firstimage as $img was empty or the same.');
+					// This seems to never work; the firstimage entry in the .meta file is empty
+					// $renderer->meta['relation']['firstimage'] = $_firstimage;
+
+					// ... and neither does this; the firstimage entry in the .meta file is empty
 					// $relation = array('relation'=>array('firstimage'=>$_firstimage));
-					// dbglog($relation,'olmap::render#rendering image relation metadata for relation');
 					// p_set_metadata($ID, $relation, false, false);
+
+					// ... this works
+					$renderer->internalmedia($_firstimage, $poitabledesc);
 				}
 			}
 			return true;
