@@ -87,9 +87,8 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 		// dbglog($gpx,'helper_plugin_openlayersmap_staticmap::getMap: gpx file:');
 
 		// create map
-		$map = new StaticMap($lat, $lon, $zoom, $width, $height, $maptype, $markers, $gpx, $kml,
-				$conf['mediadir'],
-				$conf['cachedir'],
+		$map = new StaticMap($lat, $lon, $zoom, $width, $height, $maptype,
+				$markers, $gpx, $kml, $conf['mediadir'], $conf['cachedir'],
 				$this->getConf('autoZoomMap')
 		);
 

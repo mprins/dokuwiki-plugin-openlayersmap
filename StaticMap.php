@@ -1,6 +1,6 @@
 <?php
 /*
-* Copyright (c) 2012 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2012 Mark C. Prins <mprins@users.sf.net>
 *
 * In part based on staticMapLite 0.03 available at http://staticmaplite.svn.sourceforge.net/viewvc/staticmaplite/
 *
@@ -23,7 +23,7 @@ include_once(realpath(dirname(__FILE__)).'/../geophp/geoPHP/geoPHP.inc');
  * @author Mark C. Prins <mprins@users.sf.net>
  * @author Gerhard Koch <gerhard.koch AT ymail.com>
  *
- */
+*/
 class StaticMap {
 	// these should probably not be changed
 	protected $tileSize = 256;
@@ -110,7 +110,7 @@ class StaticMap {
 					'shadow'=>'marker_shadow.png',
 					'offsetImage'=>'-8,-8',
 					'offsetShadow'=>'-1,-1'
-			)
+							)
 	);
 	protected $centerX, $centerY, $offsetX, $offsetY, $image;
 	protected $zoom, $lat, $lon, $width, $height, $markers, $maptype, $kmlFileName, $gpxFileName, $autoZoomExtent;
@@ -268,11 +268,11 @@ class StaticMap {
 			// copy shadow on basemap
 			if($markerShadow && $markerShadowImg){
 				imagecopy($this->image, $markerShadowImg, $destX+intval($markerShadowOffsetX), $destY+intval($markerShadowOffsetY),
-						0, 0, imagesx($markerShadowImg), imagesy($markerShadowImg));
+				0, 0, imagesx($markerShadowImg), imagesy($markerShadowImg));
 			}
 			// copy marker on basemap above shadow
 			imagecopy($this->image, $markerImg, $destX+intval($markerImageOffsetX), $destY+intval($markerImageOffsetY),
-					0, 0, imagesx($markerImg), imagesy($markerImg));
+			0, 0, imagesx($markerImg), imagesy($markerImg));
 			// add label
 			imagestring ($this->image , 3 , $destX-imagesx($markerImg)+1 , $destY+intval($markerImageOffsetY)+1 , ++$count , $bgcolor );
 			imagestring ($this->image , 3 , $destX-imagesx($markerImg) , $destY+intval($markerImageOffsetY) , $count , $color );
@@ -425,7 +425,7 @@ class StaticMap {
 			$x2 = floor(($this->width/2)-$this->tileSize*($this->centerX-$this->lonToTile($p2->x(), $this->zoom)));
 			$y2 = floor(($this->height/2)-$this->tileSize*($this->centerY-$this->latToTile($p2->y(), $this->zoom)));
 			// draw to image
-			imageline ( $this->image, $x1, $y1, $x2, $y2, $colour);
+			imageline ($this->image, $x1, $y1, $x2, $y2, $colour);
 		}
 		imagesetthickness($this->image,1);
 	}
@@ -531,6 +531,7 @@ class StaticMap {
 			$geoms[] = geoPHP::load(file_get_contents($this->gpxFileName),'gpx');
 		}
 		if (count($geoms)<1) return;
+
 		$geom = new GeometryCollection($geoms);
 		$centroid=$geom->centroid();
 		$bbox=$geom->getBBox();
@@ -539,11 +540,10 @@ class StaticMap {
 		//	$vy00 = log(tan(M_PI*(0.25 + $centroid->getY()/360)));
 		$vy0 = log(tan(M_PI*(0.25 + $bbox['miny']/360)));
 		$vy1 = log(tan(M_PI*(0.25 + $bbox['maxy']/360)));
-		$zoomFactorPowered = ($this->height/2.0) / (40.7436654315252 * ($vy1 - $vy0));
+		$zoomFactorPowered = ($this->height/2) / (40.7436654315252 * ($vy1 - $vy0));
 		$resolutionVertical = 360 / ($zoomFactorPowered * $this->tileSize);
 		// determine horizontal resolution
 		$resolutionHorizontal = ($bbox['maxx']-$bbox['minx']) / $this->width;
-
 		$resolution = max($resolutionHorizontal, $resolutionVertical) * $paddingFactor;
 		$zoom = log(360 / ($resolution * $this->tileSize), 2);
 

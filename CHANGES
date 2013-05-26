@@ -1,6 +1,6 @@
 === version 3.1-SNAPSHOT ===
-  - use OpenLayers 2.13-dev
-  - improvements in the static map generator
+  - use OpenLayers 2.13-rc4
+  - improvements and bugfixes in the static map generator
   - upgrade the google api
 
 === version 3.0 ===

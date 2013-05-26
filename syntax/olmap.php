@@ -114,6 +114,9 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		} else {
 			$_firstimageID = $this->_getStaticOSM($gmap,$overlay);
 			$imgUrl .= $_firstimageID;
+			if($this->getConf('optionStaticMapGenerator')=='remote'){
+				$imgUrl .="&.png";
+			}
 		}
 
 		// append dw p_render specific params and render
@@ -526,94 +529,90 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		// &markers=48.999812532766,8.3593749976708,lightblue1|43.154850037315,17.499999997306,lightblue1|49.487527053077,10.820312497573,ltblu-pushpin|47.951071133739,15.917968747369,ol-marker|47.921629720114,18.027343747285,ol-marker-gold|47.951071133739,19.257812497236,ol-marker-blue|47.180141361692,19.257812497236,ol-marker-green
 		global $conf;
 
-		switch ($this->getConf('optionStaticMapGenerator')){
-			case 'local':
-				// TODO this is not ever used see below..
-				$imgUrl =$conf['baseurl']."/lib/plugins/openlayersmap/StaticMap.php";
-				$imgUrl .= '?kml='.$gmap['kmlfile'];
-				$imgUrl .= '&gpx='.$gmap['gpxfile'];
-				break;
-			case 'remote':
-				// fall through to default
-			default:
-				$imgUrl = "http://staticmap.openstreetmap.de/staticmap.php";
-				break;
-		}
-
-		$imgUrl .= "&center=".$gmap['lat'].",".$gmap['lon'];
-		$imgUrl .= "&size=".str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
-		$size =str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
-
-		if ($gmap['zoom']>16) {
-			// actually this could even be 18, but that seems overkill
-			$imgUrl .= "&zoom=16";
-		} else {
-			$imgUrl .= "&zoom=".$gmap['zoom'];
-		}
-
-		switch ($gmap['baselyr']){
-			case 'mapnik':
-			case 'openstreetmap':
-				$maptype='openstreetmap';
-				break;
-			case 'transport':
-				$maptype='transport';
-				break;
-			case 'landscape':
-				$maptype='landscape';
-				break;
-			case 'cycle map':
-				$maptype='cycle';
-				break;
-			case 'cloudmade':
-				$maptype='cloudmade';
-				break;
-			case 'cloudmade fresh':
-				$maptype='fresh';
-				break;
-			case 'hike and bike map':
-				$maptype='hikeandbike';
-				break;
-			case 'mapquest hybrid':
-			case 'mapquest road':
-			case 'mapquest sat':
-				$maptype='mapquest';
-				break;
-			default:
-				$maptype='';
-				break;
-		}
-		$imgUrl .= "&maptype=".$maptype;
-
-		$markers='';
-		if (!empty ($overlay)) {
-			$rowId=0;
-			$imgUrl .= "&markers=";
-			foreach ($overlay as $data) {
-				list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
-				$rowId++;
-				if ($this->getConf('optionStaticMapGenerator')=='remote') $iconStyle = "lightblue$rowId";
-				if ($this->getConf('optionStaticMapGenerator')=='local') $iconStyle = substr($img, 0,strlen($img)-4);
-				$imgUrl .= "$lat,$lon,$iconStyle%7c";
-				$markers[] = array(
-						'lat'=>$lat,
-						'lon'=>$lon,
-						'type'=>$iconStyle);
-			}
-			$imgUrl = substr($imgUrl,0,-3);
-		}
-
-		if (!$my = &plugin_load('helper', 'openlayersmap_staticmap')){
-			dbglog($my,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: openlayersmap_staticmap plugin is not available.');
-		}
-		if (!$geophp = &plugin_load('helper', 'geophp')){
-			dbglog($geophp,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: geophp plugin is not available.');
-		}
-
-		// default to external provider
-		$result= $imgUrl;
 		if ($this->getConf('optionStaticMapGenerator')=='local') {
-			$result = $my->getMap($gmap['lat'],$gmap['lon'],$gmap['zoom'],$size,$maptype,$markers,$gmap['gpxfile'],$gmap['kmlfile']);
+			if (!$my = &plugin_load('helper', 'openlayersmap_staticmap')){
+				dbglog($my,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: openlayersmap_staticmap plugin is not available.');
+			}
+			if (!$geophp = &plugin_load('helper', 'geophp')){
+				dbglog($geophp,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: geophp plugin is not available.');
+			}
+			$size = str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
+
+			$markers='';
+			if (!empty ($overlay)) {
+				foreach ($overlay as $data) {
+					list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
+					$iconStyle = substr($img, 0, strlen($img)-4);
+					$markers[] = array(
+							'lat'=>$lat,
+							'lon'=>$lon,
+							'type'=>$iconStyle);
+				}
+			}			
+			
+			$result = $my->getMap($gmap['lat'], $gmap['lon'], $gmap['zoom'],
+					$size, $maptype, $markers, $gmap['gpxfile'], $gmap['kmlfile']);
+		} else {
+			// default to external provider
+			$imgUrl = "http://staticmap.openstreetmap.de/staticmap.php";
+			$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
+			$imgUrl .= "&size=".str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
+				
+				
+			if ($gmap['zoom']>16) {
+				// actually this could even be 18, but that seems overkill
+				$imgUrl .= "&zoom=16";
+			} else {
+				$imgUrl .= "&zoom=".$gmap['zoom'];
+			}
+				
+			switch ($gmap['baselyr']){
+				case 'mapnik':
+				case 'openstreetmap':
+					$maptype='openstreetmap';
+					break;
+				case 'transport':
+					$maptype='transport';
+					break;
+				case 'landscape':
+					$maptype='landscape';
+					break;
+				case 'cycle map':
+					$maptype='cycle';
+					break;
+				case 'cloudmade':
+					$maptype='cloudmade';
+					break;
+				case 'cloudmade fresh':
+					$maptype='fresh';
+					break;
+				case 'hike and bike map':
+					$maptype='hikeandbike';
+					break;
+				case 'mapquest hybrid':
+				case 'mapquest road':
+				case 'mapquest sat':
+					$maptype='mapquest';
+					break;
+				default:
+					$maptype='';
+					break;
+			}
+			$imgUrl .= "&maptype=".$maptype;
+				
+			if (!empty ($overlay)) {
+				$rowId=0;
+				$imgUrl .= "&markers=";
+				foreach ($overlay as $data) {
+					list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
+					$rowId++;
+					$iconStyle = "lightblue$rowId";
+					$imgUrl .= "$lat,$lon,$iconStyle%7c";
+				}
+				$imgUrl = substr($imgUrl,0,-3);
+			}
+
+			$result = $imgUrl;
 		}
 
 		//dbglog($result,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: osm image url is:');
