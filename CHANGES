@@ -1,7 +1,8 @@
 === version 3.1-SNAPSHOT ===
-  - use OpenLayers 2.13-rc4
+  - use OpenLayers 2.13-rc5
   - improvements and bugfixes in the static map generator
   - upgrade the google api
+  - add orange style
 
 === version 3.0 ===
   - A local static map generator was added. Note that this requires php-curl and the geophp plugin.
