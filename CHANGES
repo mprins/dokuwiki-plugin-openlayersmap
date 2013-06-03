@@ -3,6 +3,7 @@
   - improvements and bugfixes in the static map generator
   - upgrade the google api
   - add orange style
+  - drop cUrl requirement by enabling fall-back to file_get_contents
 
 === version 3.0 ===
   - A local static map generator was added. Note that this requires php-curl and the geophp plugin.

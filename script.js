@@ -122,11 +122,12 @@ function olTestCSSsupport() {
  */
 function olCreateMaptag(mapid, width, height) {
 	// TODO: use OpenLayers.i18n()
-	var mEl = '<div><a class="olAccesskey" href="" accesskey="1" onclick="document.getElementById(&quot;' + mapid + '&quot;).focus(); return false;" title="Activate map">Activate map</a></div>'
-			+ '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">'
+	var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">'
 			+ '<div id="' + mapid + '-olToolbar" class="olToolbar"></div>'
 			+ '<div class="clearer"></div>'
-			+ '<div id="' + mapid + '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap"></div>'
+			+ '<div id="' + mapid + '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap">'
+			+ '<a class="olAccesskey" href="" accesskey="1" onclick="document.getElementById(&quot;' + mapid + '&quot;).focus(); return false;" title="Activate map">Activate map</a>'
+			+ '</div>'
 			+ '<div id="' + mapid + '-olStatusBar" style="width:' + width + ';"class="olStatusBarContainer">'
 			+ '<div id="' + mapid + '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>'
 			+ '<div id="' + mapid + '-statusbar-link" class="olStatusBar olStatusBarPermalink">'

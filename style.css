@@ -424,10 +424,14 @@
 }
 
 a.olAccesskey {
+	position: absolute;
+	top: -9999em;
 	color: __background__ !important;
 }
 
-a.olAccesskey:focus {
+a.olAccesskey:focus, a.olAccesskey:hover {
+	position: relative;
+	top: 0;
 	color: __text__ !important;
 }
 
