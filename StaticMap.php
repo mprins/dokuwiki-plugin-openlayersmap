@@ -228,7 +228,7 @@ class StaticMap {
 		$bgcolor=imagecolorallocate ($this->image,200,200,200 );
 		$markerBaseDir = dirname(__FILE__).'/icons';
 		// loop thru marker array
-		foreach($this->markers as $marker){
+		foreach($this->markers as $marker) {
 			// set some local variables
 			$markerLat = $marker['lat'];
 			$markerLon = $marker['lon'];
@@ -339,13 +339,33 @@ class StaticMap {
 	 */
 	public function fetchTile($url){
 		if($this->useTileCache && ($cached = $this->checkTileCache($url))) return $cached;
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; DokuWikiSpatial HTTP Client; '.PHP_OS.')');
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-		curl_setopt($ch, CURLOPT_URL, $url);
-		$tile = curl_exec($ch);
-		curl_close($ch);
+
+		$_UA = 'Mozilla/4.0 (compatible; DokuWikiSpatial HTTP Client; '.PHP_OS.')';
+		if(function_exists("curl_init")){
+			// use cUrl
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_USERAGENT, $_UA);
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+			curl_setopt($ch, CURLOPT_URL, $url);
+			$tile = curl_exec($ch);
+			curl_close($ch);
+		} else {
+			// use file_get_contents
+			global $conf;
+			$opts = array(
+					'http'=>array(
+							'method'=>"GET",
+							'header'=>"Accept-language: en\r\n" .
+									"User-Agent: $_UA\r\n".
+									"accept: image/png\r\n",
+							'proxy' => "tcp://".$conf['proxy']['host'] . ":" . $conf['proxy']['port'],
+							'request_fulluri' => true,
+					)
+			);
+			$context = stream_context_create($opts);
+			$tile = file_get_contents($url, false, $context);
+		}
 		if($tile && $this->useTileCache){
 			$this->writeTileToCache($url,$tile);
 		}
@@ -507,19 +527,20 @@ class StaticMap {
 	public function makeMap(){
 		$this->initCoords();
 		$this->createBaseMap();
-		if(count($this->markers))$this->placeMarkers();
+		if(!empty($this->markers))$this->placeMarkers();
 		if(file_exists($this->kmlFileName)) $this->drawKML();
 		if(file_exists($this->gpxFileName)) $this->drawGPX();
 		$this->drawCopyright();
 	}
 
 	/**
-	 * Calculate the lat/lon/zoom values to make sure that alle of the markers and gpx/kml are on the map.
+	 * Calculate the lat/lon/zoom values to make sure that all of the markers and gpx/kml are on the map.
 	 * @param float $paddingFactor buffer constant to enlarge (>1.0) the zoom level
 	 */
 	private function autoZoom($paddingFactor=1.0){
 		$geoms = array();
-		if(count($this->markers)){
+		$geoms[] = new Point($this->lon, $this->lat);
+		if(!empty($this->markers)){
 			foreach($this->markers as $marker){
 				$geoms[] = new Point($marker['lon'],$marker['lat']);
 			}
@@ -530,7 +551,7 @@ class StaticMap {
 		if(file_exists($this->gpxFileName)) {
 			$geoms[] = geoPHP::load(file_get_contents($this->gpxFileName),'gpx');
 		}
-		if (count($geoms)<1) return;
+		if (count($geoms)<=1) return;
 
 		$geom = new GeometryCollection($geoms);
 		$centroid=$geom->centroid();
