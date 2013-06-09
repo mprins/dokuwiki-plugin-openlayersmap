@@ -41,6 +41,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			'baselyr'	=> 'OpenStreetMap',
 			'gpxfile'	=> '',
 			'kmlfile'	=> '',
+			'geojsonfile'=> '',
 			'summary'	=> ''
 	);
 
@@ -169,6 +170,14 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					<td class="rowId"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/gpx_file.png" alt="GPX icon" /></td>
 							<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/gpx_line.png" alt="icon" /></td>
 									<td class="txt" colspan="3">GPX track: '.$this->getFileName($gmap['gpxfile']).'</td>
+											</tr>';
+		}
+		if (!empty ($gmap['geojsonfile'])) {
+			$poitable .='
+					<tr>
+					<td class="rowId"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/geojson_file.png" alt="KML icon" /></td>
+							<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/geojson_line.png" alt="icon" /></td>
+									<td class="txt" colspan="3">GeoJSON track: '.$this->getFileName($gmap['geojsonfile']).'</td>
 											</tr>';
 		}
 
@@ -553,7 +562,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			}			
 			
 			$result = $my->getMap($gmap['lat'], $gmap['lon'], $gmap['zoom'],
-					$size, $maptype, $markers, $gmap['gpxfile'], $gmap['kmlfile']);
+					$size, $maptype, $markers, $gmap['gpxfile'], $gmap['kmlfile'], $gmap['geojsonfile']);
 		} else {
 			// default to external provider
 			$imgUrl = "http://staticmap.openstreetmap.de/staticmap.php";

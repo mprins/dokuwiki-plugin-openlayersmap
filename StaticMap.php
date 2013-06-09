@@ -113,7 +113,7 @@ class StaticMap {
 							)
 	);
 	protected $centerX, $centerY, $offsetX, $offsetY, $image;
-	protected $zoom, $lat, $lon, $width, $height, $markers, $maptype, $kmlFileName, $gpxFileName, $autoZoomExtent;
+	protected $zoom, $lat, $lon, $width, $height, $markers, $maptype, $kmlFileName, $gpxFileName, $geojsonFileName, $autoZoomExtent;
 	protected $tileCacheBaseDir, $mapCacheBaseDir, $mediaBaseDir;
 	protected $useTileCache = true;
 	protected $mapCacheID = '';
@@ -135,7 +135,7 @@ class StaticMap {
 	 * @param string $tileCacheBaseDir Directory to cache map tiles
 	 * @param boolean $autoZoomExtent Wheter or not to override zoom/lat/lon and zoom to the extent of gpx/kml and markers
 	 */
-	public function __construct($lat, $lon, $zoom, $width, $height, $maptype, $markers, $gpx, $kml, $mediaDir, $tileCacheBaseDir, $autoZoomExtent=TRUE){
+	public function __construct($lat, $lon, $zoom, $width, $height, $maptype, $markers, $gpx, $kml, $geojson, $mediaDir, $tileCacheBaseDir, $autoZoomExtent=TRUE){
 		$this->zoom = $zoom;
 		$this->lat = $lat;
 		$this->lon = $lon;
@@ -149,6 +149,7 @@ class StaticMap {
 		$this->markers = $markers;
 		$this->kmlFileName = $kml;
 		$this->gpxFileName = $gpx;
+		$this->geojsonFileName = $geojson;
 		$this->mediaBaseDir = $mediaDir;
 		$this->tileCacheBaseDir= $tileCacheBaseDir.'/olmaptiles';
 		$this->useTileCache = $this->tileCacheBaseDir !=='';
@@ -304,7 +305,7 @@ class StaticMap {
 	}
 
 	public function serializeParams(){
-		return join("&",array($this->zoom,$this->lat,$this->lon,$this->width,$this->height, serialize($this->markers),$this->maptype, $this->kmlFileName, $this->gpxFileName));
+		return join("&",array($this->zoom,$this->lat,$this->lon,$this->width,$this->height, serialize($this->markers),$this->maptype, $this->kmlFileName, $this->gpxFileName, $this->geojsonFileName));
 	}
 
 	public function mapCacheIDToFilename(){
@@ -381,6 +382,15 @@ class StaticMap {
 		$this->drawGeometry($gpxgeom, $col);
 	}
 
+
+	/**
+	 * Draw geojson on the map.
+	 */
+	public function drawGeojson(){
+		$col = imagecolorallocatealpha($this->image, 255, 0, 255, .4*127);
+		$gpxgeom = geoPHP::load(file_get_contents($this->geojsonFileName),'json');
+		$this->drawGeometry($gpxgeom, $col);
+	}
 	/**
 	 * Draw kml trace on the map.
 	 */
@@ -530,6 +540,8 @@ class StaticMap {
 		if(!empty($this->markers))$this->placeMarkers();
 		if(file_exists($this->kmlFileName)) $this->drawKML();
 		if(file_exists($this->gpxFileName)) $this->drawGPX();
+		if(file_exists($this->geojsonFileName)) $this->drawGeojson();
+		
 		$this->drawCopyright();
 	}
 
@@ -551,6 +563,10 @@ class StaticMap {
 		if(file_exists($this->gpxFileName)) {
 			$geoms[] = geoPHP::load(file_get_contents($this->gpxFileName),'gpx');
 		}
+		if(file_exists($this->geojsonFileName)) {
+			$geoms[] = geoPHP::load(file_get_contents($this->geojsonFileName),'geojson');
+		}
+		
 		if (count($geoms)<=1) return;
 
 		$geom = new GeometryCollection($geoms);

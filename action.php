@@ -44,7 +44,7 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin {
 	function insert_button(Doku_Event &$event, $param) {
 		$strOpen ='<olmap id="olMapOne" width="550px" height="450px" lat="50.0" ';
 		$strOpen.='lon="5.1" zoom="12" statusbar="1" toolbar="1" controls="1" poihoverstyle="0" ';
-		$strOpen.='baselyr="OpenStreetMap" gpxfile="" kmlfile="" summary="" >\n';
+		$strOpen.='baselyr="OpenStreetMap" gpxfile="" kmlfile="" geojsonfile="" summary="" >\n';
 		$strOpen.='~~ Plugin olmap help.\n';
 		$strOpen.='~~ Required in the above tag are values for: id (unique on this page), width, heigth.\n';
 		$strOpen.='~~ Also you will want to enter zoomlevel and lat, lon values that make sense for where you want the map to start.\n\n';

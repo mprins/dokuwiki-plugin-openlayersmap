@@ -46,7 +46,8 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 						'maptype' => 'string',
 						'markers' => 'string',
 						'gpx' => 'string',
-						'kml' => 'string'),
+						'kml' => 'string',
+						'geojson' => 'string'),
 				'return' => array('image' => 'string'),
 		);
 		return $result;
@@ -63,10 +64,11 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 	 * @param mixed markers associative array of markers, array('lat'=>$lat,'lon'=>$lon,'type'=>$iconStyle), eg. array(	'lat'=>40.702147,	'lon'=>-74.015794,	'type'=>lightblue1);
 	 * @param string gpx media link
 	 * @param string kml media link
+	 * @param string geojson media link
 	 *
 	 * @return the media id url
 	 */
-	public function getMap($lat, $lon, $zoom, $size, $maptype, $markers, $gpx, $kml){
+	public function getMap($lat, $lon, $zoom, $size, $maptype, $markers, $gpx, $kml, $geojson){
 		global $conf;
 		// dbglog($markers,'helper_plugin_openlayersmap_staticmap::getMap: markers :');
 
@@ -85,10 +87,11 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 		// dbglog($kml,'helper_plugin_openlayersmap_staticmap::getMap: kml file:');
 		$gpx = $this->mediaIdToPath($gpx);
 		// dbglog($gpx,'helper_plugin_openlayersmap_staticmap::getMap: gpx file:');
-
+		$geojson = $this->mediaIdToPath($geojson);
+		
 		// create map
 		$map = new StaticMap($lat, $lon, $zoom, $width, $height, $maptype,
-				$markers, $gpx, $kml, $conf['mediadir'], $conf['cachedir'],
+				$markers, $gpx, $kml, $geojson, $conf['mediadir'], $conf['cachedir'],
 				$this->getConf('autoZoomMap')
 		);
 
