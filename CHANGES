@@ -1,11 +1,11 @@
-=== version 3.1-SNAPSHOT ===
-  - use OpenLayers 2.13-rc7
-  - improvements and bugfixes in the static map generator
-  - upgrade the google api
-  - add orange style
-  - drop cUrl requirement by enabling fall-back to file_get_contents
-  - add support for GeoJSON
+=== version 3.1*SNAPSHOT ===
+  * use OpenLayers 2.13-rc7
+  * improvements and bugfixes in the static map generator
+  * upgrade the google api
+  * add orange style
+  * drop cUrl requirement by enabling fall-back to file_get_contents
+  * add support for GeoJSON
 
 === version 3.0 ===
-  - A local static map generator was added. Note that this requires php-curl and the geophp plugin.
-  - A management interface for the static map generator was added
+  * A local static map generator was added. Note that this requires php-curl and the geophp plugin.
+  * A management interface for the static map generator was added
