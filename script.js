@@ -248,7 +248,7 @@ function createMap(mapOpts, OLmapPOI) {
 				"http://c.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png" ], {
 			transitionEffect : "resize",
 			attribution : 'Tiles &copy; 2012 <a target="_blank" href="http://cloudmade.com">CloudMade</a>'
-					+ '<img src="http://cloudmade.com/favicon.ico" alt="CloudMade logo"/>'
+					+ '<img src="http://cloudmade.com/sites/default/files/favicon.ico" alt="CloudMade logo"/>'
 					+ ' Data CC-BY-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>',
 			visibility : mapOpts.baselyr === "cloudmade map",
 			tileOptions : {
@@ -261,7 +261,7 @@ function createMap(mapOpts, OLmapPOI) {
 				"http://c.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/${z}/${x}/${y}.png" ], {
 			transitionEffect : "resize",
 			attribution : 'Tiles &copy; 2012 <a target="_blank" href="http://cloudmade.com">CloudMade</a>'
-					+ '<img src="http://cloudmade.com/favicon.ico" alt="CloudMade logo"/>'
+					+ '<img src="http://cloudmade.com/sites/default/files/favicon.ico" alt="CloudMade logo"/>'
 					+ ' Data CC-BY-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>',
 			visibility : mapOpts.baselyr === "cloudmade fresh",
 			tileOptions : {
