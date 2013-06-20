@@ -15,24 +15,22 @@
  */
 
 /**
+ * Class: OpenLayersMap.Layer.MapQuest This layer allows accessing MapQuest
+ * tiles and provides attribution.
+ * 
  * @requires OpenLayers/Layer/OSM.js
- */
-
-/**
- * Class: OpenLayersMap.Layer.MapQuest 
- * This layer allows accessing MapQuest tiles.
  * 
  * Inherits from: - <OpenLayers.Layer.OSM>
  */
 OpenLayersMap.Layer.MapQuest = OpenLayers.Class(OpenLayers.Layer.OSM, {
 
 	/**
-	 * APIProperty: name {String} The layer name.
+	 * The layer name.
 	 */
 	name : "mapquest road",
 
 	/**
-	 * APIProperty: url {String} The tileset URL scheme.
+	 * The tileset URL scheme.
 	 */
 	url : [ "http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
 			"http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
@@ -40,9 +38,9 @@ OpenLayersMap.Layer.MapQuest = OpenLayers.Class(OpenLayers.Layer.OSM, {
 			"http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg" ],
 
 	/**
-	 * Property: attribution {String} The layer attribution.
+	 * The layer attribution.
 	 */
-	attribution : 'Data CC-By-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
+	attribution : 'Data ODbL <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
 			+ 'Tiles <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>'
 			+ '<img src="http://developer.mapquest.com/content/osm/mq_logo.png" alt="MapQuest logo"/>',
 
@@ -50,15 +48,8 @@ OpenLayersMap.Layer.MapQuest = OpenLayers.Class(OpenLayers.Layer.OSM, {
 		crossOriginKeyword : null
 	},
 
-	transitionEffect : "resize",
-
 	initialize : function(name, url, options) {
 		OpenLayers.Layer.OSM.prototype.initialize.apply(this, arguments);
-		/*
-		this.tileOptions = OpenLayers.Util.extend({
-			crossOriginKeyword : 'anonymous'
-		}, this.options && this.options.tileOptions);
-		*/
 	},
 
 	CLASS_NAME : "OpenLayersMap.Layer.MapQuest"
