@@ -1,0 +1,56 @@
+/*
+ * Copyright (c) 2013 Mark C. Prins <mprins@users.sf.net>
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+ 
+/* Zoom control */
+div.olControlZoom {
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	background: rgba(255, 255, 255, 0.2);
+	padding: 2px;
+	@include border-radius(4px);
+}
+
+div.olControlZoom a {
+	display: block;
+	margin: 1px;
+	padding: 0;
+	color: white;
+	font-size: 18px;
+	font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	text-decoration: none;
+	text-align: center;
+	height: 22px;
+	width: 22px;
+	line-height: 19px;
+	background: #130085; /* fallback for IE - IE6 requires background shorthand*/
+	background: rgba(0, 60, 136, 0.8);
+	filter: alpha(opacity = 80);
+	&:hover	{
+		background: #130085; /* fallback for IE */
+		background: rgba(0, 60, 136, 0.7);
+		filter: alpha(opacity = 100);
+	}
+}
+
+a.olControlZoomIn {
+	@include border-top-radius(4px);
+}
+
+a.olControlZoomOut {
+	@include border-bottom-radius(4px);
+}
