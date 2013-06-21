@@ -125,12 +125,14 @@ function olCreateMaptag(mapid, width, height) {
 			+ '<a class="olAccesskey" href="" accesskey="1" onclick="document.getElementById(&quot;' + mapid
 			+ '&quot;).focus(); return false;" title="Activate map">Activate map</a>' + '</div>' + '<div id="' + mapid
 			+ '-olStatusBar" style="width:' + width + ';"class="olStatusBarContainer">' + '<div id="' + mapid
-			+ '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>' 
-			//+ '<div id="' + mapid	+ '-statusbar-link" class="olStatusBar olStatusBarPermalink">'  
-			//+ '<a href="" id="' + mapid + '-statusbar-link-ref">link</a></div>' 
-			+ '<div id="' + mapid + '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>' + '<div id="' + mapid
-			+ '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>' + '<div id="' + mapid
-			+ '-statusbar-text" class="olStatusBar olStatusBarText">txt</div>' + '</div></div>',
+			+ '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>'
+			// + '<div id="' + mapid + '-statusbar-link" class="olStatusBar
+			// olStatusBarPermalink">'
+			// + '<a href="" id="' + mapid +
+			// '-statusbar-link-ref">link</a></div>'
+			+ '<div id="' + mapid + '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>'
+			+ '<div id="' + mapid + '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>'
+			+ '<div id="' + mapid + '-statusbar-text" class="olStatusBar olStatusBarText">txt</div>' + '</div></div>',
 	// fragment
 	frag = document.createDocumentFragment(),
 	// temp node
@@ -188,18 +190,15 @@ function createMap(mapOpts, OLmapPOI) {
 		projection : 'EPSG:900913',
 		displayProjection : new OpenLayers.Projection("EPSG:4326"),
 		numZoomLevels : 22,
-		controls : [ new OpenLayers.Control.KeyboardDefaults({
-			observeElement : mapOpts.id
-		}), new OpenLayers.Control.Navigation(), new OpenLayers.Control.ScaleLine({
-			geodesic : true
-		}), /* new OpenLayers.Control.ArgParser() */],
-		theme : null
+		controls : [],
+		theme : null,
+		tileManager : new OpenLayers.TileManager()
 	});
 
 	if (osmEnable) {
 		/* add OSM map layers */
 		m.addLayer(new OpenLayers.Layer.OSM("OpenStreetMap", null, {
-			transitionEffect : "resize",
+			// transitionEffect : "resize",
 			visibility : mapOpts.baselyr === "OpenStreetMap"
 		}));
 
@@ -207,71 +206,59 @@ function createMap(mapOpts, OLmapPOI) {
 				"http://a.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
 				"http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
 				"http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png" ], {
-			transitionEffect : "resize",
-			attribution : 'Data CC-By-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
-					+ 'Tiles <a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
+			// transitionEffect : "resize",
+			attribution : 'Data &copy;ODbL <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
+					+ 'Tiles &copy;<a href="http://opencyclemap.org/copyright" target="_blank">OpenCycleMap</a>'
 					+ '<img src="http://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
 			visibility : mapOpts.baselyr === "transport",
 			tileOptions : {
 				crossOriginKeyword : null
 			}
 		}));
-		m.addLayer(new OpenLayers.Layer.OSM("landscape", [
-				"http://a.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
-				"http://b.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
-				"http://c.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png" ], {
-			transitionEffect : "resize",
-			attribution : 'Data CC-By-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
-					+ 'Tiles <a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
-					+ '<img src="http://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
-			visibility : mapOpts.baselyr === "transport",
-			tileOptions : {
-				crossOriginKeyword : null
-			}
-		}));
-		m.addLayer(new OpenLayers.Layer.OSM("cycle map", [ "http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-				"http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-				"http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png" ], {
-			transitionEffect : "resize",
-			attribution : 'Data CC-By-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
-					+ 'Tiles <a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
-					+ '<img src="http://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
-			visibility : mapOpts.baselyr === "cycle map",
-			tileOptions : {
-				crossOriginKeyword : null
-			}
-		}));
-		// CloudMade Fine Line
-		m.addLayer(new OpenLayers.Layer.OSM("cloudmade map", [
-				"http://a.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png",
-				"http://b.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png",
-				"http://c.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png" ], {
-			transitionEffect : "resize",
-			attribution : 'Tiles &copy; 2012 <a target="_blank" href="http://cloudmade.com">CloudMade</a>'
-					+ '<img src="http://cloudmade.com/sites/default/files/favicon.ico" alt="CloudMade logo"/>'
-					+ ' Data CC-BY-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>',
-			visibility : mapOpts.baselyr === "cloudmade map",
-			tileOptions : {
-				crossOriginKeyword : null
-			}
-		}));
-		m.addLayer(new OpenLayers.Layer.OSM("cloudmade fresh", [
+		m
+				.addLayer(new OpenLayers.Layer.OSM(
+						"landscape",
+						[ "http://a.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
+								"http://b.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
+								"http://c.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png" ],
+						{
+							// transitionEffect : "resize",
+							attribution : 'Data &copy;ODbL <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
+									+ 'Tiles &copy;<a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
+									+ '<img src="http://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
+							visibility : mapOpts.baselyr === "transport",
+							tileOptions : {
+								crossOriginKeyword : null
+							}
+						}));
+		m
+				.addLayer(new OpenLayers.Layer.OSM(
+						"cycle map",
+						[ "http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+								"http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+								"http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png" ],
+						{
+							// transitionEffect : "resize",
+							attribution : 'Data &copy;ODbL <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
+									+ 'Tiles &copy;<a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
+									+ '<img src="http://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
+							visibility : mapOpts.baselyr === "cycle map",
+							tileOptions : {
+								crossOriginKeyword : null
+							}
+						}));
+
+		m.addLayer(new OpenLayersMap.Layer.CloudMade());
+		m.addLayer(new OpenLayersMap.Layer.CloudMade("cloudmade fresh", [
 				"http://a.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/${z}/${x}/${y}.png",
 				"http://b.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/${z}/${x}/${y}.png",
 				"http://c.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/${z}/${x}/${y}.png" ], {
-			transitionEffect : "resize",
-			attribution : 'Tiles &copy; 2012 <a target="_blank" href="http://cloudmade.com">CloudMade</a>'
-					+ '<img src="http://cloudmade.com/sites/default/files/favicon.ico" alt="CloudMade logo"/>'
-					+ ' Data CC-BY-SA <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>',
-			visibility : mapOpts.baselyr === "cloudmade fresh",
-			tileOptions : {
-				crossOriginKeyword : null
-			}
+			visibility : mapOpts.baselyr === "cloudmade fresh"
 		}));
 
 		m.addLayer(new OpenLayers.Layer.OSM(
 				"hike and bike map", "http://toolserver.org/tiles/hikebike/${z}/${x}/${y}.png", {
-					transitionEffect : "resize",
+					// transitionEffect : "resize",
 					visibility : mapOpts.baselyr === "hike and bike map",
 					tileOptions : {
 						crossOriginKeyword : null
@@ -292,10 +279,9 @@ function createMap(mapOpts, OLmapPOI) {
 			// note that global coverage is provided at zoom levels 0-11. Zoom
 			// Levels 12+ are provided only in the United States (lower 48).
 			numZoomLevels : 12,
-			tileOptions : {
-				crossOriginKeyword : null
-			}
+			visibility : mapOpts.baselyr === "mapquest sat"
 		}));
+
 	}
 
 	if (gEnable) {
@@ -340,7 +326,7 @@ function createMap(mapOpts, OLmapPOI) {
 				key : bApiKey,
 				type : "Road",
 				name : "bing road",
-				transitionEffect : "resize",
+				// transitionEffect : "resize",
 				visibility : mapOpts.baselyr === "bing road",
 				wrapDateLine : true,
 				attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
@@ -351,7 +337,7 @@ function createMap(mapOpts, OLmapPOI) {
 				key : bApiKey,
 				type : "Aerial",
 				name : "bing sat",
-				transitionEffect : "resize",
+				// transitionEffect : "resize",
 				visibility : mapOpts.baselyr === "bing sat",
 				wrapDateLine : true,
 				attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
@@ -362,7 +348,7 @@ function createMap(mapOpts, OLmapPOI) {
 				key : bApiKey,
 				type : "AerialWithLabels",
 				name : "bing hybrid",
-				transitionEffect : "resize",
+				// transitionEffect : "resize",
 				visibility : mapOpts.baselyr === "bing hybrid",
 				wrapDateLine : true,
 				attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
@@ -385,25 +371,23 @@ function createMap(mapOpts, OLmapPOI) {
 		m.setBaseLayer(m.layers[0]);
 	}
 
+	m.addControls([ new OpenLayers.Control.ScaleLine({
+		geodesic : true
+	}), new OpenLayers.Control.KeyboardDefaults({
+		observeElement : mapOpts.id
+	}), new OpenLayers.Control.Navigation(), ]);
+
 	if (mapOpts.controls === 1) {
 		/* add base controls to map */
-		m.addControl(new OpenLayers.Control.LayerSwitcher());
-		m.addControl(new OpenLayers.Control.PanZoomBar());
-		m.addControl(new OpenLayers.Control.Graticule({
+		m.addControls([ new OpenLayers.Control.LayerSwitcher(), new OpenLayers.Control.Graticule({
 			visible : false
-		}));
-		m.addControl(new OpenLayers.Control.OverviewMap({
-			size : new OpenLayers.Size(140, 140),
-			minRectSize : 10
-		}));
-		// m.addControl(OpenLayersMap.Control.OverviewMap());
+		}), new OpenLayersMap.Control.OverviewMap(), new OpenLayers.Control.PanZoomBar() ]);
 
 		// add hillshade, since this is off by default only add when we have a
 		// layerswitcher
 		m.addLayer(new OpenLayers.Layer.OSM("Hillshade", "http://toolserver.org/~cmarqu/hill/${z}/${x}/${y}.png", {
-			transitionEffect : "resize",
-			isBaseLayer : false, // false
-			transparent : true, // true
+			isBaseLayer : false,
+			transparent : true,
 			visibility : false,
 			displayOutsideMaxExtent : true,
 			attribution : '',
@@ -415,8 +399,9 @@ function createMap(mapOpts, OLmapPOI) {
 
 	if (mapOpts.statusbar === 1) {
 		// statusbar control: permalink
-		// m.addControl(new OpenLayers.Control.Permalink(mapOpts.id + '-statusbar-link-ref'));
-		
+		// m.addControl(new OpenLayers.Control.Permalink(mapOpts.id +
+		// '-statusbar-link-ref'));
+
 		// statusbar control: mouse pos.
 		m.addControl(new OpenLayers.Control.MousePosition({
 			'div' : OpenLayers.Util.getElement(mapOpts.id + '-statusbar-mouseposition')
@@ -437,20 +422,20 @@ function createMap(mapOpts, OLmapPOI) {
 		// add buttons + panel
 		var /* zoom in btn */
 		zoomin = new OpenLayers.Control.ZoomBox({
-			title : "Zoom in"
+			title : OpenLayers.i18n("zoom_in")
 		}), /* zoom out btn */
 		zoomout = new OpenLayers.Control.ZoomBox({
 			out : true,
-			title : "Zoom uit",
+			title : OpenLayers.i18n("zoom_out"),
 			displayClass : "olControlZoomOut"
 		}), /* pan btn */
 		pan = new OpenLayers.Control.DragPan({
-			title : "Verschuif"
+			title : OpenLayers.i18n("move")
 		}), /* do "nothing" button... */
 		info = new OpenLayers.Control.Button({
 			type : OpenLayers.Control.TYPE_TOOL,
 			displayClass : "olControlFeatureInfo",
-			title : "Info"
+			title : OpenLayers.i18n("info")
 		}), /* navigation history btns */
 		nav = new OpenLayers.Control.NavigationHistory();
 		m.addControl(nav);

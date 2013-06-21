@@ -1,0 +1,146 @@
+/*
+ * Copyright (c) 2013 Mark C. Prins <mprins@users.sf.net>
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
+/* 
+ * Common and OpenLayers bahaviour. 
+ */
+.olControlNoSelect {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.olCursorWait {
+	cursor: wait;
+}
+
+.olDragDown {
+	cursor: move;
+}
+
+.olDrawBox {
+	cursor: crosshair;
+}
+
+.olCursorQuery {
+	cursor: help;
+}
+
+.olMap {
+	border-top: 1px solid __border__;
+	cursor: default;
+}
+
+/* on some browsers the outline is partly hidden by the .olContainer; this way we work around that.*/
+.olMap:focus {
+	outline-style: solid;
+	outline-width: 1px;
+	outline-offset: 1px;
+}
+
+.olImageLoadError {
+	background-color: transparent !important;
+	display: none !important;
+}
+
+.olContainer {
+	border: 1px solid __border__;
+	background-color: __background_neu__;
+	width: auto;
+	float: left;
+}
+/* work around a case of style reset, setting it on the container breaks the overview map. See: http://www.dokuwiki.org/plugin:openlayersmap?rev=1329438681&do=diff */
+.olContainer img {
+	max-width: none;
+}
+
+/* GMaps should not set styles on its container */
+.olForeignContainer {
+	opacity: 1 !important;
+}
+
+/* Prevent tile scaling on Android 4 when d-pad keys are pressed */
+.olMapViewport>div>* {
+	outline-width: 0;
+}
+
+.olHandlerBoxZoomBox {
+	border: 2px solid #9900FF;
+	position: absolute;
+	background-color: #9900FF;
+	font-size: 1px;
+	opacity: 0.50;
+	/*IE specific */
+	filter: alpha(opacity =   50);
+	border-bottom-color: #6B00B3;
+	border-right-color: #6B00B3;
+	border-top-color: #C266FF;
+	border-left-color: #C266FF;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: 2px 2px 2px #000;
+	-webkit-box-shadow: 2px 2px 2px #000;
+	box-shadow: 2px 2px 2px #000;
+}
+
+.olPOItableSpan {
+	display: inline;
+}
+
+.olPOItable {
+	margin: 1px;
+	padding: 1px;
+	border: 1px solid __border__;
+	width: 99%;
+}
+
+.olPrintOnly {
+	display: none;
+}
+
+.olWebOnly {
+	display: inline;
+}
+
+.olPOItable .icon {
+	text-align: center;
+}
+
+.olStaticMap {
+	
+}
+
+.olLayerGrid .olTileImage {
+	-webkit-transition: opacity 0.2s linear;
+	-moz-transition: opacity 0.2s linear;
+	-o-transition: opacity 0.2s linear;
+	transition: opacity 0.2s linear;
+}
+
+a.olAccesskey {
+	position: absolute;
+	top: -9999em;
+	color: __background__ !important;
+}
+
+a.olAccesskey:focus,a.olAccesskey:hover {
+	position: relative;
+	top: 0;
+	color: __text__ !important;
+}

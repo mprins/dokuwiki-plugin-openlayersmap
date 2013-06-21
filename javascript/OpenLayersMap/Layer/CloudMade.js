@@ -15,41 +15,41 @@
  */
 
 /**
- * This layer allows accessing MapQuest tiles and provides attribution.
+ * This layer allows accessing CloudMade tiles and provides attribution, by
+ * default it provides CloudMade Fine Line tiles.
  * 
- * @class OpenLayersMap.Layer.MapQuest
+ * @class OpenLayersMap.Layer.CloudMade
  * @requires OpenLayers/Layer/OSM.js
  * @author mprins
  */
-OpenLayersMap.Layer.MapQuest = OpenLayers.Class(OpenLayers.Layer.OSM, {
+OpenLayersMap.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.OSM, {
 
 	/**
 	 * The layer name.
 	 */
-	name : "mapquest road",
+	name : "cloudmade map",
 
 	/**
 	 * The tileset URL scheme.
 	 */
-	url : [ "http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-			"http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-			"http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-			"http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg" ],
+	url : [ "http://a.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png",
+			"http://b.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png",
+			"http://c.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png" ],
 
 	/**
 	 * The layer attribution.
 	 */
-	attribution : 'Data ODbL <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
-			+ 'Tiles <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>'
-			+ '<img src="http://developer.mapquest.com/content/osm/mq_logo.png" alt="MapQuest logo"/>',
+	attribution : 'Tiles &copy; 2013 <a target="_blank" href="http://cloudmade.com">CloudMade</a>'
+			+ '<img src="http://cloudmade.com/sites/default/files/favicon.ico" alt="CloudMade logo"/>'
+			+ ' Data ODbL <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
 
 	/**
 	 * @constructor
 	 */
 	initialize : function(name, url, options) {
 		OpenLayers.Layer.OSM.prototype.initialize.apply(this, arguments);
-		// this.tileOptions.crossOriginKeyword = null;
+		this.tileOptions.crossOriginKeyword = null;
 	},
 
-	CLASS_NAME : "OpenLayersMap.Layer.MapQuest"
+	CLASS_NAME : "OpenLayersMap.Layer.CloudMade"
 });
