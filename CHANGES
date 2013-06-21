@@ -1,4 +1,4 @@
-=== version 3.1-SNAPSHOT ===
+=== version ${project.version} ===
   * use OpenLayers 2.13
   * improvements and bugfixes in the static map generator
   * upgrade the google api
@@ -11,7 +11,6 @@
 == deleted files ==
   * overview-switcher-minimize.png
   * overview-switcher-maximize.png
-  
 
 === version 3.0 ===
   * A local static map generator was added. Note that this requires php-curl and the geophp plugin.
