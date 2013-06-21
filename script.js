@@ -196,17 +196,17 @@ function createMap(mapOpts, OLmapPOI) {
 
 	if (osmEnable) {
 		/* add OSM map layers */
-		m.addLayer(new OpenLayers.Layer.OSM();
+		m.addLayer(new OpenLayers.Layer.OSM());
 
 		m.addLayer(new OpenLayersMap.Layer.OCM());
 		/* open cycle map */
-		m.addLayer(new OpenLayers.Layer.OCM("transport", [
+		m.addLayer(new OpenLayersMap.Layer.OCM("transport", [
 				"http://a.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
 				"http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
 				"http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png" ], {
 			visibility : mapOpts.baselyr === "transport"
 		}));
-		m.addLayer(new OpenLayers.Layer.OCM("landscape", [
+		m.addLayer(new OpenLayersMap.Layer.OCM("landscape", [
 				"http://a.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
 				"http://b.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
 				"http://c.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png" ], {
@@ -336,13 +336,15 @@ function createMap(mapOpts, OLmapPOI) {
 		geodesic : true
 	}), new OpenLayers.Control.KeyboardDefaults({
 		observeElement : mapOpts.id
-	}), new OpenLayers.Control.Navigation(), ]);
+	}), new OpenLayers.Control.Navigation() ]);
 
 	if (mapOpts.controls === 1) {
 		/* add base controls to map */
 		m.addControls([ new OpenLayers.Control.LayerSwitcher(), new OpenLayers.Control.Graticule({
 			visible : false
-		}), new OpenLayersMap.Control.OverviewMap(), new OpenLayers.Control.PanZoomBar() ]);
+		}), new OpenLayersMap.Control.OverviewMap(), new OpenLayers.Control.PanZoomBar()
+		// issue31: new OpenLayers.Control.Zoom()
+		]);
 
 		// add hillshade, since this is off by default only add when we have a
 		// layerswitcher
@@ -573,20 +575,20 @@ function createMap(mapOpts, OLmapPOI) {
 	return m;
 }
 
-var olTimerId = -1;
+// var olTimerId = -1;
 
 /** init. */
 function olInit() {
 	// TODO: check is this is still needed now that we have jQuery
-	if (navigator.userAgent.indexOf('MSIE') !== -1) {
-		if (olTimerId === -1) {
-			olTimerId = setTimeout("olInit()", 3000);
-			olEnable = false;
-		} else {
-			clearTimeout(olTimerId);
-			olEnable = true;
-		}
-	}
+	// if (navigator.userAgent.indexOf('MSIE') !== -1) {
+	// if (olTimerId === -1) {
+	// olTimerId = setTimeout("olInit()", 3000);
+	// olEnable = false;
+	// } else {
+	// clearTimeout(olTimerId);
+	// olEnable = true;
+	// }
+	// }
 
 	if (olEnable) {
 		var _i = 0;
