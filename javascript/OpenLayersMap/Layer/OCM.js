@@ -31,15 +31,14 @@ OpenLayersMap.Layer.OCM = OpenLayers.Class(OpenLayers.Layer.OSM, {
 	/**
 	 * The tileset URL scheme.
 	 */
-	url : "cycle map",
-	[ "http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-		"http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-		"http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png" ],
+	url : [ "http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+			"http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
+			"http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png" ],
 
 	/**
 	 * The layer attribution.
 	 */
-		attribution : 'Data &copy;ODbL <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
+	attribution : 'Data &copy;ODbL <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
 			+ 'Tiles &copy;<a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
 			+ '<img src="http://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
 
