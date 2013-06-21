@@ -118,17 +118,16 @@ function olTestCSSsupport() {
  * @returns a {DocumentFragment} element that can be injected into the dom
  */
 function olCreateMaptag(mapid, width, height) {
-	// TODO: use OpenLayers.i18n()
 	var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">' + '<div id="' + mapid
 			+ '-olToolbar" class="olToolbar"></div>' + '<div class="clearer"></div>' + '<div id="' + mapid
 			+ '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap">'
 			+ '<a class="olAccesskey" href="" accesskey="1" onclick="document.getElementById(&quot;' + mapid
-			+ '&quot;).focus(); return false;" title="Activate map">Activate map</a>' + '</div>' + '<div id="' + mapid
-			+ '-olStatusBar" style="width:' + width + ';"class="olStatusBarContainer">' + '<div id="' + mapid
+			+ '&quot;).focus(); return false;" title="' + OpenLayers.i18n("activate_map") + '">'
+			+ OpenLayers.i18n("activate_map") + '</a>' + '</div>' + '<div id="' + mapid + '-olStatusBar" style="width:'
+			+ width + ';"class="olStatusBarContainer">' + '<div id="' + mapid
 			+ '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>'
 			// + '<div id="' + mapid + '-statusbar-link" class="olStatusBar
-			// olStatusBarPermalink">'
-			// + '<a href="" id="' + mapid +
+			// olStatusBarPermalink">' + '<a href="" id="' + mapid +
 			// '-statusbar-link-ref">link</a></div>'
 			+ '<div id="' + mapid + '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>'
 			+ '<div id="' + mapid + '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>'
@@ -197,56 +196,22 @@ function createMap(mapOpts, OLmapPOI) {
 
 	if (osmEnable) {
 		/* add OSM map layers */
-		m.addLayer(new OpenLayers.Layer.OSM("OpenStreetMap", null, {
-			// transitionEffect : "resize",
-			visibility : mapOpts.baselyr === "OpenStreetMap"
-		}));
+		m.addLayer(new OpenLayers.Layer.OSM();
 
-		m.addLayer(new OpenLayers.Layer.OSM("transport", [
+		m.addLayer(new OpenLayersMap.Layer.OCM());
+		/* open cycle map */
+		m.addLayer(new OpenLayers.Layer.OCM("transport", [
 				"http://a.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
 				"http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
 				"http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png" ], {
-			// transitionEffect : "resize",
-			attribution : 'Data &copy;ODbL <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a>, '
-					+ 'Tiles &copy;<a href="http://opencyclemap.org/copyright" target="_blank">OpenCycleMap</a>'
-					+ '<img src="http://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
-			visibility : mapOpts.baselyr === "transport",
-			tileOptions : {
-				crossOriginKeyword : null
-			}
+			visibility : mapOpts.baselyr === "transport"
 		}));
-		m
-				.addLayer(new OpenLayers.Layer.OSM(
-						"landscape",
-						[ "http://a.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
-								"http://b.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
-								"http://c.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png" ],
-						{
-							// transitionEffect : "resize",
-							attribution : 'Data &copy;ODbL <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
-									+ 'Tiles &copy;<a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
-									+ '<img src="http://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
-							visibility : mapOpts.baselyr === "transport",
-							tileOptions : {
-								crossOriginKeyword : null
-							}
-						}));
-		m
-				.addLayer(new OpenLayers.Layer.OSM(
-						"cycle map",
-						[ "http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-								"http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-								"http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png" ],
-						{
-							// transitionEffect : "resize",
-							attribution : 'Data &copy;ODbL <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
-									+ 'Tiles &copy;<a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
-									+ '<img src="http://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
-							visibility : mapOpts.baselyr === "cycle map",
-							tileOptions : {
-								crossOriginKeyword : null
-							}
-						}));
+		m.addLayer(new OpenLayers.Layer.OCM("landscape", [
+				"http://a.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
+				"http://b.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
+				"http://c.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png" ], {
+			visibility : mapOpts.baselyr === "landscape"
+		}));
 
 		m.addLayer(new OpenLayersMap.Layer.CloudMade());
 		m.addLayer(new OpenLayersMap.Layer.CloudMade("cloudmade fresh", [
@@ -258,7 +223,6 @@ function createMap(mapOpts, OLmapPOI) {
 
 		m.addLayer(new OpenLayers.Layer.OSM(
 				"hike and bike map", "http://toolserver.org/tiles/hikebike/${z}/${x}/${y}.png", {
-					// transitionEffect : "resize",
 					visibility : mapOpts.baselyr === "hike and bike map",
 					tileOptions : {
 						crossOriginKeyword : null
@@ -326,7 +290,6 @@ function createMap(mapOpts, OLmapPOI) {
 				key : bApiKey,
 				type : "Road",
 				name : "bing road",
-				// transitionEffect : "resize",
 				visibility : mapOpts.baselyr === "bing road",
 				wrapDateLine : true,
 				attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
@@ -337,7 +300,6 @@ function createMap(mapOpts, OLmapPOI) {
 				key : bApiKey,
 				type : "Aerial",
 				name : "bing sat",
-				// transitionEffect : "resize",
 				visibility : mapOpts.baselyr === "bing sat",
 				wrapDateLine : true,
 				attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
@@ -348,7 +310,6 @@ function createMap(mapOpts, OLmapPOI) {
 				key : bApiKey,
 				type : "AerialWithLabels",
 				name : "bing hybrid",
-				// transitionEffect : "resize",
 				visibility : mapOpts.baselyr === "bing hybrid",
 				wrapDateLine : true,
 				attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
