@@ -1,29 +1,29 @@
 <?php
 /*
- * Copyright (c) 2012 Mark C. Prins <mprins@users.sf.net>
-*
-* In part based on staticMapLite 0.03 available at http://staticmaplite.svn.sourceforge.net/viewvc/staticmaplite/
-*
-* Copyright (c) 2009 Gerhard Koch <gerhard.koch AT ymail.com>
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright (c) 2012-2013 Mark C. Prins <mprins@users.sf.net>
+ *
+ * In part based on staticMapLite 0.03 available at http://staticmaplite.svn.sourceforge.net/viewvc/staticmaplite/
+ *
+ * Copyright (c) 2009 Gerhard Koch <gerhard.koch AT ymail.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 include_once(realpath(dirname(__FILE__)).'/../geophp/geoPHP/geoPHP.inc');
 /**
  * @author Mark C. Prins <mprins@users.sf.net>
  * @author Gerhard Koch <gerhard.koch AT ymail.com>
  *
-*/
+ */
 class StaticMap {
 	// these should probably not be changed
 	protected $tileSize = 256;
@@ -279,6 +279,7 @@ class StaticMap {
 			imagestring ($this->image , 3 , $destX-imagesx($markerImg) , $destY+intval($markerImageOffsetY) , $count , $color );
 		};
 	}
+
 	/**
 	 *
 	 * @param string $url
@@ -287,6 +288,7 @@ class StaticMap {
 	public function tileUrlToFilename($url){
 		return $this->tileCacheBaseDir."/".str_replace(array('http://'),'',$url);
 	}
+
 	/**
 	 *
 	 * @param string $url
@@ -314,6 +316,7 @@ class StaticMap {
 		}
 		return $this->mapCacheFile.".".$this->mapCacheExtension;
 	}
+
 	/**
 	 * Recursively create the directory.
 	 * @param string $pathname The directory path.
@@ -334,6 +337,7 @@ class StaticMap {
 		$this->mkdir_recursive(dirname($filename),0777);
 		file_put_contents($filename, $data);
 	}
+
 	/**
 	 * Fetch a tile and (if configured) store it in the cache.
 	 * @param string $url
@@ -382,7 +386,6 @@ class StaticMap {
 		$this->drawGeometry($gpxgeom, $col);
 	}
 
-
 	/**
 	 * Draw geojson on the map.
 	 */
@@ -391,6 +394,7 @@ class StaticMap {
 		$gpxgeom = geoPHP::load(file_get_contents($this->geojsonFileName),'json');
 		$this->drawGeometry($gpxgeom, $col);
 	}
+
 	/**
 	 * Draw kml trace on the map.
 	 */
@@ -400,6 +404,7 @@ class StaticMap {
 		$kmlgeom = geoPHP::load(file_get_contents($this->kmlFileName),'kml');
 		$this->drawGeometry($kmlgeom, $col);
 	}
+
 	/**
 	 * Draw geometry or geometry collection on the map.
 	 * @param Geometry $geom
