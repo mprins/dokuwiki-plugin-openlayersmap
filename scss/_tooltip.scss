@@ -15,11 +15,11 @@
  */
 
 /** accesible tooltip, to add to a focusable element. */
-$zIndex: 1100;
 
-.olHasTooltip {
+/* show a tooltip offset to above/left */
+.olHasTooltip, .olHasTooltip_TL {
 	position: relative;
-	z-index: $zIndex;
+	
 	& span {
 		position: absolute;
 		clip: rect(1px 1px 1px 1px); /* < IE8 */
@@ -30,15 +30,14 @@ $zIndex: 1100;
 		width: 1px;
 		overflow: hidden;
 	}
+	
 	&:hover span, 
 	&:focus span {
 		clip: auto;
 		padding: 3px;
 		height: auto;
 		width: auto;
-		bottom: 2em;
-		right: 0px;
-		z-index: $zIndex;
+		z-index: $tooltip-z-index;
 		max-height: 100px;
 		white-space: nowrap;
 		display: inline-block;
@@ -47,5 +46,19 @@ $zIndex: 1100;
 		border: 1px solid __border__;
 		@include border-radius(5px);
 		@include box-shadow(2px 2px 2px __border__);
+		bottom: 2em;
+		right: 0;
+	}
+}
+
+/* show a tooltip offset to below/right */
+.olHasTooltip_bttm_r {
+	@extend .olHasTooltip;
+	
+	&:hover span,
+	&:focus span {
+		bottom: -2em;
+		left: 1em;
+		right: auto;
 	}
 }

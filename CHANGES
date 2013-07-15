@@ -1,5 +1,17 @@
 === version ${project.version} ===
+  * accessible zoom control replacing the pan/zoom bar
   *
+
+== deleted files ==
+  * pan/zoombar images: 
+    * lib/*/zoom-plus-mini.png
+    * lib/*/zoom-minus-mini.png
+    * lib/*/zoombar.png
+    * lib/*/slider.png
+    * lib/*/east-mini.png
+    * lib/*/north-mini.png
+    * lib/*/south-mini.png
+    * lib/*/west-mini.png
 
 === version 3.1 ===
   * use OpenLayers 2.13

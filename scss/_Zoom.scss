@@ -15,7 +15,7 @@
  */
  
 /* Zoom control */
-div.olControlZoom {
+.OpenLayersMapControlZoom {
 	position: absolute;
 	top: 8px;
 	left: 8px;
@@ -24,33 +24,28 @@ div.olControlZoom {
 	@include border-radius(4px);
 }
 
-div.olControlZoom a {
+.OpenLayersMapControlZoom button {
 	display: block;
 	margin: 1px;
 	padding: 0;
-	color: white;
-	font-size: 18px;
-	font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
-	font-weight: bold;
+	color: $button;
 	text-decoration: none;
 	text-align: center;
-	height: 22px;
-	width: 22px;
-	line-height: 19px;
-	background: #130085; /* fallback for IE - IE6 requires background shorthand*/
-	background: rgba(0, 60, 136, 0.8);
-	filter: alpha(opacity = 80);
-	&:hover	{
-		background: #130085; /* fallback for IE */
-		background: rgba(0, 60, 136, 0.7);
-		filter: alpha(opacity = 100);
+	height: $button-heigth;
+	width: $button-width;
+	line-height: $button-line-height;
+	background: $button-bg;
+
+	&:hover,
+	&:focus {
+		background: $button-bg-active;
 	}
 }
 
-a.olControlZoomIn {
+.olControlZoomIn {
 	@include border-top-radius(4px);
 }
 
-a.olControlZoomOut {
+.olControlZoomOut {
 	@include border-bottom-radius(4px);
 }
