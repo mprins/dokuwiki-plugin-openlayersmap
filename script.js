@@ -397,15 +397,13 @@ function createMap(mapOpts, OLmapPOI) {
 			type : OpenLayers.Control.TYPE_TOOL,
 			displayClass : "olControlFeatureInfo",
 			title : OpenLayers.i18n("info")
-		}), /* navigation history btns */
-		nav = new OpenLayers.Control.NavigationHistory();
-		m.addControl(nav);
+		});
 		var panel = new OpenLayers.Control.Panel({
 			defaultControl : pan,
 			displayClass : "olToolbar",
 			"div" : OpenLayers.Util.getElement(mapOpts.id + "-olToolbar")
 		});
-		panel.addControls([ zoomin, zoomout, pan, info, nav.next, nav.previous ]);
+		panel.addControls([ zoomin, zoomout, pan, info ]);
 		m.addControl(panel);
 	} else {
 		OpenLayers.Util.getElement(mapOpts.id + '-olToolbar').display = 'none';

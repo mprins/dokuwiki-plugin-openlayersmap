@@ -1,6 +1,6 @@
 === version ${project.version} ===
   * accessible zoom control replacing the pan/zoom bar
-  *
+  * remove navigation history buttons
 
 == deleted files ==
   * pan/zoombar images: 
@@ -12,6 +12,7 @@
     * lib/*/north-mini.png
     * lib/*/south-mini.png
     * lib/*/west-mini.png
+    * img/navigation_history.png
 
 === version 3.1 ===
   * use OpenLayers 2.13
