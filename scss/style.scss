@@ -17,15 +17,30 @@
 /* compass mixins */
 @import 'compass/css3';
 
+/**
+ * Constants.
+ */
+$tooltip-z-index: 1100;
+$button-heigth: 22px;
+$button-width: 22px;
+$button-line-height: 19px;
+
+
+/* colours */
+$button: #FFF;
+$button-bg: rgba(0, 60, 136, 0.7);
+$button-bg-active: rgba($button-bg, 1);
+
+
 /* page and widget elements, ordering is important */
 @import 'adminForm';
 @import 'Common';
 @import 'LayerSwitcher';
 @import 'OverviewMap';
 @import 'Popup';
-@import 'PanZoomBar';
+//@import 'PanZoomBar';
 @import 'ScaleLine';
 @import 'StatusBar';
 @import 'ToolBar';
-//issue31 @import 'Zoom';
+@import 'Zoom';
 @import 'tooltip';

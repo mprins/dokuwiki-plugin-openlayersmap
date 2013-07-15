@@ -28,36 +28,36 @@ $ctlHeight: 140px + 6px;
 	background-color: __background_neu__;
 	border: 1px solid __border__;
 	padding: 1px;
-	@include border-left-radius(3px);
+	@include border-left-radius(4px);
 }
 
 .olOverviewMapButton {
 	position: absolute;
-	height: 18px;
-	width: 18px;
-	font-size: 18px;
-	line-height: 16px;
-	font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
-	font-weight: bold;
+	height: $button-heigth;
+	width: $button-width;
+	line-height: $button-line-height;
+	line-height: $button-line-height;
 	text-decoration: none;
 	text-align: center;
-	color: __text__;
-	padding: 0; 
+	padding: 0;
+	color: $button;
+	background: $button-bg;
+	&:hover,
+	&:focus {
+		background: $button-bg-active;
+	} 
 }
 .olOverviewMapMaximizeButton {
 	right: 0;
 	bottom: 0;
-	opacity: 0.7;
-	&:hover {
-		opacity: 1.0;
-	}
+	@include border-left-radius(4px);
 }
 
 .olOverviewMapMinimizeButton {
 	right: 0;
 	bottom: $ctlHeight;
-	background-color: __background_alt__;
-	border: 1px solid __border__;
+	z-index: 1005;
+	@include border-radius(4px);
 }
 
 .olOverviewMapExtentRectangle {

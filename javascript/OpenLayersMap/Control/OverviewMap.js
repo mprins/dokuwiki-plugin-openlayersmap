@@ -101,7 +101,7 @@ OpenLayersMap.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control.Overview
 		btn.name = 'show';
 		this.maximizeDiv = btn;
 		this.maximizeDiv.style.display = 'none';
-		this.maximizeDiv.className = this.displayClass + 'MaximizeButton overviewMapButton olButton olHasTooltip';
+		this.maximizeDiv.className = this.displayClass + 'MaximizeButton olOverviewMapButton olButton olHasTooltip';
 		this.div.appendChild(this.maximizeDiv);
 
 		// minimize button
@@ -110,7 +110,7 @@ OpenLayersMap.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control.Overview
 		btn.name = 'hide';
 		this.minimizeDiv = btn;
 		this.minimizeDiv.style.display = 'none';
-		this.minimizeDiv.className = this.displayClass + 'MinimizeButton overviewMapButton olButton olHasTooltip';
+		this.minimizeDiv.className = this.displayClass + 'MinimizeButton olOverviewMapButton olButton olHasTooltip';
 		this.div.appendChild(this.minimizeDiv);
 
 		this.minimizeControl();
