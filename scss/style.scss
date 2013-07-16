@@ -25,7 +25,6 @@ $button-heigth: 22px;
 $button-width: 22px;
 $button-line-height: 19px;
 
-
 /* colours */
 $button: #FFF;
 $button-bg: rgba(0, 60, 136, 0.7);
@@ -38,7 +37,6 @@ $button-bg-active: rgba($button-bg, 1);
 @import 'LayerSwitcher';
 @import 'OverviewMap';
 @import 'Popup';
-//@import 'PanZoomBar';
 @import 'ScaleLine';
 @import 'StatusBar';
 @import 'ToolBar';
