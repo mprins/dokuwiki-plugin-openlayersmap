@@ -118,9 +118,8 @@ function olTestCSSsupport() {
  * @returns a {DocumentFragment} element that can be injected into the dom
  */
 function olCreateMaptag(mapid, width, height) {
-	var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">' + '<div id="' + mapid
-			+ '-olToolbar" class="olToolbar"></div>' + '<div class="clearer"></div>' + '<div id="' + mapid
-			+ '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap">'
+	var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">' 
+			+ '<div id="' + mapid + '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap">'
 			+ '<a class="olAccesskey" href="" accesskey="1" onclick="document.getElementById(&quot;' + mapid
 			+ '&quot;).focus(); return false;" title="' + OpenLayers.i18n("activate_map") + '">'
 			+ OpenLayers.i18n("activate_map") + '</a>' + '</div>' + '<div id="' + mapid + '-olStatusBar" style="width:'
@@ -148,7 +147,7 @@ function olCreateMaptag(mapid, width, height) {
  * 
  * @param {Object}
  *            mapOpts MapOptions hash {id:'olmap', width:500px, height:500px,
- *            lat:6710200, lon:506500, zoom:13, toolbar:1, statusbar:1,
+ *            lat:6710200, lon:506500, zoom:13, statusbar:1,
  *            controls:1, poihoverstyle:1, baselyr:'', kmlfile:'', gpxfile:'',
  *            geojsonfile, summary:''}
  * @param {Array}
@@ -190,8 +189,7 @@ function createMap(mapOpts, OLmapPOI) {
 		displayProjection : new OpenLayers.Projection("EPSG:4326"),
 		numZoomLevels : 22,
 		controls : [],
-		theme : null,
-		tileManager : new OpenLayers.TileManager()
+		theme : null
 	});
 
 	if (osmEnable) {
@@ -253,28 +251,21 @@ function createMap(mapOpts, OLmapPOI) {
 		try {
 			m.addLayer(new OpenLayers.Layer.Google("google relief", {
 				type : google.maps.MapTypeId.TERRAIN,
-				// transitionEffect : "resize",
 				numZoomLevels : 16,
 				animationEnabled : true,
 				visibility : mapOpts.baselyr === "google relief"
 			}));
 			m.addLayer(new OpenLayers.Layer.Google("google sat", {
 				type : google.maps.MapTypeId.SATELLITE,
-				// transitionEffect : "resize",
-				// numZoomLevels : 22,
 				animationEnabled : true,
 				visibility : mapOpts.baselyr === "google sat"
 			}));
 			m.addLayer(new OpenLayers.Layer.Google("google hybrid", {
 				type : google.maps.MapTypeId.HYBRID,
-				// transitionEffect : "resize",
-				// numZoomLevels : 20,
 				animationEnabled : true,
 				visibility : mapOpts.baselyr === "google hybrid"
 			}));
 			m.addLayer(new OpenLayers.Layer.Google("google road", {
-				// transitionEffect : "resize",
-				// numZoomLevels : 20,
 				animationEnabled : true,
 				visibility : mapOpts.baselyr === "google road"
 			}));
@@ -377,36 +368,6 @@ function createMap(mapOpts, OLmapPOI) {
 		OpenLayers.Util.getElement(mapOpts.id + '-statusbar-projection').innerHTML = m.displayProjection;
 	} else {
 		OpenLayers.Util.getElement(mapOpts.id + '-olStatusBar').display = 'none';
-	}
-
-	if (mapOpts.toolbar === 1) {
-		// add buttons + panel
-		var /* zoom in btn */
-		zoomin = new OpenLayers.Control.ZoomBox({
-			title : OpenLayers.i18n("zoom_in")
-		}), /* zoom out btn */
-		zoomout = new OpenLayers.Control.ZoomBox({
-			out : true,
-			title : OpenLayers.i18n("zoom_out"),
-			displayClass : "olControlZoomOut"
-		}), /* pan btn */
-		pan = new OpenLayers.Control.DragPan({
-			title : OpenLayers.i18n("move")
-		}), /* do "nothing" button... */
-		info = new OpenLayers.Control.Button({
-			type : OpenLayers.Control.TYPE_TOOL,
-			displayClass : "olControlFeatureInfo",
-			title : OpenLayers.i18n("info")
-		});
-		var panel = new OpenLayers.Control.Panel({
-			defaultControl : pan,
-			displayClass : "olToolbar",
-			"div" : OpenLayers.Util.getElement(mapOpts.id + "-olToolbar")
-		});
-		panel.addControls([ zoomin, zoomout, pan, info ]);
-		m.addControl(panel);
-	} else {
-		OpenLayers.Util.getElement(mapOpts.id + '-olToolbar').display = 'none';
 	}
 
 	if (OLmapPOI.length > 0) {

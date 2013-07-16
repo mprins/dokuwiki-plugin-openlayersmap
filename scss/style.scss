@@ -29,6 +29,8 @@ $button-line-height: 19px;
 $button: #FFF;
 $button-bg: rgba(0, 60, 136, 0.7);
 $button-bg-active: rgba($button-bg, 1);
+$button-bg-active-lighter: lighten($button-bg-active, 10%);
+$button-bg-active-darker: darken($button-bg-active, 10%);
 
 
 /* page and widget elements, ordering is important */
@@ -39,6 +41,5 @@ $button-bg-active: rgba($button-bg, 1);
 @import 'Popup';
 @import 'ScaleLine';
 @import 'StatusBar';
-@import 'ToolBar';
 @import 'Zoom';
 @import 'tooltip';

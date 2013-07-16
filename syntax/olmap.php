@@ -34,7 +34,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			'lat'		=> 50.0,
 			'lon'		=> 5.1,
 			'zoom'		=> 12,
-			'toolbar'	=> true,
 			'statusbar'	=> true,
 			'controls'	=> true,
 			'poihoverstyle'	=> false,
@@ -559,8 +558,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 							'lon'=>$lon,
 							'type'=>$iconStyle);
 				}
-			}			
-			
+			}
+
 			$result = $my->getMap($gmap['lat'], $gmap['lon'], $gmap['zoom'],
 					$size, $maptype, $markers, $gmap['gpxfile'], $gmap['kmlfile'], $gmap['geojsonfile']);
 		} else {
@@ -568,15 +567,15 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$imgUrl = "http://staticmap.openstreetmap.de/staticmap.php";
 			$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
 			$imgUrl .= "&size=".str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
-				
-				
+
+
 			if ($gmap['zoom']>16) {
 				// actually this could even be 18, but that seems overkill
 				$imgUrl .= "&zoom=16";
 			} else {
 				$imgUrl .= "&zoom=".$gmap['zoom'];
 			}
-				
+
 			switch ($gmap['baselyr']){
 				case 'mapnik':
 				case 'openstreetmap':
@@ -610,7 +609,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					break;
 			}
 			$imgUrl .= "&maptype=".$maptype;
-				
+
 			if (!empty ($overlay)) {
 				$rowId=0;
 				$imgUrl .= "&markers=";
