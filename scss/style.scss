@@ -16,6 +16,8 @@
  
 /* compass mixins */
 @import 'compass/css3';
+// there seems to be a small bug in current Compass, so this is a required workaround 
+@import 'compass/css3/user-interface';
 
 /**
  * Constants.

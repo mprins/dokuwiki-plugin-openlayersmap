@@ -15,14 +15,10 @@
  */
 
 /* 
- * Common and OpenLayers bahaviour. 
+ * Common and OpenLayers behaviour. 
  */
 .olControlNoSelect {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-o-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+	@include user-select(none);
 }
 
 .olCursorWait {
@@ -42,15 +38,13 @@
 }
 
 .olMap {
-	border-top: 1px solid __border__;
 	cursor: default;
-}
-
-/* on some browsers the outline is partly hidden by the .olContainer; this way we work around that.*/
-.olMap:focus {
-	outline-style: solid;
-	outline-width: 1px;
-	outline-offset: 1px;
+	/* on some browsers the outline is partly hidden by the .olContainer; this way we work around that.*/	
+	&:focus {
+		outline-style: solid;
+		outline-width: 1px;
+		outline-offset: 1px;
+	}
 }
 
 .olImageLoadError {
@@ -80,23 +74,13 @@
 }
 
 .olHandlerBoxZoomBox {
-	border: 2px solid #9900FF;
+	border: 2px solid $button-bg-active;
 	position: absolute;
-	background-color: #9900FF;
+	background-color: $button-bg;
 	font-size: 1px;
-	opacity: 0.50;
-	/*IE specific */
-	filter: alpha(opacity =   50);
-	border-bottom-color: #6B00B3;
-	border-right-color: #6B00B3;
-	border-top-color: #C266FF;
-	border-left-color: #C266FF;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-	-moz-box-shadow: 2px 2px 2px #000;
-	-webkit-box-shadow: 2px 2px 2px #000;
-	box-shadow: 2px 2px 2px #000;
+	border-color: $button-bg-active-lighter $button-bg-active-darker $button-bg-active-darker $button-bg-active-lighter;
+	@include border-radius(4px);
+	@include box-shadow(2px 2px 2px #000);
 }
 
 .olPOItableSpan {
@@ -127,20 +111,18 @@
 }
 
 .olLayerGrid .olTileImage {
-	-webkit-transition: opacity 0.2s linear;
-	-moz-transition: opacity 0.2s linear;
-	-o-transition: opacity 0.2s linear;
-	transition: opacity 0.2s linear;
+	@include transition(opacity 0.2s linear);
 }
 
 a.olAccesskey {
 	position: absolute;
 	top: -9999em;
 	color: __background__ !important;
-}
-
-a.olAccesskey:focus,a.olAccesskey:hover {
-	position: relative;
-	top: 0;
-	color: __text__ !important;
+	
+	&:hover,
+	&:focus {
+		position: relative;
+		top: 0;
+		color: __text__ !important;
+	}
 }
