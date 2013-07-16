@@ -118,19 +118,16 @@ function olTestCSSsupport() {
  * @returns a {DocumentFragment} element that can be injected into the dom
  */
 function olCreateMaptag(mapid, width, height) {
-	var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">' 
-			+ '<div id="' + mapid + '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap">'
+	var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">' + '<div id="' + mapid
+			+ '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap">'
 			+ '<a class="olAccesskey" href="" accesskey="1" onclick="document.getElementById(&quot;' + mapid
 			+ '&quot;).focus(); return false;" title="' + OpenLayers.i18n("activate_map") + '">'
 			+ OpenLayers.i18n("activate_map") + '</a>' + '</div>' + '<div id="' + mapid + '-olStatusBar" style="width:'
 			+ width + ';"class="olStatusBarContainer">' + '<div id="' + mapid
-			+ '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>'
-			// + '<div id="' + mapid + '-statusbar-link" class="olStatusBar
-			// olStatusBarPermalink">' + '<a href="" id="' + mapid +
-			// '-statusbar-link-ref">link</a></div>'
-			+ '<div id="' + mapid + '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>'
-			+ '<div id="' + mapid + '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>'
-			+ '<div id="' + mapid + '-statusbar-text" class="olStatusBar olStatusBarText">txt</div>' + '</div></div>',
+			+ '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>' + '<div id="' + mapid
+			+ '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>' + '<div id="' + mapid
+			+ '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>' + '<div id="' + mapid
+			+ '-statusbar-text" class="olStatusBar olStatusBarText">txt</div>' + '</div></div>',
 	// fragment
 	frag = document.createDocumentFragment(),
 	// temp node
@@ -147,9 +144,9 @@ function olCreateMaptag(mapid, width, height) {
  * 
  * @param {Object}
  *            mapOpts MapOptions hash {id:'olmap', width:500px, height:500px,
- *            lat:6710200, lon:506500, zoom:13, statusbar:1,
- *            controls:1, poihoverstyle:1, baselyr:'', kmlfile:'', gpxfile:'',
- *            geojsonfile, summary:''}
+ *            lat:6710200, lon:506500, zoom:13, statusbar:1, controls:1,
+ *            poihoverstyle:1, baselyr:'', kmlfile:'', gpxfile:'', geojsonfile,
+ *            summary:''}
  * @param {Array}
  *            OLmapPOI array with POI's [ {lat:6710300,lon:506000,txt:'instap
  *            punt',angle:180,opacity:.9,img:'', rowId:n},... ]);
@@ -350,10 +347,6 @@ function createMap(mapOpts, OLmapPOI) {
 	}
 
 	if (mapOpts.statusbar === 1) {
-		// statusbar control: permalink
-		// m.addControl(new OpenLayers.Control.Permalink(mapOpts.id +
-		// '-statusbar-link-ref'));
-
 		// statusbar control: mouse pos.
 		m.addControl(new OpenLayers.Control.MousePosition({
 			'div' : OpenLayers.Util.getElement(mapOpts.id + '-statusbar-mouseposition')
@@ -532,21 +525,8 @@ function createMap(mapOpts, OLmapPOI) {
 	return m;
 }
 
-// var olTimerId = -1;
-
 /** init. */
 function olInit() {
-	// TODO: check is this is still needed now that we have jQuery
-	// if (navigator.userAgent.indexOf('MSIE') !== -1) {
-	// if (olTimerId === -1) {
-	// olTimerId = setTimeout("olInit()", 3000);
-	// olEnable = false;
-	// } else {
-	// clearTimeout(olTimerId);
-	// olEnable = true;
-	// }
-	// }
-
 	if (olEnable) {
 		var _i = 0;
 		// create the maps in the page
@@ -621,11 +601,6 @@ osmEnable = true,
  * @type {Boolean}
  */
 olCSSEnable = true;
-/**
- * yahoo map api flag.
- * 
- * @type {Boolean}
- */
-// yEnable = false;
+
 /* register olInit to run with onload event. */
 jQuery(olInit);
