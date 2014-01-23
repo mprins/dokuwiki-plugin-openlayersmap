@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2014 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,8 +14,10 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-if (!defined('DOKU_INC'))define('DOKU_INC', realpath(dirname(__FILE__) . '/../../') . '/');
-if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+if (! defined ( 'DOKU_INC' ))
+	define ( 'DOKU_INC', realpath ( dirname ( __FILE__ ) . '/../../' ) . '/' );
+if (! defined ( 'DOKU_PLUGIN' ))
+	define ( 'DOKU_PLUGIN', DOKU_INC . 'lib/plugins/' );
 require_once (DOKU_PLUGIN . 'syntax.php');
 
 /**
@@ -26,25 +28,28 @@ require_once (DOKU_PLUGIN . 'syntax.php');
  */
 class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
-	/** defaults of the known attributes of the olmap tag. */
+	/**
+	 * defaults of the known attributes of the olmap tag.
+	 */
 	private $dflt = array (
-			'id'		=> 'olmap',
-			'width'		=> '550px',
-			'height'	=> '450px',
-			'lat'		=> 50.0,
-			'lon'		=> 5.1,
-			'zoom'		=> 12,
-			'statusbar'	=> true,
-			'controls'	=> true,
-			'poihoverstyle'	=> false,
-			'baselyr'	=> 'OpenStreetMap',
-			'gpxfile'	=> '',
-			'kmlfile'	=> '',
-			'geojsonfile'=> '',
-			'summary'	=> ''
+			'id' => 'olmap',
+			'width' => '550px',
+			'height' => '450px',
+			'lat' => 50.0,
+			'lon' => 5.1,
+			'zoom' => 12,
+			'statusbar' => true,
+			'controls' => true,
+			'poihoverstyle' => false,
+			'baselyr' => 'OpenStreetMap',
+			'gpxfile' => '',
+			'kmlfile' => '',
+			'geojsonfile' => '',
+			'summary' => ''
 	);
 
 	/**
+	 *
 	 * @see DokuWiki_Syntax_Plugin::getType()
 	 */
 	function getType() {
@@ -52,6 +57,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	}
 
 	/**
+	 *
 	 * @see DokuWiki_Syntax_Plugin::getPType()
 	 */
 	function getPType() {
@@ -59,6 +65,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	}
 
 	/**
+	 *
 	 * @see Doku_Parser_Mode::getSort()
 	 */
 	function getSort() {
@@ -66,128 +73,140 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	}
 
 	/**
+	 *
 	 * @see Doku_Parser_Mode::connectTo()
 	 */
 	function connectTo($mode) {
-		$this->Lexer->addSpecialPattern('<olmap ?[^>\n]*>.*?</olmap>', $mode, 'plugin_openlayersmap_olmap');
+		$this->Lexer->addSpecialPattern ( '<olmap ?[^>\n]*>.*?</olmap>', $mode, 'plugin_openlayersmap_olmap' );
 	}
 
 	/**
+	 *
 	 * @see DokuWiki_Syntax_Plugin::handle()
 	 */
 	function handle($match, $state, $pos, &$handler) {
 		// break matched cdata into its components
-		list ($str_params, $str_points) = explode('>', substr($match, 7, -9), 2);
+		list ( $str_params, $str_points ) = explode ( '>', substr ( $match, 7, - 9 ), 2 );
 		// get the lat/lon for adding them to the metadata (used by geotag)
-		preg_match('(lat[:|=]\"-?\d*\.\d*\")',$match,$mainLat);
-		preg_match('(lon[:|=]\"-?\d*\.\d*\")',$match,$mainLon);
-		$mainLat=substr($mainLat[0],5,-1);
-		$mainLon=substr($mainLon[0],5,-1);
+		preg_match ( '(lat[:|=]\"-?\d*\.\d*\")', $match, $mainLat );
+		preg_match ( '(lon[:|=]\"-?\d*\.\d*\")', $match, $mainLon );
+		$mainLat = substr ( $mainLat [0], 5, - 1 );
+		$mainLon = substr ( $mainLon [0], 5, - 1 );
 
-		$gmap = $this->_extract_params($str_params);
-		$overlay = $this->_extract_points($str_points);
-		$_firstimageID ='';
+		$gmap = $this->_extract_params ( $str_params );
+		$overlay = $this->_extract_points ( $str_points );
+		$_firstimageID = '';
 
 		// choose maptype based on tag
 		$imgUrl = "{{";
-		if (stripos($gmap['baselyr'],'google') !== false){
+		if (stripos ( $gmap ['baselyr'], 'google' ) !== false) {
 			// use google
-			$imgUrl .= $this->_getGoogle($gmap, $overlay);
-			$imgUrl .="&.png";
-		} elseif (stripos($gmap['baselyr'],'ve') !== false){
+			$imgUrl .= $this->_getGoogle ( $gmap, $overlay );
+			$imgUrl .= "&.png";
+		} elseif (stripos ( $gmap ['baselyr'], 've' ) !== false) {
 			// use bing
-			$imgUrl .= $this->_getBing($gmap, $overlay);
-			$imgUrl .="&.png";
-		} elseif (stripos($gmap['baselyr'],'bing') !== false){
+			$imgUrl .= $this->_getBing ( $gmap, $overlay );
+			$imgUrl .= "&.png";
+		} elseif (stripos ( $gmap ['baselyr'], 'bing' ) !== false) {
 			// use bing
-			$imgUrl .= $this->_getBing($gmap, $overlay);
-			$imgUrl .="&.png";
-		} elseif (stripos($gmap['baselyr'],'mapquest') !== false){
-			if($this->getConf('optionStaticMapGenerator')=='remote'){
+			$imgUrl .= $this->_getBing ( $gmap, $overlay );
+			$imgUrl .= "&.png";
+		} elseif (stripos ( $gmap ['baselyr'], 'mapquest' ) !== false) {
+			if ($this->getConf ( 'optionStaticMapGenerator' ) == 'remote') {
 				// use mapquest remote
-				$imgUrl .=$this->_getMapQuest($gmap,$overlay);
-				$imgUrl .="&.png";
-			} else{
-				$_firstimageID = $this->_getStaticOSM($gmap,$overlay);
+				$imgUrl .= $this->_getMapQuest ( $gmap, $overlay );
+				$imgUrl .= "&.png";
+			} else {
+				$_firstimageID = $this->_getStaticOSM ( $gmap, $overlay );
 				$imgUrl .= $_firstimageID;
 			}
 		} else {
-			$_firstimageID = $this->_getStaticOSM($gmap,$overlay);
+			$_firstimageID = $this->_getStaticOSM ( $gmap, $overlay );
 			$imgUrl .= $_firstimageID;
-			if($this->getConf('optionStaticMapGenerator')=='remote'){
-				$imgUrl .="&.png";
+			if ($this->getConf ( 'optionStaticMapGenerator' ) == 'remote') {
+				$imgUrl .= "&.png";
 			}
 		}
 
 		// append dw p_render specific params and render
-		$imgUrl .="?".str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
+		$imgUrl .= "?" . str_replace ( "px", "", $gmap ['width'] ) . "x" . str_replace ( "px", "", $gmap ['height'] );
 		$imgUrl .= "&nolink";
-		$imgUrl .= " |".$gmap['summary']." }}";
+		$imgUrl .= " |" . $gmap ['summary'] . " }}";
 
-		$mapid = $gmap['id'];
+		$mapid = $gmap ['id'];
 		// create a javascript parameter string for the map
 		$param = '';
-		foreach ($gmap as $key => $val) {
-			$param .= is_numeric($val) ? "$key: $val, " : "$key: '" . hsc($val) . "', ";
+		foreach ( $gmap as $key => $val ) {
+			$param .= is_numeric ( $val ) ? "$key: $val, " : "$key: '" . hsc ( $val ) . "', ";
 		}
-		if (!empty ($param)) {
-			$param = substr($param, 0, -2);
+		if (! empty ( $param )) {
+			$param = substr ( $param, 0, - 2 );
 		}
-		unset ($gmap['id']);
+		unset ( $gmap ['id'] );
 
 		// create a javascript serialisation of the point data
 		$poi = '';
-		$poitable='';
-		$rowId=0;
-		if (!empty ($overlay)) {
-			foreach ($overlay as $data) {
-				list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
-				$rowId++;
+		$poitable = '';
+		$rowId = 0;
+		if (! empty ( $overlay )) {
+			foreach ( $overlay as $data ) {
+				list ( $lat, $lon, $text, $angle, $opacity, $img ) = $data;
+				$rowId ++;
 				$poi .= ", {lat: $lat, lon: $lon, txt: '$text', angle: $angle, opacity: $opacity, img: '$img', rowId: $rowId}";
-				$poitable .='
+				$poitable .= '
 						<tr>
-						<td class="rowId">'.$rowId.'</td>
-								<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/icons/'.$img.'" alt="icon" /></td>
-										<td class="lat" title="'.$this->getLang('olmapPOIlatTitle').'">'.$lat.'</td>
-												<td class="lon" title="'.$this->getLang('olmapPOIlonTitle').'">'.$lon.'</td>
-														<td class="txt">'.$text.'</td>
-																</tr>';
+						<td class="rowId">' . $rowId . '</td>
+						<td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/icons/' . $img . '" alt="icon" /></td>
+						<td class="lat" title="' . $this->getLang ( 'olmapPOIlatTitle' ) . '">' . $lat . '</td>
+						<td class="lon" title="' . $this->getLang ( 'olmapPOIlonTitle' ) . '">' . $lon . '</td>
+						<td class="txt">' . $text . '</td>
+						</tr>';
 			}
-			$poi = substr($poi, 2);
+			$poi = substr ( $poi, 2 );
 		}
-		if (!empty ($gmap['kmlfile'])) {
-			$poitable .='
+		if (! empty ( $gmap ['kmlfile'] )) {
+			$poitable .= '
 					<tr>
-					<td class="rowId"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/kml_file.png" alt="KML icon" /></td>
-							<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/kml_line.png" alt="icon" /></td>
-									<td class="txt" colspan="3">KML track: '.$this->getFileName($gmap['kmlfile']).'</td>
-											</tr>';
+					<td class="rowId"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/kml_file.png" alt="KML icon" /></td>
+					<td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/kml_line.png" alt="icon" /></td>
+					<td class="txt" colspan="3">KML track: ' . $this->getFileName ( $gmap ['kmlfile'] ) . '</td>
+					</tr>';
 		}
-		if (!empty ($gmap['gpxfile'])) {
-			$poitable .='
+		if (! empty ( $gmap ['gpxfile'] )) {
+			$poitable .= '
 					<tr>
-					<td class="rowId"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/gpx_file.png" alt="GPX icon" /></td>
-							<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/gpx_line.png" alt="icon" /></td>
-									<td class="txt" colspan="3">GPX track: '.$this->getFileName($gmap['gpxfile']).'</td>
-											</tr>';
+					<td class="rowId"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/gpx_file.png" alt="GPX icon" /></td>
+					<td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/gpx_line.png" alt="icon" /></td>
+					<td class="txt" colspan="3">GPX track: ' . $this->getFileName ( $gmap ['gpxfile'] ) . '</td>
+					</tr>';
 		}
-		if (!empty ($gmap['geojsonfile'])) {
-			$poitable .='
+		if (! empty ( $gmap ['geojsonfile'] )) {
+			$poitable .= '
 					<tr>
-					<td class="rowId"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/geojson_file.png" alt="KML icon" /></td>
-							<td class="icon"><img src="'.DOKU_BASE.'lib/plugins/openlayersmap/toolbar/geojson_line.png" alt="icon" /></td>
-									<td class="txt" colspan="3">GeoJSON track: '.$this->getFileName($gmap['geojsonfile']).'</td>
-											</tr>';
+					<td class="rowId"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/geojson_file.png" alt="KML icon" /></td>
+					<td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/geojson_line.png" alt="icon" /></td>
+					<td class="txt" colspan="3">GeoJSON track: ' . $this->getFileName ( $gmap ['geojsonfile'] ) . '</td>
+					</tr>';
 		}
 
 		$js .= "{mapOpts:{" . $param . " },poi:[$poi]};";
 		// unescape the json
-		$poitable = stripslashes($poitable);
+		$poitable = stripslashes ( $poitable );
 
-		return array($mapid,$js,$mainLat,$mainLon,$poitable,$gmap['summary'],$imgUrl,$_firstimageID);
+		return array (
+				$mapid,
+				$js,
+				$mainLat,
+				$mainLon,
+				$poitable,
+				$gmap ['summary'],
+				$imgUrl,
+				$_firstimageID
+		);
 	}
 
 	/**
+	 *
 	 * @see DokuWiki_Syntax_Plugin::render()
 	 */
 	function render($mode, &$renderer, $data) {
@@ -197,37 +216,37 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		static $mapnumber = 0;
 
 		// dbglog($data, 'olmap::render() data.');
-		list ($mapid, $param, $mainLat, $mainLon, $poitable, $poitabledesc, $staticImgUrl, $_firstimage) = $data;
+		list ( $mapid, $param, $mainLat, $mainLon, $poitable, $poitabledesc, $staticImgUrl, $_firstimage ) = $data;
 
 		if ($mode == 'xhtml') {
 			$olscript = '';
 			$olEnable = false;
 			$gscript = '';
-			$gEnable = $this->getConf('enableGoogle');
-			$mqEnable = $this->getConf('enableMapQuest');
-			$osmEnable = $this->getConf('enableOSM');
-			$enableBing = $this->getConf('enableBing');
+			$gEnable = $this->getConf ( 'enableGoogle' );
+			$mqEnable = $this->getConf ( 'enableMapQuest' );
+			$osmEnable = $this->getConf ( 'enableOSM' );
+			$enableBing = $this->getConf ( 'enableBing' );
 
 			$scriptEnable = '';
 
-			if (!$initialised) {
+			if (! $initialised) {
 				$initialised = true;
 				// render necessary script tags
-				if($gEnable){
-					$gscript ='<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.11&amp;sensor=false"></script>';
+				if ($gEnable) {
+					$gscript = '<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.11&amp;sensor=false"></script>';
 				}
-				$olscript = $this->getConf('olScriptUrl');
+				$olscript = $this->getConf ( 'olScriptUrl' );
 				$olscript = $olscript ? '<script type="text/javascript" src="' . $olscript . '"></script>' : "";
-				$olscript = str_replace('DOKU_BASE/', DOKU_BASE, $olscript);
+				$olscript = str_replace ( 'DOKU_BASE/', DOKU_BASE, $olscript );
 
 				$scriptEnable = '<script type="text/javascript" charset="utf-8">/*<![CDATA[*/';
 				$scriptEnable .= $olscript ? 'olEnable = true;' : 'olEnable = false;';
-				$scriptEnable .= 'gEnable = '.($gEnable ? 'true' : 'false').';';
-				$scriptEnable .= 'osmEnable = '.($osmEnable ? 'true' : 'false').';';
-				$scriptEnable .= 'mqEnable = '.($mqEnable ? 'true' : 'false').';';
-				$scriptEnable .= 'bEnable = '.($enableBing ? 'true' : 'false').';';
-				$scriptEnable .= 'bApiKey="'.$this->getConf('bingAPIKey').'";';
-				$scriptEnable .= 'OpenLayers.ImgPath = "'.DOKU_BASE.'lib/plugins/openlayersmap/lib/'.$this->getConf('olMapStyle').'/";';
+				$scriptEnable .= 'gEnable = ' . ($gEnable ? 'true' : 'false') . ';';
+				$scriptEnable .= 'osmEnable = ' . ($osmEnable ? 'true' : 'false') . ';';
+				$scriptEnable .= 'mqEnable = ' . ($mqEnable ? 'true' : 'false') . ';';
+				$scriptEnable .= 'bEnable = ' . ($enableBing ? 'true' : 'false') . ';';
+				$scriptEnable .= 'bApiKey="' . $this->getConf ( 'bingAPIKey' ) . '";';
+				$scriptEnable .= 'OpenLayers.ImgPath = "' . DOKU_BASE . 'lib/plugins/openlayersmap/lib/' . $this->getConf ( 'olMapStyle' ) . '/";';
 				$scriptEnable .= '/*!]]>*/</script>';
 			}
 			$renderer->doc .= "
@@ -235,55 +254,55 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$olscript
 			$scriptEnable";
 
-			if ($this->getConf('enableA11y')){
-				$renderer->doc .= '<div id="'.$mapid.'-static" class="olStaticMap">'.p_render($mode, p_get_instructions($staticImgUrl), $info).'</div>';
+			if ($this->getConf ( 'enableA11y' )) {
+				$renderer->doc .= '<div id="' . $mapid . '-static" class="olStaticMap">' . p_render ( $mode, p_get_instructions ( $staticImgUrl ), $info ) . '</div>';
 			}
-			$renderer->doc .= '<div id="'.$mapid.'-clearer" class="clearer"><p>&nbsp;</p></div>';
-			if ($this->getConf('enableA11y')){
+			$renderer->doc .= '<div id="' . $mapid . '-clearer" class="clearer"><p>&nbsp;</p></div>';
+			if ($this->getConf ( 'enableA11y' )) {
 				// render a (initially hidden) table of the POI for the print and a11y presentation
-				$renderer->doc .= '<div class="olPOItableSpan" id="'.$mapid.'-table-span"><table class="olPOItable" id="'.$mapid.'-table" summary="'.$poitabledesc.'" title="'.$this->getLang('olmapPOItitle').'">
-<caption class="olPOITblCaption">'.$this->getLang('olmapPOItitle').'</caption>
+				$renderer->doc .= '<div class="olPOItableSpan" id="' . $mapid . '-table-span"><table class="olPOItable" id="' . $mapid . '-table" summary="' . $poitabledesc . '" title="' . $this->getLang ( 'olmapPOItitle' ) . '">
+<caption class="olPOITblCaption">' . $this->getLang ( 'olmapPOItitle' ) . '</caption>
 <thead class="olPOITblHeader">
 <tr>
 <th class="rowId" scope="col">id</th>
-<th class="icon" scope="col">'.$this->getLang('olmapPOIicon').'</th>
-<th class="lat" scope="col" title="'.$this->getLang('olmapPOIlatTitle').'">'.$this->getLang('olmapPOIlat').'</th>
-<th class="lon" scope="col" title="'.$this->getLang('olmapPOIlonTitle').'">'.$this->getLang('olmapPOIlon').'</th>
-<th class="txt" scope="col">'.$this->getLang('olmapPOItxt').'</th>
+<th class="icon" scope="col">' . $this->getLang ( 'olmapPOIicon' ) . '</th>
+<th class="lat" scope="col" title="' . $this->getLang ( 'olmapPOIlatTitle' ) . '">' . $this->getLang ( 'olmapPOIlat' ) . '</th>
+<th class="lon" scope="col" title="' . $this->getLang ( 'olmapPOIlonTitle' ) . '">' . $this->getLang ( 'olmapPOIlon' ) . '</th>
+<th class="txt" scope="col">' . $this->getLang ( 'olmapPOItxt' ) . '</th>
 </tr>
 </thead>';
-				if ($poitabledesc !=''){
-					$renderer->doc .='<tfoot class="olPOITblFooter"><tr><td colspan="5">'.$poitabledesc.'</td></tr></tfoot>';
+				if ($poitabledesc != '') {
+					$renderer->doc .= '<tfoot class="olPOITblFooter"><tr><td colspan="5">' . $poitabledesc . '</td></tr></tfoot>';
 				}
-				$renderer->doc .='<tbody class="olPOITblBody">'.$poitable.'</tbody>
-</table></div>';
+				$renderer->doc .= '<tbody class="olPOITblBody">' . $poitable . '</tbody>
+						</table></div>';
 			}
 			// render inline mapscript parts
-			$renderer->doc .='<script type="text/javascript" charset="utf-8">/*<![CDATA[*/';
-			$renderer->doc .=" olMapData[$mapnumber] = $param /*!]]>*/</script>";
-			$mapnumber++;
+			$renderer->doc .= '<script type="text/javascript" charset="utf-8">/*<![CDATA[*/';
+			$renderer->doc .= " olMapData[$mapnumber] = $param /*!]]>*/</script>";
+			$mapnumber ++;
 			return true;
 		} elseif ($mode == 'metadata') {
-			if (!(($this->dflt['lat']==$mainLat) && ($thisdflt['lon']==$mainLon))){
+			if (! (($this->dflt ['lat'] == $mainLat) && ($thisdflt ['lon'] == $mainLon))) {
 				// render geo metadata, unless they are the default
-				$renderer->meta['geo']['lat'] = $mainLat;
-				$renderer->meta['geo']['lon'] = $mainLon;
-				if ($geophp = &plugin_load('helper', 'geophp')){
+				$renderer->meta ['geo'] ['lat'] = $mainLat;
+				$renderer->meta ['geo'] ['lon'] = $mainLon;
+				if ($geophp = &plugin_load ( 'helper', 'geophp' )) {
 					// if we have the geoPHP helper, add the geohash
 					// fails with older php versions.. $renderer->meta['geo']['geohash'] = (new Point($mainLon,$mainLat))->out('geohash');
-					$p = new Point($mainLon,$mainLat);
-					$renderer->meta['geo']['geohash'] = $p->out('geohash');
+					$p = new Point ( $mainLon, $mainLat );
+					$renderer->meta ['geo'] ['geohash'] = $p->out ( 'geohash' );
 				}
 			}
 
-			if(($this->getConf('enableA11y')) && (!empty($_firstimage))){
+			if (($this->getConf ( 'enableA11y' )) && (! empty ( $_firstimage ))) {
 				// add map local image into relation/firstimage if not already filled and when it is a local image
 
 				global $ID;
-				$rel = p_get_metadata($ID, 'relation', METADATA_RENDER_USING_CACHE);
-				$img = $rel['firstimage'];
-				if(empty($img) /* || $img == $_firstimage*/){
-					dbglog($_firstimage,'olmap::render#rendering image relation metadata for _firstimage as $img was empty or the same.');
+				$rel = p_get_metadata ( $ID, 'relation', METADATA_RENDER_USING_CACHE );
+				$img = $rel ['firstimage'];
+				if (empty ( $img ) /* || $img == $_firstimage*/){
+					dbglog ( $_firstimage, 'olmap::render#rendering image relation metadata for _firstimage as $img was empty or the same.' );
 					// This seems to never work; the firstimage entry in the .meta file is empty
 					// $renderer->meta['relation']['firstimage'] = $_firstimage;
 
@@ -292,7 +311,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					// p_set_metadata($ID, $relation, false, false);
 
 					// ... this works
-					$renderer->internalmedia($_firstimage, $poitabledesc);
+					$renderer->internalmedia ( $_firstimage, $poitabledesc );
 				}
 			}
 			return true;
@@ -303,23 +322,27 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	/**
 	 * extract parameters for the map from the parameter string
 	 *
-	 * @param   string    $str_params   string of key="value" pairs
-	 * @return  array                   associative array of parameters key=>value
+	 * @param string $str_params
+	 *        	string of key="value" pairs
+	 * @return array associative array of parameters key=>value
 	 */
 	private function _extract_params($str_params) {
 		$param = array ();
-		preg_match_all('/(\w*)="(.*?)"/us', $str_params, $param, PREG_SET_ORDER);
+		preg_match_all ( '/(\w*)="(.*?)"/us', $str_params, $param, PREG_SET_ORDER );
 		// parse match for instructions, break into key value pairs
 		$gmap = $this->dflt;
-		foreach ($param as $kvpair) {
-			list ($match, $key, $val) = $kvpair;
-			$key = strtolower($key);
-			if (isset ($gmap[$key])){
-				if ($key == 'summary'){
+		foreach ( $param as $kvpair ) {
+			list ( $match, $key, $val ) = $kvpair;
+			$key = strtolower ( $key );
+			if (isset ( $gmap [$key] )) {
+				if ($key == 'summary') {
 					// preserve case for summary field
-					$gmap[$key] = $val;
-				}else {
-					$gmap[$key] = strtolower($val);
+					$gmap [$key] = $val;
+				} elseif ($key == 'id') {
+					// preserve case for id field
+					$gmap [$key] = $val;
+				} else {
+					$gmap [$key] = strtolower ( $val );
 				}
 			}
 		}
@@ -329,342 +352,362 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	/**
 	 * extract overlay points for the map from the wiki syntax data
 	 *
-	 * @param   string    $str_points   multi-line string of lat,lon,text triplets
-	 * @return  array                   multi-dimensional array of lat,lon,text triplets
+	 * @param string $str_points
+	 *        	multi-line string of lat,lon,text triplets
+	 * @return array multi-dimensional array of lat,lon,text triplets
 	 */
 	private function _extract_points($str_points) {
 		$point = array ();
-		//preg_match_all('/^([+-]?[0-9].*?),\s*([+-]?[0-9].*?),(.*?),(.*?),(.*?),(.*)$/um', $str_points, $point, PREG_SET_ORDER);
+		// preg_match_all('/^([+-]?[0-9].*?),\s*([+-]?[0-9].*?),(.*?),(.*?),(.*?),(.*)$/um', $str_points, $point, PREG_SET_ORDER);
 		/*
-		group 1: ([+-]?[0-9]+(?:\.[0-9]*)?)
-		group 2: ([+-]?[0-9]+(?:\.[0-9]*)?)
-		group 3: (.*?)
-		group 4: (.*?)
-		group 5: (.*?)
-		group 6: (.*)
-		*/
-		preg_match_all('/^([+-]?[0-9]+(?:\.[0-9]*)?),\s*([+-]?[0-9]+(?:\.[0-9]*)?),(.*?),(.*?),(.*?),(.*)$/um', $str_points, $point, PREG_SET_ORDER);
+		 * group 1: ([+-]?[0-9]+(?:\.[0-9]*)?) group 2: ([+-]?[0-9]+(?:\.[0-9]*)?) group 3: (.*?) group 4: (.*?) group 5: (.*?) group 6: (.*)
+		 */
+		preg_match_all ( '/^([+-]?[0-9]+(?:\.[0-9]*)?),\s*([+-]?[0-9]+(?:\.[0-9]*)?),(.*?),(.*?),(.*?),(.*)$/um', $str_points, $point, PREG_SET_ORDER );
 		// create poi array
 		$overlay = array ();
-		foreach ($point as $pt) {
-			list ($match, $lat, $lon, $angle, $opacity, $img, $text) = $pt;
-			$lat = is_numeric($lat) ? $lat : 0;
-			$lon = is_numeric($lon) ? $lon : 0;
-			$angle = is_numeric($angle) ? $angle : 0;
-			$opacity = is_numeric($opacity) ? $opacity : 0.8;
-			$img = trim($img);
+		foreach ( $point as $pt ) {
+			list ( $match, $lat, $lon, $angle, $opacity, $img, $text ) = $pt;
+			$lat = is_numeric ( $lat ) ? $lat : 0;
+			$lon = is_numeric ( $lon ) ? $lon : 0;
+			$angle = is_numeric ( $angle ) ? $angle : 0;
+			$opacity = is_numeric ( $opacity ) ? $opacity : 0.8;
 			// TODO validate using exist & set up default img?
-			$text = addslashes(str_replace("\n", "", p_render("xhtml", p_get_instructions($text), $info)));
-			$overlay[] = array($lat, $lon, $text, $angle, $opacity, $img);
+			$img = trim ( $img );
+			$text = p_get_instructions ( $text );
+			// dbg ( $text );
+			$text = p_render ( "xhtml", $text, $info );
+			// dbg ( $text );
+			$text = addslashes ( str_replace ( "\n", "", $text ) );
+			$overlay [] = array (
+					$lat,
+					$lon,
+					$text,
+					$angle,
+					$opacity,
+					$img
+			);
 		}
 		return $overlay;
 	}
 
 	/**
 	 * Create a MapQuest static map API image url.
+	 *
 	 * @param array $gmap
 	 * @param array $overlay
 	 */
-	private function _getMapQuest($gmap,$overlay) {
-		$sUrl=$this->getConf('iconUrlOverload');
-		if (!$sUrl){
-			$sUrl=DOKU_URL;
+	private function _getMapQuest($gmap, $overlay) {
+		$sUrl = $this->getConf ( 'iconUrlOverload' );
+		if (! $sUrl) {
+			$sUrl = DOKU_URL;
 		}
-		switch ($gmap['baselyr']){
-			case 'mapquest hybrid':
-				$maptype='hyb';
+		switch ($gmap ['baselyr']) {
+			case 'mapquest hybrid' :
+				$maptype = 'hyb';
 				break;
-			case 'mapquest sat':
+			case 'mapquest sat' :
 				// because sat coverage is very limited use 'hyb' instead of 'sat' so we don't get a blank map
-				$maptype='hyb';
+				$maptype = 'hyb';
 				break;
-			case 'mapquest road':
-			default:
-				$maptype='map';
+			case 'mapquest road' :
+			default :
+				$maptype = 'map';
 				break;
 		}
 		$imgUrl = "http://open.mapquestapi.com/staticmap/v4/getmap?declutter=true&";
-		if (count($overlay)< 1){
-			$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
-			//max level for mapquest is 16
-			if ($gmap['zoom']>16) {
+		if (count ( $overlay ) < 1) {
+			$imgUrl .= "?center=" . $gmap ['lat'] . "," . $gmap ['lon'];
+			// max level for mapquest is 16
+			if ($gmap ['zoom'] > 16) {
 				$imgUrl .= "&zoom=16";
-			} else			{
-				$imgUrl .= "&zoom=".$gmap['zoom'];
+			} else {
+				$imgUrl .= "&zoom=" . $gmap ['zoom'];
 			}
 		}
 		// use bestfit instead of center/zoom, needs upperleft/lowerright corners
-		//$bbox=$this->_calcBBOX($overlay, $gmap['lat'], $gmap['lon']);
-		//$imgUrl .= "bestfit=".$bbox['minlat'].",".$bbox['maxlon'].",".$bbox['maxlat'].",".$bbox['minlon'];
+		// $bbox=$this->_calcBBOX($overlay, $gmap['lat'], $gmap['lon']);
+		// $imgUrl .= "bestfit=".$bbox['minlat'].",".$bbox['maxlon'].",".$bbox['maxlat'].",".$bbox['minlon'];
 
 		// TODO declutter option works well for square maps but not for rectangular, maybe compensate for that or compensate the mbr..
-		$imgUrl .= "&size=".str_replace("px", "",$gmap['width']).",".str_replace("px", "",$gmap['height']);
+		$imgUrl .= "&size=" . str_replace ( "px", "", $gmap ['width'] ) . "," . str_replace ( "px", "", $gmap ['height'] );
 
 		// TODO mapquest allows using one image url with a multiplier $NUMBER eg:
 		// $NUMBER = 2
 		// $imgUrl .= DOKU_URL."/".DOKU_PLUGIN."/".getPluginName()."/icons/".$img.",$NUMBER,C,".$lat1.",".$lon1.",0,0,0,0,C,".$lat2.",".$lon2.",0,0,0,0";
-		if (!empty ($overlay)) {
+		if (! empty ( $overlay )) {
 			$imgUrl .= "&xis=";
-			foreach ($overlay as $data) {
-				list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
-				//$imgUrl .= $sUrl."lib/plugins/openlayersmap/icons/".$img.",1,C,".$lat.",".$lon.",0,0,0,0,";
-				$imgUrl .= $sUrl."lib/plugins/openlayersmap/icons/".$img.",1,C,".$lat.",".$lon.",";
+			foreach ( $overlay as $data ) {
+				list ( $lat, $lon, $text, $angle, $opacity, $img ) = $data;
+				// $imgUrl .= $sUrl."lib/plugins/openlayersmap/icons/".$img.",1,C,".$lat.",".$lon.",0,0,0,0,";
+				$imgUrl .= $sUrl . "lib/plugins/openlayersmap/icons/" . $img . ",1,C," . $lat . "," . $lon . ",";
 			}
-			$imgUrl = substr($imgUrl,0,-1);
+			$imgUrl = substr ( $imgUrl, 0, - 1 );
 		}
-		$imgUrl .= "&imageType=png&type=".$maptype;
-		//dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getMapQuest: MapQuest image url is:');
+		$imgUrl .= "&imageType=png&type=" . $maptype;
+		// dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getMapQuest: MapQuest image url is:');
 		return $imgUrl;
 	}
 
 	/**
 	 * Create a Google maps static image url w/ the poi.
+	 *
 	 * @param array $gmap
 	 * @param array $overlay
 	 */
-	private function _getGoogle($gmap, $overlay){
-		$sUrl=$this->getConf('iconUrlOverload');
-		if (!$sUrl){
-			$sUrl=DOKU_URL;
+	private function _getGoogle($gmap, $overlay) {
+		$sUrl = $this->getConf ( 'iconUrlOverload' );
+		if (! $sUrl) {
+			$sUrl = DOKU_URL;
 		}
-		switch ($gmap['baselyr']){
-			case 'google hybrid':
-				$maptype='hybrid';
+		switch ($gmap ['baselyr']) {
+			case 'google hybrid' :
+				$maptype = 'hybrid';
 				break;
-			case 'google sat':
-				$maptype='satellite';
+			case 'google sat' :
+				$maptype = 'satellite';
 				break;
-			case 'google relief':
-				$maptype='terrain';
+			case 'google relief' :
+				$maptype = 'terrain';
 				break;
-			case 'google road':
-			default:
-				$maptype='roadmap';
+			case 'google road' :
+			default :
+				$maptype = 'roadmap';
 				break;
 		}
 		// TODO maybe use viewport / visible instead of center/zoom,
-		//		see: https://code.google.com/intl/nl/apis/maps/documentation/staticmaps/#ImplicitPositioning
-		//http://maps.google.com/maps/api/staticmap?center=51.565690,5.456756&zoom=16&size=600x400&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker.png|label:1|51.565690,5.456756&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker-blue.png|51.566197,5.458966|label:2&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.567177,5.457909|label:3&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.566283,5.457330|label:4&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.565630,5.457695|label:5&sensor=false&format=png&maptype=roadmap
+		// see: https://code.google.com/intl/nl/apis/maps/documentation/staticmaps/#ImplicitPositioning
+		// http://maps.google.com/maps/api/staticmap?center=51.565690,5.456756&zoom=16&size=600x400&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker.png|label:1|51.565690,5.456756&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker-blue.png|51.566197,5.458966|label:2&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.567177,5.457909|label:3&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.566283,5.457330|label:4&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.565630,5.457695|label:5&sensor=false&format=png&maptype=roadmap
 		$imgUrl = "http://maps.google.com/maps/api/staticmap?sensor=false";
-		$imgUrl .= "&size=".str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
-		$imgUrl .= "&center=".$gmap['lat'].",".$gmap['lon'];
+		$imgUrl .= "&size=" . str_replace ( "px", "", $gmap ['width'] ) . "x" . str_replace ( "px", "", $gmap ['height'] );
+		$imgUrl .= "&center=" . $gmap ['lat'] . "," . $gmap ['lon'];
 		// max is 21 (== building scale), but that's overkill..
-		if ($gmap['zoom']>17) {
+		if ($gmap ['zoom'] > 17) {
 			$imgUrl .= "&zoom=17";
-		} else			{
-			$imgUrl .= "&zoom=".$gmap['zoom'];
+		} else {
+			$imgUrl .= "&zoom=" . $gmap ['zoom'];
 		}
 
-		if (!empty ($overlay)) {
-			$rowId=0;
-			foreach ($overlay as $data) {
-				list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
-				$imgUrl .= "&markers=icon%3a".$sUrl."lib/plugins/openlayersmap/icons/".$img."%7c".$lat.",".$lon."%7clabel%3a".++$rowId;
+		if (! empty ( $overlay )) {
+			$rowId = 0;
+			foreach ( $overlay as $data ) {
+				list ( $lat, $lon, $text, $angle, $opacity, $img ) = $data;
+				$imgUrl .= "&markers=icon%3a" . $sUrl . "lib/plugins/openlayersmap/icons/" . $img . "%7c" . $lat . "," . $lon . "%7clabel%3a" . ++ $rowId;
 			}
 		}
-		$imgUrl .= "&format=png&maptype=".$maptype;
+		$imgUrl .= "&format=png&maptype=" . $maptype;
 		global $conf;
-		$imgUrl .= "&language=".$conf['lang'];
-		//dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getGoogle: Google image url is:');
+		$imgUrl .= "&language=" . $conf ['lang'];
+		// dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getGoogle: Google image url is:');
 		return $imgUrl;
 	}
 
 	/**
 	 * Create a Bing maps static image url w/ the poi.
+	 *
 	 * @param array $gmap
 	 * @param array $overlay
 	 */
-	private function _getBing($gmap, $overlay){
-		if(!$this->getConf('bingAPIKey')){
+	private function _getBing($gmap, $overlay) {
+		if (! $this->getConf ( 'bingAPIKey' )) {
 			// in case there is no Bing api key we'll use OSM
-			$this->_getStaticOSM($gmap, $overlay);
+			$this->_getStaticOSM ( $gmap, $overlay );
 		}
-		switch ($gmap['baselyr']){
-			case 've hybrid':
-			case 'bing hybrid':
-				$maptype='AerialWithLabels';
+		switch ($gmap ['baselyr']) {
+			case 've hybrid' :
+			case 'bing hybrid' :
+				$maptype = 'AerialWithLabels';
 				break;
-			case 've sat':
-			case 'bing sat':
-				$maptype='Aerial';
+			case 've sat' :
+			case 'bing sat' :
+				$maptype = 'Aerial';
 				break;
-			case 've normal':
-			case 've road':
-			case 've':
-			case 'bing road':
-			default:
-				$maptype='Road';
+			case 've normal' :
+			case 've road' :
+			case 've' :
+			case 'bing road' :
+			default :
+				$maptype = 'Road';
 				break;
 		}
-		$imgUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/".$maptype."/";
-		if (!$this->getConf('autoZoomMap')){
-			$bbox=$this->_calcBBOX($overlay, $gmap['lat'], $gmap['lon']);
-			$imgUrl .= "?mapArea=".$bbox['minlat'].",".$bbox['minlon'].",".$bbox['maxlat'].",".$bbox['maxlon'];
+		$imgUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/" . $maptype . "/";
+		if (! $this->getConf ( 'autoZoomMap' )) {
+			$bbox = $this->_calcBBOX ( $overlay, $gmap ['lat'], $gmap ['lon'] );
+			$imgUrl .= "?mapArea=" . $bbox ['minlat'] . "," . $bbox ['minlon'] . "," . $bbox ['maxlat'] . "," . $bbox ['maxlon'];
 			$imgUrl .= "&declutter=1";
 			// or
-			//$imgUrl .= $gmap['lat'].",".$gmap['lon']."/".$gmap['zoom']."?";
+			// $imgUrl .= $gmap['lat'].",".$gmap['lon']."/".$gmap['zoom']."?";
 		}
-		if (strpos($imgUrl, "?") === false) $imgUrl .= "?";
+		if (strpos ( $imgUrl, "?" ) === false)
+			$imgUrl .= "?";
 
-		$imgUrl .= "&ms=".str_replace("px", "",$gmap['width']).",".str_replace("px", "",$gmap['height']);
-		$imgUrl .= "&key=".$this->getConf('bingAPIKey');
-		if (!empty ($overlay)) {
-			$rowId=0;
-			foreach ($overlay as $data) {
-				list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
+		$imgUrl .= "&ms=" . str_replace ( "px", "", $gmap ['width'] ) . "," . str_replace ( "px", "", $gmap ['height'] );
+		$imgUrl .= "&key=" . $this->getConf ( 'bingAPIKey' );
+		if (! empty ( $overlay )) {
+			$rowId = 0;
+			foreach ( $overlay as $data ) {
+				list ( $lat, $lon, $text, $angle, $opacity, $img ) = $data;
 				// TODO icon style lookup, see: http://msdn.microsoft.com/en-us/library/ff701719.aspx for iconStyle
-				$iconStyle=32;
-				$rowId++;
+				$iconStyle = 32;
+				$rowId ++;
 				// NOTE: the max number of pushpins is 18! or we have tuo use POST (http://msdn.microsoft.com/en-us/library/ff701724.aspx)
-				if ($rowId==18) {
+				if ($rowId == 18) {
 					break;
 				}
 				$imgUrl .= "&pp=$lat,$lon;$iconStyle;$rowId";
 			}
 		}
-		//dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getBing: bing image url is:');
+		// dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getBing: bing image url is:');
 		return $imgUrl;
 	}
 
 	/**
 	 * Create a static OSM map image url w/ the poi from http://staticmap.openstreetmap.de (staticMapLite)
 	 * use http://staticmap.openstreetmap.de "staticMapLite" or a local version
+	 *
 	 * @param array $gmap
 	 * @param array $overlay
 	 *
 	 * @todo implementation for http://ojw.dev.openstreetmap.org/StaticMapDev/
 	 */
-	private function _getStaticOSM($gmap, $overlay){
-		//http://staticmap.openstreetmap.de/staticmap.php?center=47.000622235634,10.117187497601&zoom=5&size=500x350
+	private function _getStaticOSM($gmap, $overlay) {
+		// http://staticmap.openstreetmap.de/staticmap.php?center=47.000622235634,10.117187497601&zoom=5&size=500x350
 		// &markers=48.999812532766,8.3593749976708,lightblue1|43.154850037315,17.499999997306,lightblue1|49.487527053077,10.820312497573,ltblu-pushpin|47.951071133739,15.917968747369,ol-marker|47.921629720114,18.027343747285,ol-marker-gold|47.951071133739,19.257812497236,ol-marker-blue|47.180141361692,19.257812497236,ol-marker-green
 		global $conf;
 
-		if ($this->getConf('optionStaticMapGenerator')=='local') {
-			if (!$my = &plugin_load('helper', 'openlayersmap_staticmap')){
-				dbglog($my,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: openlayersmap_staticmap plugin is not available.');
+		if ($this->getConf ( 'optionStaticMapGenerator' ) == 'local') {
+			if (! $my = &plugin_load ( 'helper', 'openlayersmap_staticmap' )) {
+				dbglog ( $my, 'syntax_plugin_openlayersmap_olmap::_getStaticOSM: openlayersmap_staticmap plugin is not available.' );
 			}
-			if (!$geophp = &plugin_load('helper', 'geophp')){
-				dbglog($geophp,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: geophp plugin is not available.');
+			if (! $geophp = &plugin_load ( 'helper', 'geophp' )) {
+				dbglog ( $geophp, 'syntax_plugin_openlayersmap_olmap::_getStaticOSM: geophp plugin is not available.' );
 			}
-			$size = str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
+			$size = str_replace ( "px", "", $gmap ['width'] ) . "x" . str_replace ( "px", "", $gmap ['height'] );
 
-			$markers='';
-			if (!empty ($overlay)) {
-				foreach ($overlay as $data) {
-					list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
-					$iconStyle = substr($img, 0, strlen($img)-4);
-					$markers[] = array(
-							'lat'=>$lat,
-							'lon'=>$lon,
-							'type'=>$iconStyle);
+			$markers = '';
+			if (! empty ( $overlay )) {
+				foreach ( $overlay as $data ) {
+					list ( $lat, $lon, $text, $angle, $opacity, $img ) = $data;
+					$iconStyle = substr ( $img, 0, strlen ( $img ) - 4 );
+					$markers [] = array (
+							'lat' => $lat,
+							'lon' => $lon,
+							'type' => $iconStyle
+					);
 				}
 			}
 
-			$result = $my->getMap($gmap['lat'], $gmap['lon'], $gmap['zoom'],
-					$size, $maptype, $markers, $gmap['gpxfile'], $gmap['kmlfile'], $gmap['geojsonfile']);
+			$result = $my->getMap ( $gmap ['lat'], $gmap ['lon'], $gmap ['zoom'], $size, $maptype, $markers, $gmap ['gpxfile'], $gmap ['kmlfile'], $gmap ['geojsonfile'] );
 		} else {
 			// default to external provider
 			$imgUrl = "http://staticmap.openstreetmap.de/staticmap.php";
-			$imgUrl .= "?center=".$gmap['lat'].",".$gmap['lon'];
-			$imgUrl .= "&size=".str_replace("px", "",$gmap['width'])."x".str_replace("px", "",$gmap['height']);
+			$imgUrl .= "?center=" . $gmap ['lat'] . "," . $gmap ['lon'];
+			$imgUrl .= "&size=" . str_replace ( "px", "", $gmap ['width'] ) . "x" . str_replace ( "px", "", $gmap ['height'] );
 
-
-			if ($gmap['zoom']>16) {
+			if ($gmap ['zoom'] > 16) {
 				// actually this could even be 18, but that seems overkill
 				$imgUrl .= "&zoom=16";
 			} else {
-				$imgUrl .= "&zoom=".$gmap['zoom'];
+				$imgUrl .= "&zoom=" . $gmap ['zoom'];
 			}
 
-			switch ($gmap['baselyr']){
-				case 'mapnik':
-				case 'openstreetmap':
-					$maptype='openstreetmap';
+			switch ($gmap ['baselyr']) {
+				case 'mapnik' :
+				case 'openstreetmap' :
+					$maptype = 'openstreetmap';
 					break;
-				case 'transport':
-					$maptype='transport';
+				case 'transport' :
+					$maptype = 'transport';
 					break;
-				case 'landscape':
-					$maptype='landscape';
+				case 'landscape' :
+					$maptype = 'landscape';
 					break;
-				case 'cycle map':
-					$maptype='cycle';
+				case 'cycle map' :
+					$maptype = 'cycle';
 					break;
-				case 'cloudmade':
-					$maptype='cloudmade';
+				case 'cloudmade' :
+					$maptype = 'cloudmade';
 					break;
-				case 'cloudmade fresh':
-					$maptype='fresh';
+				case 'cloudmade fresh' :
+					$maptype = 'fresh';
 					break;
-				case 'hike and bike map':
-					$maptype='hikeandbike';
+				case 'hike and bike map' :
+					$maptype = 'hikeandbike';
 					break;
-				case 'mapquest hybrid':
-				case 'mapquest road':
-				case 'mapquest sat':
-					$maptype='mapquest';
+				case 'mapquest hybrid' :
+				case 'mapquest road' :
+				case 'mapquest sat' :
+					$maptype = 'mapquest';
 					break;
-				default:
-					$maptype='';
+				default :
+					$maptype = '';
 					break;
 			}
-			$imgUrl .= "&maptype=".$maptype;
+			$imgUrl .= "&maptype=" . $maptype;
 
-			if (!empty ($overlay)) {
-				$rowId=0;
+			if (! empty ( $overlay )) {
+				$rowId = 0;
 				$imgUrl .= "&markers=";
-				foreach ($overlay as $data) {
-					list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
-					$rowId++;
+				foreach ( $overlay as $data ) {
+					list ( $lat, $lon, $text, $angle, $opacity, $img ) = $data;
+					$rowId ++;
 					$iconStyle = "lightblue$rowId";
 					$imgUrl .= "$lat,$lon,$iconStyle%7c";
 				}
-				$imgUrl = substr($imgUrl,0,-3);
+				$imgUrl = substr ( $imgUrl, 0, - 3 );
 			}
 
 			$result = $imgUrl;
 		}
 
-		//dbglog($result,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: osm image url is:');
+		// dbglog($result,'syntax_plugin_openlayersmap_olmap::_getStaticOSM: osm image url is:');
 		return $result;
 	}
 
 	/**
 	 * Calculate the minimum bbox for a start location + poi.
 	 *
-	 * @param array $overlay  multi-dimensional array of array($lat, $lon, $text, $angle, $opacity, $img)
-	 * @param float $lat latitude for map center
-	 * @param float $lon longitude for map center
+	 * @param array $overlay
+	 *        	multi-dimensional array of array($lat, $lon, $text, $angle, $opacity, $img)
+	 * @param float $lat
+	 *        	latitude for map center
+	 * @param float $lon
+	 *        	longitude for map center
 	 * @return multitype:float array describing the mbr and center point
 	 */
-	private function _calcBBOX($overlay, $lat, $lon){
-		$lats[] = $lat;
-		$lons[] = $lon;
-		foreach ($overlay as $data) {
-			list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
-			$lats[] = $lat;
-			$lons[] = $lon;
+	private function _calcBBOX($overlay, $lat, $lon) {
+		$lats [] = $lat;
+		$lons [] = $lon;
+		foreach ( $overlay as $data ) {
+			list ( $lat, $lon, $text, $angle, $opacity, $img ) = $data;
+			$lats [] = $lat;
+			$lons [] = $lon;
 		}
-		sort($lats);
-		sort($lons);
+		sort ( $lats );
+		sort ( $lons );
 		// TODO: make edge/wrap around cases work
-		$centerlat = $lats[0]+($lats[count($lats)-1]-$lats[0]);
-		$centerlon = $lons[0]+($lons[count($lats)-1]-$lons[0]);
-		return array('minlat'=>$lats[0], 'minlon'=>$lons[0],
-				'maxlat'=>$lats[count($lats)-1], 'maxlon'=>$lons[count($lats)-1],
-				'centerlat'=>$centerlat,'centerlon'=>$centerlon);
+		$centerlat = $lats [0] + ($lats [count ( $lats ) - 1] - $lats [0]);
+		$centerlon = $lons [0] + ($lons [count ( $lats ) - 1] - $lons [0]);
+		return array (
+				'minlat' => $lats [0],
+				'minlon' => $lons [0],
+				'maxlat' => $lats [count ( $lats ) - 1],
+				'maxlon' => $lons [count ( $lats ) - 1],
+				'centerlat' => $centerlat,
+				'centerlon' => $centerlon
+		);
 	}
 
 	/**
 	 * Figures out the base filename of a media path.
+	 *
 	 * @param String $mediaLink
 	 */
-	private function getFileName($mediaLink){
-		$mediaLink=str_replace('[[','',$mediaLink);
-		$mediaLink=str_replace(']]','',$mediaLink);
-		$mediaLink = substr($mediaLink, 0, -4);
-		$parts=explode(':',$mediaLink);
-		$mediaLink = end($parts);
-		return str_replace('_',' ',$mediaLink);
+	private function getFileName($mediaLink) {
+		$mediaLink = str_replace ( '[[', '', $mediaLink );
+		$mediaLink = str_replace ( ']]', '', $mediaLink );
+		$mediaLink = substr ( $mediaLink, 0, - 4 );
+		$parts = explode ( ':', $mediaLink );
+		$mediaLink = end ( $parts );
+		return str_replace ( '_', ' ', $mediaLink );
 	}
 }
