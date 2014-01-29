@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2014 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -73,11 +73,13 @@ function onFeatureSelect(feature) {
 
 	if (pContent.length > 0) {
 		// only show when there is something to show...
-		var popup = new OpenLayers.Popup.FramedCloud("olPopup", pPos, null, pContent, null, true, function() {
+		var popup = new OpenLayersMap.Popup.FramedCloud("olPopup", pPos, null, pContent, null, true, function() {
 			selectControl.unselect(selectedFeature);
+			jQuery('#'+selectControl.layer.map.div.id).focus();
 		});
 		feature.popup = popup;
 		feature.layer.map.addPopup(popup);
+		jQuery('#olPopup').attr("tabindex",-1).focus();
 	}
 }
 
@@ -119,8 +121,8 @@ function olTestCSSsupport() {
  */
 function olCreateMaptag(mapid, width, height) {
 	var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">' + '<div id="' + mapid
-			+ '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap">'
-			+ '<a class="olAccesskey" href="" accesskey="1" onclick="document.getElementById(&quot;' + mapid
+			+ '" tabindex="-1" style="width:' + width + ';height:' + height + ';" class="olMap">'
+			+ '<a class="olAccesskey" href="#' + mapid + '" onclick="document.getElementById(&quot;' + mapid
 			+ '&quot;).focus(); return false;" title="' + OpenLayers.i18n("activate_map") + '">'
 			+ OpenLayers.i18n("activate_map") + '</a>' + '</div>' + '<div id="' + mapid + '-olStatusBar" style="width:'
 			+ width + ';"class="olStatusBarContainer">' + '<div id="' + mapid
@@ -161,8 +163,6 @@ function createMap(mapOpts, OLmapPOI) {
 		olEnable = false;
 		return;
 	}
-
-	var DocBase = DOKU_BASE;
 
 	OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
 	// OpenLayers.Layer.Vector.prototype.renderers = ["SVG", "VML"];
@@ -326,26 +326,6 @@ function createMap(mapOpts, OLmapPOI) {
 		observeElement : mapOpts.id
 	}), new OpenLayers.Control.Navigation() ]);
 
-	if (mapOpts.controls === 1) {
-		/* add base controls to map */
-		m.addControls([ new OpenLayers.Control.LayerSwitcher(), new OpenLayers.Control.Graticule({
-			visible : false
-		}), new OpenLayersMap.Control.OverviewMap(), new OpenLayersMap.Control.Zoom() ]);
-
-		// add hillshade, since this is off by default only add when we have a
-		// layerswitcher
-		m.addLayer(new OpenLayers.Layer.OSM("Hillshade", "http://toolserver.org/~cmarqu/hill/${z}/${x}/${y}.png", {
-			isBaseLayer : false,
-			transparent : true,
-			visibility : false,
-			displayOutsideMaxExtent : true,
-			attribution : '',
-			tileOptions : {
-				crossOriginKeyword : null
-			}
-		}));
-	}
-
 	if (mapOpts.statusbar === 1) {
 		// statusbar control: mouse pos.
 		m.addControl(new OpenLayers.Control.MousePosition({
@@ -374,7 +354,7 @@ function createMap(mapOpts, OLmapPOI) {
 					graphicYOffset : -8,
 					graphicOpacity : "${opacity}",
 					rotation : "${angle}",
-					backgroundGraphic : DocBase + "lib/plugins/openlayersmap/icons/marker_shadow.png",
+					backgroundGraphic : DOKU_BASE + "lib/plugins/openlayersmap/icons/marker_shadow.png",
 					backgroundXOffset : 0,
 					backgroundYOffset : -4,
 					backgroundRotation : "${angle}",
@@ -390,7 +370,7 @@ function createMap(mapOpts, OLmapPOI) {
 				},
 				"select" : {
 					cursor : "crosshair",
-					externalGraphic : DocBase + "lib/plugins/openlayersmap/icons/marker-red.png",
+					externalGraphic : DOKU_BASE + "lib/plugins/openlayersmap/icons/marker-red.png",
 					graphicHeight : 16,
 					graphicWidth : 16,
 					graphicXOffset : 0,
@@ -406,12 +386,12 @@ function createMap(mapOpts, OLmapPOI) {
 		});
 		m.addLayer(markers);
 		var features = [];
-		for ( var j = 0; j < OLmapPOI.length; j++) {
+		for (var j = 0; j < OLmapPOI.length; j++) {
 			var feat = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(OLmapPOI[j].lon, OLmapPOI[j].lat)
 					.transform(m.displayProjection, m.projection), {
 				angle : OLmapPOI[j].angle,
 				opacity : OLmapPOI[j].opacity,
-				img : DocBase + "lib/plugins/openlayersmap/icons/" + OLmapPOI[j].img,
+				img : DOKU_BASE + "lib/plugins/openlayersmap/icons/" + OLmapPOI[j].img,
 				label : OLmapPOI[j].rowId
 			});
 			feat.data = {
@@ -429,7 +409,7 @@ function createMap(mapOpts, OLmapPOI) {
 	if (mapOpts.gpxfile.length > 0) {
 		var layerGPX = new OpenLayers.Layer.Vector("GPS route", {
 			protocol : new OpenLayers.Protocol.HTTP({
-				url : DocBase + "lib/exe/fetch.php?media=" + mapOpts.gpxfile,
+				url : DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.gpxfile,
 				format : new OpenLayers.Format.GPX({
 					extractWaypoints : true,
 					extractTracks : true,
@@ -462,7 +442,7 @@ function createMap(mapOpts, OLmapPOI) {
 	if (mapOpts.geojsonfile.length > 0) {
 		var layerGJS = new OpenLayers.Layer.Vector("json data", {
 			protocol : new OpenLayers.Protocol.HTTP({
-				url : DocBase + "lib/exe/fetch.php?media=" + mapOpts.geojsonfile,
+				url : DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.geojsonfile,
 				format : new OpenLayers.Format.GeoJSON({
 					ignoreExtraDims : true
 				})
@@ -490,7 +470,7 @@ function createMap(mapOpts, OLmapPOI) {
 	if (mapOpts.kmlfile.length > 0) {
 		var layerKML = new OpenLayers.Layer.Vector("KML file", {
 			protocol : new OpenLayers.Protocol.HTTP({
-				url : DocBase + "lib/exe/fetch.php?media=" + mapOpts.kmlfile,
+				url : DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.kmlfile,
 				format : new OpenLayers.Format.KML({
 					extractStyles : true,
 					extractAttributes : true,
@@ -521,7 +501,35 @@ function createMap(mapOpts, OLmapPOI) {
 		});
 		m.addControl(selectControl);
 		selectControl.activate();
+
+		// keyboard select control
+		var iControl = new OpenLayersMap.Control.KeyboardClick({
+			observeElement : mapOpts.id,
+			selectControl : selectControl
+		});
+		m.addControl(iControl);
 	}
+
+	if (mapOpts.controls === 1) {
+		/* add base controls to map */
+		m.addControls([ new OpenLayers.Control.LayerSwitcher(), new OpenLayers.Control.Graticule({
+			visible : false
+		}), new OpenLayersMap.Control.OverviewMap(), new OpenLayersMap.Control.Zoom() ]);
+
+		// add hillshade, since this is off by default only add when we have a
+		// layerswitcher
+		m.addLayer(new OpenLayers.Layer.OSM("Hillshade", "http://toolserver.org/~cmarqu/hill/${z}/${x}/${y}.png", {
+			isBaseLayer : false,
+			transparent : true,
+			visibility : false,
+			displayOutsideMaxExtent : true,
+			attribution : '',
+			tileOptions : {
+				crossOriginKeyword : null
+			}
+		}));
+	}
+
 	return m;
 }
 

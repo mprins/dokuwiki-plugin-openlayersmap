@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2013-2014 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -99,7 +99,7 @@ OpenLayersMap.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control.Overview
 
 		// maximize button
 		var btn = document.createElement("button");
-		btn.innerHTML = '<span>' + OpenLayers.i18n('ovMaximize') + '</span>+';
+		btn.innerHTML = '<span role="tooltip">' + OpenLayers.i18n('ovMaximize') + '</span>+';
 		btn.name = 'show';
 		this.maximizeDiv = btn;
 		this.maximizeDiv.style.display = 'none';
@@ -108,7 +108,7 @@ OpenLayersMap.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control.Overview
 
 		// minimize button
 		btn = document.createElement("button");
-		btn.innerHTML = '<span>' + OpenLayers.i18n("ovMinimize") + '</span>−';
+		btn.innerHTML = '<span role="tooltip">' + OpenLayers.i18n("ovMinimize") + '</span>−';
 		btn.name = 'hide';
 		this.minimizeDiv = btn;
 		this.minimizeDiv.style.display = 'none';

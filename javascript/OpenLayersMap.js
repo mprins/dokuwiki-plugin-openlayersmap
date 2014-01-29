@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2013-2014 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -19,14 +19,22 @@
  */
 var OpenLayersMap = {};
 /**
- * define namespace OpenLayersMap.Layer
+ * defines namespace OpenLayersMap.Layer.
  */
 OpenLayersMap.Layer = {};
 /**
- * define namespace OpenLayersMap.Control
+ * defines namespace OpenLayersMap.Control.
  */
 OpenLayersMap.Control = {};
 /**
- * define namespace OpenLayersMap.Renderer
+ * defines namespace OpenLayersMap.Renderer.
  */
 OpenLayersMap.Renderer = {};
+/**
+ * defines namespace OpenLayersMap.Handler.
+ */
+OpenLayersMap.Handler = {};
+/**
+ * defines namespace OpenLayersMap.Popup.
+ */
+OpenLayersMap.Popup = {};

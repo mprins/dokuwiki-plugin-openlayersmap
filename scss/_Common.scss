@@ -63,6 +63,10 @@
 	max-width: none;
 }
 
+img.olTileImage {
+	max-width: none;
+}
+
 /* GMaps should not set styles on its container */
 .olForeignContainer {
 	opacity: 1 !important;
@@ -112,6 +116,10 @@
 
 .olLayerGrid .olTileImage {
 	@include transition(opacity 0.2s linear);
+}
+
+.olTileReplacing {
+	display: none;
 }
 
 a.olAccesskey {

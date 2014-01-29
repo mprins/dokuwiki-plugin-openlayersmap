@@ -8,5 +8,6 @@ OpenLayers.Lang.fr = OpenLayers.Util.extend({
 	"ovMaximize" : "Maximisez vue d'ensemble",
 	"zoom_in" : "Zoom in",
 	"zoom_out" : "Zoom out",
-	"activate_map" : "Activer la carte"
+	"activate_map" : "Activer la carte",
+	"dlgClose": "Fermez la boîte de dialogue"
 }, OpenLayers.Lang.fr);

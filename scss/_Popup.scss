@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2013-2014 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -40,6 +40,20 @@
 }
 
 .olPopupCloseBox {
-	background: url("lib/img/close.gif") no-repeat;
-	cursor: pointer;
+	// background: url("lib/img/close.gif") no-repeat;
+	position: absolute;
+	height: $button-heigth;
+	width: $button-width;
+	line-height: $button-line-height;
+	text-decoration: none;
+	text-align: center;
+	padding: 0;
+	color: $button;
+	background: $button-bg;
+	@include border-radius(4px);
+	
+	&:hover,
+	&:focus {
+		background: $button-bg-active;
+	} 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2013-2014 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -29,11 +29,10 @@ OpenLayersMap.Control.Zoom = OpenLayers.Class(OpenLayers.Control.Zoom, {
 	getOrCreateLinks : function(el) {
 		var zoomIn = document.getElementById(this.zoomInId), zoomOut = document.getElementById(this.zoomOutId);
 		if (!zoomIn) {
-			//zoomIn = document.createElement("a");
 			zoomIn = document.createElement("button");
-			//zoomIn.href = "#zoomIn";
 			var tooltip = document.createElement("span");
 			tooltip.appendChild(document.createTextNode(OpenLayers.i18n('zoom_in')));
+			tooltip.role = 'tooltip';
 			//OpenLayers.Element.addClass(tooltip, "below");
 			zoomIn.appendChild(tooltip);
 			zoomIn.appendChild(document.createTextNode(this.zoomInText));
@@ -43,11 +42,10 @@ OpenLayersMap.Control.Zoom = OpenLayers.Class(OpenLayers.Control.Zoom, {
 		OpenLayers.Element.addClass(zoomIn, "olButton");
 		OpenLayers.Element.addClass(zoomIn, "olHasTooltip_bttm_r");
 		if (!zoomOut) {
-			//zoomOut = document.createElement("a");
 			zoomOut = document.createElement("button");
-			//zoomOut.href = "#zoomOut";
 			var tooltip = document.createElement("span");
 			tooltip.appendChild(document.createTextNode(OpenLayers.i18n('zoom_out')));
+			tooltip.role = 'tooltip';
 			//OpenLayers.Element.addClass(tooltip, "below");
 			zoomOut.appendChild(tooltip);
 			zoomOut.appendChild(document.createTextNode(this.zoomOutText));
