@@ -515,7 +515,7 @@ function createMap(mapOpts, OLmapPOI) {
 		m.addControls([ new OpenLayers.Control.LayerSwitcher(), new OpenLayers.Control.Graticule({
 			visible : false
 		}), new OpenLayersMap.Control.OverviewMap({
-			theme : null
+			mapOptions : {theme : null}
 		}), new OpenLayersMap.Control.Zoom() ]);
 
 		// add hillshade, since this is off by default only add when we have a
