@@ -39,7 +39,9 @@ OpenLayersMap.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control.Overview
 	handlers : null,
 
 	/** @override */
-	theme: null,
+	mapOptions : {
+		theme : null
+	},
 
 	/**
 	 * @constructor OpenLayersMap.Control.OverviewMap Create a new overview map
