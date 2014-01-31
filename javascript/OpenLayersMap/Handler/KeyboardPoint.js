@@ -44,7 +44,7 @@ OpenLayersMap.Handler.KeyboardPoint = OpenLayers.Class(OpenLayers.Handler, {
 		}
 		this.layer = new OpenLayers.Layer.Vector(this.CLASS_NAME, {
 			styleMap : new OpenLayers.StyleMap({
-				externalGraphic : DOKU_BASE + 'lib/plugins/openlayersmap/logo/info.png',
+				externalGraphic : OpenLayers.Util.getImageLocation('info.png'),
 				graphicHeight : 40,
 				graphicWidth : 32,
 				graphicXOffset : -16,
