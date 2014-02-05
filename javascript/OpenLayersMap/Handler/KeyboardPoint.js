@@ -20,7 +20,7 @@
 OpenLayersMap.Handler.KeyboardPoint = OpenLayers.Class(OpenLayers.Handler, {
 
 	KEY_EVENTS : [ "keydown" ],
-	
+
 	/** amount to move the pointer. */
 	STEP_SIZE : 3,
 
@@ -50,7 +50,8 @@ OpenLayersMap.Handler.KeyboardPoint = OpenLayers.Class(OpenLayers.Handler, {
 				graphicWidth : 32,
 				graphicXOffset : -16,
 				graphicYOffset : -36
-			})
+			}),
+			displayInLayerSwitcher : false
 		});
 		this.map.addLayer(this.layer);
 		this.observeElement = this.observeElement || document;

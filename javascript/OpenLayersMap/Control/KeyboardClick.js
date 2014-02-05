@@ -41,7 +41,8 @@ OpenLayersMap.Control.KeyboardClick = OpenLayers.Class(OpenLayers.Control, {
 			observeElement : observeElement
 		});
 		OpenLayers.Event.observe(observeElement, "keydown", OpenLayers.Function.bindAsEventListener(function(evt) {
-			if (evt.keyCode == 73) { // "i"
+			// listen for the "i" key
+			if (evt.keyCode == 73) {
 				if (this.active) {
 					this.deactivate();
 				} else {
@@ -52,21 +53,17 @@ OpenLayersMap.Control.KeyboardClick = OpenLayers.Class(OpenLayers.Control, {
 	},
 
 	/**
+	 * Hit detection of click.
 	 * 
 	 * @param {Openlayers.Geometry}
 	 *            geometry with map space coordinates
 	 * 
 	 */
 	onClick : function(geometry) {
-		var lyrs = this.selectControl.layers, selFeat;
-		// console.debug("geometry; onClick::" + this.CLASS_NAME, geometry);
-
+		var lyrs = this.selectControl.layers, selTarget;
 		var px = this.map.getPixelFromLonLat(new OpenLayers.LonLat(geometry.x, geometry.y));
-		// console.debug("px; onClick::" + this.CLASS_NAME, px);
-		// enlarge click area with same amount as stepsize
-		px = px.add(this.handler.STEP_SIZE * 2, 0);
-		// console.debug("px added onClick::" + this.CLASS_NAME, px);
-
+		// calulate radius to be roughly same amount as stepsize * 2
+		px = px.add(this.handler.STEP_SIZE * 1.5, 0);
 		var lonlat = this.map.getLonLatFromPixel(px);
 		var radius = Math.round(lonlat.lon - geometry.x);
 		var sides = 8;
@@ -75,24 +72,45 @@ OpenLayersMap.Control.KeyboardClick = OpenLayers.Class(OpenLayers.Control, {
 		// geometry, lonlat, radius, sides, rotation);
 		var clicked = OpenLayers.Geometry.Polygon.createRegularPolygon(geometry, radius, sides, rotation);
 
+		// console.debug(0," :" + this.CLASS_NAME, "clicked area: " +
+		// clicked.getArea());
 		// var json = new OpenLayers.Format.GeoJSON();
-		// console.info(json.write(clicked, false));
 
-		for (var i = 0; i < lyrs.length; i++) {
-			for (var f = 0; f < lyrs[i].features.length; f++)
-				selFeat = lyrs[i].features[f];
-			// console.info(json.write(selFeat.geometry, false));
-			if (clicked.intersects(selFeat.geometry)) {
-				// console.info("" + this.CLASS_NAME, "intersect found.");
-				this.selectControl.clickFeature(selFeat);
-				return;
+		// hit detection, first intersect hits
+		for (var resized = 1; resized < 4; resized++) {
+			// try a few (resized-1) times with larger click polygon each time
+			//clicked = clicked.resize(resized, new OpenLayers.Geometry.Point(geometry.x, geometry.y));
+			clicked = clicked.resize(resized, geometry);
+			// console.debug(resized," :" + this.CLASS_NAME, "clicked area: " +
+			// clicked.getArea());
+			// console.trace(json.write((clicked.clone().transform("EPSG:900913","EPSG:4326")),
+			// false));
+
+			for (var i = 0; i < lyrs.length; i++) {
+				// console.info("" + this.CLASS_NAME, "inspecting layer: " +
+				// lyrs[i].name);
+				for (var f = 0; f < lyrs[i].features.length; f++) {
+					selTarget = lyrs[i].features[f];
+
+					// console.debug("" + this.CLASS_NAME, "testing feature:" +
+					// selTarget.data.rowId);
+					// console.trace(json.write((selTarget.geometry.clone().transform("EPSG:900913","EPSG:4326")),
+					// false));
+
+					if (clicked.intersects(selTarget.geometry)) {
+						// console.warn("" + this.CLASS_NAME, "intersect found
+						// after resizing " + resized + " time(s).",
+						// geometry, clicked.getCentroid());
+						this.selectControl.clickFeature(selTarget);
+						return;
+					}
+				}
 			}
 		}
 	},
 
 	/**
-	 * Activeert deze control en zet de default keyboard handler uit (mits
-	 * aanwezig).
+	 * Activate control and turn off default keyboard handler.
 	 * 
 	 * @returns {Boolean}
 	 */
@@ -108,8 +126,7 @@ OpenLayersMap.Control.KeyboardClick = OpenLayers.Class(OpenLayers.Control, {
 	},
 
 	/**
-	 * Deactiveert deze control en zet de default keyboard handler aan (mits
-	 * aanwezig).
+	 * Deactivate this control and restore default keyboard handler.
 	 * 
 	 * @returns {Boolean}
 	 */
