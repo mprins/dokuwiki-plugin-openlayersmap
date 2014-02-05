@@ -34,51 +34,51 @@ var selectControl;
  * handle feature select event.
  * 
  * @param {OpenLayers.Feature.Vector}
- *            feature the selected feature
+ *            selFeature the selected feature
  */
-function onFeatureSelect(feature) {
-	var selectedFeature = feature;
+function onFeatureSelect(selFeature) {
 	// 'this' is selectFeature control
-	var pPos = selectedFeature.geometry.getBounds().getCenterLonLat();
+	var pPos = selFeature.geometry.getBounds().getCenterLonLat();
 	// != OpenLayers.Geometry.Point
-	if (selectedFeature.geometry.CLASS_NAME === "OpenLayers.Geometry.LineString") {
+	if (selFeature.geometry.CLASS_NAME === "OpenLayers.Geometry.LineString") {
 		try {
 			// for lines make the popup show at the cursor position
-			pPos = feature.layer.map.getLonLatFromViewPortPx(this.handlers.feature.evt.xy);
+			// TODO this will fail for keyboard select
+			pPos = selFeature.layer.map.getLonLatFromViewPortPx(this.handlers.feature.evt.xy);
 		} catch (anErr) {
 			OpenLayers.Console.warn("unable to get event position; reverting to boundingbox center.");
-			pPos = selectedFeature.geometry.getBounds().getCenterLonLat();
+			pPos = selFeature.geometry.getBounds().getCenterLonLat();
 		}
 	}
 
 	var pContent = '<div class="spacer">&nbsp;</div>';
-	if (feature.data.rowId !== undefined) {
-		pContent += '<span class="rowId">' + feature.data.rowId + ': </span>';
+	if (selFeature.data.rowId !== undefined) {
+		pContent += '<span class="rowId">' + selFeature.data.rowId + ': </span>';
 	}
-	if (feature.data.name !== undefined) {
-		pContent += '<span class="txt">' + feature.data.name + '</span>';
+	if (selFeature.data.name !== undefined) {
+		pContent += '<span class="txt">' + selFeature.data.name + '</span>';
 	}
-	if (feature.data.ele !== undefined) {
-		pContent += '<div class="ele">elevation: ' + feature.data.ele + '</div>';
+	if (selFeature.data.ele !== undefined) {
+		pContent += '<div class="ele">elevation: ' + selFeature.data.ele + '</div>';
 	}
-	if (feature.data.type !== undefined) {
-		pContent += '<div>' + feature.data.type + '</div>';
+	if (selFeature.data.type !== undefined) {
+		pContent += '<div>' + selFeature.data.type + '</div>';
 	}
-	if (feature.data.time !== undefined) {
-		pContent += '<div class="time">time: ' + feature.data.time + '</div>';
+	if (selFeature.data.time !== undefined) {
+		pContent += '<div class="time">time: ' + selFeature.data.time + '</div>';
 	}
-	if (feature.data.description !== undefined) {
-		pContent += '<div class="desc">' + feature.data.description + '</div>';
+	if (selFeature.data.description !== undefined) {
+		pContent += '<div class="desc">' + selFeature.data.description + '</div>';
 	}
 
 	if (pContent.length > 0) {
 		// only show when there is something to show...
 		var popup = new OpenLayersMap.Popup.FramedCloud("olPopup", pPos, null, pContent, null, true, function() {
-			selectControl.unselect(selectedFeature);
-			jQuery('#'+selectControl.layer.map.div.id).focus();
+			selectControl.unselect(selFeature);
+			jQuery('#' + selectControl.layer.map.div.id).focus();
 		});
-		feature.popup = popup;
-		feature.layer.map.addPopup(popup);
+		selFeature.popup = popup;
+		selFeature.layer.map.addPopup(popup);
 		jQuery('#olPopup').attr("tabindex",-1).focus();
 	}
 }
@@ -87,13 +87,13 @@ function onFeatureSelect(feature) {
  * handle feature unselect event. remove & destroy the popup.
  * 
  * @param {OpenLayers.Feature.Vector}
- *            feature the un-selected feature
+ *            selFeature the un-selected feature
  */
-function onFeatureUnselect(feature) {
-	if (feature.popup !== null) {
-		feature.layer.map.removePopup(feature.popup);
-		feature.popup.destroy();
-		feature.popup = null;
+function onFeatureUnselect(selFeature) {
+	if (selFeature.popup !== null) {
+		selFeature.layer.map.removePopup(selFeature.popup);
+		selFeature.popup.destroy();
+		selFeature.popup = null;
 	}
 }
 /**
@@ -347,6 +347,7 @@ function createMap(mapOpts, OLmapPOI) {
 		var markers = new OpenLayers.Layer.Vector("POI", {
 			styleMap : new OpenLayers.StyleMap({
 				"default" : {
+					cursor : "help",
 					externalGraphic : "${img}",
 					graphicHeight : 16,
 					graphicWidth : 16,
@@ -357,7 +358,6 @@ function createMap(mapOpts, OLmapPOI) {
 					backgroundGraphic : DOKU_BASE + "lib/plugins/openlayersmap/icons/marker_shadow.png",
 					// backgroundXOffset : 0,
 					// backgroundYOffset : -4,
-					backgroundYOffset : -1
 					backgroundRotation : "${angle}",
 					pointRadius : 10,
 					labelXOffset : 8,
@@ -370,7 +370,7 @@ function createMap(mapOpts, OLmapPOI) {
 					fontWeight : "bold"
 				},
 				"select" : {
-					cursor : "crosshair",
+					cursor : "help",
 					externalGraphic : DOKU_BASE + "lib/plugins/openlayersmap/icons/marker-red.png",
 					graphicHeight : 16,
 					graphicWidth : 16,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2013-2014 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -70,6 +70,11 @@ img.olTileImage {
 /* GMaps should not set styles on its container */
 .olForeignContainer {
 	opacity: 1 !important;
+
+	/* Turn on GPU acceleration for webkit when Google Maps V3 base layer is present */
+	& svg {
+		-webkit-transform: translateZ(0);
+	}
 }
 
 /* Prevent tile scaling on Android 4 when d-pad keys are pressed */
