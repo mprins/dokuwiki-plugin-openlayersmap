@@ -62,19 +62,13 @@ OpenLayersMap.Control.KeyboardClick = OpenLayers.Class(OpenLayers.Control, {
 	onClick : function(geometry) {
 		var lyrs = this.selectControl.layers, selTarget;
 		var px = this.map.getPixelFromLonLat(new OpenLayers.LonLat(geometry.x, geometry.y));
-		// calulate radius to be roughly same amount as stepsize * 2
+		// calculate radius to be roughly same amount as stepsize * 2^.5
 		px = px.add(this.handler.STEP_SIZE * 1.5, 0);
 		var lonlat = this.map.getLonLatFromPixel(px);
 		var radius = Math.round(lonlat.lon - geometry.x);
 		var sides = 8;
 		var rotation = 0;
-		// console.debug("polygon params; onClick::" + this.CLASS_NAME,
-		// geometry, lonlat, radius, sides, rotation);
 		var clicked = OpenLayers.Geometry.Polygon.createRegularPolygon(geometry, radius, sides, rotation);
-
-		// console.debug(0," :" + this.CLASS_NAME, "clicked area: " +
-		// clicked.getArea());
-		// var json = new OpenLayers.Format.GeoJSON();
 
 		// hit detection, first intersect hits
 		for (var resized = 1; resized < 4; resized++) {
@@ -82,29 +76,11 @@ OpenLayersMap.Control.KeyboardClick = OpenLayers.Class(OpenLayers.Control, {
 			// clicked = clicked.resize(resized, new
 			// OpenLayers.Geometry.Point(geometry.x, geometry.y));
 			clicked = clicked.resize(resized, geometry);
-			// console.debug(resized," :" + this.CLASS_NAME, "clicked area: " +
-			// clicked.getArea());
-			// console.trace(json.write((clicked.clone().transform("EPSG:900913","EPSG:4326")),
-			// false));
-
 			for (var i = 0; i < lyrs.length; i++) {
-				// console.info("" + this.CLASS_NAME, "inspecting layer: " +
-				// lyrs[i].name);
-				if (lyrs[i].getVisibility())
+				if (lyrs[i].getVisibility()) {
 					for (var f = 0; f < lyrs[i].features.length; f++) {
 						selTarget = lyrs[i].features[f];
-	
-						// console.debug("" + this.CLASS_NAME, "testing
-						// feature:" +
-						// selTarget.data.rowId);
-						// console.trace(json.write((selTarget.geometry.clone().transform("EPSG:900913","EPSG:4326")),
-						// false));
-	
 						if (clicked.intersects(selTarget.geometry)) {
-							// console.warn("" + this.CLASS_NAME, "intersect
-							// found
-							// after resizing " + resized + " time(s).",
-							// geometry, clicked.getCentroid());
 							this.selectControl.clickFeature(selTarget);
 							return;
 						}
