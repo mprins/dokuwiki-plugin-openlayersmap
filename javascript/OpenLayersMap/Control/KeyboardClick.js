@@ -79,7 +79,8 @@ OpenLayersMap.Control.KeyboardClick = OpenLayers.Class(OpenLayers.Control, {
 		// hit detection, first intersect hits
 		for (var resized = 1; resized < 4; resized++) {
 			// try a few (resized-1) times with larger click polygon each time
-			//clicked = clicked.resize(resized, new OpenLayers.Geometry.Point(geometry.x, geometry.y));
+			// clicked = clicked.resize(resized, new
+			// OpenLayers.Geometry.Point(geometry.x, geometry.y));
 			clicked = clicked.resize(resized, geometry);
 			// console.debug(resized," :" + this.CLASS_NAME, "clicked area: " +
 			// clicked.getArea());
@@ -89,20 +90,24 @@ OpenLayersMap.Control.KeyboardClick = OpenLayers.Class(OpenLayers.Control, {
 			for (var i = 0; i < lyrs.length; i++) {
 				// console.info("" + this.CLASS_NAME, "inspecting layer: " +
 				// lyrs[i].name);
-				for (var f = 0; f < lyrs[i].features.length; f++) {
-					selTarget = lyrs[i].features[f];
-
-					// console.debug("" + this.CLASS_NAME, "testing feature:" +
-					// selTarget.data.rowId);
-					// console.trace(json.write((selTarget.geometry.clone().transform("EPSG:900913","EPSG:4326")),
-					// false));
-
-					if (clicked.intersects(selTarget.geometry)) {
-						// console.warn("" + this.CLASS_NAME, "intersect found
-						// after resizing " + resized + " time(s).",
-						// geometry, clicked.getCentroid());
-						this.selectControl.clickFeature(selTarget);
-						return;
+				if (lyrs[i].getVisibility())
+					for (var f = 0; f < lyrs[i].features.length; f++) {
+						selTarget = lyrs[i].features[f];
+	
+						// console.debug("" + this.CLASS_NAME, "testing
+						// feature:" +
+						// selTarget.data.rowId);
+						// console.trace(json.write((selTarget.geometry.clone().transform("EPSG:900913","EPSG:4326")),
+						// false));
+	
+						if (clicked.intersects(selTarget.geometry)) {
+							// console.warn("" + this.CLASS_NAME, "intersect
+							// found
+							// after resizing " + resized + " time(s).",
+							// geometry, clicked.getCentroid());
+							this.selectControl.clickFeature(selTarget);
+							return;
+						}
 					}
 				}
 			}
