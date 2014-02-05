@@ -18,6 +18,7 @@
  * 
  * @author mprins
  * @class OpenLayersMap.Control.OverviewMap
+ * @extends OpenLayers.Control.OverviewMap
  * @requires OpenLayers/Control/OverviewMap.js
  */
 OpenLayersMap.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control.OverviewMap, {

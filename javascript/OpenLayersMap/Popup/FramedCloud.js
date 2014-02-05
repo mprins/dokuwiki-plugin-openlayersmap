@@ -17,11 +17,11 @@
  * @requires OpenLayers/BaseTypes/Size.js
  * 
  * @class OpenLayersMap.Popup.FramedCloud
- * 
- * Inherits from: - <OpenLayers.Popup.FramedCloud>
+ * @extends OpenLayers.Popup.FramedCloud
  */
 OpenLayersMap.Popup.FramedCloud = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
 	isAlphaImage : true,
+	closeBox : true,
 
 	/**
 	 * @constructor OpenLayers.Popup.FramedCloud
@@ -36,8 +36,8 @@ OpenLayersMap.Popup.FramedCloud = OpenLayers.Class(OpenLayers.Popup.FramedCloud,
 	 *            {String}
 	 * @param anchor
 	 *            {Object} Object to which we'll anchor the popup. Must expose a
-	 *            'size' (<OpenLayers.Size>) and 'offset' (<OpenLayers.Pixel>)
-	 *            (Note that this is generally an <OpenLayers.Icon>).
+	 *            'size' ({OpenLayers.Size}) and 'offset' ({OpenLayers.Pixel})
+	 *            (Note that this is generally an {OpenLayers.Icon}).
 	 * @param closeBox
 	 *            {Boolean} should be true
 	 * @param closeBoxCallback

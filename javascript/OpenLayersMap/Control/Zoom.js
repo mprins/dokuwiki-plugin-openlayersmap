@@ -15,15 +15,19 @@
  */
 
 /**
- * ZoomControl with built-in tooltips.
+ * ZoomControl with built-in tooltips and proper semantic elements.
  * 
- * @extends OpenLayers.Control.Zoom()
+ * @extends OpenLayers.Control.Zoom
  * @requires OpenLayers/Control/Zoom.js
  * @author Mark C. Prins <mprins@users.sf.net>
  * @class
  */
 OpenLayersMap.Control.Zoom = OpenLayers.Class(OpenLayers.Control.Zoom, {
 	/**
+	 * 
+	 * @param el
+	 *            {Element} parent DOM element, eg a div
+	 * @return {Object} containing two DOM elements, zoomIn and zoomOut
 	 * @override
 	 */
 	getOrCreateLinks : function(el) {
@@ -33,7 +37,6 @@ OpenLayersMap.Control.Zoom = OpenLayers.Class(OpenLayers.Control.Zoom, {
 			var tooltip = document.createElement("span");
 			tooltip.appendChild(document.createTextNode(OpenLayers.i18n('zoom_in')));
 			tooltip.role = 'tooltip';
-			//OpenLayers.Element.addClass(tooltip, "below");
 			zoomIn.appendChild(tooltip);
 			zoomIn.appendChild(document.createTextNode(this.zoomInText));
 			zoomIn.className = "olControlZoomIn";
@@ -46,7 +49,6 @@ OpenLayersMap.Control.Zoom = OpenLayers.Class(OpenLayers.Control.Zoom, {
 			var tooltip = document.createElement("span");
 			tooltip.appendChild(document.createTextNode(OpenLayers.i18n('zoom_out')));
 			tooltip.role = 'tooltip';
-			//OpenLayers.Element.addClass(tooltip, "below");
 			zoomOut.appendChild(tooltip);
 			zoomOut.appendChild(document.createTextNode(this.zoomOutText));
 			zoomOut.className = "olControlZoomOut";

@@ -20,7 +20,8 @@
 OpenLayersMap.Handler.KeyboardPoint = OpenLayers.Class(OpenLayers.Handler, {
 
 	KEY_EVENTS : [ "keydown" ],
-
+	
+	/** amount to move the pointer. */
 	STEP_SIZE : 3,
 
 	/**
