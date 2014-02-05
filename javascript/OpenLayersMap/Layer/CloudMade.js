@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2013-2014 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -39,7 +39,7 @@ OpenLayersMap.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.OSM, {
 	/**
 	 * The layer attribution.
 	 */
-	attribution : 'Tiles &copy; 2013 <a target="_blank" href="http://cloudmade.com">CloudMade</a>'
+	attribution : 'Tiles &copy; 2014 <a target="_blank" href="http://cloudmade.com">CloudMade</a>'
 			+ '<img src="http://cloudmade.com/sites/default/files/favicon.ico" alt="CloudMade logo"/>'
 			+ ' Data ODbL <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
 
