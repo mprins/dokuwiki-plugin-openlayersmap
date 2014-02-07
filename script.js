@@ -513,7 +513,7 @@ function createMap(mapOpts, OLmapPOI) {
 
 	if (mapOpts.controls === 1) {
 		/* add base controls to map */
-		m.addControls([ new OpenLayers.Control.LayerSwitcher(), new OpenLayers.Control.Graticule({
+		m.addControls([ new OpenLayersMap.Control.LayerSwitcher(), new OpenLayers.Control.Graticule({
 			visible : false
 		}), new OpenLayersMap.Control.OverviewMap({
 			mapOptions : {theme : null}

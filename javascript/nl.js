@@ -10,5 +10,7 @@ OpenLayers.Lang.nl = OpenLayers.Util.extend({
 	"zoom_in" : "Zoom in",
 	"zoom_out" : "Zoom uit",
 	"activate_map" : "Activeer kaart",
-	"dlgClose": "Sluit de dialoog"
+	"dlgClose" : "Sluit de dialoog",
+	"lyrsMaximize" : "Toon kaartlagen",
+	"lyrsMinimize" : "Verberg kaartlagen"
 }, OpenLayers.Lang.nl);
