@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2014 Mark C. Prins <mprins@users.sf.net>
  * Copyright (c) 2012 Txus <txusff@gmail.com>
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -23,7 +23,7 @@
  * @author Txus
  */
 
-$lang['olScriptUrl'] = 'URL para acceso a OpenLayers API. Por defecto es DOKU_BASE/lib/plugins/openlayersmap/lib/OpenLayers.js';
+// $lang['olScriptUrl'] = 'URL para acceso a OpenLayers API. Por defecto es DOKU_BASE/lib/plugins/openlayersmap/lib/OpenLayers.js';
 //$lang['googleScriptUrl'] = 'URL para acceso a Google Maps API. <em>OBSOLETO por favor eliminalo. Reemplazado por la V3 de Google API</em>';
 //$lang['veScriptUrl'] = 'URL & para acceso a Virtual Earth API. <em>OBSOLETO por favor eliminalo. Reemplazado por Bing<em>';
 //$lang['yahooScriptUrl'] = 'URL & cadena de consulta para acceder a Yahoo Maps API.';
@@ -34,7 +34,7 @@ $lang['enableMapQuest'] = 'Habilita MapQuest como proveedor de mapas';
 $lang['enableGoogle'] = 'Habilita Google como proveedor de mapas';
 $lang['enableBing'] = 'Habilita Bing como proveedor de mapas';
 $lang['enableOSM'] = 'Habilita OpenStreetMap como proveedor de mapas';
-$lang['olMapStyle'] = 'Estilo de los Controles del mapa';
+// $lang['olMapStyle'] = 'Estilo de los Controles del mapa';
 $lang['enableA11y'] = 'Habilita a11y/print para mapa estático, tabla de nombres';
 $lang['optionStaticMapGenerator']='FIXME (translate)- Local or remote static map compiler. <b>Using \'local\' fails when the server can\'t go on the internet.</b>';
 $lang['autoZoomMap'] = 'FIXME (translate)- Enable auto zoom for the map';

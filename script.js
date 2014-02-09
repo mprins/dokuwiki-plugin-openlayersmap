@@ -79,7 +79,7 @@ function onFeatureSelect(selFeature) {
 		});
 		selFeature.popup = popup;
 		selFeature.layer.map.addPopup(popup);
-		jQuery('#olPopup').attr("tabindex",-1).focus();
+		jQuery('#olPopup').attr("tabindex", -1).focus();
 	}
 }
 
@@ -163,7 +163,7 @@ function createMap(mapOpts, OLmapPOI) {
 		olEnable = false;
 		return;
 	}
-
+	OpenLayers.ImgPath = DOKU_BASE + 'lib/plugins/openlayersmap/lib/img/';
 	OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
 	// OpenLayers.Layer.Vector.prototype.renderers = ["SVG", "VML"];
 
@@ -516,7 +516,9 @@ function createMap(mapOpts, OLmapPOI) {
 		m.addControls([ new OpenLayersMap.Control.LayerSwitcher(), new OpenLayers.Control.Graticule({
 			visible : false
 		}), new OpenLayersMap.Control.OverviewMap({
-			mapOptions : {theme : null}
+			mapOptions : {
+				theme : null
+			}
 		}), new OpenLayersMap.Control.Zoom() ]);
 
 		// add hillshade, since this is off by default only add when we have a

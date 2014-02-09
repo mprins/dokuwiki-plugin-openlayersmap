@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2014 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -20,14 +20,14 @@
  *
  * @author Mark C. Prins
  */
-$conf['olScriptUrl'] = DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js';
+// $conf['olScriptUrl'] = DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js';
 $conf['bingAPIKey'] = '';
 $conf['iconUrlOverload'] = '';
 $conf['enableMapQuest'] = 1;
 $conf['enableGoogle'] = 0;
 $conf['enableOSM'] = 1;
 $conf['enableBing'] = 0;
-$conf['olMapStyle'] = 'classic';
+// $conf['olMapStyle'] = 'classic';
 $conf['enableA11y'] = 1;
 $conf['optionStaticMapGenerator'] = 'remote';
 $conf['autoZoomMap'] = 1;

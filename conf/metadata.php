@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2014 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -21,9 +21,7 @@
  * @author Mark C. Prins
  */
 
-$meta['olScriptUrl'] = array (
-	'string'
-);
+// $meta['olScriptUrl'] = array ('string');
 $meta['enableOSM'] = array (
 	'onoff'
 );
@@ -39,9 +37,7 @@ $meta['enableBing'] = array (
 $meta['bingAPIKey'] = array (
 	'string'
 );
-$meta['olMapStyle'] = array (
-	'multichoice','_choices' => array('classic','dark','grey','neutral','orange')
-);
+// $meta['olMapStyle'] = array ('multichoice','_choices' => array('classic','dark','grey','neutral','orange'));
 $meta['iconUrlOverload'] = array (
 	'string'
 );

@@ -49,7 +49,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	);
 
 	/**
-	 *
+	 * 
 	 * @see DokuWiki_Syntax_Plugin::getType()
 	 */
 	function getType() {
@@ -97,14 +97,14 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		$overlay = $this->_extract_points ( $str_points );
 		$_firstimageID = '';
 
-		// choose maptype based on tag
+		// choose maptype based on the specified tag
 		$imgUrl = "{{";
 		if (stripos ( $gmap ['baselyr'], 'google' ) !== false) {
 			// use google
 			$imgUrl .= $this->_getGoogle ( $gmap, $overlay );
 			$imgUrl .= "&.png";
 		} elseif (stripos ( $gmap ['baselyr'], 've' ) !== false) {
-			// use bing
+			// use bing, note that VE is deprecated
 			$imgUrl .= $this->_getBing ( $gmap, $overlay );
 			$imgUrl .= "&.png";
 		} elseif (stripos ( $gmap ['baselyr'], 'bing' ) !== false) {
@@ -121,6 +121,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$imgUrl .= $_firstimageID;
 			}
 		} else {
+			// fall back to OpenStreetMap
 			$_firstimageID = $this->_getStaticOSM ( $gmap, $overlay );
 			$imgUrl .= $_firstimageID;
 			if ($this->getConf ( 'optionStaticMapGenerator' ) == 'remote') {
@@ -212,7 +213,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	function render($mode, &$renderer, $data) {
 		// set to true after external scripts tags are written
 		static $initialised = false;
-		// incremented for each map tag in the page source so we can keep track of each map in a page
+		// incremented for each map tag in the page source so we can keep track of each map in this page
 		static $mapnumber = 0;
 
 		// dbglog($data, 'olmap::render() data.');
@@ -228,16 +229,15 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$enableBing = $this->getConf ( 'enableBing' );
 
 			$scriptEnable = '';
-
 			if (! $initialised) {
 				$initialised = true;
 				// render necessary script tags
 				if ($gEnable) {
 					$gscript = '<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.11&amp;sensor=false"></script>';
 				}
-				$olscript = $this->getConf ( 'olScriptUrl' );
-				$olscript = $olscript ? '<script type="text/javascript" src="' . $olscript . '"></script>' : "";
-				$olscript = str_replace ( 'DOKU_BASE/', DOKU_BASE, $olscript );
+				//$olscript = $this->getConf ( 'olScriptUrl' );
+				$olscript = '<script type="text/javascript" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js"></script>';
+				//$olscript = str_replace ( 'DOKU_BASE/', DOKU_BASE, $olscript );
 
 				$scriptEnable = '<script type="text/javascript" charset="utf-8">/*<![CDATA[*/';
 				$scriptEnable .= $olscript ? 'olEnable = true;' : 'olEnable = false;';
@@ -246,7 +246,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$scriptEnable .= 'mqEnable = ' . ($mqEnable ? 'true' : 'false') . ';';
 				$scriptEnable .= 'bEnable = ' . ($enableBing ? 'true' : 'false') . ';';
 				$scriptEnable .= 'bApiKey="' . $this->getConf ( 'bingAPIKey' ) . '";';
-				$scriptEnable .= 'OpenLayers.ImgPath = "' . DOKU_BASE . 'lib/plugins/openlayersmap/lib/' . $this->getConf ( 'olMapStyle' ) . '/";';
+				// $scriptEnable .= 'OpenLayers.ImgPath = "' . DOKU_BASE . 'lib/plugins/openlayersmap/lib/img' . $this->getConf ( 'olMapStyle' ) . '/";';
 				$scriptEnable .= '/*!]]>*/</script>';
 			}
 			$renderer->doc .= "
@@ -549,7 +549,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				// TODO icon style lookup, see: http://msdn.microsoft.com/en-us/library/ff701719.aspx for iconStyle
 				$iconStyle = 32;
 				$rowId ++;
-				// NOTE: the max number of pushpins is 18! or we have tuo use POST (http://msdn.microsoft.com/en-us/library/ff701724.aspx)
+				// NOTE: the max number of pushpins is 18! or we have to use POST (http://msdn.microsoft.com/en-us/library/ff701724.aspx)
 				if ($rowId == 18) {
 					break;
 				}

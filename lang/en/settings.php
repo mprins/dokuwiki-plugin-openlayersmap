@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2014 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -20,7 +20,7 @@
  *
  * @author Mark C. Prins
  */
-$lang['olScriptUrl'] = 'URL & query string to access OpenLayers API. The default is DOKU_BASE/lib/plugins/openlayersmap/lib/OpenLayers.js';
+// $lang['olScriptUrl'] = 'URL & query string to access OpenLayers API. The default is DOKU_BASE/lib/plugins/openlayersmap/lib/OpenLayers.js';
 //$lang['googleScriptUrl'] = 'URL & query string to access Google Maps API. <em>DEPRECATED please remove. Replaced by v3 of the Google API</em>';
 //$lang['veScriptUrl'] = 'URL & query string to access Virtual Earth API. <em>DEPRECATED please remove. Replaced by Bing<em>';
 //$lang['yahooScriptUrl'] = 'URL & query string to access Yahoo Maps API.';
@@ -31,7 +31,7 @@ $lang['enableMapQuest'] = 'Enable the use of MapQuest as basemap provider';
 $lang['enableGoogle'] = 'Enable the use of Google as basemap provider';
 $lang['enableBing'] = 'Enable the use of Bing as basemap provider';
 $lang['enableOSM'] = 'Enable the use of OpenStreetMap as basemap provider';
-$lang['olMapStyle'] = 'Controls style of the map';
+// $lang['olMapStyle'] = 'Controls style of the map';
 $lang['enableA11y'] = 'Enable a11y/print output (static map, legend table)';
 $lang['optionStaticMapGenerator']='Local or remote static map compiler. <b>Using \'local\' fails when the server can\'t go on the internet.</b>';
 $lang['autoZoomMap'] = 'Enable auto zoom for the map';

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2014 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -21,10 +21,10 @@
  * @author Mark C. Prins
  */
 
-$lang['olScriptUrl'] = 'URL & query string voor toegang tot OpenLayers API. De default is DOKU_BASE/lib/plugins/openlayersmap/lib/OpenLayers.js';
-//$lang['googleScriptUrl'] = 'URL & query string voor toegang tot Google Maps API. <em>DEPRECATED verwijderen aub. Vervangen door v3 van de Google API.</em>';
-//$lang['veScriptUrl'] = 'URL & query string voor toegang tot Virtual Earth API. <em>DEPRECATED verwijderen aub. Vervangen door Bing.</em>';
-//$lang['yahooScriptUrl'] = 'URL & query string voor toegang tot Yahoo Maps API.';
+// $lang['olScriptUrl'] = 'URL & query string voor toegang tot OpenLayers API. De default is DOKU_BASE/lib/plugins/openlayersmap/lib/OpenLayers.js';
+// $lang['googleScriptUrl'] = 'URL & query string voor toegang tot Google Maps API. <em>DEPRECATED verwijderen aub. Vervangen door v3 van de Google API.</em>';
+// $lang['veScriptUrl'] = 'URL & query string voor toegang tot Virtual Earth API. <em>DEPRECATED verwijderen aub. Vervangen door Bing.</em>';
+// $lang['yahooScriptUrl'] = 'URL & query string voor toegang tot Yahoo Maps API.';
 // don't need this anymore $lang['googleAPIKey'] = 'Google Maps API key.';
 $lang['bingAPIKey'] = 'Bing Maps API sleutel. Haal een eigen sleutel op: https://www.bingmapsportal.com/application';
 $lang['iconUrlOverload'] = 'URL voor kaart ikonen bij gebruik van statische kaarten op een non-internet host';
@@ -32,7 +32,7 @@ $lang['enableMapQuest'] = 'Maak gebruik van MapQuest als basiskaart mogelijk';
 $lang['enableGoogle'] = 'Maak gebruik van Google als basiskaart mogelijk';
 $lang['enableBing'] = 'Maak gebruik van Bing als basiskaart mogelijk';
 $lang['enableOSM'] = 'Maak gebruik van OpenStreetMap als basiskaart mogelijk';
-$lang['olMapStyle'] = 'Stijl van de knoppen in de kaart';
+// $lang['olMapStyle'] = 'Stijl van de knoppen in de kaart';
 $lang['enableA11y'] = 'Maak a11y/print output (statische kaart, legenda tabel) mogelijk';
 $lang['optionStaticMapGenerator']='Lokale of externe statische kaart generator. <b>Gebruik van \'local\' faalt als de webserver het internet niet op kan.</b>';
 $lang['autoZoomMap'] = 'Zet automatisch zoomen aan voor de kaart';
