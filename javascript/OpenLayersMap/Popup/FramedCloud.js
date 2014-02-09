@@ -60,7 +60,7 @@ OpenLayersMap.Popup.FramedCloud = OpenLayers.Class(OpenLayers.Popup.FramedCloud,
 		this.closeDiv = document.createElement("button");
 		this.closeDiv.id = this.id + "_close";
 		this.closeDiv.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n('dlgClose')
-				+ '</span>X');
+				+ '</span>\u00D7');
 
 		this.closeDiv.style.position = "absolute";
 		this.closeDiv.className = "olPopupCloseBox";
