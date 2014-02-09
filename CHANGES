@@ -1,17 +1,20 @@
 === version ${project.version} ===
-  * accessible zoom control replacing the pan/zoom bar
+  * use OpenLayers 2.14-dev
+  * keyboard accessible zoom control replacing the pan/zoom bar
+  * keyboard accessible layer switcher control
+  * keyboard accessible feature info control
   * removed the toolbar
+  * removed the option to set openlayers library, this is no longer possible
+  * remove styling admin option and remove associated images, use the wiki styling from now on
 
 == deleted files ==
-  * pan/zoombar images: 
-    * lib/*/zoom-plus-mini.png
-    * lib/*/zoom-minus-mini.png
-    * lib/*/zoombar.png
-    * lib/*/slider.png
-    * lib/*/east-mini.png
-    * lib/*/north-mini.png
-    * lib/*/south-mini.png
-    * lib/*/west-mini.png
+  * controlbar images: 
+    * lib/classic/*
+    * lib/dark/*
+    * lib/orange/*
+    * lib/grey/*
+    * lib/neutral/*
+    * lib/theme/*
   * img/navigation_history.png
   * img/icon_*.png
 
