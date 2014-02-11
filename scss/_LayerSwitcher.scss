@@ -24,15 +24,9 @@
 	margin-left: 3px;
 	margin-bottom: 3px;
 	// background-color: transparent;
-	// opacity: 0.5;
 	border: 1px solid __border__;
 	@include border-radius(4px);
-/*
-	&:focus,
-	&:hover {
-		opacity: 1.0;
-	}
-*/
+	@include opacity(.8);
 }
 
 .olControlLayerSwitcher .layersDiv { /*top right bottom left*/

@@ -52,9 +52,11 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 	},
 
 	/**
-	 * make the selection sticky.
+	 * make the selection/choice sticky by remembering focus.
 	 * 
 	 * @extend OpenLayers.Control.LayerSwitcher#onButtonClick
+	 * @param evt
+	 *            {Event}
 	 */
 	onButtonClick : function(evt) {
 		// get a hold of the value of this evt
@@ -63,7 +65,7 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 		OpenLayers.Control.LayerSwitcher.prototype.onButtonClick.apply(this, arguments);
 
 		if (selValue) {
-			// find the clicked item and set focus
+			// find the clicked item and restore focus
 			var inputs = document.getElementById(this.id).getElementsByTagName("input");
 			for (var i = 0; i < inputs.length; i++) {
 				if (inputs[i].value === selValue) {
@@ -79,7 +81,7 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 	 * 
 	 * @extend OpenLayers.Control.LayerSwitcher#minimizeControl
 	 * 
-	 * @param e -
+	 * @param e
 	 *            {Event}
 	 * 
 	 */
@@ -127,19 +129,19 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 		}
 
 		// maximize button
-		var btn = document.createElement("button");
-		btn.innerHTML = '<span role="tooltip">' + OpenLayers.i18n('lyrsMaximize') + '</span>&#x2261;';
-		btn.name = 'show';
-		this.maximizeDiv = btn;
+		this.maximizeDiv = document.createElement("button");
+		this.maximizeDiv.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n('lyrsMaximize')
+				+ '</span>&#x2261;');
+		this.maximizeDiv.name = 'show';
 		OpenLayers.Element.addClass(this.maximizeDiv, "maximizeDiv olButton olHasTooltip olLayerSwitcherButton");
 		this.maximizeDiv.style.display = "none";
 
 		// minimize button
-		btn = document.createElement("button");
-		// \u2212 is minus, \u00D7 is multiply
-		btn.innerHTML = '<span role="tooltip">' + OpenLayers.i18n("lyrsMinimize") + '</span>×';
-		btn.name = 'hide';
-		this.minimizeDiv = btn;
+		this.minimizeDiv = document.createElement("button");
+		// \u2212 is minus, \u00D7 is multiply symbol
+		this.minimizeDiv.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n("lyrsMinimize")
+				+ '</span>\u00D7');
+		this.minimizeDiv.name = 'hide';
 		OpenLayers.Element.addClass(this.minimizeDiv, "minimizeDiv olButton olHasTooltip olLayerSwitcherButton");
 		this.minimizeDiv.style.display = "none";
 

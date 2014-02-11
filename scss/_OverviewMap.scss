@@ -41,20 +41,23 @@ $ctlHeight: 140px + 6px;
 	padding: 0;
 	color: $button;
 	background: $button-bg;
+
+	
 	&:hover,
 	&:focus {
 		background: $button-bg-active;
 	} 
 }
+
 .olOverviewMapMaximizeButton {
 	right: 0;
 	bottom: 0;
-	@include border-left-radius(4px);
+	@include border-top-left-radius(4px);
 }
 
 .olOverviewMapMinimizeButton {
-	right: 0;
-	bottom: $ctlHeight;
+	left: 0;
+	bottom: $ctlHeight - $button-heigth;
 	z-index: 1005;
 	@include border-radius(4px);
 }

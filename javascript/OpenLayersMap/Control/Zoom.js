@@ -34,28 +34,18 @@ OpenLayersMap.Control.Zoom = OpenLayers.Class(OpenLayers.Control.Zoom, {
 		var zoomIn = document.getElementById(this.zoomInId), zoomOut = document.getElementById(this.zoomOutId);
 		if (!zoomIn) {
 			zoomIn = document.createElement("button");
-			var tooltip = document.createElement("span");
-			tooltip.appendChild(document.createTextNode(OpenLayers.i18n('zoom_in')));
-			tooltip.role = 'tooltip';
-			zoomIn.appendChild(tooltip);
-			zoomIn.appendChild(document.createTextNode(this.zoomInText));
-			zoomIn.className = "olControlZoomIn";
+			zoomIn.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n("zoom_in") + '</span>'
+					+ this.zoomInText);
 			el.appendChild(zoomIn);
 		}
-		OpenLayers.Element.addClass(zoomIn, "olButton");
-		OpenLayers.Element.addClass(zoomIn, "olHasTooltip_bttm_r");
+		OpenLayers.Element.addClass(zoomIn, "olControlZoomIn olButton olHasTooltip_bttm_r");
 		if (!zoomOut) {
 			zoomOut = document.createElement("button");
-			var tooltip = document.createElement("span");
-			tooltip.appendChild(document.createTextNode(OpenLayers.i18n('zoom_out')));
-			tooltip.role = 'tooltip';
-			zoomOut.appendChild(tooltip);
-			zoomOut.appendChild(document.createTextNode(this.zoomOutText));
-			zoomOut.className = "olControlZoomOut";
+			zoomOut.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n("zoom_out") + '</span>'
+					+ this.zoomOutText);
 			el.appendChild(zoomOut);
 		}
-		OpenLayers.Element.addClass(zoomOut, "olButton");
-		OpenLayers.Element.addClass(zoomOut, "olHasTooltip_bttm_r");
+		OpenLayers.Element.addClass(zoomOut, "olControlZoomOut olButton olHasTooltip_bttm_r");
 		return {
 			zoomIn : zoomIn,
 			zoomOut : zoomOut

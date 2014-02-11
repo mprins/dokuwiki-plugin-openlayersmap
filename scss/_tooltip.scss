@@ -14,12 +14,10 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-/** accesible tooltip, to add to a focusable element. */
+/** accesible tooltip, to add to a focusable element containing a span with the tooltip. */
 
 /* show a tooltip offset to above/left */
 .olHasTooltip, .olHasTooltip_TL {
-	// position: relative;
-	
 	& span {
 		position: absolute;
 		clip: rect(1px 1px 1px 1px); /* < IE8 */
@@ -70,7 +68,5 @@
 	&:hover span,
 	&:focus span {
 		bottom: -2em;
-		//left: 1em;
-		//right: auto;
 	}
 }
