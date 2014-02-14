@@ -557,7 +557,7 @@ function olInit() {
 			statImgs[_i].className += ' olPrintOnly';
 		}
 		// add help button with toggle.
-		jQuery('.olMap').before(
+		jQuery('.olMap').prepend(
 				'<div class="olMapHelpButtonDiv">'
 						+ '<button onclick="jQuery(\'.olMapHelp\').toggle(500);" class="olMapHelpButton olHasTooltip">'
 						+ '<span>' + OpenLayers.i18n("toggle_help") + '</span>?</button>' + '</div>');
