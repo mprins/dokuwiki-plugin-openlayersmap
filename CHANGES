@@ -6,6 +6,7 @@
   * removed the toolbar
   * removed the option to set openlayers library, this is no longer possible
   * remove styling admin option and remove associated images, use the wiki styling from now on
+  * add help pages (en, nl)
 
 == deleted files ==
   * controlbar images: 

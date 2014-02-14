@@ -12,5 +12,6 @@ OpenLayers.Lang.nl = OpenLayers.Util.extend({
 	"activate_map" : "Activeer kaart",
 	"dlgClose" : "Sluit de dialoog",
 	"lyrsMaximize" : "Toon kaartlagen",
-	"lyrsMinimize" : "Verberg kaartlagen"
+	"lyrsMinimize" : "Verberg kaartlagen",
+	"toggle_help" : "Toon of verberg help"
 }, OpenLayers.Lang.nl);

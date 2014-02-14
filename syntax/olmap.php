@@ -233,11 +233,9 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$initialised = true;
 				// render necessary script tags
 				if ($gEnable) {
-					$gscript = '<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.11&amp;sensor=false"></script>';
+					$gscript = '<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.14&amp;sensor=false"></script>';
 				}
-				//$olscript = $this->getConf ( 'olScriptUrl' );
 				$olscript = '<script type="text/javascript" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js"></script>';
-				//$olscript = str_replace ( 'DOKU_BASE/', DOKU_BASE, $olscript );
 
 				$scriptEnable = '<script type="text/javascript" charset="utf-8">/*<![CDATA[*/';
 				$scriptEnable .= $olscript ? 'olEnable = true;' : 'olEnable = false;';
@@ -246,14 +244,10 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$scriptEnable .= 'mqEnable = ' . ($mqEnable ? 'true' : 'false') . ';';
 				$scriptEnable .= 'bEnable = ' . ($enableBing ? 'true' : 'false') . ';';
 				$scriptEnable .= 'bApiKey="' . $this->getConf ( 'bingAPIKey' ) . '";';
-				// $scriptEnable .= 'OpenLayers.ImgPath = "' . DOKU_BASE . 'lib/plugins/openlayersmap/lib/img' . $this->getConf ( 'olMapStyle' ) . '/";';
 				$scriptEnable .= '/*!]]>*/</script>';
 			}
-			$renderer->doc .= "
-			$gscript
-			$olscript
-			$scriptEnable";
-
+			$renderer->doc .= "$gscript\n$olscript\n$scriptEnable";
+			$renderer->doc .= '<div class="olMapHelp">'.$this->locale_xhtml("help").'</div>';
 			if ($this->getConf ( 'enableA11y' )) {
 				$renderer->doc .= '<div id="' . $mapid . '-static" class="olStaticMap">' . p_render ( $mode, p_get_instructions ( $staticImgUrl ), $info ) . '</div>';
 			}

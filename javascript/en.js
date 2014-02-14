@@ -12,5 +12,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend({
 	"activate_map" : "Activate map",
 	"dlgClose" : "Close the dialog",
 	"lyrsMaximize" : "Show map layers",
-	"lyrsMinimize" : "Hide map layers"
+	"lyrsMinimize" : "Hide map layers",
+	"toggle_help" : "Show or hide help"
 }, OpenLayers.Lang.en);
