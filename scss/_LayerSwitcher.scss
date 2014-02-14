@@ -26,7 +26,7 @@
 	// background-color: transparent;
 	border: 1px solid __border__;
 	@include border-radius(4px);
-	@include opacity(.8);
+	// @include opacity(.8);
 }
 
 .olControlLayerSwitcher .layersDiv { /*top right bottom left*/
