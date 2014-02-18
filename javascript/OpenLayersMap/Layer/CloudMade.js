@@ -27,14 +27,14 @@ OpenLayersMap.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.OSM, {
 	/**
 	 * The layer name.
 	 */
-	name : "cloudmade map",
+	name : 'cloudmade map',
 
 	/**
 	 * The tileset URL scheme.
 	 */
-	url : [ "http://a.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png",
-			"http://b.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png",
-			"http://c.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png" ],
+	url : [ 'http://a.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png',
+			'http://b.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png',
+			'http://c.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/2/256/${z}/${x}/${y}.png' ],
 
 	/**
 	 * The layer attribution.
@@ -51,5 +51,5 @@ OpenLayersMap.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.OSM, {
 		this.tileOptions.crossOriginKeyword = null;
 	},
 
-	CLASS_NAME : "OpenLayersMap.Layer.CloudMade"
+	CLASS_NAME : 'OpenLayersMap.Layer.CloudMade'
 });

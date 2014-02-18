@@ -26,14 +26,14 @@ OpenLayersMap.Layer.OCM = OpenLayers.Class(OpenLayers.Layer.OSM, {
 	/**
 	 * The layer name.
 	 */
-	name : "cycle map",
+	name : 'cycle map',
 
 	/**
 	 * The tileset URL scheme.
 	 */
-	url : [ "http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-			"http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png",
-			"http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png" ],
+	url : [ 'http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png',
+			'http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png',
+			'http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png' ],
 
 	/**
 	 * The layer attribution.
@@ -50,5 +50,5 @@ OpenLayersMap.Layer.OCM = OpenLayers.Class(OpenLayers.Layer.OSM, {
 		// this.tileOptions.crossOriginKeyword = null;
 	},
 
-	CLASS_NAME : "OpenLayersMap.Layer.OCM"
+	CLASS_NAME : 'OpenLayersMap.Layer.OCM'
 });

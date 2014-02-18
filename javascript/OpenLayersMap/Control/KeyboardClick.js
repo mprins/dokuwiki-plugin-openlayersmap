@@ -40,7 +40,7 @@ OpenLayersMap.Control.KeyboardClick = OpenLayers.Class(OpenLayers.Control, {
 		}, {
 			observeElement : observeElement
 		});
-		OpenLayers.Event.observe(observeElement, "keydown", OpenLayers.Function.bindAsEventListener(function(evt) {
+		OpenLayers.Event.observe(observeElement, 'keydown', OpenLayers.Function.bindAsEventListener(function(evt) {
 			// listen for the "i" key
 			if (evt.keyCode == 73) {
 				if (this.active) {

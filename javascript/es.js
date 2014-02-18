@@ -9,6 +9,6 @@ OpenLayers.Lang.es = OpenLayers.Util.extend({
 	"ovMaximize" : "Maximizar visión de conjunto",
 	"zoom_in" : "Zoom in",
 	"zoom_out" : "Zoom out",
-	"activate_map": "Activar mapa",
-	"dlgClose": "Cierre el diálogo"
+	"activate_map" : "Activar mapa",
+	"dlgClose" : "Cierre el diálogo"
 }, OpenLayers.Lang.es);

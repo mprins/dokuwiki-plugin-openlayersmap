@@ -15,12 +15,12 @@
  */
 
 /**
- * ZoomControl with built-in tooltips and proper semantic elements.
- * 
+ * @class OpenLayersMap.Control.Zoom with built-in tooltips and proper semantic
+ *        elements.
  * @extends OpenLayers.Control.Zoom
  * @requires OpenLayers/Control/Zoom.js
  * @author Mark C. Prins <mprins@users.sf.net>
- * @class
+ * 
  */
 OpenLayersMap.Control.Zoom = OpenLayers.Class(OpenLayers.Control.Zoom, {
 	/**
@@ -33,23 +33,27 @@ OpenLayersMap.Control.Zoom = OpenLayers.Class(OpenLayers.Control.Zoom, {
 	getOrCreateLinks : function(el) {
 		var zoomIn = document.getElementById(this.zoomInId), zoomOut = document.getElementById(this.zoomOutId);
 		if (!zoomIn) {
-			zoomIn = document.createElement("button");
-			zoomIn.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n("zoom_in") + '</span>'
+			zoomIn = document.createElement('button');
+			zoomIn.name = 'ZoomIn';
+			zoomIn.type = 'button';
+			zoomIn.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n('zoom_in') + '</span>'
 					+ this.zoomInText);
 			el.appendChild(zoomIn);
 		}
-		OpenLayers.Element.addClass(zoomIn, "olControlZoomIn olButton olHasTooltip_bttm_r");
+		OpenLayers.Element.addClass(zoomIn, 'olControlZoomIn olButton olHasTooltip_bttm_r');
 		if (!zoomOut) {
-			zoomOut = document.createElement("button");
-			zoomOut.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n("zoom_out") + '</span>'
+			zoomOut = document.createElement('button');
+			zoomOut.name = 'ZoomOut';
+			zoomOut.type = 'button';
+			zoomOut.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n('zoom_out') + '</span>'
 					+ this.zoomOutText);
 			el.appendChild(zoomOut);
 		}
-		OpenLayers.Element.addClass(zoomOut, "olControlZoomOut olButton olHasTooltip_bttm_r");
+		OpenLayers.Element.addClass(zoomOut, 'olControlZoomOut olButton olHasTooltip_bttm_r');
 		return {
 			zoomIn : zoomIn,
 			zoomOut : zoomOut
 		};
 	},
-	CLASS_NAME : "OpenLayersMap.Control.Zoom"
+	CLASS_NAME : 'OpenLayersMap.Control.Zoom'
 });

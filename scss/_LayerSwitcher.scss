@@ -23,7 +23,6 @@
 	margin-top: 3px;
 	margin-left: 3px;
 	margin-bottom: 3px;
-	// background-color: transparent;
 	border: 1px solid __border__;
 	@include border-radius(4px);
 	// @include opacity(.8);
@@ -56,7 +55,7 @@
 	& .maximizeDiv,
 	& .minimizeDiv {
 		top: 0;
-		right: 0;
+		right: -1px;
 		@include border-left-radius(4px);
 	}
 	

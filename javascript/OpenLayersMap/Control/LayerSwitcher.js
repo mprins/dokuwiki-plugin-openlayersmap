@@ -48,7 +48,7 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 			 */
 			maximizeControl : function(e) {
 				OpenLayers.Control.LayerSwitcher.prototype.maximizeControl.apply(this, arguments);
-				document.getElementById("baseLayersDiv").firstChild.focus();
+				document.getElementById('baseLayersDiv').firstChild.focus();
 			},
 
 			/**
@@ -66,7 +66,7 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 
 				if (selValue) {
 					// find the clicked item and restore focus
-					var inputs = document.getElementById(this.id).getElementsByTagName("input");
+					var inputs = document.getElementById(this.id).getElementsByTagName('input');
 					for (var i = 0; i < inputs.length; i++) {
 						if (inputs[i].value === selValue) {
 							inputs[i].focus();
@@ -97,24 +97,24 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 			 */
 			loadContents : function() {
 				// layers list div
-				this.layersDiv = document.createElement("div");
-				this.layersDiv.id = this.id + "_layersDiv";
-				OpenLayers.Element.addClass(this.layersDiv, "layersDiv");
+				this.layersDiv = document.createElement('div');
+				this.layersDiv.id = this.id + '_layersDiv';
+				OpenLayers.Element.addClass(this.layersDiv, 'layersDiv');
 
-				this.baseLbl = document.createElement("div");
-				this.baseLbl.innerHTML = OpenLayers.i18n("Base Layer");
-				OpenLayers.Element.addClass(this.baseLbl, "baseLbl");
+				this.baseLbl = document.createElement('div');
+				this.baseLbl.innerHTML = OpenLayers.i18n('Base Layer');
+				OpenLayers.Element.addClass(this.baseLbl, 'baseLbl');
 
-				this.baseLayersDiv = document.createElement("div");
-				this.baseLayersDiv.id = "baseLayersDiv";
-				OpenLayers.Element.addClass(this.baseLayersDiv, "baseLayersDiv");
+				this.baseLayersDiv = document.createElement('div');
+				this.baseLayersDiv.id = 'baseLayersDiv';
+				OpenLayers.Element.addClass(this.baseLayersDiv, 'baseLayersDiv');
 
-				this.dataLbl = document.createElement("div");
-				this.dataLbl.innerHTML = OpenLayers.i18n("Overlays");
-				OpenLayers.Element.addClass(this.dataLbl, "dataLbl");
+				this.dataLbl = document.createElement('div');
+				this.dataLbl.innerHTML = OpenLayers.i18n('Overlays');
+				OpenLayers.Element.addClass(this.dataLbl, 'dataLbl');
 
-				this.dataLayersDiv = document.createElement("div");
-				OpenLayers.Element.addClass(this.dataLayersDiv, "dataLayersDiv");
+				this.dataLayersDiv = document.createElement('div');
+				OpenLayers.Element.addClass(this.dataLayersDiv, 'dataLayersDiv');
 
 				if (this.ascending) {
 					this.layersDiv.appendChild(this.baseLbl);
@@ -129,28 +129,30 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 				}
 
 				// maximize button
-				this.maximizeDiv = document.createElement("button");
+				this.maximizeDiv = document.createElement('button');
 				this.maximizeDiv.insertAdjacentHTML('afterbegin', '<span role="tooltip">'
 						+ OpenLayers.i18n('lyrsMaximize') + '</span>&#x2261;');
 				this.maximizeDiv.name = 'show';
+				this.maximizeDiv.type = 'button';
 				OpenLayers.Element.addClass(this.maximizeDiv,
-						"maximizeDiv olButton olHasTooltip_bttm_l olLayerSwitcherButton");
-				this.maximizeDiv.style.display = "none";
+						'maximizeDiv olButton olHasTooltip_bttm_l olLayerSwitcherButton');
+				this.maximizeDiv.style.display = 'none';
 
 				// minimize button
-				this.minimizeDiv = document.createElement("button");
+				this.minimizeDiv = document.createElement('button');
 				// \u2212 is minus, \u00D7 is multiply symbol
 				this.minimizeDiv.insertAdjacentHTML('afterbegin', '<span role="tooltip">'
-						+ OpenLayers.i18n("lyrsMinimize") + '</span>\u00D7');
+						+ OpenLayers.i18n('lyrsMinimize') + '</span>\u00D7');
 				this.minimizeDiv.name = 'hide';
+				this.minimizeDiv.type = 'button';
 				OpenLayers.Element.addClass(this.minimizeDiv,
-						"minimizeDiv olButton olHasTooltip_bttm_l olLayerSwitcherButton");
-				this.minimizeDiv.style.display = "none";
+						'minimizeDiv olButton olHasTooltip_bttm_l olLayerSwitcherButton');
+				this.minimizeDiv.style.display = 'none';
 
 				this.div.appendChild(this.maximizeDiv);
 				this.div.appendChild(this.minimizeDiv);
 				this.div.appendChild(this.layersDiv);
 			},
 
-			CLASS_NAME : "OpenLayersMap.Control.LayerSwitcher"
+			CLASS_NAME : 'OpenLayersMap.Control.LayerSwitcher'
 		});

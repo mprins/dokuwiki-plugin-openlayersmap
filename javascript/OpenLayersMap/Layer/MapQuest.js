@@ -26,15 +26,15 @@ OpenLayersMap.Layer.MapQuest = OpenLayers.Class(OpenLayers.Layer.OSM, {
 	/**
 	 * The layer name.
 	 */
-	name : "mapquest road",
+	name : 'mapquest road',
 
 	/**
 	 * The tileset URL scheme.
 	 */
-	url : [ "http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-			"http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-			"http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-			"http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg" ],
+	url : [ 'http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg',
+			'http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg',
+			'http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg',
+			'http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg' ],
 
 	/**
 	 * The layer attribution.
@@ -51,5 +51,5 @@ OpenLayersMap.Layer.MapQuest = OpenLayers.Class(OpenLayers.Layer.OSM, {
 		// this.tileOptions.crossOriginKeyword = null;
 	},
 
-	CLASS_NAME : "OpenLayersMap.Layer.MapQuest"
+	CLASS_NAME : 'OpenLayersMap.Layer.MapQuest'
 });

@@ -38,7 +38,7 @@ OpenLayersMap.Popup.FramedCloud = OpenLayers.Class(OpenLayers.Popup.FramedCloud,
 	 *            'size' ({OpenLayers.Size}) and 'offset' ({OpenLayers.Pixel})
 	 *            (Note that this is generally an {OpenLayers.Icon}).
 	 * @param closeBox
-	 *            {Boolean} should be true
+	 *            {Boolean} should be true otherwise the box cannot be closed
 	 * @param closeBoxCallback
 	 *            {Function} Function to be called on closeBox click.
 	 */
@@ -56,29 +56,30 @@ OpenLayersMap.Popup.FramedCloud = OpenLayers.Class(OpenLayers.Popup.FramedCloud,
 	 * @override
 	 */
 	addCloseBox : function(callback) {
-		this.closeDiv = document.createElement("button");
-		this.closeDiv.id = this.id + "_close";
+		this.closeDiv = document.createElement('button');
+		this.closeDiv.id = this.id + '_close';
 		this.closeDiv.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n('dlgClose')
 				+ '</span>\u00D7');
-		this.closeDiv.style.position = "absolute";
-		this.closeDiv.className = "olPopupCloseBox";
-		this.closeDiv.style.width = this.closeDiv.style.height = "22px";
+		this.closeDiv.type = 'button';
+		this.closeDiv.name = 'close';
+		this.closeDiv.style.position = 'absolute';
+		this.closeDiv.style.width = this.closeDiv.style.height = '22px';
 		// use the content div's css padding to determine if we should
 		// padd the close div
 		var contentDivPadding = this.getContentDivPadding();
-		this.closeDiv.style.right = contentDivPadding.right + "px";
-		this.closeDiv.style.top = contentDivPadding.top + "px";
+		this.closeDiv.style.right = contentDivPadding.right + 'px';
+		this.closeDiv.style.top = contentDivPadding.top + 'px';
 
 		this.groupDiv.appendChild(this.closeDiv);
-		OpenLayers.Element.addClass(this.closeDiv, "olHasTooltip_bttm_l");
+		OpenLayers.Element.addClass(this.closeDiv, 'olPopupCloseBox olHasTooltip_bttm_l');
 
 		var closePopup = callback || function(e) {
 			this.hide();
 			OpenLayers.Event.stop(e);
 		};
-		OpenLayers.Event.observe(this.closeDiv, "touchend", OpenLayers.Function.bindAsEventListener(closePopup, this));
-		OpenLayers.Event.observe(this.closeDiv, "click", OpenLayers.Function.bindAsEventListener(closePopup, this));
+		OpenLayers.Event.observe(this.closeDiv, 'touchend', OpenLayers.Function.bindAsEventListener(closePopup, this));
+		OpenLayers.Event.observe(this.closeDiv, 'click', OpenLayers.Function.bindAsEventListener(closePopup, this));
 	},
 
-	CLASS_NAME : "OpenLayersMap.Popup.FramedCloud"
+	CLASS_NAME : 'OpenLayersMap.Popup.FramedCloud'
 });

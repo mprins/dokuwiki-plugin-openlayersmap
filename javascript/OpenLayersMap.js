@@ -15,7 +15,7 @@
  */
 
 /**
- * define namespace OpenLayersMap
+ * defines namespace OpenLayersMap
  */
 var OpenLayersMap = {};
 /**

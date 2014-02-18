@@ -19,7 +19,7 @@
  */
 OpenLayersMap.Handler.KeyboardPoint = OpenLayers.Class(OpenLayers.Handler, {
 
-	KEY_EVENTS : [ "keydown" ],
+	KEY_EVENTS : [ 'keydown' ],
 
 	/** amount to move the pointer. */
 	STEP_SIZE : 3,
@@ -120,7 +120,7 @@ OpenLayersMap.Handler.KeyboardPoint = OpenLayers.Class(OpenLayers.Handler, {
 		var resolution = this.map.getResolution();
 		this.point.geometry.x = this.point.geometry.x + lon * resolution;
 		this.point.geometry.y = this.point.geometry.y + lat * resolution;
-		this.callback("modify", [ this.point.geometry, this.point, false ]);
+		this.callback('modify', [ this.point.geometry, this.point, false ]);
 		this.point.geometry.clearBounds();
 		this.drawFeature();
 	},
@@ -132,7 +132,7 @@ OpenLayersMap.Handler.KeyboardPoint = OpenLayers.Class(OpenLayers.Handler, {
 		var center = this.map.getCenter();
 		var geometry = new OpenLayers.Geometry.Point(center.lon, center.lat);
 		this.point = new OpenLayers.Feature.Vector(geometry);
-		this.callback("create", [ this.point.geometry, this.point ]);
+		this.callback('create', [ this.point.geometry, this.point ]);
 		this.point.geometry.clearBounds();
 		this.layer.addFeatures([ this.point ], {
 			silent : true
