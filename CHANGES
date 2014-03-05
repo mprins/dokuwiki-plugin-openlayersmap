@@ -4,6 +4,7 @@
   * keyboard accessible layer switcher control
   * keyboard accessible feature info control
   * removed the toolbar
+  * remove the Cloudmade layers; Cloudmade went "enterprise only"
   * removed the option to set openlayers library, this is no longer possible
   * remove styling admin option and remove associated images, use the wiki styling from now on
   * add help pages (en, nl)
@@ -18,6 +19,7 @@
     * lib/theme/*
   * img/navigation_history.png
   * img/icon_*.png
+  * logo/cloudmade_logo.png
 
 === version 3.1 ===
   * use OpenLayers 2.13

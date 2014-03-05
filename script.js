@@ -208,14 +208,6 @@ function createMap(mapOpts, OLmapPOI) {
 			visibility : mapOpts.baselyr === "landscape"
 		}));
 
-		m.addLayer(new OpenLayersMap.Layer.CloudMade());
-		m.addLayer(new OpenLayersMap.Layer.CloudMade("cloudmade fresh", [
-				"http://a.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/${z}/${x}/${y}.png",
-				"http://b.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/${z}/${x}/${y}.png",
-				"http://c.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/${z}/${x}/${y}.png" ], {
-			visibility : mapOpts.baselyr === "cloudmade fresh"
-		}));
-
 		m.addLayer(new OpenLayers.Layer.OSM(
 				"hike and bike map", "http://toolserver.org/tiles/hikebike/${z}/${x}/${y}.png", {
 					visibility : mapOpts.baselyr === "hike and bike map",

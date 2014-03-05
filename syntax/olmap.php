@@ -49,7 +49,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	);
 
 	/**
-	 * 
+	 *
 	 * @see DokuWiki_Syntax_Plugin::getType()
 	 */
 	function getType() {
@@ -247,7 +247,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$scriptEnable .= '/*!]]>*/</script>';
 			}
 			$renderer->doc .= "$gscript\n$olscript\n$scriptEnable";
-			$renderer->doc .= '<div class="olMapHelp">'.$this->locale_xhtml("help").'</div>';
+			$renderer->doc .= '<div class="olMapHelp">' . $this->locale_xhtml ( "help" ) . '</div>';
 			if ($this->getConf ( 'enableA11y' )) {
 				$renderer->doc .= '<div id="' . $mapid . '-static" class="olStaticMap">' . p_render ( $mode, p_get_instructions ( $staticImgUrl ), $info ) . '</div>';
 			}
@@ -617,12 +617,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					break;
 				case 'cycle map' :
 					$maptype = 'cycle';
-					break;
-				case 'cloudmade' :
-					$maptype = 'cloudmade';
-					break;
-				case 'cloudmade fresh' :
-					$maptype = 'fresh';
 					break;
 				case 'hike and bike map' :
 					$maptype = 'hikeandbike';
