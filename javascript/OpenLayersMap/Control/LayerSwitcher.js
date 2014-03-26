@@ -49,6 +49,7 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 			maximizeControl : function(e) {
 				OpenLayers.Control.LayerSwitcher.prototype.maximizeControl.apply(this, arguments);
 				document.getElementById('baseLayersDiv').firstChild.focus();
+				// console.debug('have set focus to:',document.getElementById('baseLayersDiv').firstChild);
 			},
 
 			/**
@@ -59,17 +60,26 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 			 *            {Event}
 			 */
 			onButtonClick : function(evt) {
+				// console.debug('fired LayerSwitcher#onButtonClick',evt);
 				// get a hold of the value of this evt
 				var selValue = evt.buttonElement.value;
 
 				OpenLayers.Control.LayerSwitcher.prototype.onButtonClick.apply(this, arguments);
 
+				if (evt.buttonElement === this.minimizeDiv){
+					this.map.div.focus();
+					// console.debug('LayerSwitcher#onButtonClick: have set focus to',this.map.div);
+				}
+				
 				if (selValue) {
+					// console.debug('handle LayerSwitcher#onButtonClick for:',selValue);
 					// find the clicked item and restore focus
 					var inputs = document.getElementById(this.id).getElementsByTagName('input');
 					for (var i = 0; i < inputs.length; i++) {
 						if (inputs[i].value === selValue) {
 							inputs[i].focus();
+							// console.debug('have set focus to:',inputs[i]);
+							// OpenLayers.Event.stop(evt);
 							break;
 						}
 					}
@@ -85,10 +95,14 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 			 *            {Event}
 			 * 
 			 */
+			/*
 			minimizeControl : function(e) {
 				OpenLayers.Control.LayerSwitcher.prototype.minimizeControl.apply(this, arguments);
+				// this causes the map to receive focus on page load as minimizeControl is called in draw(); 
+				// see http://sourceforge.net/p/dokuwikispatial/issues/38/
 				this.map.div.focus();
 			},
+			*/
 
 			/**
 			 * Set up the labels and divs for the control.

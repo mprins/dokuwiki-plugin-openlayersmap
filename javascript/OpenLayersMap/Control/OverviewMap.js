@@ -147,7 +147,9 @@ OpenLayersMap.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control.Overview
 	 */
 	onButtonClick : function(e) {
 		OpenLayers.Control.OverviewMap.prototype.onButtonClick.apply(this, arguments);
-		this.map.div.focus();
+		if (e.buttonElement === this.minimizeDiv) {
+			this.map.div.focus();
+		}
 	},
 
 	CLASS_NAME : 'OpenLayersMap.Control.OverviewMap'
