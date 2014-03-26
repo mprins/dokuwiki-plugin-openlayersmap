@@ -31,17 +31,21 @@ OpenLayersMap.Layer.MapQuest = OpenLayers.Class(OpenLayers.Layer.OSM, {
 	/**
 	 * The tileset URL scheme.
 	 */
-	url : [ 'http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg',
-			'http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg',
-			'http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg',
-			'http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg' ],
+	 
+	 
+	 
+	 
+	url : [ '//otile1-s.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg',
+			'//otile2-s.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg',
+			'//otile3-s.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg',
+			'//otile4-s.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg' ],
 
 	/**
 	 * The layer attribution.
 	 */
 	attribution : 'Data ODbL <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
 			+ 'Tiles <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>'
-			+ '<img src="http://developer.mapquest.com/content/osm/mq_logo.png" alt="MapQuest logo"/>',
+			+ '<img src="//developer.mapquest.com/content/osm/mq_logo.png" alt="MapQuest logo"/>',
 
 	/**
 	 * @constructor

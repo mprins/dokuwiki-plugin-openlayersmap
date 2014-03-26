@@ -165,7 +165,6 @@ function createMap(mapOpts, OLmapPOI) {
 	}
 	OpenLayers.ImgPath = DOKU_BASE + 'lib/plugins/openlayersmap/lib/img/';
 	OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
-	// OpenLayers.Layer.Vector.prototype.renderers = ["SVG", "VML"];
 
 	// find map element location
 	var cleartag = document.getElementById(mapOpts.id + '-clearer');
@@ -223,10 +222,10 @@ function createMap(mapOpts, OLmapPOI) {
 	if (mqEnable) {
 		m.addLayer(new OpenLayersMap.Layer.MapQuest());
 		m.addLayer(new OpenLayersMap.Layer.MapQuest("mapquest sat", [
-				"http://otile1.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
-				"http://otile2.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
-				"http://otile3.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
-				"http://otile4.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg" ], {
+				"//otile1-s.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+				"//otile2-s.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+				"//otile3-s.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
+				"//otile4-s.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg" ], {
 			// note that global coverage is provided at zoom levels 0-11. Zoom
 			// Levels 12+ are provided only in the United States (lower 48).
 			numZoomLevels : 12,
