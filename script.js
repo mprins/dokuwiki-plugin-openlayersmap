@@ -120,16 +120,19 @@ function olTestCSSsupport() {
  * @returns a {DocumentFragment} element that can be injected into the dom
  */
 function olCreateMaptag(mapid, width, height) {
-	var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">' + '<div id="' + mapid
-			+ '" tabindex="-1" style="width:' + width + ';height:' + height + ';" class="olMap">'
-			+ '<a class="olAccesskey" href="#' + mapid + '" onclick="document.getElementById(&quot;' + mapid
-			+ '&quot;).focus(); return false;" title="' + OpenLayers.i18n("activate_map") + '">'
-			+ OpenLayers.i18n("activate_map") + '</a>' + '</div>' + '<div id="' + mapid + '-olStatusBar" style="width:'
-			+ width + ';"class="olStatusBarContainer">' + '<div id="' + mapid
-			+ '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>' + '<div id="' + mapid
-			+ '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>' + '<div id="' + mapid
-			+ '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>' + '<div id="' + mapid
-			+ '-statusbar-text" class="olStatusBar olStatusBarText">txt</div>' + '</div></div>',
+	var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">' 
+	// + '<a class="olAccesskey" href="#' + mapid + '" onclick="document.getElementById(&quot;' + mapid + '&quot;).focus(); return false;" title="' + OpenLayers.i18n("activate_map") + '">' + OpenLayers.i18n("activate_map") + '</a>'
+	// map
+	+ '<div id="' + mapid + '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap"></div>' 
+	// statusbar
+	+ '<div id="' + mapid + '-olStatusBar" style="width:' + width + ';"class="olStatusBarContainer">' 
+	+ '  <div id="' + mapid + '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>' 
+	+ '  <div id="' + mapid + '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>' 
+	+ '  <div id="' + mapid + '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>' 
+	+ '  <div id="' + mapid + '-statusbar-text" class="olStatusBar olStatusBarText">txt</div>' 
+	+ '</div>'
+	//
+	+ '</div>',
 	// fragment
 	frag = document.createDocumentFragment(),
 	// temp node

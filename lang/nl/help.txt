@@ -9,7 +9,7 @@ In de kaart zijn verschillende functies beschikbaar.
   * **informatie opvragen** in de kaart kunnen zich elementen bevinden die meer informatie dragen, door erop te klikken kunt u deze opvragen
 
 == toetsenbord bediening ==
-Voor toetsenbord bediening dient u de kaart te activeren middels de daarvoor aanwezige "Activeer kaart" link welke zichtbaar wordt bij focus.
+Voor toetsenbord bediening dient u de kaart te activeren middels de tab toets (als de kaart actief is vertoont deze een focus ring).
   * **verschuiven** met behulp van de pijl toetsen kunt u de kaart verschuiven
   * **overzichtskaart** met het + knopje rechts onderin de kaart kunt u een overzichtskaart uitvouwen
   * **in- en uitzoomen** door op de + en - knoppen links bovenin de kaart te klikken of de + en - toets te gebruiken kunt u meer of minder detail in de kaart bekijken

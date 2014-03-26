@@ -9,7 +9,7 @@ Various functions are available as part of the map.
   * **retrieving information** the map may contain elements that contain more information, by clicking these a popup will show this information
 
 == keyboard operation ==
-Keyboard operation becomes available after activating the map using the "Activate map" link which will pop up when focussed
+Keyboard operation becomes available after activating the map using the tab key (the map will show a focus indicator ring).
   * **moving** using the arrow keys you can move the map
   * **overview map** using the + button in the bottom right of the map you can expand an overview map
   * **zooming in and out** using the + and - buttons in the top left of the map or by using the + and - keys you can obtain more or less detail in the map
