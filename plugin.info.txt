@@ -3,5 +3,5 @@ author  Mark C. Prins
 email   mprins@users.sf.net
 date    ${buildNumber} (${project.version})
 name    ${project.name}
-desc    ${project.description}. Uses OpenLayers: ${openlayers.checkout.versiontype} ${openlayers.checkout.version}
+desc    ${project.description}. Uses OpenLayers: ${openlayers.checkout.versiontype} ${openlayers.checkout.version} SHA1 ${git.revision}
 url     ${project.url}
