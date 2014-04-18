@@ -73,8 +73,6 @@ OpenLayersMap.Control.KeyboardClick = OpenLayers.Class(OpenLayers.Control, {
 		// hit detection, first intersect hits
 		for (var resized = 1; resized < 4; resized++) {
 			// try a few (resized-1) times with larger click polygon each time
-			// clicked = clicked.resize(resized, new
-			// OpenLayers.Geometry.Point(geometry.x, geometry.y));
 			clicked = clicked.resize(resized, geometry);
 			for (var i = 0; i < lyrs.length; i++) {
 				if (lyrs[i].getVisibility()) {

@@ -60,7 +60,6 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 			 *            {Event}
 			 */
 			onButtonClick : function(evt) {
-				// console.debug('fired LayerSwitcher#onButtonClick',evt);
 				// get a hold of the value of this evt
 				var selValue = evt.buttonElement.value;
 
@@ -68,17 +67,14 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 
 				if (evt.buttonElement === this.minimizeDiv){
 					this.map.div.focus();
-					// console.debug('LayerSwitcher#onButtonClick: have set focus to',this.map.div);
 				}
 				
 				if (selValue) {
-					// console.debug('handle LayerSwitcher#onButtonClick for:',selValue);
 					// find the clicked item and restore focus
 					var inputs = document.getElementById(this.id).getElementsByTagName('input');
 					for (var i = 0; i < inputs.length; i++) {
 						if (inputs[i].value === selValue) {
 							inputs[i].focus();
-							// console.debug('have set focus to:',inputs[i]);
 							// OpenLayers.Event.stop(evt);
 							break;
 						}
