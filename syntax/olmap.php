@@ -155,13 +155,13 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$rowId ++;
 				$poi .= ", {lat: $lat, lon: $lon, txt: '$text', angle: $angle, opacity: $opacity, img: '$img', rowId: $rowId}";
 				$poitable .= '
-						<tr>
-						<td class="rowId">' . $rowId . '</td>
-						<td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/icons/' . $img . '" alt="icon" /></td>
-						<td class="lat" title="' . $this->getLang ( 'olmapPOIlatTitle' ) . '">' . $lat . '</td>
-						<td class="lon" title="' . $this->getLang ( 'olmapPOIlonTitle' ) . '">' . $lon . '</td>
-						<td class="txt">' . $text . '</td>
-						</tr>';
+					<tr>
+					<td class="rowId">' . $rowId . '</td>
+					<td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/icons/' . $img . '" alt="icon" /></td>
+					<td class="lat" title="' . $this->getLang ( 'olmapPOIlatTitle' ) . '">' . $lat . '</td>
+					<td class="lon" title="' . $this->getLang ( 'olmapPOIlonTitle' ) . '">' . $lon . '</td>
+					<td class="txt">' . $text . '</td>
+					</tr>';
 			}
 			$poi = substr ( $poi, 2 );
 		}
@@ -253,23 +253,24 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			}
 			$renderer->doc .= '<div id="' . $mapid . '-clearer" class="clearer"><p>&nbsp;</p></div>';
 			if ($this->getConf ( 'enableA11y' )) {
-				// render a (initially hidden) table of the POI for the print and a11y presentation
-				$renderer->doc .= '<div class="olPOItableSpan" id="' . $mapid . '-table-span"><table class="olPOItable" id="' . $mapid . '-table" summary="' . $poitabledesc . '" title="' . $this->getLang ( 'olmapPOItitle' ) . '">
-<caption class="olPOITblCaption">' . $this->getLang ( 'olmapPOItitle' ) . '</caption>
-<thead class="olPOITblHeader">
-<tr>
-<th class="rowId" scope="col">id</th>
-<th class="icon" scope="col">' . $this->getLang ( 'olmapPOIicon' ) . '</th>
-<th class="lat" scope="col" title="' . $this->getLang ( 'olmapPOIlatTitle' ) . '">' . $this->getLang ( 'olmapPOIlat' ) . '</th>
-<th class="lon" scope="col" title="' . $this->getLang ( 'olmapPOIlonTitle' ) . '">' . $this->getLang ( 'olmapPOIlon' ) . '</th>
-<th class="txt" scope="col">' . $this->getLang ( 'olmapPOItxt' ) . '</th>
-</tr>
-</thead>';
+				// render a table of the POI for the print and a11y presentation, it is hidden using javascript
+				$renderer->doc .= '<div class="olPOItableSpan" id="' . $mapid . '-table-span">
+					<table class="olPOItable" id="' . $mapid . '-table">
+					<caption class="olPOITblCaption">' . $this->getLang ( 'olmapPOItitle' ) . '</caption>
+					<thead class="olPOITblHeader">
+					<tr>
+					<th class="rowId" scope="col">id</th>
+					<th class="icon" scope="col">' . $this->getLang ( 'olmapPOIicon' ) . '</th>
+					<th class="lat" scope="col" title="' . $this->getLang ( 'olmapPOIlatTitle' ) . '">' . $this->getLang ( 'olmapPOIlat' ) . '</th>
+					<th class="lon" scope="col" title="' . $this->getLang ( 'olmapPOIlonTitle' ) . '">' . $this->getLang ( 'olmapPOIlon' ) . '</th>
+					<th class="txt" scope="col">' . $this->getLang ( 'olmapPOItxt' ) . '</th>
+					</tr>
+					</thead>';
 				if ($poitabledesc != '') {
 					$renderer->doc .= '<tfoot class="olPOITblFooter"><tr><td colspan="5">' . $poitabledesc . '</td></tr></tfoot>';
 				}
 				$renderer->doc .= '<tbody class="olPOITblBody">' . $poitable . '</tbody>
-						</table></div>';
+					</table></div>';
 			}
 			// render inline mapscript parts
 			$renderer->doc .= '<script type="text/javascript" charset="utf-8">/*<![CDATA[*/';

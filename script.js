@@ -121,7 +121,6 @@ function olTestCSSsupport() {
  */
 function olCreateMaptag(mapid, width, height) {
 	var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">' 
-	// + '<a class="olAccesskey" href="#' + mapid + '" onclick="document.getElementById(&quot;' + mapid + '&quot;).focus(); return false;" title="' + OpenLayers.i18n("activate_map") + '">' + OpenLayers.i18n("activate_map") + '</a>'
 	// map
 	+ '<div id="' + mapid + '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap"></div>' 
 	// statusbar
@@ -540,21 +539,21 @@ function olInit() {
 		for (_i = 0; _i < olMapData.length; _i++) {
 			olMaps[olMapData[_i].mapOpts.id] = createMap(olMapData[_i].mapOpts, olMapData[_i].poi);
 		}
+		
 		// hide the table(s) with POI by giving it a print-only style
-		var tbls = jQuery('.olPOItableSpan');
-		for (_i = 0; _i < tbls.length; _i++) {
-			tbls[_i].className += ' olPrintOnly';
-		}
+		jQuery('.olPOItableSpan').addClass('olPrintOnly');
 		// hide the static map image(s) by giving it a print only style
-		var statImgs = jQuery('.olStaticMap');
-		for (_i = 0; _i < statImgs.length; _i++) {
-			statImgs[_i].className += ' olPrintOnly';
-		}
+		jQuery('.olStaticMap').addClass('olPrintOnly');
 		// add help button with toggle.
 		jQuery('.olWebOnly').prepend(
 				'<div class="olMapHelpButtonDiv">'
-						+ '<button onclick="jQuery(\'.olMapHelp\').toggle(500);" class="olMapHelpButton olHasTooltip">'
-						+ '<span>' + OpenLayers.i18n("toggle_help") + '</span>?</button>' + '</div>');
+					+ '<button onclick="jQuery(\'.olMapHelp\').toggle(500);" class="olMapHelpButton olHasTooltip"><span>' 
+					+ OpenLayers.i18n("toggle_help") 
+					+ '</span>?</button></div>');
+		// toggle to switch dynamic vs. static map
+		jQuery('.olMapHelp').before(
+				'<div class="a11y"><button onclick="jQuery(\'.olPrintOnly\').toggle();jQuery(\'.olWebOnly\').toggle();">' 
+				+ OpenLayers.i18n("toggle_dynamic_map") + '</button></div>');
 	}
 }
 

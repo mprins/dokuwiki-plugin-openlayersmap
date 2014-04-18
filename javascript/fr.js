@@ -2,6 +2,7 @@
  * fr language bundle.
  * 
  * @requires OpenLayers/Lang/fr.js
+ * @author mprins
  */
 OpenLayers.Lang.fr = OpenLayers.Util.extend({
 	"ovMinimize" : "Minimisez vue d'ensemble",

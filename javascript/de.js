@@ -2,6 +2,7 @@
  * de language bundle
  * 
  * @requires OpenLayers/Lang/de.js
+ * @author mprins
  */
 OpenLayers.Lang.de = OpenLayers.Util.extend({
 	"ovMinimize" : "Übersicht minimieren",

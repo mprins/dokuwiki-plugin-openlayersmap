@@ -59,6 +59,7 @@
 	width: auto;
 	float: left;
 }
+
 /* 
  * Work around a case of style reset, setting it on the container breaks the overview map. 
  * See: http://www.dokuwiki.org/plugin:openlayersmap?rev=1329438681&do=diff 
@@ -130,17 +131,3 @@ img.olTileImage {
 .olTileReplacing {
 	display: none;
 }
-/*
-a.olAccesskey {
-	position: absolute;
-	top: -9999em;
-	color: __background__ !important;
-	
-	&:hover,
-	&:focus {
-		position: relative;
-		top: 0;
-		color: __text__ !important;
-	}
-}
-*/
