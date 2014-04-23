@@ -34,6 +34,7 @@ $button-bg:                rgba(0, 60, 136, 0.7);
 $button-bg-active:         rgba($button-bg, 1);
 $button-bg-active-lighter: lighten($button-bg-active, 10%);
 $button-bg-active-darker:  darken($button-bg-active, 10%);
+$button-halo:              rgba(255, 255, 255, 0.2);
 
 
 /* page and widget elements, ordering is important */
@@ -45,5 +46,6 @@ $button-bg-active-darker:  darken($button-bg-active, 10%);
 @import 'ScaleLine';
 @import 'StatusBar';
 @import 'Zoom';
+@import 'Fullscreen';
 @import 'tooltip';
 @import 'help';

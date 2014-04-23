@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2014 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -13,19 +13,30 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
- 
-/* Zoom control */
-.OpenLayersMapControlZoom {
+
+/** Fullscreen Control. */
+.olMap.fullscreen,
+.olMap:-webkit-full-screen /*,.olMap:fullscreen,.olMap:-moz-full-screen */ {
+	height: 100% !important;
+	width: 100% !important;
+	position: fixed;
+	left: 0;
+	top: 0;
+	background-color: __background_neu__;
+	opacity: 1;
+}
+
+.olControlFullscreen {
 	position: absolute;
-	top: 8px;
+	top: 100px;
 	left: 8px;
+	padding: 2px;
 	background: $button-halo;
 	padding: 2px;
 	@include border-radius(4px);
 }
 
-.OpenLayersMapControlZoom button {
-	display: block;
+.olControlFullscreen button {
 	margin: 1px;
 	padding: 0;
 	color: $button;
@@ -35,17 +46,10 @@
 	width: $button-width;
 	line-height: $button-line-height;
 	background: $button-bg;
-
+	@include border-radius(4px);
+	
 	&:hover,
 	&:focus {
-		background: $button-bg-active;
+		background : $button-bg-active;
 	}
-}
-
-.olControlZoomIn {
-	@include border-top-radius(4px);
-}
-
-.olControlZoomOut {
-	@include border-bottom-radius(4px);
 }

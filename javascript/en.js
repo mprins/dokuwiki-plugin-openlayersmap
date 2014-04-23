@@ -14,5 +14,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend({
 	"lyrsMaximize" : "Show map layers",
 	"lyrsMinimize" : "Hide map layers",
 	"toggle_help" : "Show or hide help",
-	"toggle_dynamic_map" : "Hide or show the dynamic map"
+	"toggle_dynamic_map" : "Hide or show the dynamic map",
+	"toggle_fullscreen" : "Hide or show full screen mode"
 }, OpenLayers.Lang.en);

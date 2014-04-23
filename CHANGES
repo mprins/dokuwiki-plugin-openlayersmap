@@ -1,4 +1,8 @@
 === version ${project.version} ===
+  * add a fullscreen option for the map
+  * fix an IE8 bug
+  
+=== version 4.0 ===
   * use OpenLayers 2.14-dev
   * keyboard accessible zoom control replacing the pan/zoom bar
   * keyboard accessible layer switcher control

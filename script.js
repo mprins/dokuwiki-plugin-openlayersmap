@@ -512,7 +512,8 @@ function createMap(mapOpts, OLmapPOI) {
 			mapOptions : {
 				theme : null
 			}
-		}), new OpenLayersMap.Control.Zoom() ]);
+		}), new OpenLayersMap.Control.Zoom(),
+		new OpenLayersMap.Control.Fullscreen() ]);
 
 		// add hillshade, since this is off by default only add when we have a
 		// layerswitcher
@@ -545,7 +546,7 @@ function olInit() {
 		// hide the static map image(s) by giving it a print only style
 		jQuery('.olStaticMap').addClass('olPrintOnly');
 		// add help button with toggle.
-		jQuery('.olWebOnly').prepend(
+		jQuery('.olWebOnly > .olMap').prepend(
 				'<div class="olMapHelpButtonDiv">'
 					+ '<button onclick="jQuery(\'.olMapHelp\').toggle(500);" class="olMapHelpButton olHasTooltip"><span>' 
 					+ OpenLayers.i18n("toggle_help") 
