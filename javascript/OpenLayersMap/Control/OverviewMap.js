@@ -106,7 +106,7 @@ OpenLayersMap.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control.Overview
 		this.maximizeDiv.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n('ovMaximize')
 				+ '</span>+');
 		this.maximizeDiv.name = 'show';
-		this.maximizeDiv.type = 'button';
+		this.maximizeDiv.setAttribute('type' ,'button');
 		this.maximizeDiv.style.display = 'none';
 		this.maximizeDiv.className = this.displayClass + 'MaximizeButton olOverviewMapButton olButton olHasTooltip';
 		this.div.appendChild(this.maximizeDiv);
@@ -116,7 +116,7 @@ OpenLayersMap.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control.Overview
 		this.minimizeDiv.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n('ovMinimize')
 				+ '</span>\u00D7');
 		this.minimizeDiv.name = 'hide';
-		this.minimizeDiv.type = 'button';
+		this.minimizeDiv.setAttribute('type' ,'button');
 		this.minimizeDiv.style.display = 'none';
 		this.minimizeDiv.className = this.displayClass + 'MinimizeButton olOverviewMapButton olButton olHasTooltip';
 		this.div.appendChild(this.minimizeDiv);

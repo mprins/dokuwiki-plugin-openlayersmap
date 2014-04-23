@@ -142,7 +142,7 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 		this.maximizeDiv.insertAdjacentHTML('afterbegin', '<span role="tooltip">'
 				+ OpenLayers.i18n('lyrsMaximize') + '</span>&#x2261;');
 		this.maximizeDiv.name = 'show';
-		this.maximizeDiv.type = 'button';
+		this.maximizeDiv.setAttribute('type' ,'button');
 		OpenLayers.Element.addClass(this.maximizeDiv,
 				'maximizeDiv olButton olHasTooltip_bttm_l olLayerSwitcherButton');
 		this.maximizeDiv.style.display = 'none';
@@ -153,7 +153,7 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 		this.minimizeDiv.insertAdjacentHTML('afterbegin', '<span role="tooltip">'
 				+ OpenLayers.i18n('lyrsMinimize') + '</span>\u00D7');
 		this.minimizeDiv.name = 'hide';
-		this.minimizeDiv.type = 'button';
+		this.minimizeDiv.setAttribute('type' ,'button');
 		OpenLayers.Element.addClass(this.minimizeDiv,
 				'minimizeDiv olButton olHasTooltip_bttm_l olLayerSwitcherButton');
 		this.minimizeDiv.style.display = 'none';

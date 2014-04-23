@@ -35,7 +35,7 @@ OpenLayersMap.Control.Zoom = OpenLayers.Class(OpenLayers.Control.Zoom, {
 		if (!zoomIn) {
 			zoomIn = document.createElement('button');
 			zoomIn.name = 'ZoomIn';
-			zoomIn.type = 'button';
+			zoomIn.setAttribute('type' ,'button');
 			zoomIn.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n('zoom_in') + '</span>'
 					+ this.zoomInText);
 			el.appendChild(zoomIn);
@@ -44,7 +44,7 @@ OpenLayersMap.Control.Zoom = OpenLayers.Class(OpenLayers.Control.Zoom, {
 		if (!zoomOut) {
 			zoomOut = document.createElement('button');
 			zoomOut.name = 'ZoomOut';
-			zoomOut.type = 'button';
+			zoomOut.setAttribute('type' ,'button');
 			zoomOut.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n('zoom_out') + '</span>'
 					+ this.zoomOutText);
 			el.appendChild(zoomOut);
