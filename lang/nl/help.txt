@@ -7,7 +7,7 @@ In de kaart zijn verschillende functies beschikbaar.
   * **in- en uitzoomen** door op de + en - knoppen links bovenin de kaart kunt u meer of minder detail in de kaart bekijken
   * **thema's aan- of uitzetten** na op het ≡ ikoon te klikken aan de rechterkant van de kaart krijgt u een overzicht van de beschikbare kaarten en thema's, u kunt hier een selectie maken.
   * **informatie opvragen** in de kaart kunnen zich elementen bevinden die meer informatie dragen, door erop te klikken kunt u deze opvragen
-  * **volledig scherm weergave** met behulp van de □ knop kan de kaart worden gemaximaliseerd, gebruik de ⌂ knop om weer terug te gaan naar pagina weergave.
+  * **volledig scherm weergave** met behulp van de ✈ knop kan de kaart worden gemaximaliseerd, gebruik de ✕ knop om weer terug te gaan naar pagina weergave.
 
 == toetsenbord bediening ==
 Voor toetsenbord bediening dient u de kaart te activeren middels de tab toets (als de kaart actief is vertoont deze een focus ring).
@@ -16,6 +16,6 @@ Voor toetsenbord bediening dient u de kaart te activeren middels de tab toets (a
   * **in- en uitzoomen** door op de + en - knoppen links bovenin de kaart te klikken of de + en - toets te gebruiken kunt u meer of minder detail in de kaart bekijken
   * **thema's aan- of uitzetten** na op het ≡ ikoon te klikken aan de rechterkant van de kaart krijgt u een overzicht van de beschikbare kaarten en thema's, u kunt hier een selectie maken.
   * **informatie opvragen** in de kaart kunnen zich elementen bevinden die meer informatie dragen, middels de i toets activeert u een cursor die met de pijltoetsen verschoven kan worden, met de enter toets voert u een opvraag actie uit. Gebruik de i of de escape toets om deze functie weer uit te schakelen en terug te keren naar navigatie modus
-  * **volledig scherm weergave** met behulp van de □ knop kan de kaart worden gemaximaliseerd, gebruik de ⌂ knop om weer terug te gaan naar pagina weergave.
+  * **volledig scherm weergave** met behulp van de ✈ knop kan de kaart worden gemaximaliseerd, gebruik de ✕ knop om weer terug te gaan naar pagina weergave.
 
 //Het kan zijn dat een aantal van deze functies niet beschikbaar is gesteld door de auteur van de pagina of de beheerder.//

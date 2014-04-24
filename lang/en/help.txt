@@ -7,7 +7,7 @@ Various functions are available as part of the map.
   * **zooming in and out** using the + and - buttons in the top left of the map you can obtain more or less detail in the map
   * **switching themes or maps** clicking on the ≡ icon on the right-hand side of the map you can view and select available maps and themes
   * **retrieving information** the map may contain elements that contain more information, by clicking these a popup will show this information
-  * **fullscreen display** using the □ button the map can be maximized to fullscreen display, use the ⌂ button to return to page display.
+  * **fullscreen display** using the ✈ button the map can be maximized to fullscreen display, use the ✕ button to return to page display.
 
 == keyboard operation ==
 Keyboard operation becomes available after activating the map using the tab key (the map will show a focus indicator ring).
@@ -16,6 +16,6 @@ Keyboard operation becomes available after activating the map using the tab key 
   * **zooming in and out** using the + and - buttons in the top left of the map or by using the + and - keys you can obtain more or less detail in the map
   * **switching themes or maps** clicking on the ≡ icon on the right-hand side of the map you can view and select available maps and themes
   * **retrieving information** the map may contain elements that contain more information, using the i key you can activate a cursor that may be moved using the arrow keys, pressing the enter will execute an information retrieval. press the i or the escape key to return to navigation mode
-  * **fullscreen display** using the □ button the map can be maximized to fullscreen display, use the ⌂ button to return to page display.
+  * **fullscreen display** using the ✈ button the map can be maximized to fullscreen display, use the ✕ button to return to page display.
 
 //It's possible that some of the functions or buttons describe above have been disabled by the page author or the administrator//

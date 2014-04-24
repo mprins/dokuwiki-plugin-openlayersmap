@@ -48,36 +48,24 @@ OpenLayersMap.Control.Fullscreen = OpenLayers.Class(OpenLayers.Control, {
 		OpenLayers.Control.prototype.initialize.apply(this, [ options ]);
 		this.displayClass = 'olControlFullscreen';
 
-		// listen for fullscreenchange event on document eg. escape or F11 key 
+		// listen for fullscreenchange event on document eg. escape or F11 key
 		OpenLayers.Event.observe(document, 'fullscreenchange', OpenLayers.Function.bind(function() {
-			if (document.fullscreenElement != null) {
-				// console.debug("full-screen switched on");
-			} else {
-				// console.debug("full-screen switched off");
+			if (document.fullscreenElement == null) {
 				this.restore();
 			}
 		}, this));
 		OpenLayers.Event.observe(document, 'webkitfullscreenchange', OpenLayers.Function.bind(function() {
-			if (document.webkitCurrentFullScreenElement != null) {
-				// console.debug("full-screen switched on");
-			} else {
-				// console.debug("full-screen switched off");
+			if (document.webkitCurrentFullScreenElement == null) {
 				this.restore();
 			}
 		}, this));
 		OpenLayers.Event.observe(document, 'mozfullscreenchange', OpenLayers.Function.bind(function() {
-			if (document.mozFullScreenElement != null) {
-				// console.debug("full-screen switched on");
-			} else {
-				// console.debug("full-screen switched off");
+			if (document.mozFullScreenElement == null) {
 				this.restore();
 			}
 		}, this));
 		OpenLayers.Event.observe(document, 'msfullscreenchange', OpenLayers.Function.bind(function() {
-			if (document.fullscreenElement != null) {
-				// console.debug("full-screen switched on");
-			} else {
-				// console.debug("full-screen switched off");
+			if (document.fullscreenElement == null) {
 				this.restore();
 			}
 		}, this));
@@ -100,7 +88,7 @@ OpenLayersMap.Control.Fullscreen = OpenLayers.Class(OpenLayers.Control, {
 		this.map.updateSize();
 		this.maxBtn.style.display = '';
 		this.minBtn.style.display = 'none';
-		this.maxBtn.focus();
+		this.map.div.focus();
 	},
 
 	/**
@@ -120,7 +108,7 @@ OpenLayersMap.Control.Fullscreen = OpenLayers.Class(OpenLayers.Control, {
 		this.map.updateSize();
 		this.maxBtn.style.display = 'none';
 		this.minBtn.style.display = '';
-		this.minBtn.focus();
+		this.map.div.focus();
 	},
 
 	/**
@@ -153,20 +141,20 @@ OpenLayersMap.Control.Fullscreen = OpenLayers.Class(OpenLayers.Control, {
 		// fullscreen button
 		this.maxBtn = document.createElement('button');
 		this.maxBtn.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n('toggle_fullscreen')
-				+ '</span>\u25A1');
+				+ '</span>&#x2708;');
 		this.maxBtn.name = 'fullscreen';
 		this.maxBtn.setAttribute('type', 'button');
-		this.maxBtn.className = 'olControlFullScreenButton olButton olHasTooltip_bttm_r';
+		this.maxBtn.className = this.displayClass + 'Max olButton olHasTooltip_bttm_r';
 		this.div.appendChild(this.maxBtn);
 
 		// restore button
 		this.minBtn = document.createElement('button');
 		this.minBtn.insertAdjacentHTML('afterbegin', '<span role="tooltip">' + OpenLayers.i18n('toggle_fullscreen')
-				+ '</span>\u2302');
+				+ '</span>&#x2715;');
 		this.minBtn.name = 'restorefullscreen';
 		this.minBtn.setAttribute('type', 'button');
 		this.minBtn.style.display = 'none';
-		this.minBtn.className = 'olControlFullScreenButton olButton olHasTooltip_bttm_r';
+		this.minBtn.className = this.displayClass + 'Min olButton olHasTooltip_bttm_r';
 		this.div.appendChild(this.minBtn);
 
 		this.map.events.on({

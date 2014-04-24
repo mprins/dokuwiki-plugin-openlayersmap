@@ -16,7 +16,7 @@
 
 /** Fullscreen Control. */
 .olMap.fullscreen,
-.olMap:-webkit-full-screen /*,.olMap:fullscreen,.olMap:-moz-full-screen */ {
+.olMap:-webkit-full-screen {
 	height: 100% !important;
 	width: 100% !important;
 	position: fixed;
@@ -53,3 +53,12 @@
 		background : $button-bg-active;
 	}
 }
+/*
+.olControlFullscreenMax {
+	background:$button-bg inline-image("Fullscreen-expand.svg") no-repeat 90% center;
+}
+
+.olControlFullscreenMin {
+	background:$button-bg inline-image("Fullscreen-collapse.svg") no-repeat 90% center;
+}
+*/
