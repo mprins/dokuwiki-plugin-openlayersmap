@@ -29,6 +29,7 @@
 //$lang['yahooScriptUrl'] = 'URL & cadena de consulta para acceder a Yahoo Maps API.';
 //no se necesita nunca más $lang['googleAPIKey'] = 'Google Maps API key.';
 $lang['bingAPIKey'] = 'Bing Maps API key. Consigue tu clave en: https://www.bingmapsportal.com/application';
+$lang['mapquestAPIKey'] = 'MapQuest API key. Consigue tu clave en: http://developer.mapquest.com/';
 $lang['iconUrlOverload'] = 'URL para iconos cuando usas un mapa estático en uná máquina sin internet';
 $lang['enableMapQuest'] = 'Habilita MapQuest como proveedor de mapas';
 $lang['enableGoogle'] = 'Habilita Google como proveedor de mapas';

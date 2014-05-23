@@ -26,6 +26,7 @@
 //$lang['yahooScriptUrl'] = 'URL & query string to access Yahoo Maps API.';
 // don't need this anymore $lang['googleAPIKey'] = 'Google Maps API key.';
 $lang['bingAPIKey'] = 'Bing Maps API key. Get your key at: https://www.bingmapsportal.com/application';
+$lang['mapquestAPIKey'] = 'MapQuest API key. Get your key at: http://developer.mapquest.com/';
 $lang['iconUrlOverload'] = 'URL for map icons when using static maps on a non-internet host';
 $lang['enableMapQuest'] = 'Enable the use of MapQuest as basemap provider';
 $lang['enableGoogle'] = 'Enable the use of Google as basemap provider';

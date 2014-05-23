@@ -1,6 +1,8 @@
 === version ${project.version} ===
   * add a fullscreen option for the map
   * fix an IE8 bug
+  * fix static map generation, different maptypes were not respected
+  * add configuration option for a MapQuest API key (needed for remote static map generation) 
   
 === version 4.0 ===
   * use OpenLayers 2.14-dev

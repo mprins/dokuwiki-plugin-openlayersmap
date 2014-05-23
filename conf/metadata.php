@@ -37,6 +37,9 @@ $meta['enableBing'] = array (
 $meta['bingAPIKey'] = array (
 	'string'
 );
+$meta['mapquestAPIKey'] = array (
+		'string'
+);
 // $meta['olMapStyle'] = array ('multichoice','_choices' => array('classic','dark','grey','neutral','orange'));
 $meta['iconUrlOverload'] = array (
 	'string'

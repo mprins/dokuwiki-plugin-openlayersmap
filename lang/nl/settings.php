@@ -27,6 +27,7 @@
 // $lang['yahooScriptUrl'] = 'URL & query string voor toegang tot Yahoo Maps API.';
 // don't need this anymore $lang['googleAPIKey'] = 'Google Maps API key.';
 $lang['bingAPIKey'] = 'Bing Maps API sleutel. Haal een eigen sleutel op: https://www.bingmapsportal.com/application';
+$lang['mapquestAPIKey'] = 'MapQuest API sleutel. Haal een eigen sleutel op: http://developer.mapquest.com/';
 $lang['iconUrlOverload'] = 'URL voor kaart ikonen bij gebruik van statische kaarten op een non-internet host';
 $lang['enableMapQuest'] = 'Maak gebruik van MapQuest als basiskaart mogelijk';
 $lang['enableGoogle'] = 'Maak gebruik van Google als basiskaart mogelijk';

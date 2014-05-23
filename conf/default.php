@@ -22,6 +22,7 @@
  */
 // $conf['olScriptUrl'] = DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js';
 $conf['bingAPIKey'] = '';
+$conf['mapquestAPIKey'] = '';
 $conf['iconUrlOverload'] = '';
 $conf['enableMapQuest'] = 1;
 $conf['enableGoogle'] = 0;
