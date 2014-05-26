@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2014 Mark C. Prins <mprins@users.sf.net>
  * Copyright (c) 2012 Txus <txusff@gmail.com>
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -17,26 +17,29 @@
  */
 
 /**
- * Spanish language file for openlayersmap plugin
+ * Spanish language file for openlayersmap plugin.
  *
- * @author mark
+ * @author Mark
  * @author Txus
  *
  * @license BSD license
  */
-$lang['olmapPOItitle'] = 'Puntos de interés';
-$lang['olmapPOIlatTitle']='Latitud en grados decimales';
-$lang['olmapPOIlonTitle']='Longitud en grados decimales';
-$lang['olmapPOIicon']='Símbolo';
-$lang['olmapPOIlat']='Latitud';
-$lang['olmapPOIlon']='Longitud';
-$lang['olmapPOItxt']='Descripción';
-$lang['menu'] = 'Openlayersmap cache manager';
-$lang['admin_tiles']='Fichas';
-$lang['admin_purge_tiles']='Purgar todas las fichas caché';
-$lang['admin_maps']='Mapas';
-$lang['admin_purge_maps']='Purgar todos los mapas caché';
-$lang['admin_submit']='Purgar';
-$lang['admin_purged_tiles']='Los fichas caché fueron purgados.';
-$lang['admin_purged_maps']='Los mapas caché fueron purgados.';
-//$lang['']='';
+$lang ['olmapPOItitle'] = 'Puntos de interés';
+$lang ['olmapPOIlatTitle'] = 'Latitud en grados decimales';
+$lang ['olmapPOIlonTitle'] = 'Longitud en grados decimales';
+$lang ['olmapPOIicon'] = 'Símbolo';
+$lang ['olmapPOIlat'] = 'Latitud';
+$lang ['olmapPOIlon'] = 'Longitud';
+$lang ['olmapPOItxt'] = 'Descripción';
+$lang ['menu'] = 'Openlayersmap cache manager';
+$lang ['admin_tiles'] = 'Fichas';
+$lang ['admin_purge_tiles'] = 'Purgar todas las fichas caché';
+$lang ['admin_maps'] = 'Mapas';
+$lang ['admin_purge_maps'] = 'Purgar todos los mapas caché';
+$lang ['admin_submit'] = 'Purgar';
+$lang ['admin_purged_tiles'] = 'Los fichas caché fueron purgados.';
+$lang ['admin_purged_maps'] = 'Los mapas caché fueron purgados.';
+//$lang['alt_legend_poi'] = "";
+//$lang['alt_legend_kml'] = "";
+//$lang['alt_legend_gpx'] = "";
+//$lang['alt_legend_geojson'] = "";

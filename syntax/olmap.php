@@ -152,11 +152,10 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				list ( $lat, $lon, $text, $angle, $opacity, $img ) = $data;
 				$rowId ++;
 				$poi .= ", {lat: $lat, lon: $lon, txt: '$text', angle: $angle, opacity: $opacity, img: '$img', rowId: $rowId}";
-				// TODO: translate/localize alt
 				$poitable .= '
 					<tr>
 					<td class="rowId">' . $rowId . '</td>
-					<td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/icons/' . $img . '" alt="'. substr($img, 0, -4) . ' symbol as shown in the map" /></td>
+					<td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/icons/' . $img . '" alt="'. substr($img, 0, -4) . $this->getlang('alt_legend_poi').' " /></td>
 					<td class="lat" title="' . $this->getLang ( 'olmapPOIlatTitle' ) . '">' . $lat . '</td>
 					<td class="lon" title="' . $this->getLang ( 'olmapPOIlonTitle' ) . '">' . $lon . '</td>
 					<td class="txt">' . $text . '</td>
@@ -165,29 +164,26 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$poi = substr ( $poi, 2 );
 		}
 		if (! empty ( $gmap ['kmlfile'] )) {
-			// TODO: translate/localize alt
 			$poitable .= '
 					<tr>
 					<td class="rowId"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/kml_file.png" alt="KML file" /></td>
-					<td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/kml_line.png" alt="icon" /></td>
+					<td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/kml_line.png" alt="' . $this->getlang('alt_legend_kml') .'" /></td>
 					<td class="txt" colspan="3">KML track: ' . $this->getFileName ( $gmap ['kmlfile'] ) . '</td>
 					</tr>';
 		}
 		if (! empty ( $gmap ['gpxfile'] )) {
-			// TODO: translate/localize alt
 			$poitable .= '
 					<tr>
 					<td class="rowId"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/gpx_file.png" alt="GPX file" /></td>
-					<td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/gpx_line.png" alt="icon" /></td>
+					<td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/gpx_line.png" alt="' . $this->getlang('alt_legend_gpx') .'" /></td>
 					<td class="txt" colspan="3">GPX track: ' . $this->getFileName ( $gmap ['gpxfile'] ) . '</td>
 					</tr>';
 		}
 		if (! empty ( $gmap ['geojsonfile'] )) {
-			// TODO: translate/localize alt
 			$poitable .= '
 					<tr>
 					<td class="rowId"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/geojson_file.png" alt="GeoJSON file" /></td>
-					<td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/geojson_line.png" alt="icon" /></td>
+					<td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/geojson_line.png" alt="' . $this->getlang('alt_legend_geojson') .'" /></td>
 					<td class="txt" colspan="3">GeoJSON track: ' . $this->getFileName ( $gmap ['geojsonfile'] ) . '</td>
 					</tr>';
 		}

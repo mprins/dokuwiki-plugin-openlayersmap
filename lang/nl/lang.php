@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2014 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,23 +16,28 @@
  */
 
 /**
- * Dutch language file for openlayersmap plugin
+ * Dutch language file for openlayersmap plugin.
  *
- * @author mark
+ * @author Mark
+ *
  * @license BSD license
  */
-$lang['olmapPOItitle'] = 'Locaties in de kaart';
-$lang['olmapPOIlatTitle']='latitude in decimale graden';
-$lang['olmapPOIlonTitle']='longitude in decimale graden';
-$lang['olmapPOIicon']='symbool';
-$lang['olmapPOIlat']='latitude';
-$lang['olmapPOIlon']='longitude';
-$lang['olmapPOItxt']='beschrijving';
-$lang['menu'] = 'Openlayersmap cache manager';
-$lang['admin_tiles']='Tiles';
-$lang['admin_purge_tiles']='Wis alle opgeslagen tiles';
-$lang['admin_maps']='Kaarten';
-$lang['admin_purge_maps']='Wis alle opgeslagen kaarten';
-$lang['admin_submit']='Wissen';
-$lang['admin_purged_tiles']='De opgeslagen tiles zijn gewist.';
-$lang['admin_purged_maps']='De opgeslagen kaarten zijn gewist.';
+$lang ['olmapPOItitle'] = 'Locaties in de kaart';
+$lang ['olmapPOIlatTitle'] = 'latitude in decimale graden';
+$lang ['olmapPOIlonTitle'] = 'longitude in decimale graden';
+$lang ['olmapPOIicon'] = 'symbool';
+$lang ['olmapPOIlat'] = 'latitude';
+$lang ['olmapPOIlon'] = 'longitude';
+$lang ['olmapPOItxt'] = 'beschrijving';
+$lang ['menu'] = 'Openlayersmap cache manager';
+$lang ['admin_tiles'] = 'Tiles';
+$lang ['admin_purge_tiles'] = 'Wis alle opgeslagen tiles';
+$lang ['admin_maps'] = 'Kaarten';
+$lang ['admin_purge_maps'] = 'Wis alle opgeslagen kaarten';
+$lang ['admin_submit'] = 'Wissen';
+$lang ['admin_purged_tiles'] = 'De opgeslagen tiles zijn gewist.';
+$lang ['admin_purged_maps'] = 'De opgeslagen kaarten zijn gewist.';
+$lang ['alt_legend_poi'] = " legenda item";
+$lang ['alt_legend_kml'] = "KML track legenda item";
+$lang ['alt_legend_gpx'] = "GPX track legenda item";
+$lang ['alt_legend_geojson'] = "GeoJSON legenda item";
