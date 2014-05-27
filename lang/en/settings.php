@@ -20,19 +20,14 @@
  *
  * @author Mark C. Prins
  */
-// $lang['olScriptUrl'] = 'URL & query string to access OpenLayers API. The default is DOKU_BASE/lib/plugins/openlayersmap/lib/OpenLayers.js';
-//$lang['googleScriptUrl'] = 'URL & query string to access Google Maps API. <em>DEPRECATED please remove. Replaced by v3 of the Google API</em>';
-//$lang['veScriptUrl'] = 'URL & query string to access Virtual Earth API. <em>DEPRECATED please remove. Replaced by Bing<em>';
-//$lang['yahooScriptUrl'] = 'URL & query string to access Yahoo Maps API.';
-// don't need this anymore $lang['googleAPIKey'] = 'Google Maps API key.';
 $lang['bingAPIKey'] = 'Bing Maps API key. Get your key at: https://www.bingmapsportal.com/application';
-$lang['mapquestAPIKey'] = 'MapQuest API key. Get your key at: http://developer.mapquest.com/';
+$lang['mapquestAPIKey'] = 'MapQuest API key (for remote static maps). Get your key at: http://developer.mapquest.com/';
 $lang['iconUrlOverload'] = 'URL for map icons when using static maps on a non-internet host';
 $lang['enableMapQuest'] = 'Enable the use of MapQuest as basemap provider';
 $lang['enableGoogle'] = 'Enable the use of Google as basemap provider';
+$lang['googleAPIkey'] = 'Google Static Maps API key. Get your key at: https://code.google.com/apis/console';
 $lang['enableBing'] = 'Enable the use of Bing as basemap provider';
 $lang['enableOSM'] = 'Enable the use of OpenStreetMap as basemap provider';
-// $lang['olMapStyle'] = 'Controls style of the map';
 $lang['enableA11y'] = 'Enable a11y/print output (static map, legend table)';
 $lang['optionStaticMapGenerator']='Local or remote static map compiler. <b>Using \'local\' fails when the server can\'t go on the internet.</b>';
-$lang['autoZoomMap'] = 'Enable auto zoom for the map';
+$lang['autoZoomMap'] = 'Enable auto zoom for the fallback map';

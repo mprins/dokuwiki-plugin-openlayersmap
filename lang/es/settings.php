@@ -22,20 +22,14 @@
  * @author Mark C. Prins
  * @author Txus
  */
-
-// $lang['olScriptUrl'] = 'URL para acceso a OpenLayers API. Por defecto es DOKU_BASE/lib/plugins/openlayersmap/lib/OpenLayers.js';
-//$lang['googleScriptUrl'] = 'URL para acceso a Google Maps API. <em>OBSOLETO por favor eliminalo. Reemplazado por la V3 de Google API</em>';
-//$lang['veScriptUrl'] = 'URL & para acceso a Virtual Earth API. <em>OBSOLETO por favor eliminalo. Reemplazado por Bing<em>';
-//$lang['yahooScriptUrl'] = 'URL & cadena de consulta para acceder a Yahoo Maps API.';
-//no se necesita nunca más $lang['googleAPIKey'] = 'Google Maps API key.';
 $lang['bingAPIKey'] = 'Bing Maps API key. Consigue tu clave en: https://www.bingmapsportal.com/application';
-$lang['mapquestAPIKey'] = 'MapQuest API key. Consigue tu clave en: http://developer.mapquest.com/';
+$lang['mapquestAPIKey'] = 'MapQuest API key (for remote static maps). Consigue tu clave en: http://developer.mapquest.com/';
 $lang['iconUrlOverload'] = 'URL para iconos cuando usas un mapa estático en uná máquina sin internet';
 $lang['enableMapQuest'] = 'Habilita MapQuest como proveedor de mapas';
 $lang['enableGoogle'] = 'Habilita Google como proveedor de mapas';
+$lang['googleAPIkey'] = 'Google Static Maps API key. Consigue tu clave en: https://code.google.com/apis/console';
 $lang['enableBing'] = 'Habilita Bing como proveedor de mapas';
 $lang['enableOSM'] = 'Habilita OpenStreetMap como proveedor de mapas';
-// $lang['olMapStyle'] = 'Estilo de los Controles del mapa';
 $lang['enableA11y'] = 'Habilita a11y/print para mapa estático, tabla de nombres';
 $lang['optionStaticMapGenerator']='FIXME (translate)- Local or remote static map compiler. <b>Using \'local\' fails when the server can\'t go on the internet.</b>';
-$lang['autoZoomMap'] = 'FIXME (translate)- Enable auto zoom for the map';
+$lang['autoZoomMap'] = 'FIXME (translate)- Enable auto zoom for the fallback map';

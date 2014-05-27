@@ -96,12 +96,16 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		$gmap = $this->_extract_params ( $str_params );
 		$overlay = $this->_extract_points ( $str_points );
 		$_firstimageID = '';
-
+			
+		$_nocache = false;
 		// choose maptype based on the specified tag
 		$imgUrl = "{{";
 		if (stripos ( $gmap ['baselyr'], 'google' ) !== false) {
+			// Google
 			$imgUrl .= $this->_getGoogle ( $gmap, $overlay );
+			$imgUrl .= "&.png";
 		} elseif (stripos ( $gmap ['baselyr'], 'bing' ) !== false) {
+			// Bing
 			if (! $this->getConf ( 'bingAPIKey' )) {
 				// in case there is no Bing api key we'll use OSM
 				$_firstimageID = $this->_getStaticOSM ( $gmap, $overlay );
@@ -110,16 +114,25 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					$imgUrl .= "&.png";
 				}
 			} else {
-				$imgUrl .= $this->_getBing ( $gmap, $overlay );
+				// seems that Bing doesn't like the DW client, turn off caching
+				$_nocache = true;
+				$imgUrl .= $this->_getBing ( $gmap, $overlay ) . "&.png";
 			}
 		} elseif (stripos ( $gmap ['baselyr'], 'mapquest' ) !== false) {
-			if (($this->getConf ( 'optionStaticMapGenerator' ) == 'remote') &&  (! $this->getConf ( 'mapquestAPIKey' ))){
-				$imgUrl .= $this->_getMapQuest ( $gmap, $overlay );
-			} else {
+			// MapQuest
+			if (! $this->getConf ( 'mapquestAPIKey' )) {
+				// no API key for MapQuest, use OSM
 				$_firstimageID = $this->_getStaticOSM ( $gmap, $overlay );
 				$imgUrl .= $_firstimageID;
+				if ($this->getConf ( 'optionStaticMapGenerator' ) == 'remote') {
+					$imgUrl .= "&.png";
+				}
+			} else {
+				$imgUrl .= $this->_getMapQuest ( $gmap, $overlay );
+				$imgUrl .= "&.png";
 			}
 		} else {
+			// default OSM
 			$_firstimageID = $this->_getStaticOSM ( $gmap, $overlay );
 			$imgUrl .= $_firstimageID;
 			if ($this->getConf ( 'optionStaticMapGenerator' ) == 'remote') {
@@ -130,7 +143,15 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		// append dw p_render specific params and render
 		$imgUrl .= "?" . str_replace ( "px", "", $gmap ['width'] ) . "x" . str_replace ( "px", "", $gmap ['height'] );
 		$imgUrl .= "&nolink";
-		$imgUrl .= " |" . $gmap ['summary'] . " }}";
+		
+		// add nocache option for selected services
+		if ($_nocache) {
+			$imgUrl .= "&nocache";
+		}
+		
+		$imgUrl .= " |".$gmap ['summary'] . " }}";
+
+		// dbglog($imgUrl,"complete image tags is:");
 
 		$mapid = $gmap ['id'];
 		// create a javascript parameter string for the map
@@ -295,7 +316,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$rel = p_get_metadata ( $ID, 'relation', METADATA_RENDER_USING_CACHE );
 				$img = $rel ['firstimage'];
 				if (empty ( $img ) /* || $img == $_firstimage*/){
-					dbglog ( $_firstimage, 'olmap::render#rendering image relation metadata for _firstimage as $img was empty or the same.' );
+					//dbglog ( $_firstimage, 'olmap::render#rendering image relation metadata for _firstimage as $img was empty or the same.' );
 					// This seems to never work; the firstimage entry in the .meta file is empty
 					// $renderer->meta['relation']['firstimage'] = $_firstimage;
 
@@ -438,8 +459,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		}
 		$imgUrl .= "&imageType=png&type=" . $maptype;
 		$imgUrl .= "&key=".$this->getConf ( 'mapquestAPIKey' );
-		$imgUrl .= "&.png";
-		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getMapQuest: MapQuest image url is:');
+		// dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getMapQuest: MapQuest image url is:');
 		return $imgUrl;
 	}
 
@@ -461,6 +481,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			case 'google sat' :
 				$maptype = 'satellite';
 				break;
+			case 'terrain' :
 			case 'google relief' :
 				$maptype = 'terrain';
 				break;
@@ -470,10 +491,11 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				break;
 		}
 		// TODO maybe use viewport / visible instead of center/zoom,
-		// see: https://code.google.com/intl/nl/apis/maps/documentation/staticmaps/#ImplicitPositioning
+		// see: https://developers.google.com/maps/documentation/staticmaps/index#Viewports
 		// http://maps.google.com/maps/api/staticmap?center=51.565690,5.456756&zoom=16&size=600x400&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker.png|label:1|51.565690,5.456756&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker-blue.png|51.566197,5.458966|label:2&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.567177,5.457909|label:3&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.566283,5.457330|label:4&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.565630,5.457695|label:5&sensor=false&format=png&maptype=roadmap
-		$imgUrl = "http://maps.google.com/maps/api/staticmap?sensor=false";
+		$imgUrl = "http://maps.googleapis.com/maps/api/staticmap?sensor=false";
 		$imgUrl .= "&size=" . str_replace ( "px", "", $gmap ['width'] ) . "x" . str_replace ( "px", "", $gmap ['height'] );
+		//if (!$this->getConf( 'autoZoomMap')) { // no need for center & zoom params }
 		$imgUrl .= "&center=" . $gmap ['lat'] . "," . $gmap ['lon'];
 		// max is 21 (== building scale), but that's overkill..
 		if ($gmap ['zoom'] > 17) {
@@ -481,7 +503,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		} else {
 			$imgUrl .= "&zoom=" . $gmap ['zoom'];
 		}
-
 		if (! empty ( $overlay )) {
 			$rowId = 0;
 			foreach ( $overlay as $data ) {
@@ -492,8 +513,10 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		$imgUrl .= "&format=png&maptype=" . $maptype;
 		global $conf;
 		$imgUrl .= "&language=" . $conf ['lang'];
-		$imgUrl .= "&.png";
-		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getGoogle: Google image url is:');
+		if ($this->getConf( 'googleAPIkey' )) {
+			$imgUrl .= "&key=" . $this->getConf( 'googleAPIkey' );
+		}
+		// dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getGoogle: Google image url is:');
 		return $imgUrl;
 	}
 
@@ -521,18 +544,18 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$maptype = 'Road';
 				break;
 		}
-		$imgUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/" . $maptype . "/";
-		if (! $this->getConf ( 'autoZoomMap' )) {
+		$imgUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/" . $maptype;// . "/";
+		if ($this->getConf ( 'autoZoomMap' )) {
 			$bbox = $this->_calcBBOX ( $overlay, $gmap ['lat'], $gmap ['lon'] );
-			$imgUrl .= "?mapArea=" . $bbox ['minlat'] . "," . $bbox ['minlon'] . "," . $bbox ['maxlat'] . "," . $bbox ['maxlon'];
-			$imgUrl .= "&declutter=1";
-			// or
-			// $imgUrl .= $gmap['lat'].",".$gmap['lon']."/".$gmap['zoom']."?";
+			//$imgUrl .= "?ma=" . $bbox ['minlat'] . "," . $bbox ['minlon'] . "," . $bbox ['maxlat'] . "," . $bbox ['maxlon'];
+			$imgUrl .= "?ma=" . $bbox ['minlat'] . "%2C" . $bbox ['minlon'] . "%2C" . $bbox ['maxlat'] . "%2C" . $bbox ['maxlon'];
+			$imgUrl .= "&dcl=1";
 		}
 		if (strpos ( $imgUrl, "?" ) === false)
 			$imgUrl .= "?";
 
-		$imgUrl .= "&ms=" . str_replace ( "px", "", $gmap ['width'] ) . "," . str_replace ( "px", "", $gmap ['height'] );
+		//$imgUrl .= "&ms=" . str_replace ( "px", "", $gmap ['width'] ) . "," . str_replace ( "px", "", $gmap ['height'] );
+		$imgUrl .= "&ms=" . str_replace ( "px", "", $gmap ['width'] ) . "%2C" . str_replace ( "px", "", $gmap ['height'] );
 		$imgUrl .= "&key=" . $this->getConf ( 'bingAPIKey' );
 		if (! empty ( $overlay )) {
 			$rowId = 0;
@@ -545,11 +568,15 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				if ($rowId == 18) {
 					break;
 				}
-				$imgUrl .= "&pp=$lat,$lon;$iconStyle;$rowId";
+				//$imgUrl .= "&pp=$lat,$lon;$iconStyle;$rowId";
+				$imgUrl .= "&pp=$lat%2C$lon%3B$iconStyle%3B$rowId";
+				
 			}
 		}
-		$imgUrl .= "&.png";
-		dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getBing: bing image url is:');
+		global $conf;
+		$imgUrl .= "&fmt=png";
+		$imgUrl .= "&c=" . $conf ['lang'];
+		// dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getBing: bing image url is:');
 		return $imgUrl;
 	}
 
@@ -567,9 +594,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 		if ($this->getConf ( 'optionStaticMapGenerator' ) == 'local') {
 			// using local basemap composer
-
-			if (! $my = &plugin_load ( 'helper', 'openlayersmap_staticmap' )) {
-				dbglog ( $my, 'syntax_plugin_openlayersmap_olmap::_getStaticOSM: openlayersmap_staticmap plugin is not available.' );
+			if (! $myMap = &plugin_load ( 'helper', 'openlayersmap_staticmap' )) {
+				dbglog ( $myMap, 'syntax_plugin_openlayersmap_olmap::_getStaticOSM: openlayersmap_staticmap plugin is not available.' );
 			}
 			if (! $geophp = &plugin_load ( 'helper', 'geophp' )) {
 				dbglog ( $geophp, 'syntax_plugin_openlayersmap_olmap::_getStaticOSM: geophp plugin is not available.' );
@@ -616,7 +642,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					break;
 			}
 
-			$result = $my->getMap ( $gmap ['lat'], $gmap ['lon'], $gmap ['zoom'], $size, $maptype, $markers, $gmap ['gpxfile'], $gmap ['kmlfile'], $gmap ['geojsonfile'] );
+			$result = $myMap->getMap ( $gmap ['lat'], $gmap ['lon'], $gmap ['zoom'], $size, $maptype, $markers, $gmap ['gpxfile'], $gmap ['kmlfile'], $gmap ['geojsonfile'] );
 		} else {
 			// using external basemap composer
 
@@ -647,7 +673,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
 			$result = $imgUrl;
 		}
-		dbglog ( $result, 'syntax_plugin_openlayersmap_olmap::_getStaticOSM: osm image url is:' );
+		// dbglog ( $result, 'syntax_plugin_openlayersmap_olmap::_getStaticOSM: osm image url is:' );
 		return $result;
 	}
 

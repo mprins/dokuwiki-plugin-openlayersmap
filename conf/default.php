@@ -20,15 +20,14 @@
  *
  * @author Mark C. Prins
  */
-// $conf['olScriptUrl'] = DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js';
 $conf['bingAPIKey'] = '';
 $conf['mapquestAPIKey'] = '';
 $conf['iconUrlOverload'] = '';
 $conf['enableMapQuest'] = 1;
 $conf['enableGoogle'] = 0;
+$conf['googleAPIkey'] = '';
 $conf['enableOSM'] = 1;
 $conf['enableBing'] = 0;
-// $conf['olMapStyle'] = 'classic';
 $conf['enableA11y'] = 1;
-$conf['optionStaticMapGenerator'] = 'remote';
+$conf['optionStaticMapGenerator'] = 'local';
 $conf['autoZoomMap'] = 1;

@@ -21,15 +21,20 @@
  * @author Mark C. Prins
  */
 
-// $meta['olScriptUrl'] = array ('string');
 $meta['enableOSM'] = array (
 	'onoff'
 );
 $meta['enableMapQuest'] = array (
 	'onoff'
 );
+$meta['mapquestAPIKey'] = array (
+		'string'
+);
 $meta['enableGoogle'] = array (
 	'onoff'
+);
+$meta['googleAPIkey'] = array (
+		'string'
 );
 $meta['enableBing'] = array (
 	'onoff'
@@ -37,10 +42,6 @@ $meta['enableBing'] = array (
 $meta['bingAPIKey'] = array (
 	'string'
 );
-$meta['mapquestAPIKey'] = array (
-		'string'
-);
-// $meta['olMapStyle'] = array ('multichoice','_choices' => array('classic','dark','grey','neutral','orange'));
 $meta['iconUrlOverload'] = array (
 	'string'
 );
