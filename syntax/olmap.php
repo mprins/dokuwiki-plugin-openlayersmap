@@ -96,7 +96,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		$gmap = $this->_extract_params ( $str_params );
 		$overlay = $this->_extract_points ( $str_points );
 		$_firstimageID = '';
-			
+
 		$_nocache = false;
 		// choose maptype based on the specified tag
 		$imgUrl = "{{";
@@ -143,12 +143,12 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		// append dw p_render specific params and render
 		$imgUrl .= "?" . str_replace ( "px", "", $gmap ['width'] ) . "x" . str_replace ( "px", "", $gmap ['height'] );
 		$imgUrl .= "&nolink";
-		
+
 		// add nocache option for selected services
 		if ($_nocache) {
 			$imgUrl .= "&nocache";
 		}
-		
+
 		$imgUrl .= " |".$gmap ['summary'] . " }}";
 
 		// dbglog($imgUrl,"complete image tags is:");
@@ -252,7 +252,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$initialised = true;
 				// render necessary script tags
 				if ($gEnable) {
-					$gscript = '<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.14&amp;sensor=false"></script>';
+					$gscript = '<script type="text/javascript" src="//maps.google.com/maps/api/js?v=3.16&amp;sensor=false&amp;?key='.$this->getConf ( 'googleAPIkey' ).'"></script>';
 				}
 				$olscript = '<script type="text/javascript" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js"></script>';
 
@@ -263,6 +263,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$scriptEnable .= 'mqEnable = ' . ($mqEnable ? 'true' : 'false') . ';';
 				$scriptEnable .= 'bEnable = ' . ($enableBing ? 'true' : 'false') . ';';
 				$scriptEnable .= 'bApiKey="' . $this->getConf ( 'bingAPIKey' ) . '";';
+				$scriptEnable .= 'mqApiKey="' . $this->getConf ( 'mapquestAPIKey' ) . '";';
+				$scriptEnable .= 'gApiKey="' . $this->getConf ( 'googleAPIkey' ) . '";';
 				$scriptEnable .= '/*!]]>*/</script>';
 			}
 			$renderer->doc .= "$gscript\n$olscript\n$scriptEnable";
@@ -570,7 +572,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				}
 				//$imgUrl .= "&pp=$lat,$lon;$iconStyle;$rowId";
 				$imgUrl .= "&pp=$lat%2C$lon%3B$iconStyle%3B$rowId";
-				
+
 			}
 		}
 		global $conf;

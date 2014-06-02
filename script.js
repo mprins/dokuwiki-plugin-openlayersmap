@@ -43,7 +43,6 @@ function onFeatureSelect(selFeature) {
 	if (selFeature.geometry.CLASS_NAME === "OpenLayers.Geometry.LineString") {
 		try {
 			// for lines make the popup show at the cursor position
-			// TODO this will fail for keyboard select
 			pPos = selFeature.layer.map.getLonLatFromViewPortPx(this.handlers.feature.evt.xy);
 		} catch (anErr) {
 			OpenLayers.Console.warn("unable to get event position; reverting to boundingbox center.");
@@ -194,8 +193,8 @@ function createMap(mapOpts, OLmapPOI) {
 		/* add OSM map layers */
 		m.addLayer(new OpenLayers.Layer.OSM());
 
-		m.addLayer(new OpenLayersMap.Layer.OCM());
 		/* open cycle map */
+		m.addLayer(new OpenLayersMap.Layer.OCM());
 		m.addLayer(new OpenLayersMap.Layer.OCM("transport", [
 				"http://a.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
 				"http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
@@ -601,6 +600,18 @@ bEnable = false,
  * @type {String}
  */
 bApiKey = '',
+/**
+ * MapQuest API key.
+ * 
+ * @type {String}
+ */
+mqApiKey = '',
+/**
+ * Google API key.
+ * 
+ * @type {String}
+ */
+gApiKey = '',
 /**
  * OSM tiles flag.
  * 
