@@ -123,7 +123,7 @@ function olCreateMaptag(mapid, width, height) {
 	// map
 	+ '<div id="' + mapid + '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap"></div>' 
 	// statusbar
-	+ '<div id="' + mapid + '-olStatusBar" style="width:' + width + ';"class="olStatusBarContainer">' 
+	+ '<div id="' + mapid + '-olStatusBar" style="width:' + width + ';" class="olStatusBarContainer">' 
 	+ '  <div id="' + mapid + '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>' 
 	+ '  <div id="' + mapid + '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>' 
 	+ '  <div id="' + mapid + '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>' 
@@ -537,9 +537,20 @@ function olInit() {
 		var _i = 0;
 		// create the maps in the page
 		for (_i = 0; _i < olMapData.length; _i++) {
-			olMaps[olMapData[_i].mapOpts.id] = createMap(olMapData[_i].mapOpts, olMapData[_i].poi);
-			// set max-width: <MAP WIDTH> on each olMapHelp
-			jQuery('#olMapOne').parent().parent().find('.olMapHelp').css('max-width',olMapData[_i].mapOpts.width);
+			var _id = olMapData[_i].mapOpts.id;
+			olMaps[_id] = createMap(olMapData[_i].mapOpts, olMapData[_i].poi);
+
+			// set max-width on help pop-over
+			jQuery('#'+_id).parent().parent().find('.olMapHelp').css('max-width', olMapData[_i].mapOpts.width);
+
+			// shrink the map width to fit inside page container
+			var _w = jQuery('#'+_id +'-olContainer').parent().innerWidth();
+			if (parseInt(olMapData[_i].mapOpts.width) > _w) {
+				jQuery('#'+_id).width(_w);
+				jQuery('#'+_id+'-olStatusBar').width(_w);
+				jQuery('#'+_id).parent().parent().find('.olMapHelp').width(_w);
+				olMaps[_id].updateSize();
+			}
 		}
 		
 		// hide the table(s) with POI by giving it a print-only style
