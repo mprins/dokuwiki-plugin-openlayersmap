@@ -538,6 +538,8 @@ function olInit() {
 		// create the maps in the page
 		for (_i = 0; _i < olMapData.length; _i++) {
 			olMaps[olMapData[_i].mapOpts.id] = createMap(olMapData[_i].mapOpts, olMapData[_i].poi);
+			// set max-width: <MAP WIDTH> on each olMapHelp
+			jQuery('#olMapOne').parent().parent().find('.olMapHelp').css('max-width',olMapData[_i].mapOpts.width);
 		}
 		
 		// hide the table(s) with POI by giving it a print-only style
