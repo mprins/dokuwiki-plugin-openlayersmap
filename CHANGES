@@ -2,7 +2,8 @@
   * add a fullscreen option for the map
   * fix an IE8 bug
   * fix static map generation, different maptypes were not respected
-  * add configuration option for a MapQuest API key (needed for remote static map generation) 
+  * add configuration option for a MapQuest API key (needed for remote static map generation) and Google API key
+  * semi-responsive map rendering (on page load only); prevent maps that are larger than the page width
   
 === version 4.0 ===
   * use OpenLayers 2.14-dev
