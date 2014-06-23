@@ -1,4 +1,7 @@
 === version ${project.version} ===
+  * add background to map
+
+=== version 4.1 ===
   * add a fullscreen option for the map
   * fix an IE8 bug
   * fix static map generation, different maptypes were not respected

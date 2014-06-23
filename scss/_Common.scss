@@ -39,8 +39,13 @@
 
 .olMap {
 	cursor: default;
-	
-	/* on some browsers the outline is partly hidden by the .olContainer; this way we work around that.*/	
+	background-image: url("lib/img/olMapbg.png");
+	background-color: __background_neu__;
+	background-repeat: repeat;
+	background-attachment: scroll;
+	background-position: 0 0;
+
+	/* on some browsers the outline is partly hidden by the .olContainer; this way we work around that.*/
 	&:focus {
 		outline-style: solid;
 		outline-width: 1px;
