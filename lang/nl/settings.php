@@ -31,3 +31,4 @@ $lang['enableOSM'] = 'Maak gebruik van OpenStreetMap als basiskaart mogelijk';
 $lang['enableA11y'] = 'Maak a11y/print output (statische kaart, legenda tabel) mogelijk';
 $lang['optionStaticMapGenerator']='Lokale of externe statische kaart generator. <b>Gebruik van \'local\' faalt als de webserver het internet niet op kan.</b>';
 $lang['autoZoomMap'] = 'Zet automatisch zoomen aan voor de terugvalkaart';
+$lang['displayformat'] = 'Coördinaten weergave formaat; decimale graden of graden, minuten, seconden';

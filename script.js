@@ -69,7 +69,11 @@ function onFeatureSelect(selFeature) {
 	if (selFeature.data.description !== undefined) {
 		pContent += '<div class="desc">' + selFeature.data.description + '</div>';
 	}
-
+	if (selFeature.attributes.img !== undefined) {
+		pContent += '<div class="coord"><img src="' + selFeature.attributes.img
+				+ '" width="16" height="16" style="transform:rotate(' + selFeature.attributes.angle + 'deg)" />'
+				+ '(lat;lon:' + selFeature.data.latlon + ')</div>';
+	}
 	if (pContent.length > 0) {
 		// only show when there is something to show...
 		var popup = new OpenLayersMap.Popup.FramedCloud("olPopup", pPos, null, pContent, null, true, function() {
@@ -119,18 +123,17 @@ function olTestCSSsupport() {
  * @returns a {DocumentFragment} element that can be injected into the dom
  */
 function olCreateMaptag(mapid, width, height) {
-	var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">' 
+	var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">'
 	// map
-	+ '<div id="' + mapid + '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap"></div>' 
+	+ '<div id="' + mapid + '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap"></div>'
 	// statusbar
-	+ '<div id="' + mapid + '-olStatusBar" style="width:' + width + ';" class="olStatusBarContainer">' 
-	+ '  <div id="' + mapid + '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>' 
-	+ '  <div id="' + mapid + '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>' 
-	+ '  <div id="' + mapid + '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>' 
-	+ '  <div id="' + mapid + '-statusbar-text" class="olStatusBar olStatusBarText">txt</div>' 
-	+ '</div>'
-	//
-	+ '</div>',
+	+ '<div id="' + mapid + '-olStatusBar" style="width:' + width + ';" class="olStatusBarContainer">' + '  <div id="'
+			+ mapid + '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>' + '  <div id="' + mapid
+			+ '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>' + '  <div id="' + mapid
+			+ '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>' + '  <div id="' + mapid
+			+ '-statusbar-text" class="olStatusBar olStatusBarText">txt</div>' + '</div>'
+			//
+			+ '</div>',
 	// fragment
 	frag = document.createDocumentFragment(),
 	// temp node
@@ -273,7 +276,7 @@ function createMap(mapOpts, OLmapPOI) {
 				visibility : mapOpts.baselyr === "bing road",
 				wrapDateLine : true,
 				attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
-						+ 'Bing™</a><img src="http://www.bing.com/favicon.ico" alt="Bing logo"/> ${copyrights}'
+						+ 'Bing™</a><img src="//www.bing.com/favicon.ico" alt="Bing logo"/> ${copyrights}'
 						+ '<a target="_blank" href="http://www.microsoft.com/maps/product/terms.html">Terms of Use</a>'
 			}));
 			m.addLayer(new OpenLayers.Layer.Bing({
@@ -283,7 +286,7 @@ function createMap(mapOpts, OLmapPOI) {
 				visibility : mapOpts.baselyr === "bing sat",
 				wrapDateLine : true,
 				attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
-						+ 'Bing™</a><img src="http://www.bing.com/favicon.ico" alt="Bing logo"/> ${copyrights}'
+						+ 'Bing™</a><img src="//www.bing.com/favicon.ico" alt="Bing logo"/> ${copyrights}'
 						+ '<a target="_blank" href="http://www.microsoft.com/maps/product/terms.html">Terms of Use</a>'
 			}));
 			m.addLayer(new OpenLayers.Layer.Bing({
@@ -293,7 +296,7 @@ function createMap(mapOpts, OLmapPOI) {
 				visibility : mapOpts.baselyr === "bing hybrid",
 				wrapDateLine : true,
 				attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
-						+ 'Bing™</a><img src="http://www.bing.com/favicon.ico" alt="Bing logo"/> ${copyrights}'
+						+ 'Bing™</a><img src="//www.bing.com/favicon.ico" alt="Bing logo"/> ${copyrights}'
 						+ '<a target="_blank" href="http://www.microsoft.com/maps/product/terms.html">Terms of Use</a>'
 			}));
 		} catch (ol_errBing) {
@@ -387,9 +390,15 @@ function createMap(mapOpts, OLmapPOI) {
 				img : DOKU_BASE + "lib/plugins/openlayersmap/icons/" + OLmapPOI[j].img,
 				label : OLmapPOI[j].rowId
 			});
+			var _latlon = OLmapPOI[j].lon + 'º;' + OLmapPOI[j].lat + 'º';
+			if (mapOpts.displayformat === 'DMS') {
+				_latlon = OpenLayers.Util.getFormattedLonLat(OLmapPOI[j].lon, 'lon') + ';'
+						+ OpenLayers.Util.getFormattedLonLat(OLmapPOI[j].lat, 'lat');
+			}
 			feat.data = {
 				name : OLmapPOI[j].txt,
-				rowId : OLmapPOI[j].rowId
+				rowId : OLmapPOI[j].rowId,
+				latlon : _latlon
 			};
 			features.push(feat);
 		}
@@ -511,8 +520,7 @@ function createMap(mapOpts, OLmapPOI) {
 			mapOptions : {
 				theme : null
 			}
-		}), new OpenLayersMap.Control.Zoom(),
-		new OpenLayersMap.Control.Fullscreen() ]);
+		}), new OpenLayersMap.Control.Zoom(), new OpenLayersMap.Control.Fullscreen() ]);
 
 		// add hillshade, since this is off by default only add when we have a
 		// layerswitcher
@@ -541,32 +549,32 @@ function olInit() {
 			olMaps[_id] = createMap(olMapData[_i].mapOpts, olMapData[_i].poi);
 
 			// set max-width on help pop-over
-			jQuery('#'+_id).parent().parent().find('.olMapHelp').css('max-width', olMapData[_i].mapOpts.width);
+			jQuery('#' + _id).parent().parent().find('.olMapHelp').css('max-width', olMapData[_i].mapOpts.width);
 
 			// shrink the map width to fit inside page container
-			var _w = jQuery('#'+_id +'-olContainer').parent().innerWidth();
+			var _w = jQuery('#' + _id + '-olContainer').parent().innerWidth();
 			if (parseInt(olMapData[_i].mapOpts.width) > _w) {
-				jQuery('#'+_id).width(_w);
-				jQuery('#'+_id+'-olStatusBar').width(_w);
-				jQuery('#'+_id).parent().parent().find('.olMapHelp').width(_w);
+				jQuery('#' + _id).width(_w);
+				jQuery('#' + _id + '-olStatusBar').width(_w);
+				jQuery('#' + _id).parent().parent().find('.olMapHelp').width(_w);
 				olMaps[_id].updateSize();
 			}
 		}
-		
+
 		// hide the table(s) with POI by giving it a print-only style
 		jQuery('.olPOItableSpan').addClass('olPrintOnly');
 		// hide the static map image(s) by giving it a print only style
 		jQuery('.olStaticMap').addClass('olPrintOnly');
 		// add help button with toggle.
-		jQuery('.olWebOnly > .olMap').prepend(
-				'<div class="olMapHelpButtonDiv">'
-					+ '<button onclick="jQuery(\'.olMapHelp\').toggle(500);" class="olMapHelpButton olHasTooltip"><span>' 
-					+ OpenLayers.i18n("toggle_help") 
-					+ '</span>?</button></div>');
+		jQuery('.olWebOnly > .olMap')
+				.prepend(
+						'<div class="olMapHelpButtonDiv">'
+								+ '<button onclick="jQuery(\'.olMapHelp\').toggle(500);" class="olMapHelpButton olHasTooltip"><span>'
+								+ OpenLayers.i18n("toggle_help") + '</span>?</button></div>');
 		// toggle to switch dynamic vs. static map
 		jQuery('.olMapHelp').before(
-				'<div class="a11y"><button onclick="jQuery(\'.olPrintOnly\').toggle();jQuery(\'.olWebOnly\').toggle();">' 
-				+ OpenLayers.i18n("toggle_dynamic_map") + '</button></div>');
+				'<div class="a11y"><button onclick="jQuery(\'.olPrintOnly\').toggle();jQuery(\'.olWebOnly\').toggle();">'
+						+ OpenLayers.i18n("toggle_dynamic_map") + '</button></div>');
 	}
 }
 

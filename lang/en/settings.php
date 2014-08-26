@@ -31,3 +31,4 @@ $lang['enableOSM'] = 'Enable the use of OpenStreetMap as basemap provider';
 $lang['enableA11y'] = 'Enable a11y/print output (static map, legend table)';
 $lang['optionStaticMapGenerator']='Local or remote static map compiler. <b>Using \'local\' fails when the server can\'t go on the internet.</b>';
 $lang['autoZoomMap'] = 'Enable auto zoom for the fallback map';
+$lang['displayformat'] = 'Coordinates display format; decimal degrees or degrees, minutes, seconds';

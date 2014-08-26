@@ -54,3 +54,10 @@ $meta['optionStaticMapGenerator'] = array (
 $meta['autoZoomMap'] = array (
 		'onoff'
 );
+$meta ['displayformat'] = array (
+		'multichoice',
+		'_choices' => array (
+				'DD',
+				'DMS'
+		)
+);

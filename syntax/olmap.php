@@ -173,6 +173,15 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				list ( $lat, $lon, $text, $angle, $opacity, $img ) = $data;
 				$rowId ++;
 				$poi .= ", {lat: $lat, lon: $lon, txt: '$text', angle: $angle, opacity: $opacity, img: '$img', rowId: $rowId}";
+
+				if ($this->getConf ( 'displayformat' ) === 'DMS') {
+					$lat = $this->convertLat ( $lat );
+					$lon = $this->convertLon ( $lon );
+				} else {
+					$lat .= 'º';
+					$lon .= 'º';
+				}
+
 				$poitable .= '
 					<tr>
 					<td class="rowId">' . $rowId . '</td>
@@ -209,7 +218,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					</tr>';
 		}
 
-		$js .= "{mapOpts:{" . $param . " },poi:[$poi]};";
+		$js .= "{mapOpts:{" . $param . ",displayformat:'" . $this->getConf ( 'displayformat' ) . "'},poi:[$poi]};";
 		// unescape the json
 		$poitable = stripslashes ( $poitable );
 
@@ -725,5 +734,55 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		$parts = explode ( ':', $mediaLink );
 		$mediaLink = end ( $parts );
 		return str_replace ( '_', ' ', $mediaLink );
+	}
+
+	/**
+	 * Convert decimal degrees to degrees, minutes, seconds format
+	 *
+	 * @todo move this into a shared library
+	 * @param float $decimaldegrees
+	 * @return string dms
+	 */
+	private function _convertDDtoDMS($decimaldegrees) {
+		$dms = floor ( $decimaldegrees );
+		$secs = ($decimaldegrees - $dms) * 3600;
+		$min = floor ( $secs / 60 );
+		$sec = round ( $secs - ($min * 60), 3 );
+		$dms .= 'º' . $min . '\'' . $sec . '"';
+		return $dms;
+	}
+
+	/**
+	 * convert latitude in decimal degrees to DMS+hemisphere.
+	 *
+	 * @todo move this into a shared library
+	 * @param float $decimaldegrees
+	 * @return string
+	 */
+	private function convertLat($decimaldegrees) {
+		if (strpos ( $decimaldegrees, '-' ) !== false) {
+			$latPos = "S";
+		} else {
+			$latPos = "N";
+		}
+		$dms = $this->_convertDDtoDMS ( abs ( floatval ( $decimaldegrees ) ) );
+		return hsc ( $dms . $latPos );
+	}
+
+	/**
+	 * convert longitude in decimal degrees to DMS+hemisphere.
+	 *
+	 * @todo move this into a shared library
+	 * @param float $decimaldegrees
+	 * @return string
+	 */
+	private function convertLon($decimaldegrees) {
+		if (strpos ( $decimaldegrees, '-' ) !== false) {
+			$lonPos = "W";
+		} else {
+			$lonPos = "E";
+		}
+		$dms = $this->_convertDDtoDMS ( abs ( floatval ( $decimaldegrees ) ) );
+		return hsc ( $dms . $lonPos );
 	}
 }

@@ -31,3 +31,4 @@ $conf['enableBing'] = 0;
 $conf['enableA11y'] = 1;
 $conf['optionStaticMapGenerator'] = 'local';
 $conf['autoZoomMap'] = 1;
+$conf['displayformat'] = 'DD';

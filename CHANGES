@@ -1,5 +1,7 @@
 === version ${project.version} ===
   * add background to map
+  * display Point of Interest coordinate in popups
+  * allow coordinate display in decimal degrees or degrees, minutes, seconds
 
 === version 4.1 ===
   * add a fullscreen option for the map
