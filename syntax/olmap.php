@@ -265,7 +265,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				}
 				$olscript = '<script type="text/javascript" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js"></script>';
 
-				$scriptEnable = '<script type="text/javascript" charset="utf-8">/*<![CDATA[*/';
+				$scriptEnable = '<script type="text/javascript">/*<![CDATA[*/';
 				$scriptEnable .= $olscript ? 'olEnable = true;' : 'olEnable = false;';
 				$scriptEnable .= 'gEnable = ' . ($gEnable ? 'true' : 'false') . ';';
 				$scriptEnable .= 'osmEnable = ' . ($osmEnable ? 'true' : 'false') . ';';
@@ -303,7 +303,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					</table></div>';
 			}
 			// render inline mapscript parts
-			$renderer->doc .= '<script type="text/javascript" charset="utf-8">/*<![CDATA[*/';
+			$renderer->doc .= '<script type="text/javascript">/*<![CDATA[*/';
 			$renderer->doc .= " olMapData[$mapnumber] = $param /*!]]>*/</script>";
 			$mapnumber ++;
 			return true;
