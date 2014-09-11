@@ -69,6 +69,17 @@ function onFeatureSelect(selFeature) {
 	if (selFeature.data.description !== undefined) {
 		pContent += '<div class="desc">' + selFeature.data.description + '</div>';
 	}
+	// mapillary layer
+	if (selFeature.attributes.location !== undefined) {
+		pContent += '<div class="desc">' + selFeature.data.location + '</div>';
+	}
+	if (selFeature.attributes.image !== undefined) {
+		pContent += '<img class="img" src=' + selFeature.data.image + ' width="320" />';
+	}
+	if (selFeature.attributes.ca !== undefined) {
+		pContent += '<div class="coord"><img src="' + DOKU_BASE + 'lib/plugins/openlayersmapoverlays/icons/arrow-up-20.png'
+				+ '" width="16" height="16" style="transform:rotate(' + selFeature.data.ca + 'deg)" /></div>';
+	}
 	if (selFeature.attributes.img !== undefined) {
 		pContent += '<div class="coord"><img src="' + selFeature.attributes.img
 				+ '" width="16" height="16" style="transform:rotate(' + selFeature.attributes.angle + 'deg)" />'
