@@ -73,13 +73,17 @@ function onFeatureSelect(selFeature) {
 	if (selFeature.attributes.location !== undefined) {
 		pContent += '<div class="desc">' + selFeature.data.location + '</div>';
 	}
+	// mapillary layer
 	if (selFeature.attributes.image !== undefined) {
 		pContent += '<img class="img" src=' + selFeature.data.image + ' width="320" />';
 	}
+	// mapillary layer
 	if (selFeature.attributes.ca !== undefined) {
+		var angle = Math.floor(selFeature.data.ca);
 		pContent += '<div class="coord"><img src="' + DOKU_BASE + 'lib/plugins/openlayersmapoverlays/icons/arrow-up-20.png'
-				+ '" width="16" height="16" style="transform:rotate(' + selFeature.data.ca + 'deg)" /></div>';
+				+ '" width="16" height="16" style="transform:rotate(' + angle + 'deg)" alt="' + angle + 'º"/> '+OpenLayers.i18n("compass") + angle + 'º</div>';
 	}
+
 	if (selFeature.attributes.img !== undefined) {
 		pContent += '<div class="coord"><img src="' + selFeature.attributes.img
 				+ '" width="16" height="16" style="transform:rotate(' + selFeature.attributes.angle + 'deg)" />'

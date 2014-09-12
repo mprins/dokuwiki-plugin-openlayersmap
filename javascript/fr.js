@@ -10,5 +10,6 @@ OpenLayers.Lang.fr = OpenLayers.Util.extend({
 	"zoom_in" : "Zoom in",
 	"zoom_out" : "Zoom out",
 	"activate_map" : "Activer la carte",
-	"dlgClose" : "Fermez la boîte de dialogue"
+	"dlgClose" : "Fermez la boîte de dialogue",
+	"compass" : "direction de boussole: "
 }, OpenLayers.Lang.fr);
