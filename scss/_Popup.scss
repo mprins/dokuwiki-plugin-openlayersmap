@@ -42,6 +42,10 @@
 	font-size: smaller;
 	height: 16px;
 	overflow: hidden;
+	
+	& img {
+		height: inherit;
+	}
 }
 
 .olFramedCloudPopupContent {
