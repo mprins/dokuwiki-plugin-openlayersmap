@@ -87,7 +87,7 @@ function onFeatureSelect(selFeature) {
 	if (selFeature.attributes.img !== undefined) {
 		pContent += '<div class="coord"><img src="' + selFeature.attributes.img
 				+ '" width="16" height="16" style="transform:rotate(' + selFeature.attributes.angle + 'deg)" />'
-				+ '(lat;lon:' + selFeature.data.latlon + ')</div>';
+				+ '(lat;lon: ' + selFeature.data.latlon + ')</div>';
 	}
 	if (pContent.length > 0) {
 		// only show when there is something to show...
@@ -405,10 +405,10 @@ function createMap(mapOpts, OLmapPOI) {
 				img : DOKU_BASE + "lib/plugins/openlayersmap/icons/" + OLmapPOI[j].img,
 				label : OLmapPOI[j].rowId
 			});
-			var _latlon = OLmapPOI[j].lon + 'º;' + OLmapPOI[j].lat + 'º';
+			var _latlon = OLmapPOI[j].lat + 'º;' + OLmapPOI[j].lon + 'º';
 			if (mapOpts.displayformat === 'DMS') {
-				_latlon = OpenLayers.Util.getFormattedLonLat(OLmapPOI[j].lon, 'lon') + ';'
-						+ OpenLayers.Util.getFormattedLonLat(OLmapPOI[j].lat, 'lat');
+				_latlon = OpenLayers.Util.getFormattedLonLat(OLmapPOI[j].lat, 'lat') + ';'
+						+ OpenLayers.Util.getFormattedLonLat(OLmapPOI[j].lon, 'lon');
 			}
 			feat.data = {
 				name : OLmapPOI[j].txt,
