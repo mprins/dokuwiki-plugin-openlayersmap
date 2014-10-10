@@ -85,9 +85,10 @@ function onFeatureSelect(selFeature) {
 	}
 
 	if (selFeature.attributes.img !== undefined) {
-		pContent += '<div class="coord"><img src="' + selFeature.attributes.img
-				+ '" width="16" height="16" style="transform:rotate(' + selFeature.attributes.angle + 'deg)" />'
-				+ '(lat;lon: ' + selFeature.data.latlon + ')</div>';
+		pContent += '<div class="coord" title="lat;lon"><img src="' + selFeature.attributes.img
+				+ '" width="16" height="16" style="transform:rotate(' + selFeature.attributes.angle + 'deg)" />&nbsp;'
+				// + 'lat;lon: ' 
+				+ selFeature.data.latlon + '</div>';
 	}
 	if (pContent.length > 0) {
 		// only show when there is something to show...
