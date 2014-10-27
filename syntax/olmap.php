@@ -261,7 +261,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$initialised = true;
 				// render necessary script tags
 				if ($gEnable) {
-					$gscript = '<script type="text/javascript" src="//maps.google.com/maps/api/js?v=3.16&amp;sensor=false&amp;?key='.$this->getConf ( 'googleAPIkey' ).'"></script>';
+					$gscript = '<script type="text/javascript" src="//maps.google.com/maps/api/js?v=3.17&amp;sensor=false&amp;?key='.$this->getConf ( 'googleAPIkey' ).'"></script>';
 				}
 				$olscript = '<script type="text/javascript" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js"></script>';
 
