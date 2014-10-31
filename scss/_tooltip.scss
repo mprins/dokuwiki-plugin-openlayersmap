@@ -27,8 +27,9 @@
 		height: 1px;
 		width: 1px;
 		overflow: hidden;
+		opacity: 0;
 	}
-	
+
 	&:hover span, 
 	&:focus span {
 		clip: auto;
@@ -46,13 +47,15 @@
 		@include box-shadow(2px 2px 2px __border__);
 		bottom: 2em;
 		right: 0;
+		opacity: 1;
+		@include single-transition(opacity 0.5s ease-in 0.1s);
 	}
 }
 
 /* show a tooltip offset to below/right */
 .olHasTooltip_bttm_r {
 	@extend .olHasTooltip;
-	
+
 	&:hover span,
 	&:focus span {
 		bottom: -2em;
@@ -64,7 +67,7 @@
 /* show a tooltip offset to below/left */
 .olHasTooltip_bttm_l {
 	@extend .olHasTooltip;
-	
+
 	&:hover span,
 	&:focus span {
 		bottom: -2em;
