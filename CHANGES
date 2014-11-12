@@ -1,4 +1,6 @@
 === version ${project.version} ===
+  * some small bugfixes
+  * update google maps api to 3.17 release
 
 === version 4.2 ===
   * add background to map
