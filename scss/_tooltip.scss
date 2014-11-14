@@ -28,6 +28,7 @@
 		width: 1px;
 		overflow: hidden;
 		opacity: 0;
+		will-change: opacity, clip;
 	}
 
 	&:hover span, 
