@@ -29,8 +29,18 @@
 		overflow: hidden;
 		opacity: 0;
 		will-change: opacity, clip;
+		
+		@include animation-name(fadeIn);
+		@include animation-timing-function(ease);
+		@include animation-delay(.35s);
+		@include animation-duration(5s);
+		//@include animation-iteration-count(infinite);
+		@include animation-iteration-count(1);
 	}
 
+	// http://codepen.io/anon/pen/yyNmML?editors=110
+	// http://css-tricks.com/restart-css-animation/
+	// http://css-tricks.com/snippets/css/keyframe-animation-syntax/
 	&:hover span, 
 	&:focus span {
 		clip: auto;
@@ -48,8 +58,9 @@
 		@include box-shadow(2px 2px 2px __border__);
 		bottom: 2em;
 		right: 0;
-		opacity: 1;
-		@include single-transition(opacity 0.5s ease-in 0.1s);
+		//opacity: 1;
+		//@include single-transition(opacity 0.5s ease-in 0.1s);
+		@include animation-name(fadeOut);
 	}
 }
 
@@ -73,4 +84,22 @@
 	&:focus span {
 		bottom: -2em;
 	}
+}
+
+@include keyframes(fadeIn){
+  0%   { 
+    opacity: 0;
+  }
+  100% { 
+    opacity: 0;
+  }
+}
+
+@include keyframes(fadeOut){
+  from { 
+    opacity: 1;
+  }
+  to {
+    opacity:0;
+  }
 }
