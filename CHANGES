@@ -1,6 +1,12 @@
 === version ${project.version} ===
   * use latest version of OpenLayers 2.14-dev
 
+=== version 4.5 ===
+  * use latest version of OpenLayers 2.14-dev
+
+=== version 4.4 ===
+  * use latest version of OpenLayers 2.14-dev
+
 === version 4.3 ===
   * some small bugfixes
   * update google maps api to 3.17 release
@@ -16,7 +22,7 @@
   * fix static map generation, different maptypes were not respected
   * add configuration option for a MapQuest API key (needed for remote static map generation) and Google API key
   * semi-responsive map rendering (on page load only); prevent maps that are larger than the page width
-  
+
 === version 4.0 ===
   * use OpenLayers 2.14-dev
   * keyboard accessible zoom control replacing the pan/zoom bar
@@ -29,7 +35,7 @@
   * add help pages (en, nl)
 
 == deleted files ==
-  * controlbar images: 
+  * controlbar images:
     * lib/classic/*
     * lib/dark/*
     * lib/orange/*
@@ -49,7 +55,7 @@
   * add support for GeoJSON
   * remove permalink from the map
   * some accessibility enhancements
-  
+
 == deleted files ==
   * overview-switcher-minimize.png
   * overview-switcher-maximize.png
