@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2013-2015 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
- 
+
 /** LayerSwitcher Control. */
 .olControlLayerSwitcher {
 	position: absolute;
@@ -43,12 +43,12 @@
 		font-weight: bold;
 		padding-left: 10px;
 	}
-	
+
 	& .baseLayersDiv,
 	& .dataLayersDiv {
 		padding-left: 10px;
 		border: 1px solid __border__;
-	}	
+	}
 }
 
 .olControlLayerSwitcher {
@@ -58,11 +58,11 @@
 		right: -1px;
 		@include border-left-radius(4px);
 	}
-	
+
 	& .minimizeDiv {
 		/* background-color: __background_alt__; */
 		/*border: 1px solid __border__;*/
-	}	
+	}
 }
 
 .olLayerSwitcherButton {
@@ -75,9 +75,9 @@
 	padding: 0;
 	color: $button;
 	background: $button-bg;
-	
+
 	&:hover,
 	&:focus {
 		background: $button-bg-active;
-	} 
+	}
 }

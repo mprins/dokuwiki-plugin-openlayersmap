@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012-2014 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2012-2015 Mark C. Prins <mprins@users.sf.net>
  *
  * In part based on staticMapLite 0.03 available at http://staticmaplite.svn.sourceforge.net/viewvc/staticmaplite/
  *

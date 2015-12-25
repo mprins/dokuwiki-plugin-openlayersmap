@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2014-2015 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -17,7 +17,7 @@
 /**
  * Button control to switch the map to fullscreen and back. Note that fullscreen
  * support is still experimental in most browsers.
- * 
+ *
  * @author Mark C. Prins <mprins@users.sf.net>
  * @extends {OpenLayers.Control}
  * @requires OpenLayers/Control.js
@@ -26,14 +26,14 @@ OpenLayersMap.Control.Fullscreen = OpenLayers.Class(OpenLayers.Control, {
 	fullscreenClass : 'fullscreen',
 	/**
 	 * maximize screen button.
-	 * 
+	 *
 	 * @private
 	 */
 	maxBtn : null,
 
 	/**
 	 * minimize screen button.
-	 * 
+	 *
 	 * @private
 	 */
 	minBtn : null,
@@ -113,7 +113,7 @@ OpenLayersMap.Control.Fullscreen = OpenLayers.Class(OpenLayers.Control, {
 
 	/**
 	 * Toggle fullscreen mode depending on the button clicked.
-	 * 
+	 *
 	 * @param evt
 	 *            {Event}
 	 * @return {Boolean} true when event was handled
@@ -131,7 +131,7 @@ OpenLayersMap.Control.Fullscreen = OpenLayers.Class(OpenLayers.Control, {
 	},
 	/**
 	 * Render the control in the browser.
-	 * 
+	 *
 	 * @return {Element} DOM element, a div with the buttons
 	 * @override
 	 */

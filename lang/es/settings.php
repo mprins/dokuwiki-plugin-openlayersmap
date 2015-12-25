@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2014 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
  * Copyright (c) 2012 Txus <txusff@gmail.com>
  *
  * Permission to use, copy, modify, and distribute this software for any

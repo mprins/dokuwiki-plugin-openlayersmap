@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2013-2015 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,7 +16,7 @@
 
 /**
  * This layer allows accessing MapQuest tiles and provides attribution.
- * 
+ *
  * @class OpenLayersMap.Layer.MapQuest
  * @requires OpenLayers/Layer/OSM.js
  * @author mprins
@@ -31,10 +31,10 @@ OpenLayersMap.Layer.MapQuest = OpenLayers.Class(OpenLayers.Layer.OSM, {
 	/**
 	 * The tileset URL scheme.
 	 */
-	 
-	 
-	 
-	 
+
+
+
+
 	url : [ '//otile1-s.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg',
 			'//otile2-s.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg',
 			'//otile3-s.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg',

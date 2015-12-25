@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2013-2015 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -20,11 +20,11 @@
  * @extends OpenLayers.Control.Zoom
  * @requires OpenLayers/Control/Zoom.js
  * @author Mark C. Prins <mprins@users.sf.net>
- * 
+ *
  */
 OpenLayersMap.Control.Zoom = OpenLayers.Class(OpenLayers.Control.Zoom, {
 	/**
-	 * 
+	 *
 	 * @param el
 	 *            {Element} parent DOM element, eg a div
 	 * @return {Object} containing two DOM elements, zoomIn and zoomOut

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2013-2015 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-/* 
- * Common and OpenLayers behaviour. 
+/*
+ * Common and OpenLayers behaviour.
  */
 .olControlNoSelect {
 	@include user-select(none);
@@ -65,9 +65,9 @@
 	float: left;
 }
 
-/* 
- * Work around a case of style reset, setting it on the container breaks the overview map. 
- * See: http://www.dokuwiki.org/plugin:openlayersmap?rev=1329438681&do=diff 
+/*
+ * Work around a case of style reset, setting it on the container breaks the overview map.
+ * See: http://www.dokuwiki.org/plugin:openlayersmap?rev=1329438681&do=diff
  */
 .olContainer img {
 	max-width: none;
@@ -126,7 +126,7 @@ img.olTileImage {
 }
 
 .olStaticMap {
-	
+
 }
 
 .olLayerGrid .olTileImage {

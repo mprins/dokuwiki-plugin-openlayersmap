@@ -15,7 +15,7 @@ on how to install plugins in DokuWiki.
 This project includes part of OpenLayers.
 
 ----
-  Copyright (c) 2008-2014 Mark C. Prins <mprins@users.sf.net>
+  Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
 
   Permission to use, copy, modify, and distribute this software for any
   purpose with or without fee is hereby granted, provided that the above
@@ -34,7 +34,7 @@ This project includes part of OpenLayers.
 
   https://raw.github.com/openlayers/openlayers/master/license.txt
 
-Copyright 2005-2014 OpenLayers Contributors. All rights reserved. See
+Copyright 2005-2015 OpenLayers Contributors. All rights reserved. See
 https://raw.github.com/openlayers/openlayers/master/authors.txt for full list.
 
 Redistribution and use in source and binary forms, with or without modification,

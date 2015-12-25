@@ -1,16 +1,16 @@
-/* 
+/*
  * Copyright (c) 2006-2012 by OpenLayers Contributors
- * Copyright (c) 2014 Mark C. Prins <mprins@users.sf.net>
- * 
+ * Copyright (c) 2014-2015 Mark C. Prins <mprins@users.sf.net>
+ *
  * Published under the 2-clause BSD license.
  * See license.txt in the OpenLayers distribution or repository for the
- * full text of the license. 
+ * full text of the license.
  */
 
 /**
  * A custom handler that displays a vector point that can be moved using the
  * arrow keys of the keyboard.
- * 
+ *
  * @class OpenLayersMap.Handler.KeyboardPoint
  * @requires OpenLayers/Handler.js
  * @requires OpenLayers/Layer/Vector.js
@@ -81,7 +81,7 @@ OpenLayersMap.Handler.KeyboardPoint = OpenLayers.Class(OpenLayers.Handler, {
 
 	/**
 	 * handles the key events. Moving the selection feature around on the map.
-	 * 
+	 *
 	 * @param evt
 	 *            {OpenLayers.Event} key event
 	 */
@@ -109,7 +109,7 @@ OpenLayersMap.Handler.KeyboardPoint = OpenLayers.Class(OpenLayers.Handler, {
 	},
 
 	/**
-	 * 
+	 *
 	 * @param lon
 	 * @param lat
 	 */

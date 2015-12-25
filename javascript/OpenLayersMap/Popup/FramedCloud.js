@@ -1,22 +1,22 @@
-/* 
+/*
  * Copyright (c) 2006-2013 by OpenLayers Contributors
- * Copyright (c) 2014 Mark C. Prins <mprins@users.sf.net>
- *  
+ * Copyright (c) 2014-2015 Mark C. Prins <mprins@users.sf.net>
+ *
  * Published under the 2-clause BSD license.
  * See license.txt in the OpenLayers distribution or repository for the
- * full text of the license. 
+ * full text of the license.
  */
 
 /**
  * @class Creates a keyboard accessible popup for feature information.
- * 
+ *
  * @requires OpenLayers/Popup/FramedCloud.js
  * @requires OpenLayers/Util.js
  * @requires OpenLayers/BaseTypes/Bounds.js
  * @requires OpenLayers/BaseTypes/Pixel.js
  * @requires OpenLayers/BaseTypes/Size.js
- * 
- * 
+ *
+ *
  * @extends OpenLayers.Popup.FramedCloud
  */
 OpenLayersMap.Popup.FramedCloud = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
@@ -24,7 +24,7 @@ OpenLayersMap.Popup.FramedCloud = OpenLayers.Class(OpenLayers.Popup.FramedCloud,
 
 	/**
 	 * @constructor OpenLayers.Popup.FramedCloud
-	 * 
+	 *
 	 * @param id
 	 *            {String}
 	 * @param lonlat
@@ -49,7 +49,7 @@ OpenLayersMap.Popup.FramedCloud = OpenLayers.Class(OpenLayers.Popup.FramedCloud,
 
 	/**
 	 * defines the close button.
-	 * 
+	 *
 	 * @param callback
 	 *            {Function} The callback to be called when the close button is
 	 *            clicked.

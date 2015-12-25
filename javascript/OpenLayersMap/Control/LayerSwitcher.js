@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2014-2015 Mark C. Prins <mprins@users.sf.net>
  * Copyright (c) 2006-2013 by OpenLayers Contributors
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -23,14 +23,14 @@
  *        may expand it by clicking on the handle. To create the LayerSwitcher
  *        outside of the map, pass the Id of a html div as the first argument to
  *        the constructor.
- * 
+ *
  * @extends {OpenLayers.Control.LayerSwitcher}
  * @requires OpenLayers/Control/LayerSwitcher.js
  */
 OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerSwitcher, {
 	/**
 	 * @constructor OpenLayersMap.Control.LayerSwitcher
-	 * 
+	 *
 	 * @param options
 	 *            {Object}
 	 */
@@ -41,7 +41,7 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 
 	/**
 	 * Set focus to the first base layer selector.
-	 * 
+	 *
 	 * @param e
 	 *            {Event}
 	 * @extend OpenLayers.Control.LayerSwitcher#maximizeControl
@@ -53,7 +53,7 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 
 	/**
 	 * make the selection/choice sticky by remembering focus.
-	 * 
+	 *
 	 * @extend OpenLayers.Control.LayerSwitcher#onButtonClick
 	 * @param evt
 	 *            {Event}
@@ -67,7 +67,7 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 		if (evt.buttonElement === this.minimizeDiv){
 			this.map.div.focus();
 		}
-		
+
 		if (selValue) {
 			// find the clicked item and restore focus
 			var inputs = document.getElementById(this.id).getElementsByTagName('input');
@@ -83,17 +83,17 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 
 	/**
 	 * Return focus to the map.
-	 * 
+	 *
 	 * @extend OpenLayers.Control.LayerSwitcher#minimizeControl
-	 * 
+	 *
 	 * @param e
 	 *            {Event}
-	 * 
+	 *
 	 */
 	/*
 	minimizeControl : function(e) {
 		OpenLayers.Control.LayerSwitcher.prototype.minimizeControl.apply(this, arguments);
-		// this causes the map to receive focus on page load as minimizeControl is called in draw(); 
+		// this causes the map to receive focus on page load as minimizeControl is called in draw();
 		// see http://sourceforge.net/p/dokuwikispatial/issues/38/
 		this.map.div.focus();
 	},
@@ -101,7 +101,7 @@ OpenLayersMap.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control.LayerS
 
 	/**
 	 * Set up the labels and divs for the control.
-	 * 
+	 *
 	 * @override
 	 */
 	loadContents : function() {

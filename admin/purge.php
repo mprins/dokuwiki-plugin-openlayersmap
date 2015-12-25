@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -18,7 +18,7 @@ if (!defined('DOKU_INC')) die();
 if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 require_once DOKU_PLUGIN.'admin.php';
 /**
- * DokuWiki Plugin openlayersmap (Admin Component). 
+ * DokuWiki Plugin openlayersmap (Admin Component).
  * This component purges the cached tiles and maps.
  *
  * @author Mark Prins

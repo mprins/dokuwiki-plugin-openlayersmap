@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2013 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -88,7 +88,7 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 		$gpx = $this->mediaIdToPath($gpx);
 		// dbglog($gpx,'helper_plugin_openlayersmap_staticmap::getMap: gpx file:');
 		$geojson = $this->mediaIdToPath($geojson);
-		
+
 		// create map
 		$map = new StaticMap($lat, $lon, $zoom, $width, $height, $maptype,
 				$markers, $gpx, $kml, $geojson, $conf['mediadir'], $conf['cachedir'],

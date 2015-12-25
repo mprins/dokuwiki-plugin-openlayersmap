@@ -1,10 +1,10 @@
-/* 
+/*
  * Copyright (c) 2006-2012 by OpenLayers Contributors
- * Copyright (c) 2014 Mark C. Prins <mprins@users.sf.net>
- * 
+ * Copyright (c) 2014-2015 Mark C. Prins <mprins@users.sf.net>
+ *
  * Published under the 2-clause BSD license.
  * See license.txt in the OpenLayers distribution or repository for the
- * full text of the license. 
+ * full text of the license.
  */
 
 /**
@@ -13,10 +13,10 @@
  * RETURN key is pressed. The control can be activated/deactivated using the "i"
  * key. When activated the control deactivates any KeyboardDefaults control in
  * the map so that the map is not moved when the arrow keys are pressed.
- * 
+ *
  * This control relies on the OpenLayersMap.Handler.KeyboardPoint custom
  * handler.
- * 
+ *
  * @class OpenLayersMap.Control.KeyboardClick
  * @requires OpenLayers/Control.js
  * @requires OpenLayersMap/Handler/KeyboardPoint.js
@@ -54,10 +54,10 @@ OpenLayersMap.Control.KeyboardClick = OpenLayers.Class(OpenLayers.Control, {
 
 	/**
 	 * Hit detection of click.
-	 * 
+	 *
 	 * @param {Openlayers.Geometry}
 	 *            geometry with map space coordinates
-	 * 
+	 *
 	 */
 	onClick : function(geometry) {
 		var lyrs = this.selectControl.layers, selTarget;
@@ -90,7 +90,7 @@ OpenLayersMap.Control.KeyboardClick = OpenLayers.Class(OpenLayers.Control, {
 
 	/**
 	 * Activate control and turn off default keyboard handler.
-	 * 
+	 *
 	 * @returns {Boolean}
 	 */
 	activate : function() {
@@ -106,7 +106,7 @@ OpenLayersMap.Control.KeyboardClick = OpenLayers.Class(OpenLayers.Control, {
 
 	/**
 	 * Deactivate this control and restore default keyboard handler.
-	 * 
+	 *
 	 * @returns {Boolean}
 	 */
 	deactivate : function() {

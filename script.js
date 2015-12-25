@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2014 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -24,7 +24,7 @@
 
 /**
  * Openlayers selectcontrol.
- * 
+ *
  * @type {OpenLayers.Control.SelectFeature}
  * @private
  */
@@ -32,7 +32,7 @@ var selectControl;
 
 /**
  * handle feature select event.
- * 
+ *
  * @param {OpenLayers.Feature.Vector}
  *            selFeature the selected feature
  */
@@ -87,7 +87,7 @@ function onFeatureSelect(selFeature) {
 	if (selFeature.attributes.img !== undefined) {
 		pContent += '<div class="coord" title="lat;lon"><img src="' + selFeature.attributes.img
 				+ '" width="16" height="16" style="transform:rotate(' + selFeature.attributes.angle + 'deg)" />&nbsp;'
-				// + 'lat;lon: ' 
+				// + 'lat;lon: '
 				+ selFeature.data.latlon + '</div>';
 	}
 	if (pContent.length > 0) {
@@ -104,7 +104,7 @@ function onFeatureSelect(selFeature) {
 
 /**
  * handle feature unselect event. remove & destroy the popup.
- * 
+ *
  * @param {OpenLayers.Feature.Vector}
  *            selFeature the un-selected feature
  */
@@ -119,7 +119,7 @@ function onFeatureUnselect(selFeature) {
  * Test for css support in the browser by sniffing for a css class we added
  * using javascript added by the action plugin; this is an edge case because
  * browsers that support javascript generally support css as well.
- * 
+ *
  * @returns {Boolean} true when the browser supports css (and implicitly
  *          javascript)
  */
@@ -129,7 +129,7 @@ function olTestCSSsupport() {
 
 /**
  * Creates a DocumentFragment to insert into the dom.
- * 
+ *
  * @param mapid
  *            id for the map div
  * @param width
@@ -163,7 +163,7 @@ function olCreateMaptag(mapid, width, height) {
 
 /**
  * Create the map based on the params given.
- * 
+ *
  * @param {Object}
  *            mapOpts MapOptions hash {id:'olmap', width:500px, height:500px,
  *            lat:6710200, lon:506500, zoom:13, statusbar:1, controls:1,
@@ -172,7 +172,7 @@ function olCreateMaptag(mapid, width, height) {
  * @param {Array}
  *            OLmapPOI array with POI's [ {lat:6710300,lon:506000,txt:'instap
  *            punt',angle:180,opacity:.9,img:'', rowId:n},... ]);
- * 
+ *
  * @return {OpenLayers.Map} the created map
  */
 function createMap(mapOpts, OLmapPOI) {
@@ -596,68 +596,68 @@ function olInit() {
 
 /**
  * ol api flag.
- * 
+ *
  * @type {Boolean}
  */
 var olEnable = false,
 /**
  * An array with data for each map in the page.
- * 
+ *
  * @type {Array}
  */
 olMapData = [],
 /**
  * Holds a reference to all of the maps on this page with the map's id as key.
  * Can be used as an extension point.
- * 
+ *
  * @type {Object}
  */
 olMaps = new Object(),
 /**
  * MapQuest tiles flag.
- * 
+ *
  * @type {Boolean}
  */
 mqEnable = false,
 /**
  * google map api flag.
- * 
+ *
  * @type {Boolean}
  */
 gEnable = false,
 /**
  * Bing tiles flag.
- * 
+ *
  * @type {Boolean}
  */
 bEnable = false,
 /**
  * Bing API key.
- * 
+ *
  * @type {String}
  */
 bApiKey = '',
 /**
  * MapQuest API key.
- * 
+ *
  * @type {String}
  */
 mqApiKey = '',
 /**
  * Google API key.
- * 
+ *
  * @type {String}
  */
 gApiKey = '',
 /**
  * OSM tiles flag.
- * 
+ *
  * @type {Boolean}
  */
 osmEnable = true,
 /**
  * CSS support flag.
- * 
+ *
  * @type {Boolean}
  */
 olCSSEnable = true;

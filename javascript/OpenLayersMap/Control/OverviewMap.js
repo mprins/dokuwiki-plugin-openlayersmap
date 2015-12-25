@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2013-2015 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -15,7 +15,7 @@
  */
 /**
  * Accessible overview inset.
- * 
+ *
  * @author mprins
  * @class OpenLayersMap.Control.OverviewMap
  * @extends OpenLayers.Control.OverviewMap
@@ -46,13 +46,13 @@ OpenLayersMap.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control.Overview
 
 	/**
 	 * @constructor OpenLayersMap.Control.OverviewMap Create a new overview map
-	 * 
+	 *
 	 * @param options
 	 *            {Object} Properties of this object will be set on the overview
 	 *            map object. Note, to set options on the map object contained
 	 *            in this control, set <mapOptions> as one of the options
 	 *            properties.
-	 * 
+	 *
 	 */
 	initialize : function(options) {
 		this.layers = [];
@@ -63,7 +63,7 @@ OpenLayersMap.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control.Overview
 
 	/**
 	 * Render the control in the browser.
-	 * 
+	 *
 	 * @override
 	 */
 	draw : function() {
@@ -141,7 +141,7 @@ OpenLayersMap.Control.OverviewMap = OpenLayers.Class(OpenLayers.Control.Overview
 
 	/**
 	 * Return focus to the map.
-	 * 
+	 *
 	 * @param e
 	 *            {Event}
 	 */
