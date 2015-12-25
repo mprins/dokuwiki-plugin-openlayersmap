@@ -261,7 +261,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$initialised = true;
 				// render necessary script tags
 				if ($gEnable) {
-					$gscript = '<script type="text/javascript" src="//maps.google.com/maps/api/js?v=3.22&amp;sensor=false&amp;?key='.$this->getConf ( 'googleAPIkey' ).'"></script>';
+					$gscript = '<script type="text/javascript" src="//maps.google.com/maps/api/js?v=3.22&amp;key='.$this->getConf ( 'googleAPIkey' ).'"></script>';
 				}
 				$olscript = '<script type="text/javascript" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js"></script>';
 
@@ -504,7 +504,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		// TODO maybe use viewport / visible instead of center/zoom,
 		// see: https://developers.google.com/maps/documentation/staticmaps/index#Viewports
 		// http://maps.google.com/maps/api/staticmap?center=51.565690,5.456756&zoom=16&size=600x400&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker.png|label:1|51.565690,5.456756&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker-blue.png|51.566197,5.458966|label:2&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.567177,5.457909|label:3&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.566283,5.457330|label:4&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.565630,5.457695|label:5&sensor=false&format=png&maptype=roadmap
-		$imgUrl = "http://maps.googleapis.com/maps/api/staticmap?sensor=false";
+		$imgUrl = "http://maps.googleapis.com/maps/api/staticmap?";
 		$imgUrl .= "&size=" . str_replace ( "px", "", $gmap ['width'] ) . "x" . str_replace ( "px", "", $gmap ['height'] );
 		//if (!$this->getConf( 'autoZoomMap')) { // no need for center & zoom params }
 		$imgUrl .= "&center=" . $gmap ['lat'] . "," . $gmap ['lon'];
