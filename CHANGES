@@ -1,5 +1,6 @@
 === version ${project.version} ===
   * use latest version of OpenLayers 2.14-dev
+  * update google maps api to 3.22 release
 
 === version 4.5 ===
   * use latest version of OpenLayers 2.14-dev
