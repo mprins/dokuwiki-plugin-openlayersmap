@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2016 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -30,7 +30,7 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin {
 	 *
 	 * @param    $controller   DokuWiki's event controller object. Also available as global $EVENT_HANDLER
 	 */
-	function register(Doku_Event_Handler &$controller) {
+	function register(Doku_Event_Handler $controller) {
 		$controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'insert_button', array ());
 		$controller->register_hook('TPL_METAHEADER_OUTPUT', 'BEFORE', $this, 'insertCSSSniffer');
 	}
@@ -39,7 +39,7 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin {
 	 * Inserts the toolbar button.
 	 * @param Doku_Event $event the DokuWiki event
 	 */
-	function insert_button(Doku_Event &$event, $param) {
+	function insert_button(Doku_Event $event, $param) {
 		$strOpen ='<olmap id="olMapOne" width="550px" height="450px" lat="50.0" ';
 		$strOpen.='lon="5.1" zoom="12" statusbar="1" controls="1" poihoverstyle="0" ';
 		$strOpen.='baselyr="OpenStreetMap" gpxfile="" kmlfile="" geojsonfile="" summary="" >\n';
@@ -58,7 +58,7 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin {
 		);
 	}
 	/** add a snippet of javascript into the head to do a css operation we can check for lateron.*/
-	function insertCSSSniffer(Doku_Event &$event, $param) {
+	function insertCSSSniffer(Doku_Event $event, $param) {
 		$event->data["script"][] = array (
 						"type" => "text/javascript",
 						"_data" => "document.documentElement.className += ' olCSSsupported';",

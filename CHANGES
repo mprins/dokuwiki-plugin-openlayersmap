@@ -1,4 +1,7 @@
 === version ${project.version} ===
+  * PHP 7 compatibility fixes
+
+=== version 4.6 ===
   * use latest version of OpenLayers 2.14-dev
   * update google maps api to 3.22 release
 

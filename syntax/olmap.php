@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2016 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -84,7 +84,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	 *
 	 * @see DokuWiki_Syntax_Plugin::handle()
 	 */
-	function handle($match, $state, $pos, &$handler) {
+	function handle($match, $state, $pos, Doku_Handler $handler) {
 		// break matched cdata into its components
 		list ( $str_params, $str_points ) = explode ( '>', substr ( $match, 7, - 9 ), 2 );
 		// get the lat/lon for adding them to the metadata (used by geotag)
@@ -238,7 +238,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	 *
 	 * @see DokuWiki_Syntax_Plugin::render()
 	 */
-	function render($mode, &$renderer, $data) {
+	function render($mode, Doku_Renderer $renderer, $data) {
 		// set to true after external scripts tags are written
 		static $initialised = false;
 		// incremented for each map tag in the page source so we can keep track of each map in this page
