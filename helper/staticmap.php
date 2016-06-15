@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2016 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -76,7 +76,7 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 		$zoom = $zoom?intval($zoom):0;
 		if($zoom > 18) $zoom = 18;
 		// normalize WxH
-		list($width, $height) = split('x',$size);
+		list($width, $height) = explode('x',$size);
 		$width = intval($width);
 		if($width > $this->maxWidth) $width = $this->maxWidth;
 		$height = intval($height);
