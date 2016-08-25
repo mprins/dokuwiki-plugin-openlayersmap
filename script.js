@@ -529,6 +529,7 @@ function createMap(mapOpts, OLmapPOI) {
 
 		// add hillshade, since this is off by default only add when we have a
 		// layerswitcher
+		/*
 		m.addLayer(new OpenLayers.Layer.OSM("Hillshade", "http://toolserver.org/~cmarqu/hill/${z}/${x}/${y}.png", {
 			isBaseLayer : false,
 			transparent : true,
@@ -539,6 +540,7 @@ function createMap(mapOpts, OLmapPOI) {
 				crossOriginKeyword : null
 			}
 		}));
+		*/
 	}
 
 	return m;
