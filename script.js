@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2016 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -233,25 +233,14 @@ function createMap(mapOpts, OLmapPOI) {
 					tileOptions : {
 						crossOriginKeyword : null
 					}
-				}));
+		}));
 	}
 	/*
-	 * add MapQuest map layers, see:
-	 * http://developer.mapquest.com/web/products/open/map
+	 * add Stamen map layers, see: http://maps.stamen.com/
 	 */
-	if (mqEnable) {
-		m.addLayer(new OpenLayersMap.Layer.MapQuest());
-		m.addLayer(new OpenLayersMap.Layer.MapQuest("mapquest sat", [
-				"//otile1-s.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
-				"//otile2-s.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
-				"//otile3-s.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg",
-				"//otile4-s.mqcdn.com/tiles/1.0.0/sat/${z}/${x}/${y}.jpg" ], {
-			// note that global coverage is provided at zoom levels 0-11. Zoom
-			// Levels 12+ are provided only in the United States (lower 48).
-			numZoomLevels : 12,
-			visibility : mapOpts.baselyr === "mapquest sat"
-		}));
-
+	if (stamenEnable) {
+		m.addLayer(new OpenLayersMap.Layer.StamenTerrain());
+		m.addLayer(new OpenLayersMap.Layer.StamenToner());
 	}
 
 	if (gEnable) {
@@ -614,11 +603,11 @@ olMapData = [],
  */
 olMaps = new Object(),
 /**
- * MapQuest tiles flag.
+ * Stamen tiles flag.
  *
  * @type {Boolean}
  */
-mqEnable = false,
+stamenEnable = false,
 /**
  * google map api flag.
  *
@@ -637,12 +626,6 @@ bEnable = false,
  * @type {String}
  */
 bApiKey = '',
-/**
- * MapQuest API key.
- *
- * @type {String}
- */
-mqApiKey = '',
 /**
  * Google API key.
  *

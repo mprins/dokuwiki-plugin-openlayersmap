@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2016 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -21,10 +21,9 @@
  * @author Mark C. Prins
  */
 $lang['bingAPIKey'] = 'Bing Maps API sleutel. Haal een eigen sleutel op: https://www.bingmapsportal.com/application';
-$lang['mapquestAPIKey'] = 'MapQuest API sleutel (voor externe statische kaart). Haal een eigen sleutel op: http://developer.mapquest.com/';
 $lang['googleAPIkey'] = 'Google API Static Maps sleutel. Haal een eigen sleutel op: https://code.google.com/apis/console';
 $lang['iconUrlOverload'] = 'URL voor kaart ikonen bij gebruik van statische kaarten op een non-internet host';
-$lang['enableMapQuest'] = 'Maak gebruik van MapQuest als basiskaart mogelijk';
+$lang['enableStamen'] = 'Maak gebruik van Stamen als basiskaart mogelijk';
 $lang['enableGoogle'] = 'Maak gebruik van Google als basiskaart mogelijk';
 $lang['enableBing'] = 'Maak gebruik van Bing als basiskaart mogelijk';
 $lang['enableOSM'] = 'Maak gebruik van OpenStreetMap als basiskaart mogelijk';

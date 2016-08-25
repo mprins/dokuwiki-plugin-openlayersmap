@@ -118,7 +118,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$_nocache = true;
 				$imgUrl .= $this->_getBing ( $gmap, $overlay ) . "&.png";
 			}
-		} elseif (stripos ( $gmap ['baselyr'], 'mapquest' ) !== false) {
+		} /* elseif (stripos ( $gmap ['baselyr'], 'mapquest' ) !== false) {
 			// MapQuest
 			if (! $this->getConf ( 'mapquestAPIKey' )) {
 				// no API key for MapQuest, use OSM
@@ -131,7 +131,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$imgUrl .= $this->_getMapQuest ( $gmap, $overlay );
 				$imgUrl .= "&.png";
 			}
-		} else {
+		} */ else {
 			// default OSM
 			$_firstimageID = $this->_getStaticOSM ( $gmap, $overlay );
 			$imgUrl .= $_firstimageID;
@@ -252,7 +252,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$olEnable = false;
 			$gscript = '';
 			$gEnable = $this->getConf ( 'enableGoogle' );
-			$mqEnable = $this->getConf ( 'enableMapQuest' );
+			$stamenEnable = $this->getConf ( 'enableStamen' );
 			$osmEnable = $this->getConf ( 'enableOSM' );
 			$enableBing = $this->getConf ( 'enableBing' );
 
@@ -269,10 +269,9 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$scriptEnable .= $olscript ? 'olEnable = true;' : 'olEnable = false;';
 				$scriptEnable .= 'gEnable = ' . ($gEnable ? 'true' : 'false') . ';';
 				$scriptEnable .= 'osmEnable = ' . ($osmEnable ? 'true' : 'false') . ';';
-				$scriptEnable .= 'mqEnable = ' . ($mqEnable ? 'true' : 'false') . ';';
+				$scriptEnable .= 'stamenEnable = ' . ($stamenEnable ? 'true' : 'false') . ';';
 				$scriptEnable .= 'bEnable = ' . ($enableBing ? 'true' : 'false') . ';';
 				$scriptEnable .= 'bApiKey="' . $this->getConf ( 'bingAPIKey' ) . '";';
-				$scriptEnable .= 'mqApiKey="' . $this->getConf ( 'mapquestAPIKey' ) . '";';
 				$scriptEnable .= 'gApiKey="' . $this->getConf ( 'googleAPIkey' ) . '";';
 				$scriptEnable .= '/*!]]>*/</script>';
 			}
@@ -421,6 +420,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	 * @param array $gmap
 	 * @param array $overlay
 	 */
+	 /*
 	private function _getMapQuest($gmap, $overlay) {
 		$sUrl = $this->getConf ( 'iconUrlOverload' );
 		if (! $sUrl) {
@@ -473,6 +473,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		// dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getMapQuest: MapQuest image url is:');
 		return $imgUrl;
 	}
+	*/
 
 	/**
 	 * Create a Google maps static image url w/ the poi.

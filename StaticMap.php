@@ -55,11 +55,15 @@ class StaticMap {
 					'logo' => 'cycle_logo.png',
 					'url' => 'http://tile3.opencyclemap.org/landscape/{Z}/{X}/{Y}.png'
 			),
-			// H&B sources
-			'hikeandbike' => array (
-					'txt' => 'Hike & Bike Map',
-					'logo' => 'hnb_logo.png',
-					'url' => 'http://toolserver.org/tiles/hikebike/{Z}/{X}/{Y}.png'
+			'toner-lite' => array (
+					'txt' => 'OpenCycleMap tiles',
+					'logo' => 'stamen.png',
+					'url' => 'http://tile.stamen.com/toner-lite/{Z}/{X}/{Y}.png'
+			),
+			'terrain' => array (
+					'txt' => 'OpenCycleMap tiles',
+					'logo' => 'stamen.png',
+					'url' => 'http://tile.stamen.com/terrain/{Z}/{X}/{Y}.png'
 			),
 			// 'piste'=>array(
 			// 'txt'=>'OpenPisteMap tiles',
@@ -69,11 +73,11 @@ class StaticMap {
 			// 'txt'=>'OpenSeaMap tiles',
 			// 'logo'=>'sea_logo.png',
 			// 'url'=>''),
-			// MapQuest
-			'mapquest' => array (
-					'txt' => 'MapQuest tiles',
-					'logo' => 'mq_logo.png',
-					'url' => 'http://otile3.mqcdn.com/tiles/1.0.0/map/{Z}/{X}/{Y}.png'
+			// H&B sources
+			'hikeandbike' => array (
+					'txt' => 'Hike & Bike Map',
+					'logo' => 'hnb_logo.png',
+					'url' => 'http://toolserver.org/tiles/hikebike/{Z}/{X}/{Y}.png'
 			)
 	);
 	protected $tileDefaultSrc = 'openstreetmap';

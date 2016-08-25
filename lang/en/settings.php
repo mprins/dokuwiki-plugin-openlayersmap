@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2016 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -21,9 +21,8 @@
  * @author Mark C. Prins
  */
 $lang['bingAPIKey'] = 'Bing Maps API key. Get your key at: https://www.bingmapsportal.com/application';
-$lang['mapquestAPIKey'] = 'MapQuest API key (for remote static maps). Get your key at: http://developer.mapquest.com/';
 $lang['iconUrlOverload'] = 'URL for map icons when using static maps on a non-internet host';
-$lang['enableMapQuest'] = 'Enable the use of MapQuest as basemap provider';
+$lang['enableStamen'] = 'Enable the use of Stamen as basemap provider';
 $lang['enableGoogle'] = 'Enable the use of Google as basemap provider';
 $lang['googleAPIkey'] = 'Google Static Maps API key. Get your key at: https://code.google.com/apis/console';
 $lang['enableBing'] = 'Enable the use of Bing as basemap provider';
