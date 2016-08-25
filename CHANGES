@@ -1,4 +1,8 @@
 === version ${project.version} ===
+  * drop support for MapQuest; their tile service was discontinued
+  * add support for Stamen maps (terrain and toner-lite)
+
+=== version 4.7 ===
   * PHP 7 compatibility fixes
 
 === version 4.6 ===
