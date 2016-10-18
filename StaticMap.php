@@ -270,11 +270,11 @@ class StaticMap {
 					if (preg_match ( $markerPrototype ['regex'], $markerType, $matches )) {
 						$markerFilename = $matches [0] . $markerPrototype ['extension'];
 						if ($markerPrototype ['offsetImage']) {
-							list ( $markerImageOffsetX, $markerImageOffsetY ) = split ( ",", $markerPrototype ['offsetImage'] );
+							list ( $markerImageOffsetX, $markerImageOffsetY ) = explode ( ",", $markerPrototype ['offsetImage'] );
 						}
 						$markerShadow = $markerPrototype ['shadow'];
 						if ($markerShadow) {
-							list ( $markerShadowOffsetX, $markerShadowOffsetY ) = split ( ",", $markerPrototype ['offsetShadow'] );
+							list ( $markerShadowOffsetX, $markerShadowOffsetY ) = explode ( ",", $markerPrototype ['offsetShadow'] );
 						}
 					}
 				}
