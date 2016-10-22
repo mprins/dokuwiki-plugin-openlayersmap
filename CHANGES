@@ -1,4 +1,10 @@
 === version ${project.version} ===
+  *
+
+=== version 4.9 ===
+  * some PHP 7 fixes
+
+=== version 4.8 ===
   * drop support for MapQuest; their tile service was discontinued
   * add support for Stamen maps (terrain and toner-lite)
   * disable hillshading layer; it is no longer available
