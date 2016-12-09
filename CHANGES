@@ -1,5 +1,5 @@
 === version ${project.version} ===
-  * add french translation
+  * add french translation by Digitalin
 
 === version 4.9 ===
   * some PHP 7 fixes
