@@ -1,0 +1,21 @@
+==== mode d'emploi ====
+Plusieurs fonctions sont disponibles dans la carte.
+
+== fonctionnement souris/tactile ==
+  * **se déplacer** en saisissant la carte avec un clic de souris, vous pouvez déplacer la carte
+  * **vue d'ensemble** à l'aide du bouton + en bas à droite de la carte, vous pouvez développer une carte d'ensemble
+  * **zoom avant et arrière** en utilisant les boutons + et - en haut à gauche de la carte, vous pouvez obtenir plus ou moins de détails sur la carte
+  * **changement de thème ou de carte** en cliquant sur l'icône ≡ sur le côté droit de la carte, vous pouvez afficher et sélectionner les cartes et thèmes disponibles
+  * **récupération d'informations** la carte peut contenir des éléments qui contiennent plus d'informations, en cliquant dessus un menu contextuel affichera cette information
+  * **affichage plein écran** à l'aide du bouton ✈, la carte peut être agrandie en affichage plein écran, utilisez le bouton ✕ pour revenir à l'affichage de la page.
+
+== fonctionnement clavier ==
+
+  * **déplacement** à l'aide des touches fléchées, vous pouvez déplacer la carte
+  * **vue d'ensemble** à l'aide du bouton + en bas à droite de la carte, vous pouvez développer une vue d'ensemble
+  * **zoom avant et arrière** en utilisant les boutons + et - en haut à gauche de la carte ou en utilisant les touches + et - vous pouvez obtenir plus ou moins de détails dans la carte
+  * **changement de thèmes ou de cartes** en cliquant sur l'icône ≡ sur le côté droit de la carte, vous pouvez afficher et sélectionner les cartes et thèmes disponibles
+  * **récupération d'informations** la carte peut contenir des éléments qui contiennent plus d'informations, à l'aide de la touche i vous pouvez activer un curseur qui peut être déplacé à l'aide des touches fléchées, en appuyant sur la touche entrée, une récupération d'informations s'exécutera. Appuyez sur la touche i ou la touche Échap pour retourner au mode de navigation
+  * **affichage plein écran** à l'aide du bouton ✈, la carte peut être agrandie en affichage plein écran, utilisez le bouton ✕ pour revenir à l'affichage de la page.
+
+// Il est possible que certaines des fonctions ou boutons décrits ci-dessus aient été désactivés par l'auteur de la page ou l'administrateur //

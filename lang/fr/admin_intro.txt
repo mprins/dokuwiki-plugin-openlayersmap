@@ -1,0 +1,6 @@
+
+====== Purger la mise en cache des tuiles et des cartes ======
+
+Cette page vous permet de purger les tuiles et les cartes mises en cache qui sont utilisées par le backend des cartes statiques «locales».
+
+Remarque: après avoir purgé les cartes, les pages contenant les cartes doivent également être purgées.
