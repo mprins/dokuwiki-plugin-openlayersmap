@@ -1,5 +1,6 @@
 === version ${project.version} ===
   * add french translation by Digitalin
+  * use latest version of OpenLayers 2.14-dev
 
 === version 4.9 ===
   * some PHP 7 fixes
