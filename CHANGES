@@ -1,4 +1,7 @@
 === version ${project.version} ===
+  * fix hike and bike static map url
+
+=== version 4.10 ===
   * add french translation by Digitalin
   * use latest version of OpenLayers 2.14-dev
 

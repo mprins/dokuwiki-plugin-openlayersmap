@@ -77,7 +77,9 @@ class StaticMap {
 			'hikeandbike' => array (
 					'txt' => 'Hike & Bike Map',
 					'logo' => 'hnb_logo.png',
-					'url' => 'http://toolserver.org/tiles/hikebike/{Z}/{X}/{Y}.png'
+					//'url' => 'http://toolserver.org/tiles/hikebike/{Z}/{X}/{Y}.png'
+					//moved to: https://www.toolserver.org/tiles/hikebike/12/2105/1388.png
+					'url' => 'http://c.tiles.wmflabs.org/hikebike/{Z}/{X}/{Y}.png'
 			)
 	);
 	protected $tileDefaultSrc = 'openstreetmap';
