@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2016 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2017 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -37,6 +37,9 @@ $meta['enableBing'] = array (
 	'onoff'
 );
 $meta['bingAPIKey'] = array (
+	'string'
+);
+$meta['tfApiKey'] = array (
 	'string'
 );
 $meta['iconUrlOverload'] = array (

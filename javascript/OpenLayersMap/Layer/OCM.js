@@ -29,12 +29,16 @@ OpenLayersMap.Layer.OCM = OpenLayers.Class(OpenLayers.Layer.OSM, {
 	name : 'cycle map',
 
 	/**
+	 * thunderforest services require an api key.
+	 */
+	apikey : '',
+
+	/**
 	 * The tileset URL scheme.
 	 */
-	url : [ 'http://a.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png',
-			'http://b.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png',
-			'http://c.tile.opencyclemap.org/cycle/${z}/${x}/${y}.png' ],
-
+	url : [ '//a.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+this.apikey,
+			'//b.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+this.apikey,
+			'//c.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+this.apikey ],
 	/**
 	 * The layer attribution.
 	 */
@@ -48,6 +52,7 @@ OpenLayersMap.Layer.OCM = OpenLayers.Class(OpenLayers.Layer.OSM, {
 	initialize : function(name, url, options) {
 		OpenLayers.Layer.OSM.prototype.initialize.apply(this, arguments);
 		// this.tileOptions.crossOriginKeyword = null;
+		this.apikey = options.apikey;
 	},
 
 	CLASS_NAME : 'OpenLayersMap.Layer.OCM'

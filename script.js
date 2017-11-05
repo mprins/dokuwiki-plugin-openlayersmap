@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2016 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2017 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -213,18 +213,33 @@ function createMap(mapOpts, OLmapPOI) {
 		m.addLayer(new OpenLayers.Layer.OSM());
 
 		/* open cycle map */
-		m.addLayer(new OpenLayersMap.Layer.OCM());
+		m.addLayer(new OpenLayersMap.Layer.OCM("cycle map",[
+				'//a.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+tfApiKey,
+				'//b.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+tfApiKey,
+				'//c.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+tfApiKey ], {
+			visibility : mapOpts.baselyr === "transport",
+			apikey : tfApiKey
+		}));
 		m.addLayer(new OpenLayersMap.Layer.OCM("transport", [
-				"http://a.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
-				"http://b.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png",
-				"http://c.tile2.opencyclemap.org/transport/${z}/${x}/${y}.png" ], {
-			visibility : mapOpts.baselyr === "transport"
+				"http://a.tile.thunderforest.com/transport/${z}/${x}/${y}.png?apikey="+tfApiKey,
+				"http://b.tile.thunderforest.com/transport/${z}/${x}/${y}.png?apikey="+tfApiKey,
+				"http://c.tile.thunderforest.com/transport/${z}/${x}/${y}.png?apikey="+tfApiKey ], {
+			visibility : mapOpts.baselyr === "transport",
+			apikey : tfApiKey
 		}));
 		m.addLayer(new OpenLayersMap.Layer.OCM("landscape", [
-				"http://a.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
-				"http://b.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
-				"http://c.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png" ], {
-			visibility : mapOpts.baselyr === "landscape"
+				"http://a.tile.thunderforest.com/landscape/${z}/${x}/${y}.png?apikey="+tfApiKey,
+				"http://b.tile.thunderforest.com/landscape/${z}/${x}/${y}.png?apikey="+tfApiKey,
+				"http://c.tile.thunderforest.com/landscape/${z}/${x}/${y}.png?apikey="+tfApiKey ], {
+			visibility : mapOpts.baselyr === "landscape",
+			apikey : tfApiKey
+		}));
+		m.addLayer(new OpenLayersMap.Layer.OCM("outdoors", [
+				"http://a.tile.thunderforest.com/outdoors/${z}/${x}/${y}.png?apikey="+tfApiKey,
+				"http://b.tile.thunderforest.com/outdoors/${z}/${x}/${y}.png?apikey="+tfApiKey,
+				"http://c.tile.thunderforest.com/outdoors/${z}/${x}/${y}.png?apikey="+tfApiKey ], {
+			visibility : mapOpts.baselyr === "outdoors",
+			apikey : tfApiKey
 		}));
 
 		m.addLayer(new OpenLayers.Layer.OSM(
@@ -634,6 +649,12 @@ bApiKey = '',
  * @type {String}
  */
 gApiKey = '',
+/**
+ * Thunderforest API key.
+ *
+ * @type {String}
+ */
+tfApiKey = '',
 /**
  * OSM tiles flag.
  *

@@ -21,6 +21,7 @@
  * @author Mark C. Prins
  */
 $lang['bingAPIKey'] = 'Bing Maps API sleutel. Haal een eigen sleutel op: https://www.bingmapsportal.com/application';
+$lang['tfAPIKey'] = 'Thunderforest API sleutel. Haal een eigen sleutel op: https://manage.thunderforest.com/dashboard';
 $lang['googleAPIkey'] = 'Google API Static Maps sleutel. Haal een eigen sleutel op: https://code.google.com/apis/console';
 $lang['iconUrlOverload'] = 'URL voor kaart ikonen bij gebruik van statische kaarten op een non-internet host';
 $lang['enableStamen'] = 'Maak gebruik van Stamen als basiskaart mogelijk';

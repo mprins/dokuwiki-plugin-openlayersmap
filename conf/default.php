@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2016 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2017 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -21,6 +21,7 @@
  * @author Mark C. Prins
  */
 $conf['bingAPIKey'] = '';
+$conf['tfApiKey'] = '';
 $conf['iconUrlOverload'] = '';
 $conf['enableStamen'] = 1;
 $conf['enableGoogle'] = 0;

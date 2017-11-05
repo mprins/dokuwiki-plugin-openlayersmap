@@ -261,7 +261,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$initialised = true;
 				// render necessary script tags
 				if ($gEnable) {
-					$gscript = '<script type="text/javascript" src="//maps.google.com/maps/api/js?v=3.22&amp;key='.$this->getConf ( 'googleAPIkey' ).'"></script>';
+					$gscript = '<script type="text/javascript" src="//maps.google.com/maps/api/js?v=3.29&amp;key='.$this->getConf ( 'googleAPIkey' ).'"></script>';
 				}
 				$olscript = '<script type="text/javascript" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js"></script>';
 
@@ -272,6 +272,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$scriptEnable .= 'stamenEnable = ' . ($stamenEnable ? 'true' : 'false') . ';';
 				$scriptEnable .= 'bEnable = ' . ($enableBing ? 'true' : 'false') . ';';
 				$scriptEnable .= 'bApiKey="' . $this->getConf ( 'bingAPIKey' ) . '";';
+				$scriptEnable .= 'tfApiKey="' . $this->getConf ( 'tfApiKey' ) . '";';
 				$scriptEnable .= 'gApiKey="' . $this->getConf ( 'googleAPIkey' ) . '";';
 				$scriptEnable .= '/*!]]>*/</script>';
 			}

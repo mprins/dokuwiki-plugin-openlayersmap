@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012-2016 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2012-2017 Mark C. Prins <mprins@users.sf.net>
  *
  * In part based on staticMapLite 0.03 available at http://staticmaplite.svn.sourceforge.net/viewvc/staticmaplite/
  *
@@ -43,25 +43,30 @@ class StaticMap {
 			'cycle' => array (
 					'txt' => 'OpenCycleMap tiles',
 					'logo' => 'cycle_logo.png',
-					'url' => 'http://tile.opencyclemap.org/cycle/{Z}/{X}/{Y}.png'
+					'url' => 'http://tile.thunderforest.com/cycle/{Z}/{X}/{Y}.png?apikey='
 			),
 			'transport' => array (
 					'txt' => 'OpenCycleMap tiles',
 					'logo' => 'cycle_logo.png',
-					'url' => 'http://tile2.opencyclemap.org/transport/{Z}/{X}/{Y}.png'
+					'url' => 'http://tile.thunderforest.com/transport/{Z}/{X}/{Y}.png?apikey='
 			),
 			'landscape' => array (
 					'txt' => 'OpenCycleMap tiles',
 					'logo' => 'cycle_logo.png',
-					'url' => 'http://tile3.opencyclemap.org/landscape/{Z}/{X}/{Y}.png'
+					'url' => 'http://tile.thunderforest.com/landscape/{Z}/{X}/{Y}.png?apikey='
+			),
+			'outdoors' => array (
+					'txt' => 'OpenCycleMap tiles',
+					'logo' => 'cycle_logo.png',
+					'url' => 'http://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png?apikey='
 			),
 			'toner-lite' => array (
-					'txt' => 'OpenCycleMap tiles',
+					'txt' => 'Stamen tiles',
 					'logo' => 'stamen.png',
 					'url' => 'http://tile.stamen.com/toner-lite/{Z}/{X}/{Y}.png'
 			),
 			'terrain' => array (
-					'txt' => 'OpenCycleMap tiles',
+					'txt' => 'Stamen tiles',
 					'logo' => 'stamen.png',
 					'url' => 'http://tile.stamen.com/terrain/{Z}/{X}/{Y}.png'
 			),
@@ -121,7 +126,7 @@ class StaticMap {
 			)
 	);
 	protected $centerX, $centerY, $offsetX, $offsetY, $image;
-	protected $zoom, $lat, $lon, $width, $height, $markers, $maptype, $kmlFileName, $gpxFileName, $geojsonFileName, $autoZoomExtent;
+	protected $zoom, $lat, $lon, $width, $height, $markers, $maptype, $kmlFileName, $gpxFileName, $geojsonFileName, $autoZoomExtent, $apikey;
 	protected $tileCacheBaseDir, $mapCacheBaseDir, $mediaBaseDir;
 	protected $useTileCache = true;
 	protected $mapCacheID = '';
@@ -155,8 +160,10 @@ class StaticMap {
 	 *        	Directory to cache map tiles
 	 * @param boolean $autoZoomExtent
 	 *        	Wheter or not to override zoom/lat/lon and zoom to the extent of gpx/kml and markers
+	 * @param apikey
+	 *          Some service require a key to access
 	 */
-	public function __construct($lat, $lon, $zoom, $width, $height, $maptype, $markers, $gpx, $kml, $geojson, $mediaDir, $tileCacheBaseDir, $autoZoomExtent = TRUE) {
+	public function __construct($lat, $lon, $zoom, $width, $height, $maptype, $markers, $gpx, $kml, $geojson, $mediaDir, $tileCacheBaseDir, $autoZoomExtent = TRUE, $apikey = '') {
 		$this->zoom = $zoom;
 		$this->lat = $lat;
 		$this->lon = $lon;
@@ -176,6 +183,7 @@ class StaticMap {
 		$this->useTileCache = $this->tileCacheBaseDir !== '';
 		$this->mapCacheBaseDir = $mediaDir . '/olmapmaps';
 		$this->autoZoomExtent = $autoZoomExtent;
+		$this->apikey = $apikey;
 	}
 
 	/**
@@ -233,6 +241,7 @@ class StaticMap {
 						$x,
 						$y
 				), $this->tileInfo [$this->maptype] ['url'] );
+				$url += $this->apikey;
 				$tileData = $this->fetchTile ( $url );
 				if ($tileData) {
 					$tileImage = imagecreatefromstring ( $tileData );

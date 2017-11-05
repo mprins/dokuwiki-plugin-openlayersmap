@@ -1,5 +1,7 @@
 === version ${project.version} ===
   * fix hike and bike static map url
+  * update google maps api to 3.29
+  * allow to add Thundeforest API key
 
 === version 4.10 ===
   * add french translation by Digitalin

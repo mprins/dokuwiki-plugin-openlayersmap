@@ -21,6 +21,7 @@
  * @author Mark C. Prins
  */
 $lang['bingAPIKey'] = 'Bing Maps API key. Get your key at: https://www.bingmapsportal.com/application';
+$lang['tfAPIKey'] = 'Thunderforest API key. Get your key at: https://manage.thunderforest.com/dashboard';
 $lang['iconUrlOverload'] = 'URL for map icons when using static maps on a non-internet host';
 $lang['enableStamen'] = 'Enable the use of Stamen as basemap provider';
 $lang['enableGoogle'] = 'Enable the use of Google as basemap provider';
