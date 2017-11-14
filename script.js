@@ -201,7 +201,7 @@ function createMap(mapOpts, OLmapPOI) {
 	/** map. */
 	m = new OpenLayers.Map({
 		div : mapOpts.id,
-		projection : 'EPSG:900913',
+		projection : 'EPSG:3857',
 		displayProjection : new OpenLayers.Projection("EPSG:4326"),
 		numZoomLevels : 22,
 		controls : [],
