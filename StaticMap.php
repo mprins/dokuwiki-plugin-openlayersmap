@@ -614,6 +614,9 @@ class StaticMap {
 
 	/**
 	 * Calculate the lat/lon/zoom values to make sure that all of the markers and gpx/kml are on the map.
+	 * can throw an error like
+	 * "Fatal error: Uncaught Exception: Cannot create a collection with non-geometries in
+	 * D:\www\wild-water.nl\www\dokuwiki\lib\plugins\geophp\geoPHP\lib\geometry\Collection.class.php:29"
 	 *
 	 * @param float $paddingFactor
 	 *        	buffer constant to enlarge (>1.0) the zoom level
@@ -626,18 +629,30 @@ class StaticMap {
 				$geoms [] = new Point ( $marker ['lon'], $marker ['lat'] );
 			}
 		}
+		$g = FALSE;
 		if (file_exists ( $this->kmlFileName )) {
-			$geoms [] = geoPHP::load ( file_get_contents ( $this->kmlFileName ), 'kml' );
+			$g = geoPHP::load ( file_get_contents ( $this->kmlFileName ), 'kml' );
+			if($g !== FALSE) {
+				$geoms [] = $g;
+			}
 		}
 		if (file_exists ( $this->gpxFileName )) {
-			$geoms [] = geoPHP::load ( file_get_contents ( $this->gpxFileName ), 'gpx' );
+			$g = geoPHP::load ( file_get_contents ( $this->gpxFileName ), 'gpx' );
+			if($g !== FALSE) {
+				$geoms [] = $g;
+			}
 		}
 		if (file_exists ( $this->geojsonFileName )) {
-			$geoms [] = geoPHP::load ( file_get_contents ( $this->geojsonFileName ), 'geojson' );
+			$g = geoPHP::load ( file_get_contents ( $this->geojsonFileName ), 'geojson' );
+			if($g !== FALSE) {
+				$geoms [] = $g;
+			}
 		}
 
-		if (count ( $geoms ) <= 1)
+		if (count ( $geoms ) <= 1) {
+			dbglog($geoms,"StaticMap::autoZoom: Skip setting autozoom options");
 			return;
+		}
 
 		$geom = new GeometryCollection ( $geoms );
 		$centroid = $geom->centroid ();
@@ -657,6 +672,7 @@ class StaticMap {
 		$this->zoom = floor ( $zoom );
 		$this->lon = $centroid->getX ();
 		$this->lat = $centroid->getY ();
+		dbglog("StaticMap::autoZoom: Set autozoom options to: z: $this->zoom, lon: $this->lon, lat: $this->lat");
 	}
 
 	/**
@@ -665,8 +681,13 @@ class StaticMap {
 	 * @return string url relative to media dir
 	 */
 	public function getMap() {
-		if ($this->autoZoomExtent)
-			$this->autoZoom ();
+		try {
+			if ($this->autoZoomExtent) {
+				$this->autoZoom ();
+			}
+		} catch (Exception $e) {
+			dbglog($e);
+		}
 
 			// use map cache, so check cache for map
 		if (! $this->checkMapCache ()) {
