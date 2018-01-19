@@ -16,5 +16,6 @@ OpenLayers.Lang.nl = OpenLayers.Util.extend({
 	"toggle_help" : "Toon of verberg help",
 	"toggle_dynamic_map" : "Verberg of toon de dynamische kaart",
 	"toggle_fullscreen" : "Toon of verberg volledige scherm weergave",
-	"compass" : "kompasrichting: "
+	"compass" : "kompasrichting: ",
+	"navi" : "open navi"
 }, OpenLayers.Lang.nl);

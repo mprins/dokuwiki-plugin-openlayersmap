@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2017 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2018 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -88,7 +88,10 @@ function onFeatureSelect(selFeature) {
 		pContent += '<div class="coord" title="lat;lon"><img src="' + selFeature.attributes.img
 				+ '" width="16" height="16" style="transform:rotate(' + selFeature.attributes.angle + 'deg)" />&nbsp;'
 				// + 'lat;lon: '
-				+ selFeature.data.latlon + '</div>';
+				+ selFeature.data.latlon
+				+ '&nbsp;&nbsp;&nbsp;<a href="geo:'+ selFeature.data.lat + ',' + selFeature.data.lon
+				+ '?q=' + selFeature.data.lat + ',' + selFeature.data.lon + '" title="geo/navi link">'
+				+ OpenLayers.i18n("navi") + '</a></div>';
 	}
 	if (pContent.length > 0) {
 		// only show when there is something to show...
@@ -418,7 +421,9 @@ function createMap(mapOpts, OLmapPOI) {
 			feat.data = {
 				name : OLmapPOI[j].txt,
 				rowId : OLmapPOI[j].rowId,
-				latlon : _latlon
+				latlon : _latlon,
+				lat: OLmapPOI[j].lat,
+				lon: OLmapPOI[j].lon
 			};
 			features.push(feat);
 		}
@@ -574,6 +579,7 @@ function olInit() {
 			jQuery('#' + _id).parent().parent().find('.olMapHelp').css('max-width', olMapData[_i].mapOpts.width);
 
 			// shrink the map width to fit inside page container
+			//TODO also do this when window is resized
 			var _w = jQuery('#' + _id + '-olContainer').parent().innerWidth();
 			if (parseInt(olMapData[_i].mapOpts.width) > _w) {
 				jQuery('#' + _id).width(_w);
