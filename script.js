@@ -51,11 +51,14 @@ function onFeatureSelect(selFeature) {
 	}
 
 	var pContent = '<div class="spacer">&nbsp;</div>';
+	var locDesc = '';
 	if (selFeature.data.rowId !== undefined) {
 		pContent += '<span class="rowId">' + selFeature.data.rowId + ': </span>';
 	}
 	if (selFeature.data.name !== undefined) {
 		pContent += '<span class="txt">' + selFeature.data.name + '</span>';
+		locDesc = selFeature.data.name;
+		// locDesc = selFeature.data.name.split(/\s+/).slice(0,2).join('+');
 	}
 	if (selFeature.data.ele !== undefined) {
 		pContent += '<div class="ele">elevation: ' + selFeature.data.ele + '</div>';
@@ -87,11 +90,9 @@ function onFeatureSelect(selFeature) {
 	if (selFeature.attributes.img !== undefined) {
 		pContent += '<div class="coord" title="lat;lon"><img src="' + selFeature.attributes.img
 				+ '" width="16" height="16" style="transform:rotate(' + selFeature.attributes.angle + 'deg)" />&nbsp;'
-				// + 'lat;lon: '
-				+ selFeature.data.latlon
-				+ '&nbsp;&nbsp;&nbsp;<a href="geo:'+ selFeature.data.lat + ',' + selFeature.data.lon
-				+ '?q=' + selFeature.data.lat + ',' + selFeature.data.lon + '" title="geo/navi link">'
-				+ OpenLayers.i18n("navi") + '</a></div>';
+				+ '<a href="geo:'+ selFeature.data.lat + ',' + selFeature.data.lon
+				+ '?q=' + selFeature.data.lat + ',' + selFeature.data.lon + '(' + locDesc + ')" title="' + OpenLayers.i18n("navi") + '">'
+				+ selFeature.data.latlon + '</a></div>';
 	}
 	if (pContent.length > 0) {
 		// only show when there is something to show...

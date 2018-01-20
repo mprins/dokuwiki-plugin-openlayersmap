@@ -17,5 +17,5 @@ OpenLayers.Lang.en = OpenLayers.Util.extend({
 	"toggle_dynamic_map" : "Hide or show the dynamic map",
 	"toggle_fullscreen" : "Hide or show full screen mode",
 	"compass" : "compass direction: ",
-    "navi" : "open navi"
+    "navi" : "open in navigation app (geo uri)"
 }, OpenLayers.Lang.en);

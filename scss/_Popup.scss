@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2013-2018 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -35,12 +35,18 @@
 
 }
 
+.spacer {
+	height: $button-height;
+	min-width: 190px;
+}
+
 .coord {
 	float:left;
 	top:-4px;
 	position: absolute;
 	font-size: smaller;
 	overflow: hidden;
+	min-width: 190px;
 
 	& img {
 		height: inherit;
@@ -54,7 +60,7 @@
 
 .olPopupCloseBox {
 	position: absolute;
-	height: $button-heigth;
+	height: $button-height;
 	width: $button-width;
 	line-height: $button-line-height;
 	text-decoration: none;

@@ -1,5 +1,6 @@
 === version ${project.version} ===
   * use EPSG:3857 as basemap projection
+  * add a geo: uri to the header of popup to open the location in your satnav
 
 === version 4.11 ===
   * fix hike and bike static map url
