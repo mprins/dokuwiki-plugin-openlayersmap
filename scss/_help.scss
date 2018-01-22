@@ -20,6 +20,7 @@
 	position: absolute;
 	background: __background_alt__;
 	border: 1px solid __border__;
+	padding-right: 2px;
 
 	@include border-radius(4px);
 	@include box-shadow(2px 2px 2px __border__);

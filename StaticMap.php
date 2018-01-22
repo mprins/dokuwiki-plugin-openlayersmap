@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012-2017 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2012-2018 Mark C. Prins <mprins@users.sf.net>
  *
  * In part based on staticMapLite 0.03 available at http://staticmaplite.svn.sourceforge.net/viewvc/staticmaplite/
  *
@@ -43,22 +43,22 @@ class StaticMap {
 			'cycle' => array (
 					'txt' => 'OpenCycleMap tiles',
 					'logo' => 'cycle_logo.png',
-					'url' => 'http://tile.thunderforest.com/cycle/{Z}/{X}/{Y}.png?apikey='
+					'url' => 'https://tile.thunderforest.com/cycle/{Z}/{X}/{Y}.png?apikey='
 			),
 			'transport' => array (
 					'txt' => 'OpenCycleMap tiles',
 					'logo' => 'cycle_logo.png',
-					'url' => 'http://tile.thunderforest.com/transport/{Z}/{X}/{Y}.png?apikey='
+					'url' => 'https://tile.thunderforest.com/transport/{Z}/{X}/{Y}.png?apikey='
 			),
 			'landscape' => array (
 					'txt' => 'OpenCycleMap tiles',
 					'logo' => 'cycle_logo.png',
-					'url' => 'http://tile.thunderforest.com/landscape/{Z}/{X}/{Y}.png?apikey='
+					'url' => 'https://tile.thunderforest.com/landscape/{Z}/{X}/{Y}.png?apikey='
 			),
 			'outdoors' => array (
 					'txt' => 'OpenCycleMap tiles',
 					'logo' => 'cycle_logo.png',
-					'url' => 'http://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png?apikey='
+					'url' => 'https://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png?apikey='
 			),
 			'toner-lite' => array (
 					'txt' => 'Stamen tiles',

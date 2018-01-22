@@ -582,7 +582,6 @@ function olInit() {
 			jQuery('#' + _id).parent().parent().find('.olMapHelp').css('max-width', olMapData[_i].mapOpts.width);
 
 			// shrink the map width to fit inside page container
-			//TODO also do this when window is resized
 			var _w = jQuery('#' + _id + '-olContainer').parent().innerWidth();
 			if (parseInt(olMapData[_i].mapOpts.width) > _w) {
 				jQuery('#' + _id).width(_w);
@@ -591,6 +590,23 @@ function olInit() {
 				olMaps[_id].updateSize();
 			}
 		}
+
+		var resizeTimer;
+		jQuery(window).on('resize', function(e) {
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(function() {
+				for (_i = 0; _i < olMapData.length; _i++) {
+					var _id = olMapData[_i].mapOpts.id;
+					var _w = jQuery('#' + _id + '-olContainer').parent().innerWidth();
+					if (parseInt(olMapData[_i].mapOpts.width) > _w) {
+						jQuery('#' + _id).width(_w);
+						jQuery('#' + _id + '-olStatusBar').width(_w);
+						jQuery('#' + _id).parent().parent().find('.olMapHelp').width(_w);
+						olMaps[_id].updateSize();
+					}
+				}
+			}, 250);
+		});
 
 		// hide the table(s) with POI by giving it a print-only style
 		jQuery('.olPOItableSpan').addClass('olPrintOnly');
