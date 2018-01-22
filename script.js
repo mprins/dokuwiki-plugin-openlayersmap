@@ -58,6 +58,7 @@ function onFeatureSelect(selFeature) {
 	if (selFeature.data.name !== undefined) {
 		pContent += '<span class="txt">' + selFeature.data.name + '</span>';
 		locDesc = selFeature.data.name;
+		// TODO strip <p> tag from locDesc
 		// locDesc = selFeature.data.name.split(/\s+/).slice(0,2).join('+');
 	}
 	if (selFeature.data.ele !== undefined) {
@@ -91,7 +92,7 @@ function onFeatureSelect(selFeature) {
 		pContent += '<div class="coord" title="lat;lon"><img src="' + selFeature.attributes.img
 				+ '" width="16" height="16" style="transform:rotate(' + selFeature.attributes.angle + 'deg)" />&nbsp;'
 				+ '<a href="geo:'+ selFeature.data.lat + ',' + selFeature.data.lon
-				+ '?q=' + selFeature.data.lat + ',' + selFeature.data.lon + '(' + locDesc + ')" title="' + OpenLayers.i18n("navi") + '">'
+				+ '?q=' + selFeature.data.lat + ',' + selFeature.data.lon + '(' + selFeature.data.alt + ')" title="' + OpenLayers.i18n("navi") + '">'
 				+ selFeature.data.latlon + '</a></div>';
 	}
 	if (pContent.length > 0) {
@@ -424,7 +425,8 @@ function createMap(mapOpts, OLmapPOI) {
 				rowId : OLmapPOI[j].rowId,
 				latlon : _latlon,
 				lat: OLmapPOI[j].lat,
-				lon: OLmapPOI[j].lon
+				lon: OLmapPOI[j].lon,
+                alt : OLmapPOI[j].img.substring(0, OLmapPOI[j].img.lastIndexOf("."))
 			};
 			features.push(feat);
 		}
