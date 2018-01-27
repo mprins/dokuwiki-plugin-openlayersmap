@@ -1,4 +1,7 @@
 === version ${project.version} ===
+  * Russian language files providd by Aleksej Kozlov
+
+=== version 4.12 ===
   * use EPSG:3857 as basemap projection
   * add a geo: uri to the header of popup to open the location in your satnav
   * react to page resize
