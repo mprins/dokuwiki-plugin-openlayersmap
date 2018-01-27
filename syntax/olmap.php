@@ -88,10 +88,16 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		// break matched cdata into its components
 		list ( $str_params, $str_points ) = explode ( '>', substr ( $match, 7, - 9 ), 2 );
 		// get the lat/lon for adding them to the metadata (used by geotag)
-		preg_match ( '(lat[:|=]\"-?\d*\.\d*\")', $match, $mainLat );
-		preg_match ( '(lon[:|=]\"-?\d*\.\d*\")', $match, $mainLon );
+		preg_match ( '(lat[:|=]\"-?\d*\.?\d*\")', $match, $mainLat );
+		preg_match ( '(lon[:|=]\"-?\d*\.?\d*\")', $match, $mainLon );
 		$mainLat = substr ( $mainLat [0], 5, - 1 );
 		$mainLon = substr ( $mainLon [0], 5, - 1 );
+		if (!is_numeric($mainLat)) {
+			$mainLat = $this->dflt ['lat'];
+		}
+		if (!is_numeric($mainLon)) {
+			$mainLon = $this->dflt ['lon'];
+		}
 
 		$gmap = $this->_extract_params ( $str_params );
 		$overlay = $this->_extract_points ( $str_points );
@@ -628,6 +634,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				}
 			}
 
+			$apikey = '';
 			switch ($gmap ['baselyr']) {
 				case 'mapnik' :
 				case 'openstreetmap' :
@@ -635,12 +642,19 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					break;
 				case 'transport' :
 					$maptype = 'transport';
+					$apikey = $this->getConf ( 'tfApiKey' );
 					break;
 				case 'landscape' :
 					$maptype = 'landscape';
+					$apikey = $this->getConf ( 'tfApiKey' );
+					break;
+				case 'outdoors' :
+					$maptype = 'outdoors';
+					$apikey = $this->getConf ( 'tfApiKey' );
 					break;
 				case 'cycle map' :
 					$maptype = 'cycle';
+					$apikey = $this->getConf ( 'tfApiKey' );
 					break;
 				case 'hike and bike map' :
 					$maptype = 'hikeandbike';

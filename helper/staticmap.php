@@ -40,14 +40,16 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 				'name'   => 'getMap',
 				'desc'   => 'returns url to the image',
 				'params' => array(
-						'center' => 'string',
+						'lat' => 'float',
+						'lon' => 'float',
 						'zoom' => 'integer',
 						'size' => 'string',
 						'maptype' => 'string',
 						'markers' => 'string',
 						'gpx' => 'string',
 						'kml' => 'string',
-						'geojson' => 'string'),
+						'geojson' => 'string',
+						'apikey' => 'string'),
 				'return' => array('image' => 'string'),
 		);
 		return $result;
@@ -65,10 +67,11 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 	 * @param string gpx media link
 	 * @param string kml media link
 	 * @param string geojson media link
+	 * @param string optional API key eg. for Thunderforest maps
 	 *
 	 * @return the media id url
 	 */
-	public function getMap($lat, $lon, $zoom, $size, $maptype, $markers, $gpx, $kml, $geojson){
+	public function getMap($lat, $lon, $zoom, $size, $maptype, $markers, $gpx, $kml, $geojson, $apikey = ''){
 		global $conf;
 		// dbglog($markers,'helper_plugin_openlayersmap_staticmap::getMap: markers :');
 
@@ -93,7 +96,7 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 		$map = new StaticMap($lat, $lon, $zoom, $width, $height, $maptype,
 				$markers, $gpx, $kml, $geojson, $conf['mediadir'], $conf['cachedir'],
 				$this->getConf('autoZoomMap'),
-				$this->getConf('tfApiKey')
+				$apikey
 		);
 
 		// return the media id url
