@@ -21,7 +21,7 @@
  * @author Digitalin
  */
 $lang['bingAPIKey'] = 'Clé d\'API Bing Maps. Obtenez votre clé chez: https://www.bingmapsportal.com/application';
-$lang['tfAPIKey'] = 'Clé d\'API Thunderforest. Obtenez votre clé chez: https://manage.thunderforest.com/dashboard';
+$lang['tfApiKey'] = 'Clé d\'API Thunderforest. Obtenez votre clé chez: https://manage.thunderforest.com/dashboard';
 $lang['iconUrlOverload'] = 'URL pour les icônes de carte lors de l\'utilisation de cartes statiques sur un hôte non-Internet';
 $lang['enableStamen'] = 'Activer l\'utilisation de Stamen comme fournisseur de base de données cartographiques';
 $lang['enableGoogle'] = 'Activer l\'utilisation de Google comme fournisseur de base de données cartographiques';
