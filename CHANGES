@@ -1,6 +1,7 @@
 === version ${project.version} ===
   * Russian language files providd by Aleksej Kozlov
   * some small bugfixes
+  * many more configuration options provided by Aleksej Kozlov
 
 === version 4.12 ===
   * use EPSG:3857 as basemap projection

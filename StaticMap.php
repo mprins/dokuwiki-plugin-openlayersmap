@@ -241,7 +241,8 @@ class StaticMap {
 						$x,
 						$y
 				), $this->tileInfo [$this->maptype] ['url'] );
-				$url += $this->apikey;
+				$url .= $this->apikey;
+				
 				$tileData = $this->fetchTile ( $url );
 				if ($tileData) {
 					$tileImage = imagecreatefromstring ( $tileData );
@@ -252,6 +253,7 @@ class StaticMap {
 				}
 				$destX = ($x - $startX) * $this->tileSize + $this->offsetX;
 				$destY = ($y - $startY) * $this->tileSize + $this->offsetY;
+				dbglog($this->tileSize,"imagecopy tile into image: $destX, $destY");
 				imagecopy ( $this->image, $tileImage, $destX, $destY, 0, 0, $this->tileSize, $this->tileSize );
 			}
 		}
@@ -662,6 +664,7 @@ class StaticMap {
 		// $vy00 = log(tan(M_PI*(0.25 + $centroid->getY()/360)));
 		$vy0 = log ( tan ( M_PI * (0.25 + $bbox ['miny'] / 360) ) );
 		$vy1 = log ( tan ( M_PI * (0.25 + $bbox ['maxy'] / 360) ) );
+		dbglog("StaticMap::autoZoom: vertical resolution: $vy0, $vy1");
 		$zoomFactorPowered = ($this->height / 2) / (40.7436654315252 * ($vy1 - $vy0));
 		$resolutionVertical = 360 / ($zoomFactorPowered * $this->tileSize);
 		// determine horizontal resolution
@@ -669,7 +672,9 @@ class StaticMap {
 		$resolution = max ( $resolutionHorizontal, $resolutionVertical ) * $paddingFactor;
 		$zoom = log ( 360 / ($resolution * $this->tileSize), 2 );
 
-		$this->zoom = floor ( $zoom );
+		if (is_finite($zoom) && $zoom < 15 && $zoom > 2) {
+			$this->zoom = floor ( $zoom );
+		}
 		$this->lon = $centroid->getX ();
 		$this->lat = $centroid->getY ();
 		dbglog("StaticMap::autoZoom: Set autozoom options to: z: $this->zoom, lon: $this->lon, lat: $this->lat");

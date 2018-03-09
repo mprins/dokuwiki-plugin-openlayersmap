@@ -38,7 +38,9 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			'lat' => 50.0,
 			'lon' => 5.1,
 			'zoom' => 12,
+			'autozoom' => 1,
 			'statusbar' => true,
+			'toolbar' => true,
 			'controls' => true,
 			'poihoverstyle' => false,
 			'baselyr' => 'OpenStreetMap',
@@ -224,7 +226,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					</tr>';
 		}
 
-		$js .= "{mapOpts:{" . $param . ",displayformat:'" . $this->getConf ( 'displayformat' ) . "'},poi:[$poi]};";
+		$autozoom = empty ( $gmap ['autozoom'] ) ? $this->getConf ( 'autoZoomMap' ) : $gmap ['autozoom'];
+		$js .= "{mapOpts: {" . $param . ", displayformat: '" . $this->getConf ( 'displayformat' ) . "', autozoom: " . $autozoom . "}, poi: [$poi]};";
 		// unescape the json
 		$poitable = stripslashes ( $poitable );
 
@@ -314,7 +317,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			$mapnumber ++;
 			return true;
 		} elseif ($mode == 'metadata') {
-			if (! (($this->dflt ['lat'] == $mainLat) && ($thisdflt ['lon'] == $mainLon))) {
+			if (! (($this->dflt ['lat'] == $mainLat) && ($this->dflt ['lon'] == $mainLon))) {
 				// render geo metadata, unless they are the default
 				$renderer->meta ['geo'] ['lat'] = $mainLat;
 				$renderer->meta ['geo'] ['lon'] = $mainLon;
@@ -362,6 +365,13 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 		preg_match_all ( '/(\w*)="(.*?)"/us', $str_params, $param, PREG_SET_ORDER );
 		// parse match for instructions, break into key value pairs
 		$gmap = $this->dflt;
+		foreach ( $gmap as $key => &$value ) {
+			$defval = $this->getConf ( 'default_' . $key );
+			if ($defval !== '') {
+				$value = $defval;
+			}
+		}
+		unset ( $value );
 		foreach ( $param as $kvpair ) {
 			list ( $match, $key, $val ) = $kvpair;
 			$key = strtolower ( $key );

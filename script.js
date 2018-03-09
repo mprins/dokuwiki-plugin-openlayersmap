@@ -431,8 +431,10 @@ function createMap(mapOpts, OLmapPOI) {
 			features.push(feat);
 		}
 		markers.addFeatures(features);
-		extent.extend(markers.getDataExtent());
-		m.zoomToExtent(extent);
+		if (mapOpts.autozoom) {
+			extent.extend(markers.getDataExtent());
+			m.zoomToExtent(extent);
+		}
 	}
 
 	/* GPX layer */
@@ -462,10 +464,12 @@ function createMap(mapOpts, OLmapPOI) {
 			strategies : [ new OpenLayers.Strategy.Fixed() ]
 		});
 		m.addLayer(layerGPX);
-		layerGPX.events.register('loadend', m, function() {
-			extent.extend(layerGPX.getDataExtent());
-			m.zoomToExtent(extent);
-		});
+		if (mapOpts.autozoom) {
+			layerGPX.events.register('loadend', m, function() {
+				extent.extend(layerGPX.getDataExtent());
+				m.zoomToExtent(extent);
+			});
+		}
 	}
 
 	/* GeoJSON layer */
@@ -490,10 +494,12 @@ function createMap(mapOpts, OLmapPOI) {
 			strategies : [ new OpenLayers.Strategy.Fixed() ]
 		});
 		m.addLayer(layerGJS);
-		layerGJS.events.register('loadend', m, function() {
-			extent.extend(layerGJS.getDataExtent());
-			m.zoomToExtent(extent);
-		});
+		if (mapOpts.autozoom) {
+			layerGJS.events.register('loadend', m, function() {
+				extent.extend(layerGJS.getDataExtent());
+				m.zoomToExtent(extent);
+			});
+		}
 	}
 
 	/* KML layer */
@@ -514,10 +520,12 @@ function createMap(mapOpts, OLmapPOI) {
 			strategies : [ new OpenLayers.Strategy.Fixed() ]
 		});
 		m.addLayer(layerKML);
-		layerKML.events.register('loadend', m, function() {
-			extent.extend(layerKML.getDataExtent());
-			m.zoomToExtent(extent);
-		});
+		if (mapOpts.autozoom) {
+			layerKML.events.register('loadend', m, function() {
+				extent.extend(layerKML.getDataExtent());
+				m.zoomToExtent(extent);
+			});
+		}
 	}
 
 	// selectcontrol for layers
