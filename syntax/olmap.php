@@ -621,7 +621,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 			}
 			$size = str_replace ( "px", "", $gmap ['width'] ) . "x" . str_replace ( "px", "", $gmap ['height'] );
 
-			$markers = '';
+			$markers = array();
 			if (! empty ( $overlay )) {
 				foreach ( $overlay as $data ) {
 					list ( $lat, $lon, $text, $angle, $opacity, $img ) = $data;
@@ -716,8 +716,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 	 * @return multitype:float array describing the mbr and center point
 	 */
 	private function _calcBBOX($overlay, $lat, $lon) {
-		$lats [] = $lat;
-		$lons [] = $lon;
+		$lats = array($lat);
+		$lons = array($lon);
 		foreach ( $overlay as $data ) {
 			list ( $lat, $lon, $text, $angle, $opacity, $img ) = $data;
 			$lats [] = $lat;
