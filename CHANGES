@@ -1,4 +1,7 @@
 === version ${project.version} ===
+  * some small fixes 
+
+=== version 4.13 ===
   * Russian language files providd by Aleksej Kozlov
   * some small bugfixes
   * many more configuration options provided by Aleksej Kozlov

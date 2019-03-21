@@ -31,15 +31,15 @@ OpenLayersMap.Layer.StamenTerrain = OpenLayers.Class(OpenLayers.Layer.OSM, {
 	/**
 	 * The tileset URL scheme.
 	 */
-	url : [ '//a.tile.stamen.com/terrain/${z}/${x}/${y}.png',
-			'//b.tile.stamen.com/terrain/${z}/${x}/${y}.png',
-			'//c.tile.stamen.com/terrain/${z}/${x}/${y}.png',
-			'//d.tile.stamen.com/terrain/${z}/${x}/${y}.png' ],
+	url : [ 'https://stamen-tiles.a.ssl.fastly.net/terrain/${z}/${x}/${y}.png',
+			'https://stamen-tiles.a.ssl.fastly.net/terrain/${z}/${x}/${y}.png',
+			'https://stamen-tiles.a.ssl.fastly.net/terrain/${z}/${x}/${y}.png',
+			'https://stamen-tiles.a.ssl.fastly.net/terrain/${z}/${x}/${y}.png' ],
 
 	/**
 	 * The layer attribution.
 	 */
-	attribution : 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, '
+	attribution : 'Map tiles by <a href="http://stamen.com">© Stamen Design</a>, '
 			+ 'under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. '
 			+ 'Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, '
 			+ 'under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
@@ -74,10 +74,10 @@ OpenLayersMap.Layer.StamenToner = OpenLayers.Class(OpenLayersMap.Layer.StamenTer
 	 * The tileset URL scheme.
 	 */
 
-	url : [ '//a.tile.stamen.com/toner-lite/${z}/${x}/${y}.png',
-			'//b.tile.stamen.com/toner-lite/${z}/${x}/${y}.png',
-			'//c.tile.stamen.com/toner-lite/${z}/${x}/${y}.png',
-			'//d.tile.stamen.com/toner-lite/${z}/${x}/${y}.png' ],
+	url : [ 'https://stamen-tiles.a.ssl.fastly.net/toner-lite/${z}/${x}/${y}.png',
+			'https://stamen-tiles.a.ssl.fastly.net/toner-lite/${z}/${x}/${y}.png',
+			'https://stamen-tiles.a.ssl.fastly.net/toner-lite/${z}/${x}/${y}.png',
+			'https://stamen-tiles.a.ssl.fastly.net/toner-lite/${z}/${x}/${y}.png' ],
 	/**
 	 * @constructor
 	 */

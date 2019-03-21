@@ -219,34 +219,34 @@ function createMap(mapOpts, OLmapPOI) {
 
 		/* open cycle map */
 		m.addLayer(new OpenLayersMap.Layer.OCM("cycle map",[
-				'//a.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+tfApiKey,
-				'//b.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+tfApiKey,
-				'//c.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+tfApiKey ], {
+				'https://a.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+tfApiKey,
+				'https://b.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+tfApiKey,
+				'https://c.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+tfApiKey ], {
 			visibility : mapOpts.baselyr === "transport",
 			apikey : tfApiKey
 		}));
 		m.addLayer(new OpenLayersMap.Layer.OCM("transport", [
-				"http://a.tile.thunderforest.com/transport/${z}/${x}/${y}.png?apikey="+tfApiKey,
-				"http://b.tile.thunderforest.com/transport/${z}/${x}/${y}.png?apikey="+tfApiKey,
-				"http://c.tile.thunderforest.com/transport/${z}/${x}/${y}.png?apikey="+tfApiKey ], {
+				"https://a.tile.thunderforest.com/transport/${z}/${x}/${y}.png?apikey="+tfApiKey,
+				"https://b.tile.thunderforest.com/transport/${z}/${x}/${y}.png?apikey="+tfApiKey,
+				"https://c.tile.thunderforest.com/transport/${z}/${x}/${y}.png?apikey="+tfApiKey ], {
 			visibility : mapOpts.baselyr === "transport",
 			apikey : tfApiKey
 		}));
 		m.addLayer(new OpenLayersMap.Layer.OCM("landscape", [
-				"http://a.tile.thunderforest.com/landscape/${z}/${x}/${y}.png?apikey="+tfApiKey,
-				"http://b.tile.thunderforest.com/landscape/${z}/${x}/${y}.png?apikey="+tfApiKey,
-				"http://c.tile.thunderforest.com/landscape/${z}/${x}/${y}.png?apikey="+tfApiKey ], {
+				"https://a.tile.thunderforest.com/landscape/${z}/${x}/${y}.png?apikey="+tfApiKey,
+				"https://b.tile.thunderforest.com/landscape/${z}/${x}/${y}.png?apikey="+tfApiKey,
+				"https://c.tile.thunderforest.com/landscape/${z}/${x}/${y}.png?apikey="+tfApiKey ], {
 			visibility : mapOpts.baselyr === "landscape",
 			apikey : tfApiKey
 		}));
 		m.addLayer(new OpenLayersMap.Layer.OCM("outdoors", [
-				"http://a.tile.thunderforest.com/outdoors/${z}/${x}/${y}.png?apikey="+tfApiKey,
-				"http://b.tile.thunderforest.com/outdoors/${z}/${x}/${y}.png?apikey="+tfApiKey,
-				"http://c.tile.thunderforest.com/outdoors/${z}/${x}/${y}.png?apikey="+tfApiKey ], {
+				"https://a.tile.thunderforest.com/outdoors/${z}/${x}/${y}.png?apikey="+tfApiKey,
+				"https://b.tile.thunderforest.com/outdoors/${z}/${x}/${y}.png?apikey="+tfApiKey,
+				"https://c.tile.thunderforest.com/outdoors/${z}/${x}/${y}.png?apikey="+tfApiKey ], {
 			visibility : mapOpts.baselyr === "outdoors",
 			apikey : tfApiKey
 		}));
-
+        /* hike and bike map seem to be offline
 		m.addLayer(new OpenLayers.Layer.OSM(
 				"hike and bike map", "http://toolserver.org/tiles/hikebike/${z}/${x}/${y}.png", {
 					visibility : mapOpts.baselyr === "hike and bike map",
@@ -254,6 +254,7 @@ function createMap(mapOpts, OLmapPOI) {
 						crossOriginKeyword : null
 					}
 		}));
+		*/
 	}
 	/*
 	 * add Stamen map layers, see: http://maps.stamen.com/
@@ -560,8 +561,7 @@ function createMap(mapOpts, OLmapPOI) {
 
 		// add hillshade, since this is off by default only add when we have a
 		// layerswitcher
-		/*
-		m.addLayer(new OpenLayers.Layer.OSM("Hillshade", "http://toolserver.org/~cmarqu/hill/${z}/${x}/${y}.png", {
+		m.addLayer(new OpenLayers.Layer.OSM("Hillshade", "https://tiles.wmflabs.org/hillshading/${z}/${x}/${y}.png", {
 			isBaseLayer : false,
 			transparent : true,
 			visibility : false,
@@ -571,7 +571,6 @@ function createMap(mapOpts, OLmapPOI) {
 				crossOriginKeyword : null
 			}
 		}));
-		*/
 	}
 
 	return m;

@@ -36,15 +36,15 @@ OpenLayersMap.Layer.OCM = OpenLayers.Class(OpenLayers.Layer.OSM, {
 	/**
 	 * The tileset URL scheme.
 	 */
-	url : [ '//a.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+this.apikey,
-			'//b.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+this.apikey,
-			'//c.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+this.apikey ],
+	url : [ 'https://a.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+this.apikey,
+			'https://b.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+this.apikey,
+			'https://c.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+this.apikey ],
 	/**
 	 * The layer attribution.
 	 */
 	attribution : 'Data &copy;ODbL <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
 			+ 'Tiles &copy;<a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
-			+ '<img src="http://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
+			+ '<img src="https://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
 
 	/**
 	 * @constructor

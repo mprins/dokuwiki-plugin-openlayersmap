@@ -69,7 +69,8 @@ class StaticMap {
 					'txt' => 'Stamen tiles',
 					'logo' => 'stamen.png',
 					'url' => 'http://tile.stamen.com/terrain/{Z}/{X}/{Y}.png'
-			),
+			)
+			//,
 			// 'piste'=>array(
 			// 'txt'=>'OpenPisteMap tiles',
 			// 'logo'=>'piste_logo.png',
@@ -79,13 +80,13 @@ class StaticMap {
 			// 'logo'=>'sea_logo.png',
 			// 'url'=>''),
 			// H&B sources
-			'hikeandbike' => array (
-					'txt' => 'Hike & Bike Map',
-					'logo' => 'hnb_logo.png',
-					//'url' => 'http://toolserver.org/tiles/hikebike/{Z}/{X}/{Y}.png'
-					//moved to: https://www.toolserver.org/tiles/hikebike/12/2105/1388.png
-					'url' => 'http://c.tiles.wmflabs.org/hikebike/{Z}/{X}/{Y}.png'
-			)
+//			'hikeandbike' => array (
+//					'txt' => 'Hike & Bike Map',
+//					'logo' => 'hnb_logo.png',
+//					//'url' => 'http://toolserver.org/tiles/hikebike/{Z}/{X}/{Y}.png'
+//					//moved to: https://www.toolserver.org/tiles/hikebike/12/2105/1388.png
+//					'url' => 'http://c.tiles.wmflabs.org/hikebike/{Z}/{X}/{Y}.png'
+//			)
 	);
 	protected $tileDefaultSrc = 'openstreetmap';
 
@@ -466,6 +467,8 @@ class StaticMap {
 	 *        	drawing colour
 	 */
 	private function drawGeometry($geom, $colour) {
+		if (empty($geom)) return;
+		
 		switch ($geom->geometryType ()) {
 			case 'GeometryCollection' :
 				// recursively draw part of the collection

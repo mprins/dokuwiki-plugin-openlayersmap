@@ -20,6 +20,7 @@
  * @class OpenLayersMap.Layer.MapQuest
  * @requires OpenLayers/Layer/OSM.js
  * @author mprins
+ * @deprecated
  */
 OpenLayersMap.Layer.MapQuest = OpenLayers.Class(OpenLayers.Layer.OSM, {
 
