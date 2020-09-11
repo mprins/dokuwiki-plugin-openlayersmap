@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2016 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2020 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -270,20 +270,21 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 				$initialised = true;
 				// render necessary script tags
 				if ($gEnable) {
-					$gscript = '<script type="text/javascript" src="//maps.google.com/maps/api/js?v=3.29&amp;key='.$this->getConf ( 'googleAPIkey' ).'"></script>';
+					$gscript = '<script charset="utf-8" defer="defer" src="//maps.google.com/maps/api/js?v=3.29&amp;key='.$this->getConf ( 'googleAPIkey' ).'"></script>';
 				}
-				$olscript = '<script type="text/javascript" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js"></script>';
+				$olscript = '<script charset="utf-8" defer="defer" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/lib/OpenLayers.js"></script>';
 
-				$scriptEnable = '<script type="text/javascript">/*<![CDATA[*/';
-				$scriptEnable .= $olscript ? 'olEnable = true;' : 'olEnable = false;';
-				$scriptEnable .= 'gEnable = ' . ($gEnable ? 'true' : 'false') . ';';
-				$scriptEnable .= 'osmEnable = ' . ($osmEnable ? 'true' : 'false') . ';';
-				$scriptEnable .= 'stamenEnable = ' . ($stamenEnable ? 'true' : 'false') . ';';
-				$scriptEnable .= 'bEnable = ' . ($enableBing ? 'true' : 'false') . ';';
-				$scriptEnable .= 'bApiKey="' . $this->getConf ( 'bingAPIKey' ) . '";';
-				$scriptEnable .= 'tfApiKey="' . $this->getConf ( 'tfApiKey' ) . '";';
-				$scriptEnable .= 'gApiKey="' . $this->getConf ( 'googleAPIkey' ) . '";';
-				$scriptEnable .= '/*!]]>*/</script>';
+				$scriptEnable = '<script defer="defer" charset="utf-8" src="data:text/javascript;base64,';
+				$scriptSrc = $olscript ? 'olEnable = true;' : 'olEnable = false;';
+				$scriptSrc .= 'gEnable = ' . ($gEnable ? 'true' : 'false') . ';';
+				$scriptSrc .= 'osmEnable = ' . ($osmEnable ? 'true' : 'false') . ';';
+				$scriptSrc .= 'stamenEnable = ' . ($stamenEnable ? 'true' : 'false') . ';';
+				$scriptSrc .= 'bEnable = ' . ($enableBing ? 'true' : 'false') . ';';
+				$scriptSrc .= 'bApiKey="' . $this->getConf ( 'bingAPIKey' ) . '";';
+				$scriptSrc .= 'tfApiKey="' . $this->getConf ( 'tfApiKey' ) . '";';
+				$scriptSrc .= 'gApiKey="' . $this->getConf ( 'googleAPIkey' ) . '";';
+				$scriptEnable .= base64_encode($scriptSrc);
+				$scriptEnable .= '"></script>';
 			}
 			$renderer->doc .= "$gscript\n$olscript\n$scriptEnable";
 			$renderer->doc .= '<div class="olMapHelp">' . $this->locale_xhtml ( "help" ) . '</div>';
@@ -312,8 +313,9 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 					</table></div>';
 			}
 			// render inline mapscript parts
-			$renderer->doc .= '<script type="text/javascript">/*<![CDATA[*/';
-			$renderer->doc .= " olMapData[$mapnumber] = $param /*!]]>*/</script>";
+			$renderer->doc .= '<script charset="utf-8" defer="defer" src="data:text/javascript;base64,';
+			$renderer->doc .= base64_encode("olMapData[$mapnumber] = $param");
+			$renderer->doc .= '"></script>';
 			$mapnumber ++;
 			return true;
 		} elseif ($mode == 'metadata') {

@@ -1,5 +1,8 @@
 === version ${project.version} ===
-  * some small fixes 
+  * load inline javascript deferred
+
+=== version 4.14 ==
+  * some small fixes
 
 === version 4.13 ===
   * Russian language files providd by Aleksej Kozlov
