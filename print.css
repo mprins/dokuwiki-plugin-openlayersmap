@@ -1,0 +1,33 @@
+/*!
+ * Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+/* print styling overrides and enhancements. */
+.olMapHelp, .olToolbar, .olControlLayerSwitcher, .olStatusBarPermalink, .olControlPanZoomBar, .olStatusBarMouseposition, .olStatusBarProjection, .olControlOverviewMapElement, .olControlFullscreen, .olMapHelpButton { display: none; }
+
+.olPOItable { margin: 1px; padding: 1px; border: 1px solid __border__; width: 100%; }
+
+.olPOItable thead { display: table-header-group; }
+
+.olPrintOnly { display: inline; }
+
+.olWebOnly { display: none; }
+
+.olPOItable .icon { text-align: center; }
+
+.olPOItblBody tr { page-break-inside: avoid; }
+
+h ~ div ~ .olStaticMap { /*?? page-break-inside: auto | avoid | inherit */ /* http://david.latapie.name/blog/page-break-in-css-print-how-to-get-rid-of-accidental-blank-pages/ */ /* http://www.w3.org/TR/CSS21/page.html */ page-break-before: always; /* page-break-after: always;*/ }
+
+.olStaticMap p img { max-width: 100%; height: auto; }

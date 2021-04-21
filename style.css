@@ -1,0 +1,197 @@
+/*!
+ * Copyright (c) 2008-2018 Mark C. Prins <mprins@users.sf.net>
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+/* compass mixins */
+/** Constants. */
+/* dimensions */
+/* colours */
+/* page and widget elements, ordering is important */
+/* Copyright (c) 2013-2015 Mark C. Prins <mprins@users.sf.net>  Permission to use, copy, modify, and distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
+#olmap_purgeform p { text-align: left; }
+
+/* Copyright (c) 2013-2017 Mark C. Prins <mprins@users.sf.net>  Permission to use, copy, modify, and distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
+/* Common and OpenLayers behaviour. */
+.olControlNoSelect { -moz-user-select: -moz-none; -ms-user-select: none; -webkit-user-select: none; user-select: none; }
+
+.olCursorWait { cursor: wait; }
+
+.olDragDown { cursor: move; }
+
+.olDrawBox { cursor: crosshair; }
+
+.olCursorQuery { cursor: help; }
+
+.olMap { cursor: default; background-image: url("lib/img/olMapbg.png"); background-color: __background_neu__; background-repeat: repeat; background-attachment: scroll; background-position: 0 0; /* on some browsers the outline is partly hidden by the .olContainer; this way we work around that.*/ -ms-touch-action: none; touch-action: none; }
+.olMap:focus { outline-style: solid; outline-width: 1px; outline-offset: 1px; }
+
+.olImageLoadError { background-color: transparent !important; display: none !important; }
+
+.olContainer { border: 1px solid __border__; background-color: __background_neu__; width: auto; float: left; }
+
+/* Work around a case of style reset, setting it on the container breaks the overview map. See: http://www.dokuwiki.org/plugin:openlayersmap?rev=1329438681&do=diff */
+.olContainer img { max-width: none; }
+
+img.olTileImage { max-width: none; }
+
+/* GMaps should not set styles on its container */
+.olForeignContainer { opacity: 1 !important; /* Turn on GPU acceleration for webkit when Google Maps V3 base layer is present */ }
+.olForeignContainer svg { -webkit-transform: translateZ(0); }
+
+/* Prevent tile scaling on Android 4 when d-pad keys are pressed */
+.olMapViewport > div > * { outline-width: 0; }
+
+.olHandlerBoxZoomBox { border: 2px solid #003c88; position: absolute; background-color: rgba(0, 60, 136, 0.7); font-size: 1px; border-color: #0053bb #002655 #002655 #0053bb; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; -moz-box-shadow: 2px 2px 2px #000; -webkit-box-shadow: 2px 2px 2px #000; box-shadow: 2px 2px 2px #000; }
+
+.olPOItableSpan { display: inline; }
+
+.olPOItable { margin: 1px; padding: 1px; border: 1px solid __border__; width: 99%; }
+
+.olPrintOnly { display: none; }
+
+.olWebOnly { display: inline; }
+
+.olPOItable .icon { text-align: center; }
+
+.olLayerGrid .olTileImage { -moz-transition: opacity 0.2s linear; -o-transition: opacity 0.2s linear; -webkit-transition: opacity 0.2s linear; transition: opacity 0.2s linear; }
+
+.olTileReplacing { display: none; }
+
+/* Copyright (c) 2013-2018 Mark C. Prins <mprins@users.sf.net>  Permission to use, copy, modify, and distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
+/** LayerSwitcher Control. */
+.olControlLayerSwitcher { position: absolute; top: 25px; right: 0; width: 17em; margin-top: 3px; margin-left: 3px; margin-bottom: 3px; border: 1px solid __border__; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }
+
+.olControlLayerSwitcher .layersDiv { /*top right bottom left*/ padding: 5px 75px 5px 10px; background-color: __background_neu__; width: 100%; height: 100%; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
+.olControlLayerSwitcher .layersDiv .baseLbl, .olControlLayerSwitcher .layersDiv .dataLbl { margin-top: 3px; margin-bottom: 3px; background-color: __background_alt__; font-weight: bold; padding-left: 10px; }
+.olControlLayerSwitcher .layersDiv .baseLayersDiv, .olControlLayerSwitcher .layersDiv .dataLayersDiv { padding-left: 10px; border: 1px solid __border__; }
+
+.olControlLayerSwitcher .maximizeDiv, .olControlLayerSwitcher .minimizeDiv { top: 0; right: -1px; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-top-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; }
+.olControlLayerSwitcher .minimizeDiv { /* background-color: __background_alt__; */ /*border: 1px solid __border__;*/ }
+
+.olLayerSwitcherButton { position: absolute; height: 22px; width: 22px; line-height: 19px; text-decoration: none; text-align: center; padding: 0; color: #FFF; background: rgba(0, 60, 136, 0.7); }
+.olLayerSwitcherButton:hover, .olLayerSwitcherButton:focus { background: #003c88; }
+
+/* Copyright (c) 2013-2018 Mark C. Prins <mprins@users.sf.net>  Permission to use, copy, modify, and distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
+/** OverviewMap Control.*/
+.olOverviewMapContainer { position: absolute; bottom: 0; right: 0; height: 146px; }
+
+.olOverviewMapElement { background-color: __background_neu__; border: 1px solid __border__; padding: 1px; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-top-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; }
+
+.olOverviewMapButton { position: absolute; height: 22px; width: 22px; line-height: 19px; text-decoration: none; text-align: center; padding: 0; color: #FFF; background: rgba(0, 60, 136, 0.7); }
+.olOverviewMapButton:hover, .olOverviewMapButton:focus { background: #003c88; }
+
+.olOverviewMapMaximizeButton { right: 0; bottom: 0; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-top-left-radius: 4px; }
+
+.olOverviewMapMinimizeButton { left: 0; bottom: 124px; z-index: 1005; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }
+
+.olOverviewMapExtentRectangle { overflow: hidden; cursor: move; border: 2px dotted red; background-image: url("lib/img/blank.gif"); }
+
+.olOverviewMapRectReplacement { overflow: hidden; cursor: move; background: url("lib/img/overview_replacement.gif") no-repeat center; }
+
+/* Copyright (c) 2013-2018 Mark C. Prins <mprins@users.sf.net>  Permission to use, copy, modify, and distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
+/** popup styles. */
+.txt p { display: inline; }
+
+.rowId { border: 1px dotted __border__; }
+
+.spacer { height: 22px; min-width: 190px; }
+
+.coord { float: left; top: -4px; position: absolute; font-size: smaller; overflow: hidden; min-width: 190px; }
+.coord img { height: inherit; vertical-align: middle; }
+
+.olPopupCloseBox { position: absolute; height: 22px; width: 22px; line-height: 19px; text-decoration: none; text-align: center; padding: 0; color: #FFF; background: rgba(0, 60, 136, 0.7); -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }
+.olPopupCloseBox:hover, .olPopupCloseBox:focus { background: #003c88; }
+
+/* Copyright (c) 2013-2015 Mark C. Prins <mprins@users.sf.net>  Permission to use, copy, modify, and distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
+/** Openlayers ScaleLine control. */
+.olControlScaleLine { display: block; position: absolute; left: 10px; bottom: 10px; font-size: xx-small; }
+
+.olControlScaleLineBottom { border: solid 2px black; border-bottom: none; margin-top: -2px; text-align: center; }
+
+.olControlScaleLineTop { border: solid 2px black; border-top: none; text-align: center; }
+
+/* Copyright (c) 2013-2015 Mark C. Prins <mprins@users.sf.net>  Permission to use, copy, modify, and distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
+/** StatusBar styles. */
+.olStatusBarContainer { background-color: __background_alt__; font-size: x-small; overflow-x: hidden; text-align: left; height: 17px; border-top: 1px solid __border__; line-height: 100%; }
+
+.olStatusBar { border-right: 1px solid __border__; display: inline; /* top right bottom left padding */ padding: 4px 1px 4px 1px; overflow: hidden; }
+
+.olStatusBar img { vertical-align: top; height: 15px; width: 15px; line-height: 15px; }
+
+.olStatusBarScale { font-style: italic; }
+
+.olStatusBarProjection { font-style: italic; }
+
+.olStatusBarText { border-right: 0; }
+
+/* Copyright (c) 2013-2018 Mark C. Prins <mprins@users.sf.net>  Permission to use, copy, modify, and distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
+/* Zoom control */
+.OpenLayersMapControlZoom { position: absolute; top: 8px; left: 8px; background: rgba(255, 255, 255, 0.2); padding: 2px; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }
+
+.OpenLayersMapControlZoom button { display: block; margin: 1px; padding: 0; color: #FFF; text-decoration: none; text-align: center; height: 22px; width: 22px; line-height: 19px; background: rgba(0, 60, 136, 0.7); }
+.OpenLayersMapControlZoom button:hover, .OpenLayersMapControlZoom button:focus { background: #003c88; }
+
+.olControlZoomIn { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-top-left-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; border-top-right-radius: 4px; }
+
+.olControlZoomOut { -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px; }
+
+/* Copyright (c) 2014-2018 Mark C. Prins <mprins@users.sf.net>  Permission to use, copy, modify, and distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
+/** Fullscreen Control. */
+.olMap.fullscreen, .olMap:-webkit-full-screen { height: 100% !important; width: 100% !important; position: fixed; left: 0; top: 0; background-color: __background_neu__; opacity: 1; }
+
+.olControlFullscreen { position: absolute; top: 100px; left: 8px; padding: 2px; background: rgba(255, 255, 255, 0.2); padding: 2px; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }
+
+.olControlFullscreen button { margin: 1px; padding: 0; color: #FFF; text-decoration: none; text-align: center; height: 22px; width: 22px; line-height: 19px; background: rgba(0, 60, 136, 0.7); -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }
+.olControlFullscreen button:hover, .olControlFullscreen button:focus { background: #003c88; }
+
+/*
+.olControlFullscreenMax {
+	background:$button-bg inline-image("Fullscreen-expand.svg") no-repeat 90% center;
+}
+
+.olControlFullscreenMin {
+	background:$button-bg inline-image("Fullscreen-collapse.svg") no-repeat 90% center;
+}
+*/
+/* Copyright (c) 2013-2015 Mark C. Prins <mprins@users.sf.net>  Permission to use, copy, modify, and distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
+/** accesible tooltip, to add to a focusable element containing a span with the tooltip. */
+/* show a tooltip offset to above/left */
+.olHasTooltip span, .olHasTooltip_bttm_r span, .olHasTooltip_bttm_l span, .olHasTooltip_TL span { position: absolute; clip: rect(1px 1px 1px 1px); /* < IE8 */ clip: rect(1px, 1px, 1px, 1px); padding: 0; border: 0; height: 1px; width: 1px; overflow: hidden; opacity: 0; will-change: opacity, clip; -moz-animation-name: fadeIn; -webkit-animation-name: fadeIn; animation-name: fadeIn; -moz-animation-timing-function: ease; -webkit-animation-timing-function: ease; animation-timing-function: ease; -moz-animation-delay: 0.35s; -webkit-animation-delay: 0.35s; animation-delay: 0.35s; -moz-animation-duration: 5s; -webkit-animation-duration: 5s; animation-duration: 5s; -moz-animation-iteration-count: 1; -webkit-animation-iteration-count: 1; animation-iteration-count: 1; }
+.olHasTooltip:hover span, .olHasTooltip_bttm_r:hover span, .olHasTooltip_bttm_l:hover span, .olHasTooltip:focus span, .olHasTooltip_bttm_r:focus span, .olHasTooltip_bttm_l:focus span, .olHasTooltip_TL:hover span, .olHasTooltip_TL:focus span { clip: auto; padding: 3px; height: auto; width: auto; z-index: 1100; max-height: 100px; white-space: nowrap; display: inline-block; background-color: __background_alt__; color: __text__; border: 1px solid __border__; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; -moz-box-shadow: 2px 2px 2px __border__; -webkit-box-shadow: 2px 2px 2px __border__; box-shadow: 2px 2px 2px __border__; bottom: 2em; right: 0; -moz-animation-name: fadeOut; -webkit-animation-name: fadeOut; animation-name: fadeOut; }
+
+/* show a tooltip offset to below/right */
+.olHasTooltip_bttm_r:hover span, .olHasTooltip_bttm_r:focus span { bottom: -2em; left: 1em; right: auto; }
+
+/* show a tooltip offset to below/left */
+.olHasTooltip_bttm_l:hover span, .olHasTooltip_bttm_l:focus span { bottom: -2em; }
+
+@-moz-keyframes fadeIn { 0% { opacity: 0; }
+  100% { opacity: 0; } }
+@-webkit-keyframes fadeIn { 0% { opacity: 0; }
+  100% { opacity: 0; } }
+@keyframes fadeIn { 0% { opacity: 0; }
+  100% { opacity: 0; } }
+@-moz-keyframes fadeOut { from { opacity: 1; }
+  to { opacity: 0; } }
+@-webkit-keyframes fadeOut { from { opacity: 1; }
+  to { opacity: 0; } }
+@keyframes fadeOut { from { opacity: 1; }
+  to { opacity: 0; } }
+/* Copyright (c) 2014-2018 Mark C. Prins <mprins@users.sf.net>  Permission to use, copy, modify, and distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
+.olMapHelp { display: none; z-index: 1100; position: absolute; background: __background_alt__; border: 1px solid __border__; padding-right: 2px; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; -moz-box-shadow: 2px 2px 2px __border__; -webkit-box-shadow: 2px 2px 2px __border__; box-shadow: 2px 2px 2px __border__; }
+
+.olMapHelpButtonDiv { position: relative; float: right; width: 22px; background-color: __background_neu__; }
+
+.olMapHelpButton { position: absolute; height: 22px; width: 22px; line-height: 19px; text-decoration: none; text-align: center; padding: 0; color: #FFF; background: rgba(0, 60, 136, 0.7); border: 1px solid __border__; z-index: 1100; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; }
+.olMapHelpButton:hover, .olMapHelpButton:focus { background: #003c88; }
