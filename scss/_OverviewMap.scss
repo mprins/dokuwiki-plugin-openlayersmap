@@ -18,59 +18,59 @@
 $ctlHeight: 140px + 6px;
 
 .olOverviewMapContainer {
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	height: $ctlHeight;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: $ctlHeight;
 }
 
 .olOverviewMapElement {
-	background-color: __background_neu__;
-	border: 1px solid __border__;
-	padding: 1px;
-	@include border-left-radius(4px);
+    background-color: __background_neu__;
+    border: 1px solid __border__;
+    padding: 1px;
+    @include border-left-radius(4px);
 }
 
 .olOverviewMapButton {
-	position: absolute;
-	height: $button-height;
-	width: $button-width;
-	line-height: $button-line-height;
-	text-decoration: none;
-	text-align: center;
-	padding: 0;
-	color: $button;
-	background: $button-bg;
+    position: absolute;
+    height: $button-height;
+    width: $button-width;
+    line-height: $button-line-height;
+    text-decoration: none;
+    text-align: center;
+    padding: 0;
+    color: $button;
+    background: $button-bg;
 
 
-	&:hover,
-	&:focus {
-		background: $button-bg-active;
-	}
+    &:hover,
+    &:focus {
+        background: $button-bg-active;
+    }
 }
 
 .olOverviewMapMaximizeButton {
-	right: 0;
-	bottom: 0;
-	@include border-top-left-radius(4px);
+    right: 0;
+    bottom: 0;
+    @include border-top-left-radius(4px);
 }
 
 .olOverviewMapMinimizeButton {
-	left: 0;
-	bottom: $ctlHeight - $button-height;
-	z-index: 1005;
-	@include border-radius(4px);
+    left: 0;
+    bottom: $ctlHeight - $button-height;
+    z-index: 1005;
+    @include border-radius(4px);
 }
 
 .olOverviewMapExtentRectangle {
-	overflow: hidden;
-	cursor: move;
-	border: 2px dotted red;
-	background-image: url("lib/img/blank.gif");
+    overflow: hidden;
+    cursor: move;
+    border: 2px dotted red;
+    background-image: url("lib/img/blank.gif");
 }
 
 .olOverviewMapRectReplacement {
-	overflow: hidden;
-	cursor: move;
-	background: url("lib/img/overview_replacement.gif") no-repeat center;
+    overflow: hidden;
+    cursor: move;
+    background: url("lib/img/overview_replacement.gif") no-repeat center;
 }

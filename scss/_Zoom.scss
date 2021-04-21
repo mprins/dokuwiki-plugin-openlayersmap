@@ -16,36 +16,36 @@
 
 /* Zoom control */
 .OpenLayersMapControlZoom {
-	position: absolute;
-	top: 8px;
-	left: 8px;
-	background: $button-halo;
-	padding: 2px;
-	@include border-radius(4px);
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: $button-halo;
+    padding: 2px;
+    @include border-radius(4px);
 }
 
 .OpenLayersMapControlZoom button {
-	display: block;
-	margin: 1px;
-	padding: 0;
-	color: $button;
-	text-decoration: none;
-	text-align: center;
-	height: $button-height;
-	width: $button-width;
-	line-height: $button-line-height;
-	background: $button-bg;
+    display: block;
+    margin: 1px;
+    padding: 0;
+    color: $button;
+    text-decoration: none;
+    text-align: center;
+    height: $button-height;
+    width: $button-width;
+    line-height: $button-line-height;
+    background: $button-bg;
 
-	&:hover,
-	&:focus {
-		background: $button-bg-active;
-	}
+    &:hover,
+    &:focus {
+        background: $button-bg-active;
+    }
 }
 
 .olControlZoomIn {
-	@include border-top-radius(4px);
+    @include border-top-radius(4px);
 }
 
 .olControlZoomOut {
-	@include border-bottom-radius(4px);
+    @include border-bottom-radius(4px);
 }

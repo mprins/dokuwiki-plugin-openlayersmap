@@ -16,33 +16,33 @@
 
 /** StatusBar styles. */
 .olStatusBarContainer {
-	background-color: __background_alt__;
-	font-size: x-small;
-	overflow-x: hidden;
-	text-align: left;
-	height: 17px;
-	border-top: 1px solid __border__;
-	line-height: 100%;
+    background-color: __background_alt__;
+    font-size: x-small;
+    overflow-x: hidden;
+    text-align: left;
+    height: 17px;
+    border-top: 1px solid __border__;
+    line-height: 100%;
 }
 
 .olStatusBar {
-	border-right: 1px solid __border__;
-	display: inline;
-	/* top right bottom left padding */
-	padding: 4px 1px 4px 1px;
-	//position: relative;
-	overflow: hidden;
+    border-right: 1px solid __border__;
+    display: inline;
+    /* top right bottom left padding */
+    padding: 4px 1px 4px 1px;
+    //position: relative;
+    overflow: hidden;
 }
 
 .olStatusBar img {
-	vertical-align: top;
-	height: 15px;
-	width: 15px;
-	line-height: 15px;
+    vertical-align: top;
+    height: 15px;
+    width: 15px;
+    line-height: 15px;
 }
 
 .olStatusBarScale {
-	font-style: italic;
+    font-style: italic;
 }
 
 .olStatusBarMouseposition {
@@ -50,9 +50,9 @@
 }
 
 .olStatusBarProjection {
-	font-style: italic;
+    font-style: italic;
 }
 
 .olStatusBarText {
-	border-right: 0;
+    border-right: 0;
 }

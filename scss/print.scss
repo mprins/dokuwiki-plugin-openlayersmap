@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
- /* print styling overrides and enhancements. */
+/* print styling overrides and enhancements. */
 .olMapHelp,
 .olToolbar,
 .olControlLayerSwitcher,
@@ -25,26 +25,26 @@
 .olControlOverviewMapElement,
 .olControlFullscreen,
 .olMapHelpButton {
-	display: none;
+    display: none;
 }
 
 .olPOItable {
-	margin: 1px;
-	padding: 1px;
-	border: 1px solid __border__;
-	width: 100%;
+    margin: 1px;
+    padding: 1px;
+    border: 1px solid __border__;
+    width: 100%;
 }
 
 .olPOItable thead {
-	display: table-header-group;
+    display: table-header-group;
 }
 
 .olPrintOnly {
-	display: inline;
+    display: inline;
 }
 
 .olWebOnly {
-	display: none;
+    display: none;
 }
 
 .olPOITblHeader {
@@ -64,7 +64,7 @@
 }
 
 .olPOItable .icon {
-	text-align: center;
+    text-align: center;
 }
 
 .olPOItable .lat,
@@ -81,18 +81,18 @@
 }
 
 .olPOItblBody tr {
-	page-break-inside: avoid;
+    page-break-inside: avoid;
 }
 
 h ~ div ~ .olStaticMap {
-	/*?? page-break-inside: auto | avoid | inherit */
-	/* http://david.latapie.name/blog/page-break-in-css-print-how-to-get-rid-of-accidental-blank-pages/ */
-	/* http://www.w3.org/TR/CSS21/page.html */
-	page-break-before: always;
-	/* page-break-after: always;*/
+    /*?? page-break-inside: auto | avoid | inherit */
+    /* http://david.latapie.name/blog/page-break-in-css-print-how-to-get-rid-of-accidental-blank-pages/ */
+    /* http://www.w3.org/TR/CSS21/page.html */
+    page-break-before: always;
+    /* page-break-after: always;*/
 }
 
 .olStaticMap p img {
-	max-width: 100%;
-	height: auto;
+    max-width: 100%;
+    height: auto;
 }

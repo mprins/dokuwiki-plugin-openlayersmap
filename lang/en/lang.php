@@ -18,26 +18,26 @@
 /**
  * English language file for openlayersmap plugin.
  *
- * @author Mark
+ * @author  Mark
  *
  * @license BSD license
  */
-$lang ['olmapPOItitle'] = 'Points of Interest';
-$lang ['olmapPOIlatTitle'] = 'latitude in decimal degrees';
-$lang ['olmapPOIlonTitle'] = 'longitude in decimal degrees';
-$lang ['olmapPOIicon'] = 'symbol';
-$lang ['olmapPOIlat'] = 'latitude';
-$lang ['olmapPOIlon'] = 'longitude';
-$lang ['olmapPOItxt'] = 'description';
-$lang ['menu'] = 'Openlayersmap cache manager';
-$lang ['admin_tiles'] = 'Tiles';
-$lang ['admin_purge_tiles'] = 'Purge all cached tiles';
-$lang ['admin_maps'] = 'Maps';
-$lang ['admin_purge_maps'] = 'Purge all cached maps';
-$lang ['admin_submit'] = 'Purge';
+$lang ['olmapPOItitle']      = 'Points of Interest';
+$lang ['olmapPOIlatTitle']   = 'latitude in decimal degrees';
+$lang ['olmapPOIlonTitle']   = 'longitude in decimal degrees';
+$lang ['olmapPOIicon']       = 'symbol';
+$lang ['olmapPOIlat']        = 'latitude';
+$lang ['olmapPOIlon']        = 'longitude';
+$lang ['olmapPOItxt']        = 'description';
+$lang ['menu']               = 'Openlayersmap cache manager';
+$lang ['admin_tiles']        = 'Tiles';
+$lang ['admin_purge_tiles']  = 'Purge all cached tiles';
+$lang ['admin_maps']         = 'Maps';
+$lang ['admin_purge_maps']   = 'Purge all cached maps';
+$lang ['admin_submit']       = 'Purge';
 $lang ['admin_purged_tiles'] = 'The cached tiles were purged.';
-$lang ['admin_purged_maps'] = 'The cached maps were purged.';
-$lang ['alt_legend_poi'] = "";
-$lang ['alt_legend_kml'] = "KML track";
-$lang ['alt_legend_gpx'] = "GPX track";
+$lang ['admin_purged_maps']  = 'The cached maps were purged.';
+$lang ['alt_legend_poi']     = "";
+$lang ['alt_legend_kml']     = "KML track";
+$lang ['alt_legend_gpx']     = "GPX track";
 $lang ['alt_legend_geojson'] = "GeoJSON object";

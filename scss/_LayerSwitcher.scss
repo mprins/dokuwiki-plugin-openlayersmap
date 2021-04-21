@@ -16,68 +16,68 @@
 
 /** LayerSwitcher Control. */
 .olControlLayerSwitcher {
-	position: absolute;
-	top: 25px;
-	right: 0;
-	width: 17em;
-	margin-top: 3px;
-	margin-left: 3px;
-	margin-bottom: 3px;
-	border: 1px solid __border__;
-	@include border-radius(4px);
-	// @include opacity(.8);
+    position: absolute;
+    top: 25px;
+    right: 0;
+    width: 17em;
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-bottom: 3px;
+    border: 1px solid __border__;
+    @include border-radius(4px);
+    // @include opacity(.8);
 }
 
 .olControlLayerSwitcher .layersDiv { /*top right bottom left*/
-	padding: 5px 75px 5px 10px;
-	background-color: __background_neu__;
-	width: 100%;
-	height: 100%;
-	@include border-radius(3px);
+    padding: 5px 75px 5px 10px;
+    background-color: __background_neu__;
+    width: 100%;
+    height: 100%;
+    @include border-radius(3px);
 
-	& .baseLbl,
-	& .dataLbl {
-		margin-top: 3px;
-		margin-bottom: 3px;
-		background-color: __background_alt__;
-		font-weight: bold;
-		padding-left: 10px;
-	}
+    & .baseLbl,
+    & .dataLbl {
+        margin-top: 3px;
+        margin-bottom: 3px;
+        background-color: __background_alt__;
+        font-weight: bold;
+        padding-left: 10px;
+    }
 
-	& .baseLayersDiv,
-	& .dataLayersDiv {
-		padding-left: 10px;
-		border: 1px solid __border__;
-	}
+    & .baseLayersDiv,
+    & .dataLayersDiv {
+        padding-left: 10px;
+        border: 1px solid __border__;
+    }
 }
 
 .olControlLayerSwitcher {
-	& .maximizeDiv,
-	& .minimizeDiv {
-		top: 0;
-		right: -1px;
-		@include border-left-radius(4px);
-	}
+    & .maximizeDiv,
+    & .minimizeDiv {
+        top: 0;
+        right: -1px;
+        @include border-left-radius(4px);
+    }
 
-	& .minimizeDiv {
-		/* background-color: __background_alt__; */
-		/*border: 1px solid __border__;*/
-	}
+    & .minimizeDiv {
+        /* background-color: __background_alt__; */
+        /*border: 1px solid __border__;*/
+    }
 }
 
 .olLayerSwitcherButton {
-	position: absolute;
-	height: $button-height;
-	width: $button-width;
-	line-height: $button-line-height;
-	text-decoration: none;
-	text-align: center;
-	padding: 0;
-	color: $button;
-	background: $button-bg;
+    position: absolute;
+    height: $button-height;
+    width: $button-width;
+    line-height: $button-line-height;
+    text-decoration: none;
+    text-align: center;
+    padding: 0;
+    color: $button;
+    background: $button-bg;
 
-	&:hover,
-	&:focus {
-		background: $button-bg-active;
-	}
+    &:hover,
+    &:focus {
+        background: $button-bg-active;
+    }
 }
