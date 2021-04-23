@@ -13,3 +13,9 @@ Please refer to http://www.dokuwiki.org/plugins for additional info on how to in
 
 This project includes part of OpenLayers.
 
+----
+[![CI](https://github.com/mprins/dokuwiki-plugin-openlayersmap/actions/workflows/CI.yml/badge.svg)](https://github.com/mprins/dokuwiki-plugin-openlayersmap/actions/workflows/CI.yml)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mprins/dokuwiki-plugin-openlayersmap/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mprins/dokuwiki-plugin-openlayersmap/?branch=master)
+[![GitHub issues](https://img.shields.io/github/issues/mprins/dokuwiki-plugin-openlayersmap.svg)](https://github.com/mprins/dokuwiki-plugin-openlayersmap/issues)
+[![GitHub forks](https://img.shields.io/github/forks/mprins/dokuwiki-plugin-openlayersmap.svg)](https://github.com/mprins/dokuwiki-plugin-openlayersmap/network)
+[![GitHub stars](https://img.shields.io/github/stars/mprins/dokuwiki-plugin-openlayersmap.svg)](https://github.com/mprins/dokuwiki-plugin-openlayersmap/stargazers)
