@@ -42,9 +42,9 @@ OpenLayersMap.Layer.OCM = OpenLayers.Class(OpenLayers.Layer.OSM, {
 	/**
 	 * The layer attribution.
 	 */
-	attribution : 'Data &copy;ODbL <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
-			+ 'Tiles &copy;<a href="http://opencyclemap.org/" target="_blank">OpenCycleMap</a>'
-			+ '<img src="https://opencyclemap.org/favicon.ico" alt="OpenCycleMap logo"/>',
+	attribution : 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
+			+ 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
+			+ '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>',
 
 	/**
 	 * @constructor
