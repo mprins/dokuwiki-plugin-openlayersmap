@@ -17,42 +17,43 @@
 /** Fullscreen Control. */
 .olMap.fullscreen,
 .olMap:-webkit-full-screen {
-	height: 100% !important;
-	width: 100% !important;
-	position: fixed;
-	left: 0;
-	top: 0;
-	background-color: __background_neu__;
-	opacity: 1;
+    height: 100% !important;
+    width: 100% !important;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: __background_neu__;
+    opacity: 1;
 }
 
 .olControlFullscreen {
-	position: absolute;
-	top: 100px;
-	left: 8px;
-	padding: 2px;
-	background: $button-halo;
-	padding: 2px;
-	@include border-radius(4px);
+    position: absolute;
+    top: 100px;
+    left: 8px;
+    padding: 2px;
+    background: $button-halo;
+    padding: 2px;
+    @include border-radius(4px);
 }
 
 .olControlFullscreen button {
-	margin: 1px;
-	padding: 0;
-	color: $button;
-	text-decoration: none;
-	text-align: center;
-	height: $button-height;
-	width: $button-width;
-	line-height: $button-line-height;
-	background: $button-bg;
-	@include border-radius(4px);
+    margin: 1px;
+    padding: 0;
+    color: $button;
+    text-decoration: none;
+    text-align: center;
+    height: $button-height;
+    width: $button-width;
+    line-height: $button-line-height;
+    background: $button-bg;
+    @include border-radius(4px);
 
-	&:hover,
-	&:focus {
-		background : $button-bg-active;
-	}
+    &:hover,
+    &:focus {
+        background: $button-bg-active;
+    }
 }
+
 /*
 .olControlFullscreenMax {
 	background:$button-bg inline-image("Fullscreen-expand.svg") no-repeat 90% center;

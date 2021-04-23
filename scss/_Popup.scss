@@ -16,11 +16,11 @@
 
 /** popup styles. */
 .txt p {
-	display: inline;
+    display: inline;
 }
 
 .rowId {
-	border: 1px dotted __border__;
+    border: 1px dotted __border__;
 }
 
 .ele {
@@ -36,22 +36,22 @@
 }
 
 .spacer {
-	height: $button-height;
-	min-width: 190px;
+    height: $button-height;
+    min-width: 190px;
 }
 
 .coord {
-	float:left;
-	top:-4px;
-	position: absolute;
-	font-size: smaller;
-	overflow: hidden;
-	min-width: 190px;
+    float: left;
+    top: -4px;
+    position: absolute;
+    font-size: smaller;
+    overflow: hidden;
+    min-width: 190px;
 
-	& img {
-		height: inherit;
-		vertical-align: middle;
-	}
+    & img {
+        height: inherit;
+        vertical-align: middle;
+    }
 }
 
 .olFramedCloudPopupContent {
@@ -59,19 +59,19 @@
 }
 
 .olPopupCloseBox {
-	position: absolute;
-	height: $button-height;
-	width: $button-width;
-	line-height: $button-line-height;
-	text-decoration: none;
-	text-align: center;
-	padding: 0;
-	color: $button;
-	background: $button-bg;
-	@include border-radius(4px);
+    position: absolute;
+    height: $button-height;
+    width: $button-width;
+    line-height: $button-line-height;
+    text-decoration: none;
+    text-align: center;
+    padding: 0;
+    color: $button;
+    background: $button-bg;
+    @include border-radius(4px);
 
-	&:hover,
-	&:focus {
-		background: $button-bg-active;
-	}
+    &:hover,
+    &:focus {
+        background: $button-bg-active;
+    }
 }

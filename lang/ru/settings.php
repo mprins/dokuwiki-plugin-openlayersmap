@@ -21,25 +21,25 @@
  * @license BSD license
  * @author  Aleksej Kozlov <nellesmeti@gmail.com>
  */
-$lang['bingAPIKey'] = 'Ключ для Bing Maps API. Получите ключ тут: https://www.bingmapsportal.com/application';
-$lang['tfApiKey'] = 'Ключ для Thunderforest API. Получите ключ тут: https://manage.thunderforest.com/dashboard';
-$lang['iconUrlOverload'] = 'URL для иконок карт (при использовании статических карт на не подключённом к интернету сервере)';
-$lang['enableStamen'] = 'Разрешить использование Stamen как провайдера карт';
-$lang['enableGoogle'] = 'Разрешить использование Google как провайдера карт';
-$lang['googleAPIkey'] = 'Ключ для Google Static Maps API. Получите ключ тут: https://code.google.com/apis/console';
-$lang['enableBing'] = 'Разрешить использование Bing как провайдера карт';
-$lang['enableOSM'] = 'Разрешить использование OpenStreetMap как провайдера карт';
-$lang['enableA11y'] = 'Разрешить вывод a11y/print (статическая карта, таблица с легендой)';
-$lang['optionStaticMapGenerator']='Локальное (local) или удалённое (remote) хранилище статических карт. <b>Локальное хранилище не будет работать, если сервер не подключён к интернету.</b>';
-$lang['autoZoomMap'] = 'Разрешить автоматическое масштабирование для выпадающей карты';
-$lang['displayformat'] = 'Формат отображения координат: DD - градусы с дробной частью, DMS - градусы, минуты, секунды';
-$lang['default_width'] = 'Ширина карты по умолчанию';
-$lang['default_height'] = 'Высота карты по умолчанию';
-$lang['default_zoom'] = 'Масштаб карты по умолчанию';
-$lang['default_statusbar'] = 'Отображение статусной строки по умолчанию';
-$lang['default_toolbar'] = 'Отображение панели инструментов по умолчанию';
-$lang['default_controls'] = 'Отображение элементов управления по умолчанию';
-$lang['default_poihoverstyle'] = 'Открытие POI по наведению мыши (если выключено, то по щелчку) по умолчанию';
-$lang['default_kmlfile'] = 'Файл KML по умолчанию';
-$lang['default_gpxfile'] = 'Файл GPX по умолчанию';
-$lang['default_geojsonfile'] = 'Файл GeoJSON по умолчанию';
+$lang['bingAPIKey']               = 'Ключ для Bing Maps API. Получите ключ тут: https://www.bingmapsportal.com/application';
+$lang['tfApiKey']                 = 'Ключ для Thunderforest API. Получите ключ тут: https://manage.thunderforest.com/dashboard';
+$lang['iconUrlOverload']          = 'URL для иконок карт (при использовании статических карт на не подключённом к интернету сервере)';
+$lang['enableStamen']             = 'Разрешить использование Stamen как провайдера карт';
+$lang['enableGoogle']             = 'Разрешить использование Google как провайдера карт';
+$lang['googleAPIkey']             = 'Ключ для Google Static Maps API. Получите ключ тут: https://code.google.com/apis/console';
+$lang['enableBing']               = 'Разрешить использование Bing как провайдера карт';
+$lang['enableOSM']                = 'Разрешить использование OpenStreetMap как провайдера карт';
+$lang['enableA11y']               = 'Разрешить вывод a11y/print (статическая карта, таблица с легендой)';
+$lang['optionStaticMapGenerator'] = 'Локальное (local) или удалённое (remote) хранилище статических карт. <b>Локальное хранилище не будет работать, если сервер не подключён к интернету.</b>';
+$lang['autoZoomMap']              = 'Разрешить автоматическое масштабирование для выпадающей карты';
+$lang['displayformat']            = 'Формат отображения координат: DD - градусы с дробной частью, DMS - градусы, минуты, секунды';
+$lang['default_width']            = 'Ширина карты по умолчанию';
+$lang['default_height']           = 'Высота карты по умолчанию';
+$lang['default_zoom']             = 'Масштаб карты по умолчанию';
+$lang['default_statusbar']        = 'Отображение статусной строки по умолчанию';
+$lang['default_toolbar']          = 'Отображение панели инструментов по умолчанию';
+$lang['default_controls']         = 'Отображение элементов управления по умолчанию';
+$lang['default_poihoverstyle']    = 'Открытие POI по наведению мыши (если выключено, то по щелчку) по умолчанию';
+$lang['default_kmlfile']          = 'Файл KML по умолчанию';
+$lang['default_gpxfile']          = 'Файл GPX по умолчанию';
+$lang['default_geojsonfile']      = 'Файл GeoJSON по умолчанию';

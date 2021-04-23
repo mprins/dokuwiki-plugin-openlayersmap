@@ -18,88 +18,88 @@
 
 /* show a tooltip offset to above/left */
 .olHasTooltip, .olHasTooltip_TL {
-	& span {
-		position: absolute;
-		clip: rect(1px 1px 1px 1px); /* < IE8 */
-		clip: rect(1px, 1px, 1px, 1px);
-		padding: 0;
-		border: 0;
-		height: 1px;
-		width: 1px;
-		overflow: hidden;
-		opacity: 0;
-		will-change: opacity, clip;
+    & span {
+        position: absolute;
+        clip: rect(1px 1px 1px 1px); /* < IE8 */
+        clip: rect(1px, 1px, 1px, 1px);
+        padding: 0;
+        border: 0;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+        opacity: 0;
+        will-change: opacity, clip;
 
-		@include animation-name(fadeIn);
-		@include animation-timing-function(ease);
-		@include animation-delay(.35s);
-		@include animation-duration(5s);
-		//@include animation-iteration-count(infinite);
-		@include animation-iteration-count(1);
-	}
+        @include animation-name(fadeIn);
+        @include animation-timing-function(ease);
+        @include animation-delay(.35s);
+        @include animation-duration(5s);
+        //@include animation-iteration-count(infinite);
+        @include animation-iteration-count(1);
+    }
 
-	// http://codepen.io/anon/pen/yyNmML?editors=110
-	// http://css-tricks.com/restart-css-animation/
-	// http://css-tricks.com/snippets/css/keyframe-animation-syntax/
-	&:hover span,
-	&:focus span {
-		clip: auto;
-		padding: 3px;
-		height: auto;
-		width: auto;
-		z-index: $tooltip-z-index;
-		max-height: 100px;
-		white-space: nowrap;
-		display: inline-block;
-		background-color: __background_alt__;
-		color: __text__;
-		border: 1px solid __border__;
-		@include border-radius(5px);
-		@include box-shadow(2px 2px 2px __border__);
-		bottom: 2em;
-		right: 0;
-		//opacity: 1;
-		//@include single-transition(opacity 0.5s ease-in 0.1s);
-		@include animation-name(fadeOut);
-	}
+    // http://codepen.io/anon/pen/yyNmML?editors=110
+    // http://css-tricks.com/restart-css-animation/
+    // http://css-tricks.com/snippets/css/keyframe-animation-syntax/
+    &:hover span,
+    &:focus span {
+        clip: auto;
+        padding: 3px;
+        height: auto;
+        width: auto;
+        z-index: $tooltip-z-index;
+        max-height: 100px;
+        white-space: nowrap;
+        display: inline-block;
+        background-color: __background_alt__;
+        color: __text__;
+        border: 1px solid __border__;
+        @include border-radius(5px);
+        @include box-shadow(2px 2px 2px __border__);
+        bottom: 2em;
+        right: 0;
+        //opacity: 1;
+        //@include single-transition(opacity 0.5s ease-in 0.1s);
+        @include animation-name(fadeOut);
+    }
 }
 
 /* show a tooltip offset to below/right */
 .olHasTooltip_bttm_r {
-	@extend .olHasTooltip;
+    @extend .olHasTooltip;
 
-	&:hover span,
-	&:focus span {
-		bottom: -2em;
-		left: 1em;
-		right: auto;
-	}
+    &:hover span,
+    &:focus span {
+        bottom: -2em;
+        left: 1em;
+        right: auto;
+    }
 }
 
 /* show a tooltip offset to below/left */
 .olHasTooltip_bttm_l {
-	@extend .olHasTooltip;
+    @extend .olHasTooltip;
 
-	&:hover span,
-	&:focus span {
-		bottom: -2em;
-	}
+    &:hover span,
+    &:focus span {
+        bottom: -2em;
+    }
 }
 
-@include keyframes(fadeIn){
-  0%   {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
+@include keyframes(fadeIn) {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
-@include keyframes(fadeOut){
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity:0;
-  }
+@include keyframes(fadeOut) {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }

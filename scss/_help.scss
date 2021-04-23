@@ -15,41 +15,41 @@
  */
 
 .olMapHelp {
-	display: none;
-	z-index: $tooltip-z-index;
-	position: absolute;
-	background: __background_alt__;
-	border: 1px solid __border__;
-	padding-right: 2px;
+    display: none;
+    z-index: $tooltip-z-index;
+    position: absolute;
+    background: __background_alt__;
+    border: 1px solid __border__;
+    padding-right: 2px;
 
-	@include border-radius(4px);
-	@include box-shadow(2px 2px 2px __border__);
+    @include border-radius(4px);
+    @include box-shadow(2px 2px 2px __border__);
 }
 
 .olMapHelpButtonDiv {
-	position: relative;
-	float: right;
-	width: $button-width;
-	background-color: __background_neu__;
+    position: relative;
+    float: right;
+    width: $button-width;
+    background-color: __background_neu__;
 }
 
 .olMapHelpButton {
-	position: absolute;
-	height: $button-height;
-	width: $button-width;
-	line-height: $button-line-height;
-	text-decoration: none;
-	text-align: center;
-	padding: 0;
-	color: $button;
-	background: $button-bg;
-	border: 1px solid __border__;
-	z-index: $tooltip-z-index;;
+    position: absolute;
+    height: $button-height;
+    width: $button-width;
+    line-height: $button-line-height;
+    text-decoration: none;
+    text-align: center;
+    padding: 0;
+    color: $button;
+    background: $button-bg;
+    border: 1px solid __border__;
+    z-index: $tooltip-z-index;;
 
-	@include border-bottom-left-radius(4px);
+    @include border-bottom-left-radius(4px);
 
-	&:hover,
-	&:focus {
-		background: $button-bg-active;
-	}
+    &:hover,
+    &:focus {
+        background: $button-bg-active;
+    }
 }

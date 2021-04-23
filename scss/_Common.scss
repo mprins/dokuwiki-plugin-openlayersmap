@@ -18,54 +18,54 @@
  * Common and OpenLayers behaviour.
  */
 .olControlNoSelect {
-	@include user-select(none);
+    @include user-select(none);
 }
 
 .olCursorWait {
-	cursor: wait;
+    cursor: wait;
 }
 
 .olDragDown {
-	cursor: move;
+    cursor: move;
 }
 
 .olDrawBox {
-	cursor: crosshair;
+    cursor: crosshair;
 }
 
 .olCursorQuery {
-	cursor: help;
+    cursor: help;
 }
 
 .olMap {
-	cursor: default;
-	background-image: url("lib/img/olMapbg.png");
-	background-color: __background_neu__;
-	background-repeat: repeat;
-	background-attachment: scroll;
-	background-position: 0 0;
+    cursor: default;
+    background-image: url("lib/img/olMapbg.png");
+    background-color: __background_neu__;
+    background-repeat: repeat;
+    background-attachment: scroll;
+    background-position: 0 0;
 
-	/* on some browsers the outline is partly hidden by the .olContainer; this way we work around that.*/
-	&:focus {
-		outline-style: solid;
-		outline-width: 1px;
-		outline-offset: 1px;
-	}
+    /* on some browsers the outline is partly hidden by the .olContainer; this way we work around that.*/
+    &:focus {
+        outline-style: solid;
+        outline-width: 1px;
+        outline-offset: 1px;
+    }
 
-	-ms-touch-action: none;
-	touch-action: none;
+    -ms-touch-action: none;
+    touch-action: none;
 }
 
 .olImageLoadError {
-	background-color: transparent !important;
-	display: none !important;
+    background-color: transparent !important;
+    display: none !important;
 }
 
 .olContainer {
-	border: 1px solid __border__;
-	background-color: __background_neu__;
-	width: auto;
-	float: left;
+    border: 1px solid __border__;
+    background-color: __background_neu__;
+    width: auto;
+    float: left;
 }
 
 /*
@@ -73,59 +73,59 @@
  * See: http://www.dokuwiki.org/plugin:openlayersmap?rev=1329438681&do=diff
  */
 .olContainer img {
-	max-width: none;
+    max-width: none;
 }
 
 img.olTileImage {
-	max-width: none;
+    max-width: none;
 }
 
 /* GMaps should not set styles on its container */
 .olForeignContainer {
-	opacity: 1 !important;
+    opacity: 1 !important;
 
-	/* Turn on GPU acceleration for webkit when Google Maps V3 base layer is present */
-	& svg {
-		-webkit-transform: translateZ(0);
-	}
+    /* Turn on GPU acceleration for webkit when Google Maps V3 base layer is present */
+    & svg {
+        -webkit-transform: translateZ(0);
+    }
 }
 
 /* Prevent tile scaling on Android 4 when d-pad keys are pressed */
-.olMapViewport>div>* {
-	outline-width: 0;
+.olMapViewport > div > * {
+    outline-width: 0;
 }
 
 .olHandlerBoxZoomBox {
-	border: 2px solid $button-bg-active;
-	position: absolute;
-	background-color: $button-bg;
-	font-size: 1px;
-	border-color: $button-bg-active-lighter $button-bg-active-darker $button-bg-active-darker $button-bg-active-lighter;
-	@include border-radius(4px);
-	@include box-shadow(2px 2px 2px #000);
+    border: 2px solid $button-bg-active;
+    position: absolute;
+    background-color: $button-bg;
+    font-size: 1px;
+    border-color: $button-bg-active-lighter $button-bg-active-darker $button-bg-active-darker $button-bg-active-lighter;
+    @include border-radius(4px);
+    @include box-shadow(2px 2px 2px #000);
 }
 
 .olPOItableSpan {
-	display: inline;
+    display: inline;
 }
 
 .olPOItable {
-	margin: 1px;
-	padding: 1px;
-	border: 1px solid __border__;
-	width: 99%;
+    margin: 1px;
+    padding: 1px;
+    border: 1px solid __border__;
+    width: 99%;
 }
 
 .olPrintOnly {
-	display: none;
+    display: none;
 }
 
 .olWebOnly {
-	display: inline;
+    display: inline;
 }
 
 .olPOItable .icon {
-	text-align: center;
+    text-align: center;
 }
 
 .olStaticMap {
@@ -133,9 +133,9 @@ img.olTileImage {
 }
 
 .olLayerGrid .olTileImage {
-	@include transition(opacity 0.2s linear);
+    @include transition(opacity 0.2s linear);
 }
 
 .olTileReplacing {
-	display: none;
+    display: none;
 }

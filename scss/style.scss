@@ -23,18 +23,18 @@
  * Constants.
  */
 /* dimensions */
-$tooltip-z-index:    1100;
-$button-height:      22px;
-$button-width:       22px;
+$tooltip-z-index: 1100;
+$button-height: 22px;
+$button-width: 22px;
 $button-line-height: 19px;
 
 /* colours */
-$button:                   #FFF;
-$button-bg:                rgba(0, 60, 136, 0.7);
-$button-bg-active:         rgba($button-bg, 1);
+$button: #FFF;
+$button-bg: rgba(0, 60, 136, 0.7);
+$button-bg-active: rgba($button-bg, 1);
 $button-bg-active-lighter: lighten($button-bg-active, 10%);
-$button-bg-active-darker:  darken($button-bg-active, 10%);
-$button-halo:              rgba(255, 255, 255, 0.2);
+$button-bg-active-darker: darken($button-bg-active, 10%);
+$button-halo: rgba(255, 255, 255, 0.2);
 
 
 /* page and widget elements, ordering is important */

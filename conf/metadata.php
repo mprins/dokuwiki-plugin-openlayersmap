@@ -21,73 +21,73 @@
  * @author Mark C. Prins
  */
 
-$meta['enableOSM'] = array (
-	'onoff'
+$meta['enableOSM']                = array(
+    'onoff'
 );
-$meta['enableStamen'] = array (
-	'onoff'
+$meta['enableStamen']             = array(
+    'onoff'
 );
-$meta['enableGoogle'] = array (
-	'onoff'
+$meta['enableGoogle']             = array(
+    'onoff'
 );
-$meta['googleAPIkey'] = array (
-	'string'
+$meta['googleAPIkey']             = array(
+    'string'
 );
-$meta['enableBing'] = array (
-	'onoff'
+$meta['enableBing']               = array(
+    'onoff'
 );
-$meta['bingAPIKey'] = array (
-	'string'
+$meta['bingAPIKey']               = array(
+    'string'
 );
-$meta['tfApiKey'] = array (
-	'string'
+$meta['tfApiKey']                 = array(
+    'string'
 );
-$meta['iconUrlOverload'] = array (
-	'string'
+$meta['iconUrlOverload']          = array(
+    'string'
 );
-$meta['enableA11y'] = array (
-	'onoff'
+$meta['enableA11y']               = array(
+    'onoff'
 );
-$meta['optionStaticMapGenerator'] = array (
-	'multichoice', '_choices' => array('local', 'remote')
+$meta['optionStaticMapGenerator'] = array(
+    'multichoice', '_choices' => array('local', 'remote')
 );
-$meta['autoZoomMap'] = array (
-	'onoff'
+$meta['autoZoomMap']              = array(
+    'onoff'
 );
-$meta ['displayformat'] = array (
-	'multichoice', '_choices' => array ('DD', 'DMS')
+$meta ['displayformat']           = array(
+    'multichoice', '_choices' => array('DD', 'DMS')
 );
 
-$meta ['default_width'] = array (
-	'string'
+$meta ['default_width']         = array(
+    'string'
 );
-$meta ['default_height'] = array (
-	'string'
+$meta ['default_height']        = array(
+    'string'
 );
-$meta ['default_zoom'] = array (
-	'string'
+$meta ['default_zoom']          = array(
+    'string'
 );
-$meta ['default_autozoom'] = array (
-	'onoff'
+$meta ['default_autozoom']      = array(
+    'onoff'
 );
-$meta ['default_statusbar'] = array (
-	'onoff'
+$meta ['default_statusbar']     = array(
+    'onoff'
 );
-$meta ['default_toolbar'] = array (
-	'onoff'
+$meta ['default_toolbar']       = array(
+    'onoff'
 );
-$meta ['default_controls'] = array (
-	'onoff'
+$meta ['default_controls']      = array(
+    'onoff'
 );
-$meta ['default_poihoverstyle'] = array (
-	'onoff'
+$meta ['default_poihoverstyle'] = array(
+    'onoff'
 );
-$meta ['default_kmlfile'] = array (
-	'string'
+$meta ['default_kmlfile']       = array(
+    'string'
 );
-$meta ['default_gpxfile'] = array (
-	'string'
+$meta ['default_gpxfile']       = array(
+    'string'
 );
-$meta ['default_geojsonfile'] = array (
-	'string'
+$meta ['default_geojsonfile']   = array(
+    'string'
 );

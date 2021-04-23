@@ -16,22 +16,22 @@
 
 /** Openlayers ScaleLine control. */
 .olControlScaleLine {
-	display: block;
-	position: absolute;
-	left: 10px;
-	bottom: 10px;
-	font-size: xx-small;
+    display: block;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    font-size: xx-small;
 }
 
 .olControlScaleLineBottom {
-	border: solid 2px black;
-	border-bottom: none;
-	margin-top: -2px;
-	text-align: center;
+    border: solid 2px black;
+    border-bottom: none;
+    margin-top: -2px;
+    text-align: center;
 }
 
 .olControlScaleLineTop {
-	border: solid 2px black;
-	border-top: none;
-	text-align: center;
+    border: solid 2px black;
+    border-top: none;
+    text-align: center;
 }
