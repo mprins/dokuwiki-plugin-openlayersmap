@@ -18,6 +18,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// phpcs:disable PSR1.Files.SideEffects
+// TODO resolve side effect
 include_once(realpath(__DIR__) . '/../geophp/geoPHP/geoPHP.inc');
 
 /**
@@ -27,8 +30,6 @@ include_once(realpath(__DIR__) . '/../geophp/geoPHP/geoPHP.inc');
  *
  */
 class StaticMap {
-    // this should probably not be changed
-    private $doc = '';
 
     // the final output
     private $tileSize = 256;
@@ -41,23 +42,23 @@ class StaticMap {
         ),
         // OCM sources
         'cycle'         => array(
-            'txt'  => 'OpenCycleMap tiles',
-            'logo' => 'cycle_logo.png',
+            'txt'  => 'Thunderforest tiles',
+            'logo' => 'tf_logo.png',
             'url'  => 'https://tile.thunderforest.com/cycle/{Z}/{X}/{Y}.png?apikey='
         ),
         'transport'     => array(
-            'txt'  => 'OpenCycleMap tiles',
-            'logo' => 'cycle_logo.png',
+            'txt'  => 'Thunderforest tiles',
+            'logo' => 'tf_logo.png',
             'url'  => 'https://tile.thunderforest.com/transport/{Z}/{X}/{Y}.png?apikey='
         ),
         'landscape'     => array(
-            'txt'  => 'OpenCycleMap tiles',
-            'logo' => 'cycle_logo.png',
+            'txt'  => 'Thunderforest tiles',
+            'logo' => 'tf_logo.png',
             'url'  => 'https://tile.thunderforest.com/landscape/{Z}/{X}/{Y}.png?apikey='
         ),
         'outdoors'      => array(
-            'txt'  => 'OpenCycleMap tiles',
-            'logo' => 'cycle_logo.png',
+            'txt'  => 'Thunderforest tiles',
+            'logo' => 'tf_logo.png',
             'url'  => 'https://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png?apikey='
         ),
         'toner-lite'    => array(
@@ -240,9 +241,10 @@ class StaticMap {
             $this->mkdirRecursive(dirname($this->mapCacheIDToFilename()), 0777);
             imagepng($this->image, $this->mapCacheIDToFilename(), 9);
         }
-        $this->doc = $this->mapCacheIDToFilename();
+        $doc = '';
+        $doc = $this->mapCacheIDToFilename();
         // make url relative to media dir
-        return str_replace($this->mediaBaseDir, '', $this->doc);
+        return str_replace($this->mediaBaseDir, '', $doc);
     }
 
     /**

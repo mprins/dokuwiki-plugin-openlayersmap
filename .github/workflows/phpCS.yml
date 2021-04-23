@@ -26,7 +26,7 @@ jobs:
 
           - name: run PHP codesniffer
             continue-on-error: true
-            run: phpcs --standard=_test/phpcs_MigrationAdjustments.xml --report-full --report-checkstyle=./phpcs-report.xml lib/plugins/openlayersmap
+            run: phpcs -v --standard=_test/phpcs_MigrationAdjustments.xml --report-full --report-checkstyle=./phpcs-report.xml lib/plugins/openlayersmap
 
           - name: Annotate PR
             run: cs2pr ./phpcs-report.xml
