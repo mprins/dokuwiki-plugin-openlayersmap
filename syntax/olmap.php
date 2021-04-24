@@ -513,19 +513,19 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
                     break;
                 case 'transport' :
                     $maptype = 'transport';
-                    $apikey  = $this->getConf('tfApiKey');
+                    $apikey  = '?apikey=' . $this->getConf('tfApiKey');
                     break;
                 case 'landscape' :
                     $maptype = 'landscape';
-                    $apikey  = $this->getConf('tfApiKey');
+                    $apikey  = '?apikey=' . $this->getConf('tfApiKey');
                     break;
                 case 'outdoors' :
                     $maptype = 'outdoors';
-                    $apikey  = $this->getConf('tfApiKey');
+                    $apikey  = '?apikey=' . $this->getConf('tfApiKey');
                     break;
                 case 'cycle map' :
                     $maptype = 'cycle';
-                    $apikey  = $this->getConf('tfApiKey');
+                    $apikey  = '?apikey=' . $this->getConf('tfApiKey');
                     break;
                 case 'hike and bike map' :
                     $maptype = 'hikeandbike';
@@ -542,7 +542,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
             $result = $myMap->getMap(
                 $gmap ['lat'], $gmap ['lon'], $gmap ['zoom'], $size, $maptype, $markers,
-                $gmap ['gpxfile'], $gmap ['kmlfile'], $gmap ['geojsonfile']
+                $gmap ['gpxfile'], $gmap ['kmlfile'], $gmap ['geojsonfile'], $apikey
             );
         } else {
             // using external basemap composer

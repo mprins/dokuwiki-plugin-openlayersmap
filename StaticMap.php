@@ -36,30 +36,30 @@ class StaticMap {
     private $tileInfo = array(
         // OSM sources
         'openstreetmap' => array(
-            'txt'  => '(c) OpenStreetMap CC-BY-SA',
+            'txt'  => '(c) OpenStreetMap data',
             'logo' => 'osm_logo.png',
             'url'  => 'https://tile.openstreetmap.org/{Z}/{X}/{Y}.png'
         ),
         // OCM sources
         'cycle'         => array(
-            'txt'  => 'Thunderforest tiles',
+            'txt'  => '(c) Thunderforest maps',
             'logo' => 'tf_logo.png',
-            'url'  => 'https://tile.thunderforest.com/cycle/{Z}/{X}/{Y}.png?apikey='
+            'url'  => 'https://tile.thunderforest.com/cycle/{Z}/{X}/{Y}.png'
         ),
         'transport'     => array(
-            'txt'  => 'Thunderforest tiles',
+            'txt'  => '(c) Thunderforest maps',
             'logo' => 'tf_logo.png',
-            'url'  => 'https://tile.thunderforest.com/transport/{Z}/{X}/{Y}.png?apikey='
+            'url'  => 'https://tile.thunderforest.com/transport/{Z}/{X}/{Y}.png'
         ),
         'landscape'     => array(
-            'txt'  => 'Thunderforest tiles',
+            'txt'  => '(c) Thunderforest maps',
             'logo' => 'tf_logo.png',
-            'url'  => 'https://tile.thunderforest.com/landscape/{Z}/{X}/{Y}.png?apikey='
+            'url'  => 'https://tile.thunderforest.com/landscape/{Z}/{X}/{Y}.png'
         ),
         'outdoors'      => array(
-            'txt'  => 'Thunderforest tiles',
+            'txt'  => '(c) Thunderforest maps',
             'logo' => 'tf_logo.png',
-            'url'  => 'https://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png?apikey='
+            'url'  => 'https://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png'
         ),
         'toner-lite'    => array(
             'txt'  => 'Stamen tiles',
@@ -196,7 +196,7 @@ class StaticMap {
         string $mediaDir,
         string $tileCacheBaseDir,
         bool $autoZoomExtent = true,
-        string $apikey = ''
+        string $apikey
     ) {
         $this->zoom   = $zoom;
         $this->lat    = $lat;
@@ -422,7 +422,6 @@ class StaticMap {
                         $y
                     ), $this->tileInfo [$this->maptype] ['url']
                 );
-                $url .= $this->apikey;
 
                 $tileData = $this->fetchTile($url);
                 if($tileData) {
@@ -459,7 +458,7 @@ class StaticMap {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERAGENT, $_UA);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_URL, $url . $this->apikey);
             $tile = curl_exec($ch);
             curl_close($ch);
         } else {
@@ -474,7 +473,7 @@ class StaticMap {
                 )
             );
             $context = stream_context_create($opts);
-            $tile    = file_get_contents($url, false, $context);
+            $tile    = file_get_contents($url . $this->apikey, false, $context);
         }
         if($tile && $this->useTileCache) {
             $this->writeTileToCache($url, $tile);

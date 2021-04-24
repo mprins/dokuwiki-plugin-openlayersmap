@@ -112,12 +112,11 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
         $geojson = $this->mediaIdToPath($geojson);
 
         // create map
-        require_once DOKU_PLUGIN.'openlayersmap/StaticMap.php';
+        require_once DOKU_PLUGIN . 'openlayersmap/StaticMap.php';
         $map = new StaticMap(
             $lat, $lon, $zoom, $width, $height, $maptype,
             $markers, $gpx, $kml, $geojson, $conf['mediadir'], $conf['cachedir'],
-            $this->getConf('autoZoomMap'),
-            $apikey
+            $this->getConf('autoZoomMap'), $apikey
         );
 
         // return the media id url
