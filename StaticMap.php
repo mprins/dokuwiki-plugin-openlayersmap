@@ -36,30 +36,30 @@ class StaticMap {
     private $tileInfo = array(
         // OSM sources
         'openstreetmap' => array(
-            'txt'  => '(c) OpenStreetMap CC-BY-SA',
+            'txt'  => '(c) OpenStreetMap data/ODbl',
             'logo' => 'osm_logo.png',
             'url'  => 'https://tile.openstreetmap.org/{Z}/{X}/{Y}.png'
         ),
         // OCM sources
         'cycle'         => array(
-            'txt'  => 'Thunderforest tiles',
+            'txt'  => '(c) Thunderforest maps',
             'logo' => 'tf_logo.png',
-            'url'  => 'https://tile.thunderforest.com/cycle/{Z}/{X}/{Y}.png?apikey='
+            'url'  => 'https://tile.thunderforest.com/cycle/{Z}/{X}/{Y}.png'
         ),
         'transport'     => array(
-            'txt'  => 'Thunderforest tiles',
+            'txt'  => '(c) Thunderforest maps',
             'logo' => 'tf_logo.png',
-            'url'  => 'https://tile.thunderforest.com/transport/{Z}/{X}/{Y}.png?apikey='
+            'url'  => 'https://tile.thunderforest.com/transport/{Z}/{X}/{Y}.png'
         ),
         'landscape'     => array(
-            'txt'  => 'Thunderforest tiles',
+            'txt'  => '(c) Thunderforest maps',
             'logo' => 'tf_logo.png',
-            'url'  => 'https://tile.thunderforest.com/landscape/{Z}/{X}/{Y}.png?apikey='
+            'url'  => 'https://tile.thunderforest.com/landscape/{Z}/{X}/{Y}.png'
         ),
         'outdoors'      => array(
-            'txt'  => 'Thunderforest tiles',
+            'txt'  => '(c) Thunderforest maps',
             'logo' => 'tf_logo.png',
-            'url'  => 'https://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png?apikey='
+            'url'  => 'https://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png'
         ),
         'toner-lite'    => array(
             'txt'  => 'Stamen tiles',
@@ -147,7 +147,7 @@ class StaticMap {
     private $tileCacheBaseDir;
     private $mapCacheBaseDir;
     private $mediaBaseDir;
-    private $useTileCache = true;
+    private $useTileCache;
     private $mapCacheID = '';
     private $mapCacheFile = '';
     private $mapCacheExtension = 'png';
@@ -173,14 +173,14 @@ class StaticMap {
      *            GPX filename
      * @param string $kml
      *            KML filename
+     * @param string $geojson
      * @param string $mediaDir
      *            Directory to store/cache maps
      * @param string $tileCacheBaseDir
      *            Directory to cache map tiles
      * @param bool   $autoZoomExtent
      *            Wheter or not to override zoom/lat/lon and zoom to the extent of gpx/kml and markers
-     * @param string apikey
-     *            Some service require a key to access
+     * @param string $apikey
      */
     public function __construct(
         float $lat,
@@ -241,7 +241,6 @@ class StaticMap {
             $this->mkdirRecursive(dirname($this->mapCacheIDToFilename()), 0777);
             imagepng($this->image, $this->mapCacheIDToFilename(), 9);
         }
-        $doc = '';
         $doc = $this->mapCacheIDToFilename();
         // make url relative to media dir
         return str_replace($this->mediaBaseDir, '', $doc);
@@ -255,6 +254,7 @@ class StaticMap {
      *
      * @param float $paddingFactor
      *            buffer constant to enlarge (>1.0) the zoom level
+     * @throws Exception
      */
     private function autoZoom(float $paddingFactor = 1.0): void {
         $geoms    = array();
@@ -264,7 +264,6 @@ class StaticMap {
                 $geoms [] = new Point ($marker ['lon'], $marker ['lat']);
             }
         }
-        $g = false;
         if(file_exists($this->kmlFileName)) {
             $g = geoPHP::load(file_get_contents($this->kmlFileName), 'kml');
             if($g !== false) {
@@ -320,7 +319,7 @@ class StaticMap {
         return file_exists($filename);
     }
 
-    public function serializeParams() {
+    public function serializeParams(): string {
         return join(
             "&", array(
                    $this->zoom,
@@ -422,7 +421,6 @@ class StaticMap {
                         $y
                     ), $this->tileInfo [$this->maptype] ['url']
                 );
-                $url .= $this->apikey;
 
                 $tileData = $this->fetchTile($url);
                 if($tileData) {
@@ -447,8 +445,9 @@ class StaticMap {
      * Fetch a tile and (if configured) store it in the cache.
      *
      * @param string $url
+     * @return bool|string
      */
-    public function fetchTile($url) {
+    public function fetchTile(string $url) {
         if($this->useTileCache && ($cached = $this->checkTileCache($url)))
             return $cached;
 
@@ -459,7 +458,7 @@ class StaticMap {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERAGENT, $_UA);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_URL, $url . $this->apikey);
             $tile = curl_exec($ch);
             curl_close($ch);
         } else {
@@ -474,7 +473,7 @@ class StaticMap {
                 )
             );
             $context = stream_context_create($opts);
-            $tile    = file_get_contents($url, false, $context);
+            $tile    = file_get_contents($url . $this->apikey, false, $context);
         }
         if($tile && $this->useTileCache) {
             $this->writeTileToCache($url, $tile);
@@ -485,12 +484,14 @@ class StaticMap {
     /**
      *
      * @param string $url
+     * @return string|false
      */
-    public function checkTileCache($url) {
+    public function checkTileCache(string $url) {
         $filename = $this->tileUrlToFilename($url);
         if(file_exists($filename)) {
             return file_get_contents($filename);
         }
+        return false;
     }
 
     /**
@@ -499,11 +500,7 @@ class StaticMap {
      * @return string
      */
     public function tileUrlToFilename(string $url): string {
-        return $this->tileCacheBaseDir . "/" . str_replace(
-                array(
-                    'http://'
-                ), '', $url
-            );
+        return $this->tileCacheBaseDir . "/" . substr($url, strpos($url, '/') + 1);
     }
 
     /**
@@ -690,7 +687,7 @@ class StaticMap {
      * @param int     $colour
      *            drawing colour
      */
-    private function drawPolygon($polygon, $colour) {
+    private function drawPolygon($polygon, int $colour) {
         // TODO implementation of drawing holes,
         // maybe draw the polygon to an in-memory image and use imagecopy, draw polygon in col., draw holes in bgcol?
 
@@ -830,8 +827,13 @@ class StaticMap {
         );
 
         // additional tile source info, ie. who created/hosted the tiles
-        if($this->maptype != 'openstreetmap') {
-            $iconImg = imagecreatefrompng($logoBaseDir . $this->tileInfo [$this->maptype] ['logo']);
+        $xIconOffset = 0;
+        if($this->maptype === 'openstreetmap') {
+            $mapAuthor = "(c) OpenStreetMap maps/CC BY-SA";
+        } else {
+            $mapAuthor   = $this->tileInfo [$this->maptype] ['txt'];
+            $iconImg     = imagecreatefrompng($logoBaseDir . $this->tileInfo [$this->maptype] ['logo']);
+            $xIconOffset = imagesx($iconImg);
             imagecopy(
                 $this->image,
                 $iconImg, imagesx($logoImg) + 1,
@@ -840,20 +842,21 @@ class StaticMap {
                 0,
                 imagesx($iconImg), imagesy($iconImg)
             );
-            imagestring(
-                $this->image,
-                1, imagesx($logoImg) + imagesx($iconImg) + 4,
-                imagesy($this->image) - ceil(imagesy($logoImg) / 2) + 1,
-                $this->tileInfo [$this->maptype] ['txt'],
-                $bgcolor
-            );
-            imagestring(
-                $this->image,
-                1, imagesx($logoImg) + imagesx($iconImg) + 3,
-                imagesy($this->image) - ceil(imagesy($logoImg) / 2),
-                $this->tileInfo [$this->maptype] ['txt'],
-                $textcolor
-            );
         }
+        imagestring(
+            $this->image,
+            1, imagesx($logoImg) + $xIconOffset + 4,
+            imagesy($this->image) - ceil(imagesy($logoImg) / 2) + 1,
+            $mapAuthor,
+            $bgcolor
+        );
+        imagestring(
+            $this->image,
+            1, imagesx($logoImg) + $xIconOffset + 3,
+            imagesy($this->image) - ceil(imagesy($logoImg) / 2),
+            $mapAuthor,
+            $textcolor
+        );
+
     }
 }
