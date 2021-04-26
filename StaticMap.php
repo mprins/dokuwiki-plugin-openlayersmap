@@ -443,9 +443,10 @@ class StaticMap {
 
     /**
      * Fetch a tile and (if configured) store it in the cache.
-     *
      * @param string $url
      * @return bool|string
+     * @todo refactor this to use dokuwiki\HTTP\HTTPClient or dokuwiki\HTTP\DokuHTTPClient
+     *          for better proxy handling...
      */
     public function fetchTile(string $url) {
         if($this->useTileCache && ($cached = $this->checkTileCache($url)))
@@ -459,21 +460,28 @@ class StaticMap {
             curl_setopt($ch, CURLOPT_USERAGENT, $_UA);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
             curl_setopt($ch, CURLOPT_URL, $url . $this->apikey);
+            dbglog("StaticMap::fetchTile: getting: $url using curl_exec");
             $tile = curl_exec($ch);
             curl_close($ch);
         } else {
             // use file_get_contents
             global $conf;
-            $opts    = array(
+            $opts = array(
                 'http' => array(
                     'method'          => "GET",
                     'header'          => "Accept-language: en\r\n" . "User-Agent: $_UA\r\n" . "accept: image/png\r\n",
-                    'proxy'           => "tcp://" . $conf ['proxy'] ['host'] . ":" . $conf ['proxy'] ['port'],
                     'request_fulluri' => true
                 )
             );
+            if(isset($conf['proxy']['host'], $conf['proxy']['port'])
+                && $conf['proxy']['host'] !== ''
+                && $conf['proxy']['port'] !== '') {
+                $opts['http'] += ['proxy' => "tcp://" . $conf['proxy']['host'] . ":" . $conf['proxy']['port']];
+            }
+
             $context = stream_context_create($opts);
-            $tile    = file_get_contents($url . $this->apikey, false, $context);
+            dbglog("StaticMap::fetchTile: getting: $url . $this->apikey using file_get_contents and options $opts");
+            $tile = file_get_contents($url . $this->apikey, false, $context);
         }
         if($tile && $this->useTileCache) {
             $this->writeTileToCache($url, $tile);
