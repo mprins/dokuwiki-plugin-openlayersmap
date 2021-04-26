@@ -1,7 +1,7 @@
 base   openlayersmap
 author Mark C. Prins
 email  mprins@users.sf.net
-date   2021-04-24
+date   2021-04-26
 name   OpenLayers map plugin for DokuWiki
 desc   Provides a syntax for rendering an OpenLayers based map in a wiki page. Uses OpenLayers 2: branch master
 url    https://www.dokuwiki.org/plugin:openlayersmap
