@@ -857,11 +857,11 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin
                 $renderer->meta ['geo'] ['lon'] = $mainLon;
                 if ($geophp = plugin_load('helper', 'geophp')) {
                     // if we have the geoPHP helper, add the geohash
-
-                    // fails with older php versions..
-                    // $renderer->meta['geo']['geohash'] = (new Point($mainLon,$mainLat))->out('geohash');
-                    $p                                  = new Point ($mainLon, $mainLat);
-                    $renderer->meta ['geo'] ['geohash'] = $p->out('geohash');
+                    try {
+                        $renderer->meta['geo']['geohash'] = (new Point($mainLon, $mainLat))->out('geohash');
+                    } catch (Exception $e) {
+                        Logger::error("Failed to create geohash for: $mainLat, $mainLon");
+                    }
                 }
             }
 
