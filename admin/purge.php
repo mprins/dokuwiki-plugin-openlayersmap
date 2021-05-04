@@ -17,22 +17,27 @@
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
 
+use dokuwiki\Logger;
+
 /**
  * DokuWiki Plugin openlayersmap (Admin Component).
  * This component purges the cached tiles and maps.
  *
  * @author Mark Prins
  */
-class admin_plugin_openlayersmap_purge extends DokuWiki_Admin_Plugin {
+class admin_plugin_openlayersmap_purge extends DokuWiki_Admin_Plugin
+{
     /**
      * (non-PHPdoc)
      * @see DokuWiki_Admin_Plugin::getMenuSort()
      */
-    public function getMenuSort(): int {
+    public function getMenuSort(): int
+    {
         return 800;
     }
 
-    public function getMenuIcon(): string {
+    public function getMenuIcon(): string
+    {
         $plugin = $this->getPluginName();
         return DOKU_PLUGIN . $plugin . '/admin/purge.svg';
     }
@@ -41,21 +46,22 @@ class admin_plugin_openlayersmap_purge extends DokuWiki_Admin_Plugin {
      * (non-PHPdoc)
      * @see DokuWiki_Admin_Plugin::handle()
      */
-    public function handle(): void {
+    public function handle(): void
+    {
         global $conf;
-        if(!isset($_REQUEST['continue']) || !checkSecurityToken()) {
+        if (!isset($_REQUEST['continue']) || !checkSecurityToken()) {
             return;
         }
-        if(isset($_REQUEST['purgetiles'])) {
+        if (isset($_REQUEST['purgetiles'])) {
             $path = $conf['cachedir'] . '/olmaptiles';
-            if($this->rrmdir($path)) {
-                msg($this->getLang('admin_purged_tiles'), 0);
+            if ($this->rrmdir($path)) {
+                msg($this->getLang('admin_purged_tiles'));
             }
         }
-        if(isset($_REQUEST['purgemaps'])) {
+        if (isset($_REQUEST['purgemaps'])) {
             $path = $conf['mediadir'] . '/olmapmaps';
-            if($this->rrmdir($path)) {
-                msg($this->getLang('admin_purged_maps'), 0);
+            if ($this->rrmdir($path)) {
+                msg($this->getLang('admin_purged_maps'));
             }
         }
     }
@@ -65,13 +71,14 @@ class admin_plugin_openlayersmap_purge extends DokuWiki_Admin_Plugin {
      * @param string $sDir directory path
      * @return boolean true when succesful
      */
-    private function rrmdir(string $sDir): bool {
-        if(is_dir($sDir)) {
-            dbglog($sDir, 'admin_plugin_openlayersmap_purge::rrmdir: recursively removing path: ');
+    private function rrmdir(string $sDir): bool
+    {
+        if (is_dir($sDir)) {
+            Logger::debug('admin_plugin_openlayersmap_purge::rrmdir: recursively removing path: ', $sDir);
             $sDir = rtrim($sDir, '/');
             $oDir = dir($sDir);
-            while(($sFile = $oDir->read()) !== false) {
-                if($sFile !== '.' && $sFile !== '..') {
+            while (($sFile = $oDir->read()) !== false) {
+                if ($sFile !== '.' && $sFile !== '..') {
                     (!is_link("$sDir/$sFile") && is_dir("$sDir/$sFile")) ?
                         $this->rrmdir("$sDir/$sFile") : unlink("$sDir/$sFile");
                 }
@@ -87,7 +94,8 @@ class admin_plugin_openlayersmap_purge extends DokuWiki_Admin_Plugin {
      * (non-PHPdoc)
      * @see DokuWiki_Admin_Plugin::html()
      */
-    public function html(): void {
+    public function html(): void
+    {
         echo $this->locale_xhtml('admin_intro');
         $form = new Doku_Form(array('id' => 'olmap_purgeform', 'method' => 'post'));
         $form->addHidden('continue', 'go');
@@ -115,7 +123,9 @@ class admin_plugin_openlayersmap_purge extends DokuWiki_Admin_Plugin {
 
         $form->addElement(
             form_makeButton(
-                'submit', 'admin', $this->getLang('admin_submit'),
+                'submit',
+                'admin',
+                $this->getLang('admin_submit'),
                 array('accesskey' => 'p', 'title' => $this->getLang('admin_submit'))
             )
         );

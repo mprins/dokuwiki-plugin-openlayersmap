@@ -22,14 +22,16 @@
  * @group plugin_dokuwikispatial
  * @group plugins
  */
-class general_plugin_openlayersmap_test extends DokuWikiTest {
+class general_plugin_openlayersmap_test extends DokuWikiTest
+{
 
     protected $pluginsEnabled = array('openlayersmap', 'geophp');
 
     /**
      * Simple test to make sure the plugin.info.txt is in correct format.
      */
-    final public function test_plugininfo(): void {
+    final public function test_plugininfo(): void
+    {
         $file = __DIR__ . '/../plugin.info.txt';
         self::assertFileExists($file);
 
@@ -53,13 +55,18 @@ class general_plugin_openlayersmap_test extends DokuWikiTest {
     /**
      * test if plugin is loaded.
      */
-    final public function test_plugin_openlayersmap_isloaded(): void {
+    final public function test_plugin_openlayersmap_isloaded(): void
+    {
         global $plugin_controller;
         self::assertContains(
-            'geophp', $plugin_controller->getList(), "geophp plugin is loaded"
+            'geophp',
+            $plugin_controller->getList(),
+            "geophp plugin is loaded"
         );
         self::assertContains(
-            'openlayersmap', $plugin_controller->getList(), "openlayersmap plugin is loaded"
+            'openlayersmap',
+            $plugin_controller->getList(),
+            "openlayersmap plugin is loaded"
         );
     }
 }

@@ -23,7 +23,8 @@
  *
  * @author Mark Prins
  */
-class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
+class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin
+{
     /** maximum width of the resulting image. */
     private $maxWidth = 1024;
     /** maximum heigth of the resulting image. */
@@ -34,7 +35,8 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
      *
      * @return array Information to all provided methods.
      */
-    public function getMethods(): array {
+    public function getMethods(): array
+    {
         $result   = array();
         $result[] = array(
             'name'   => 'getMap',
@@ -86,29 +88,29 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
         string $apikey = ''
     ): string {
         global $conf;
-        // dbglog($markers,'helper_plugin_openlayersmap_staticmap::getMap: markers :');
+        // Logger::debug('helper_plugin_openlayersmap_staticmap::getMap: markers :',$markers);
 
         // normalize zoom
         $zoom = $zoom ?: 0;
-        if($zoom > 18) {
+        if ($zoom > 18) {
             $zoom = 18;
         }
         // normalize WxH
         list($width, $height) = explode('x', $size);
-        $width = (int) $width;
-        if($width > $this->maxWidth) {
+        $width = (int)$width;
+        if ($width > $this->maxWidth) {
             $width = $this->maxWidth;
         }
-        $height = (int) $height;
-        if($height > $this->maxHeight) {
+        $height = (int)$height;
+        if ($height > $this->maxHeight) {
             $height = $this->maxHeight;
         }
 
         // cleanup/validate gpx/kml
         $kml = $this->mediaIdToPath($kml);
-        // dbglog($kml,'helper_plugin_openlayersmap_staticmap::getMap: kml file:');
+        // Logger::debug('helper_plugin_openlayersmap_staticmap::getMap: kml file:',$kml);
         $gpx = $this->mediaIdToPath($gpx);
-        // dbglog($gpx,'helper_plugin_openlayersmap_staticmap::getMap: gpx file:');
+        // Logger::debug('helper_plugin_openlayersmap_staticmap::getMap: gpx file:',$gpx);
         $geojson = $this->mediaIdToPath($geojson);
 
         // create map
@@ -133,13 +135,14 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
      * @param string $id the DW media id
      * @return string the path to the file
      */
-    private function mediaIdToPath(string $id): string {
+    private function mediaIdToPath(string $id): string
+    {
         global $conf;
-        if(empty($id)) {
+        if (empty($id)) {
             return "";
         }
         $id = str_replace(array("[[", "]]"), "", $id);
-        if((strpos($id, ':') === 0)) {
+        if ((strpos($id, ':') === 0)) {
             $id = substr($id, 1);
         }
         $id = str_replace(":", "/", $id);

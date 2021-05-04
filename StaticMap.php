@@ -36,7 +36,8 @@ require_once __DIR__ . '/../geophp/vendor/autoload.php';
  * @author Gerhard Koch <gerhard.koch AT ymail.com>
  *
  */
-class StaticMap {
+class StaticMap
+{
 
     // the final output
     private $tileSize = 256;
@@ -212,7 +213,7 @@ class StaticMap {
         $this->height = $height;
         // validate + set maptype
         $this->maptype = $this->tileDefaultSrc;
-        if(array_key_exists($maptype, $this->tileInfo)) {
+        if (array_key_exists($maptype, $this->tileInfo)) {
             $this->maptype = $maptype;
         }
         $this->markers          = $markers;
@@ -232,17 +233,18 @@ class StaticMap {
      *
      * @return string url relative to media dir
      */
-    public function getMap(): string {
+    public function getMap(): string
+    {
         try {
-            if($this->autoZoomExtent) {
+            if ($this->autoZoomExtent) {
                 $this->autoZoom();
             }
-        } catch(Exception $e) {
-            dbglog($e);
+        } catch (Exception $e) {
+            Logger::debug($e);
         }
 
         // use map cache, so check cache for map
-        if(!$this->checkMapCache()) {
+        if (!$this->checkMapCache()) {
             // map is not in cache, needs to be build
             $this->makeMap();
             $this->mkdirRecursive(dirname($this->mapCacheIDToFilename()), 0777);
@@ -260,35 +262,36 @@ class StaticMap {
      *            buffer constant to enlarge (>1.0) the zoom level
      * @throws Exception if non-geometries are found in the collection
      */
-    private function autoZoom(float $paddingFactor = 1.0): void {
+    private function autoZoom(float $paddingFactor = 1.0): void
+    {
         $geoms    = array();
         $geoms [] = new Point ($this->lon, $this->lat);
-        if(!empty ($this->markers)) {
-            foreach($this->markers as $marker) {
+        if (!empty ($this->markers)) {
+            foreach ($this->markers as $marker) {
                 $geoms [] = new Point ($marker ['lon'], $marker ['lat']);
             }
         }
-        if(file_exists($this->kmlFileName)) {
+        if (file_exists($this->kmlFileName)) {
             $g = geoPHP::load(file_get_contents($this->kmlFileName), 'kml');
-            if($g !== false) {
+            if ($g !== false) {
                 $geoms [] = $g;
             }
         }
-        if(file_exists($this->gpxFileName)) {
+        if (file_exists($this->gpxFileName)) {
             $g = geoPHP::load(file_get_contents($this->gpxFileName), 'gpx');
-            if($g !== false) {
+            if ($g !== false) {
                 $geoms [] = $g;
             }
         }
-        if(file_exists($this->geojsonFileName)) {
+        if (file_exists($this->geojsonFileName)) {
             $g = geoPHP::load(file_get_contents($this->geojsonFileName), 'geojson');
-            if($g !== false) {
+            if ($g !== false) {
                 $geoms [] = $g;
             }
         }
 
-        if(count($geoms) <= 1) {
-            dbglog($geoms, "StaticMap::autoZoom: Skip setting autozoom options");
+        if (count($geoms) <= 1) {
+            Logger::debug("StaticMap::autoZoom: Skip setting autozoom options", $geoms);
             return;
         }
 
@@ -300,14 +303,9 @@ class StaticMap {
         // $vy00 = log(tan(M_PI*(0.25 + $centroid->getY()/360)));
         $vy0 = log(tan(M_PI * (0.25 + $bbox ['miny'] / 360)));
         $vy1 = log(tan(M_PI * (0.25 + $bbox ['maxy'] / 360)));
-        dbglog("StaticMap::autoZoom: vertical resolution: $vy0, $vy1");
-        if ($vy1 - $vy0 === 0.0){
-            $resolutionVertical = 0;
-            dbglog("StaticMap::autoZoom: using $resolutionVertical");
-        } else {
-            $zoomFactorPowered  = ($this->height / 2) / (40.7436654315252 * ($vy1 - $vy0));
-            $resolutionVertical = 360 / ($zoomFactorPowered * $this->tileSize);
-        }
+        Logger::debug("StaticMap::autoZoom: vertical resolution: $vy0, $vy1");
+        $zoomFactorPowered  = ($this->height / 2) / (40.7436654315252 * ($vy1 - $vy0));
+        $resolutionVertical = 360 / ($zoomFactorPowered * $this->tileSize);
         // determine horizontal resolution
         $resolutionHorizontal = ($bbox ['maxx'] - $bbox ['minx']) / $this->width;
         dbglog("StaticMap::autoZoom: using $resolutionHorizontal");
@@ -317,23 +315,25 @@ class StaticMap {
             $zoom             = log(360 / ($resolution * $this->tileSize), 2);
         }
 
-        if(is_finite($zoom) && $zoom < 15 && $zoom > 2) {
+        if (is_finite($zoom) && $zoom < 15 && $zoom > 2) {
             $this->zoom = floor($zoom);
         }
         $this->lon = $centroid->getX();
         $this->lat = $centroid->getY();
-        dbglog("StaticMap::autoZoom: Set autozoom options to: z: $this->zoom, lon: $this->lon, lat: $this->lat");
+        Logger::debug("StaticMap::autoZoom: Set autozoom options to: z: $this->zoom, lon: $this->lon, lat: $this->lat");
     }
 
-    public function checkMapCache(): bool {
+    public function checkMapCache(): bool
+    {
         // side effect: set the mapCacheID
         $this->mapCacheID = md5($this->serializeParams());
         $filename         = $this->mapCacheIDToFilename();
         return file_exists($filename);
     }
 
-    public function serializeParams(): string {
-        return implode(
+    public function serializeParams(): string
+    {
+        return join(
             "&", array(
                    $this->zoom,
                    $this->lat,
@@ -349,8 +349,9 @@ class StaticMap {
         );
     }
 
-    public function mapCacheIDToFilename(): string {
-        if(!$this->mapCacheFile) {
+    public function mapCacheIDToFilename(): string
+    {
+        if (!$this->mapCacheFile) {
             $this->mapCacheFile = $this->mapCacheBaseDir . "/" . $this->maptype . "/" . $this->zoom . "/cache_"
                 . substr($this->mapCacheID, 0, 2) . "/" . substr($this->mapCacheID, 2, 2)
                 . "/" . substr($this->mapCacheID, 4);
@@ -361,31 +362,32 @@ class StaticMap {
     /**
      * make the map.
      */
-    public function makeMap(): void {
+    public function makeMap(): void
+    {
         $this->initCoords();
         $this->createBaseMap();
-        if(!empty ($this->markers)) {
+        if (!empty ($this->markers)) {
             $this->placeMarkers();
         }
         if (file_exists($this->kmlFileName)) {
             try {
                 $this->drawKML();
             } catch (exception $e) {
-                dbglog('failed to load KML file', $e);
+                Logger::error('failed to load KML file', $e);
             }
         }
         if (file_exists($this->gpxFileName)) {
             try {
                 $this->drawGPX();
             } catch (exception $e) {
-                dbglog('failed to load GPX file', $e);
+                Logger::error('failed to load GPX file', $e);
             }
         }
         if (file_exists($this->geojsonFileName)) {
             try {
                 $this->drawGeojson();
             } catch (exception $e) {
-                dbglog('failed to load GeoJSON file', $e);
+                Logger::error('failed to load GeoJSON file', $e);
             }
         }
 
@@ -394,7 +396,8 @@ class StaticMap {
 
     /**
      */
-    public function initCoords(): void {
+    public function initCoords(): void
+    {
         $this->centerX = $this->lonToTile($this->lon, $this->zoom);
         $this->centerY = $this->latToTile($this->lat, $this->zoom);
         $this->offsetX = floor((floor($this->centerX) - $this->centerX) * $this->tileSize);
@@ -407,7 +410,8 @@ class StaticMap {
      * @param int   $zoom
      * @return float|int
      */
-    public function lonToTile(float $long, int $zoom) {
+    public function lonToTile(float $long, int $zoom)
+    {
         return (($long + 180) / 360) * pow(2, $zoom);
     }
 
@@ -417,14 +421,16 @@ class StaticMap {
      * @param int   $zoom
      * @return float|int
      */
-    public function latToTile(float $lat, int $zoom) {
+    public function latToTile(float $lat, int $zoom)
+    {
         return (1 - log(tan($lat * pi() / 180) + 1 / cos($lat * M_PI / 180)) / M_PI) / 2 * pow(2, $zoom);
     }
 
     /**
      * make basemap image.
      */
-    public function createBaseMap(): void {
+    public function createBaseMap(): void
+    {
         $this->image   = imagecreatetruecolor($this->width, $this->height);
         $startX        = floor($this->centerX - ($this->width / $this->tileSize) / 2);
         $startY        = floor($this->centerY - ($this->height / $this->tileSize) / 2);
@@ -437,22 +443,24 @@ class StaticMap {
         $this->offsetX += floor($startX - floor($this->centerX)) * $this->tileSize;
         $this->offsetY += floor($startY - floor($this->centerY)) * $this->tileSize;
 
-        for($x = $startX; $x <= $endX; $x++) {
-            for($y = $startY; $y <= $endY; $y++) {
+        for ($x = $startX; $x <= $endX; $x++) {
+            for ($y = $startY; $y <= $endY; $y++) {
                 $url = str_replace(
                     array(
                         '{Z}',
                         '{X}',
                         '{Y}'
-                    ), array(
+                    ),
+                    array(
                         $this->zoom,
                         $x,
                         $y
-                    ), $this->tileInfo [$this->maptype] ['url']
+                    ),
+                    $this->tileInfo [$this->maptype] ['url']
                 );
 
                 $tileData = $this->fetchTile($url);
-                if($tileData) {
+                if ($tileData) {
                     $tileImage = imagecreatefromstring($tileData);
                 } else {
                     $tileImage = imagecreate($this->tileSize, $this->tileSize);
@@ -461,9 +469,15 @@ class StaticMap {
                 }
                 $destX = ($x - $startX) * $this->tileSize + $this->offsetX;
                 $destY = ($y - $startY) * $this->tileSize + $this->offsetY;
-                dbglog($this->tileSize, "imagecopy tile into image: $destX, $destY");
+                Logger::debug("imagecopy tile into image: $destX, $destY", $this->tileSize);
                 imagecopy(
-                    $this->image, $tileImage, $destX, $destY, 0, 0, $this->tileSize,
+                    $this->image,
+                    $tileImage,
+                    $destX,
+                    $destY,
+                    0,
+                    0,
+                    $this->tileSize,
                     $this->tileSize
                 );
             }
@@ -477,19 +491,21 @@ class StaticMap {
      * @todo refactor this to use dokuwiki\HTTP\HTTPClient or dokuwiki\HTTP\DokuHTTPClient
      *          for better proxy handling...
      */
-    public function fetchTile(string $url) {
-        if($this->useTileCache && ($cached = $this->checkTileCache($url)))
+    public function fetchTile(string $url)
+    {
+        if ($this->useTileCache && ($cached = $this->checkTileCache($url))) {
             return $cached;
+        }
 
         $_UA = 'Mozilla/4.0 (compatible; DokuWikiSpatial HTTP Client; ' . PHP_OS . ')';
-        if(function_exists("curl_init")) {
+        if (function_exists("curl_init")) {
             // use cUrl
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERAGENT, $_UA);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
             curl_setopt($ch, CURLOPT_URL, $url . $this->apikey);
-            dbglog("StaticMap::fetchTile: getting: $url using curl_exec");
+            Logger::debug("StaticMap::fetchTile: getting: $url using curl_exec");
             $tile = curl_exec($ch);
             curl_close($ch);
         } else {
@@ -502,17 +518,19 @@ class StaticMap {
                     'request_fulluri' => true
                 )
             );
-            if(isset($conf['proxy']['host'], $conf['proxy']['port'])
+            if (isset($conf['proxy']['host'], $conf['proxy']['port'])
                 && $conf['proxy']['host'] !== ''
                 && $conf['proxy']['port'] !== '') {
                 $opts['http'] += ['proxy' => "tcp://" . $conf['proxy']['host'] . ":" . $conf['proxy']['port']];
             }
 
             $context = stream_context_create($opts);
-            dbglog("StaticMap::fetchTile: getting: $url . $this->apikey using file_get_contents and options $opts");
+            Logger::debug(
+                "StaticMap::fetchTile: getting: $url . $this->apikey using file_get_contents and options $opts"
+            );
             $tile = file_get_contents($url . $this->apikey, false, $context);
         }
-        if($tile && $this->useTileCache) {
+        if ($tile && $this->useTileCache) {
             $this->writeTileToCache($url, $tile);
         }
         return $tile;
@@ -523,9 +541,10 @@ class StaticMap {
      * @param string $url
      * @return string|false
      */
-    public function checkTileCache(string $url) {
+    public function checkTileCache(string $url)
+    {
         $filename = $this->tileUrlToFilename($url);
-        if(file_exists($filename)) {
+        if (file_exists($filename)) {
             return file_get_contents($filename);
         }
         return false;
@@ -536,7 +555,8 @@ class StaticMap {
      * @param string $url
      * @return string
      */
-    public function tileUrlToFilename(string $url): string {
+    public function tileUrlToFilename(string $url): string
+    {
         return $this->tileCacheBaseDir . "/" . substr($url, strpos($url, '/') + 1);
     }
 
@@ -546,7 +566,8 @@ class StaticMap {
      * @param string $url
      * @param mixed  $data
      */
-    public function writeTileToCache($url, $data): void {
+    public function writeTileToCache(string $url, $data): void
+    {
         $filename = $this->tileUrlToFilename($url);
         $this->mkdirRecursive(dirname($filename), 0777);
         file_put_contents($filename, $data);
@@ -560,7 +581,8 @@ class StaticMap {
      * @param int    $mode
      *            File access mode. For more information on modes, read the details on the chmod manpage.
      */
-    public function mkdirRecursive(string $pathname, int $mode): bool {
+    public function mkdirRecursive(string $pathname, int $mode): bool
+    {
         is_dir(dirname($pathname)) || $this->mkdirRecursive(dirname($pathname), $mode);
         return is_dir($pathname) || mkdir($pathname, $mode) || is_dir($pathname);
     }
@@ -568,18 +590,19 @@ class StaticMap {
     /**
      * Place markers on the map and number them in the same order as they are listed in the html.
      */
-    public function placeMarkers(): void {
-        $count         = 0;
-        $color         = imagecolorallocate($this->image, 0, 0, 0);
-        $bgcolor       = imagecolorallocate($this->image, 200, 200, 200);
-        $markerBaseDir = __DIR__ . '/icons';
+    public function placeMarkers(): void
+    {
+        $count               = 0;
+        $color               = imagecolorallocate($this->image, 0, 0, 0);
+        $bgcolor             = imagecolorallocate($this->image, 200, 200, 200);
+        $markerBaseDir       = __DIR__ . '/icons';
         $markerImageOffsetX  = 0;
         $markerImageOffsetY  = 0;
         $markerShadowOffsetX = 0;
         $markerShadowOffsetY = 0;
         $markerShadowImg     = null;
         // loop thru marker array
-        foreach($this->markers as $marker) {
+        foreach ($this->markers as $marker) {
             // set some local variables
             $markerLat  = $marker ['lat'];
             $markerLon  = $marker ['lon'];
@@ -589,18 +612,18 @@ class StaticMap {
             $markerShadow   = '';
             $matches        = false;
             // check for marker type, get settings from markerPrototypes
-            if($markerType) {
-                foreach($this->markerPrototypes as $markerPrototype) {
-                    if(preg_match($markerPrototype ['regex'], $markerType, $matches)) {
+            if ($markerType) {
+                foreach ($this->markerPrototypes as $markerPrototype) {
+                    if (preg_match($markerPrototype ['regex'], $markerType, $matches)) {
                         $markerFilename = $matches [0] . $markerPrototype ['extension'];
-                        if($markerPrototype ['offsetImage']) {
+                        if ($markerPrototype ['offsetImage']) {
                             list ($markerImageOffsetX, $markerImageOffsetY) = explode(
                                 ",",
                                 $markerPrototype ['offsetImage']
                             );
                         }
                         $markerShadow = $markerPrototype ['shadow'];
-                        if($markerShadow) {
+                        if ($markerShadow) {
                             list ($markerShadowOffsetX, $markerShadowOffsetY) = explode(
                                 ",",
                                 $markerPrototype ['offsetShadow']
@@ -610,13 +633,13 @@ class StaticMap {
                 }
             }
             // create img resource
-            if(file_exists($markerBaseDir . '/' . $markerFilename)) {
+            if (file_exists($markerBaseDir . '/' . $markerFilename)) {
                 $markerImg = imagecreatefrompng($markerBaseDir . '/' . $markerFilename);
             } else {
                 $markerImg = imagecreatefrompng($markerBaseDir . '/marker.png');
             }
             // check for shadow + create shadow recource
-            if($markerShadow && file_exists($markerBaseDir . '/' . $markerShadow)) {
+            if ($markerShadow && file_exists($markerBaseDir . '/' . $markerShadow)) {
                 $markerShadowImg = imagecreatefrompng($markerBaseDir . '/' . $markerShadow);
             }
             // calc position
@@ -629,12 +652,12 @@ class StaticMap {
                 $this->tileSize * ($this->centerY - $this->latToTile($markerLat, $this->zoom))
             );
             // copy shadow on basemap
-            if($markerShadow && $markerShadowImg) {
+            if ($markerShadow && $markerShadowImg) {
                 imagecopy(
                     $this->image,
                     $markerShadowImg,
-                    $destX + (int) $markerShadowOffsetX,
-                    $destY + (int) $markerShadowOffsetY,
+                    $destX + (int)$markerShadowOffsetX,
+                    $destY + (int)$markerShadowOffsetY,
                     0,
                     0,
                     imagesx($markerShadowImg),
@@ -645,8 +668,8 @@ class StaticMap {
             imagecopy(
                 $this->image,
                 $markerImg,
-                $destX + (int) $markerImageOffsetX,
-                $destY + (int) $markerImageOffsetY,
+                $destX + (int)$markerImageOffsetX,
+                $destY + (int)$markerImageOffsetY,
                 0,
                 0,
                 imagesx($markerImg),
@@ -657,7 +680,7 @@ class StaticMap {
                 $this->image,
                 3,
                 $destX - imagesx($markerImg) + 1,
-                $destY + (int) $markerImageOffsetY + 1,
+                $destY + (int)$markerImageOffsetY + 1,
                 ++$count,
                 $bgcolor
             );
@@ -665,7 +688,7 @@ class StaticMap {
                 $this->image,
                 3,
                 $destX - imagesx($markerImg),
-                $destY + (int) $markerImageOffsetY,
+                $destY + (int)$markerImageOffsetY,
                 $count,
                 $color
             );
@@ -674,9 +697,10 @@ class StaticMap {
 
     /**
      * Draw kml trace on the map.
-     * @throws exception when loading the KML fails
+     * @throws exception if loading the specified KML fails
      */
-    public function drawKML(): void {
+    public function drawKML(): void
+    {
         // TODO get colour from kml node (not currently supported in geoPHP)
         $col     = imagecolorallocatealpha($this->image, 255, 0, 0, .4 * 127);
         $kmlgeom = geoPHP::load(file_get_contents($this->kmlFileName), 'kml');
@@ -686,19 +710,20 @@ class StaticMap {
     /**
      * Draw geometry or geometry collection on the map.
      *
-     * @param Geometry $geom
-     * @param int      $colour
+     * @param Geometry|GeometryCollection|MultiPolygon|MultiLineString|MultiPoint|Polygon|LineString|Point $geom
+     * @param int                                                                                          $colour
      *            drawing colour
      */
-    private function drawGeometry(Geometry $geom, int $colour): void {
-        if(empty($geom)) {
+    private function drawGeometry(Geometry $geom, int $colour): void
+    {
+        if (empty($geom)) {
             return;
         }
 
-        switch($geom->geometryType()) {
+        switch ($geom->geometryType()) {
             case 'GeometryCollection' :
                 // recursively draw part of the collection
-                for($i = 1; $i < $geom->numGeometries() + 1; $i++) {
+                for ($i = 1; $i < $geom->numGeometries() + 1; $i++) {
                     $_geom = $geom->geometryN($i);
                     $this->drawGeometry($_geom, $colour);
                 }
@@ -730,7 +755,8 @@ class StaticMap {
      * @param int     $colour
      *            drawing colour
      */
-    private function drawPolygon($polygon, int $colour) {
+    private function drawPolygon(Polygon $polygon, int $colour)
+    {
         // TODO implementation of drawing holes,
         // maybe draw the polygon to an in-memory image and use imagecopy, draw polygon in col., draw holes in bgcol?
 
@@ -740,7 +766,7 @@ class StaticMap {
         // extring is a linestring actually..
         $extRing = $polygon->exteriorRing();
 
-        for($i = 1; $i < $extRing->numGeometries(); $i++) {
+        for ($i = 1; $i < $extRing->numGeometries(); $i++) {
             $p1           = $extRing->geometryN($i);
             $x            = floor(
                 ($this->width / 2) - $this->tileSize * ($this->centerX - $this->lonToTile($p1->x(), $this->zoom))
@@ -764,9 +790,10 @@ class StaticMap {
      * @param int        $colour
      *            drawing colour
      */
-    private function drawLineString($line, $colour) {
+    private function drawLineString(LineString $line, int $colour)
+    {
         imagesetthickness($this->image, 2);
-        for($p = 1; $p < $line->numGeometries(); $p++) {
+        for ($p = 1; $p < $line->numGeometries(); $p++) {
             // get first pair of points
             $p1 = $line->geometryN($p);
             $p2 = $line->geometryN($p + 1);
@@ -796,7 +823,8 @@ class StaticMap {
      * @param int   $colour
      *            drawing colour
      */
-    private function drawPoint($point, $colour) {
+    private function drawPoint(Point $point, int $colour)
+    {
         imagesetthickness($this->image, 2);
         // translate to paper space
         $cx = floor(
@@ -817,9 +845,10 @@ class StaticMap {
 
     /**
      * Draw gpx trace on the map.
-     * @throws exception when loading the GPX fails
+     * @throws exception if loading the specified GPX fails
      */
-    public function drawGPX() {
+    public function drawGPX()
+    {
         $col     = imagecolorallocatealpha($this->image, 0, 0, 255, .4 * 127);
         $gpxgeom = geoPHP::load(file_get_contents($this->gpxFileName), 'gpx');
         $this->drawGeometry($gpxgeom, $col);
@@ -827,9 +856,10 @@ class StaticMap {
 
     /**
      * Draw geojson on the map.
-     * @throws exception when loading the JSON fails
+     * @throws exception if loading the specified GeoJSON fails
      */
-    public function drawGeojson() {
+    public function drawGeojson()
+    {
         $col     = imagecolorallocatealpha($this->image, 255, 0, 255, .4 * 127);
         $gpxgeom = geoPHP::load(file_get_contents($this->geojsonFileName), 'json');
         $this->drawGeometry($gpxgeom, $col);
@@ -838,7 +868,8 @@ class StaticMap {
     /**
      * add copyright and origin notice and icons to the map.
      */
-    public function drawCopyright() {
+    public function drawCopyright()
+    {
         $logoBaseDir = dirname(__FILE__) . '/' . 'logo/';
         $logoImg     = imagecreatefrompng($logoBaseDir . $this->tileInfo ['openstreetmap'] ['logo']);
         $textcolor   = imagecolorallocate($this->image, 0, 0, 0);
@@ -873,7 +904,7 @@ class StaticMap {
 
         // additional tile source info, ie. who created/hosted the tiles
         $xIconOffset = 0;
-        if($this->maptype === 'openstreetmap') {
+        if ($this->maptype === 'openstreetmap') {
             $mapAuthor = "(c) OpenStreetMap maps/CC BY-SA";
         } else {
             $mapAuthor   = $this->tileInfo [$this->maptype] ['txt'];
@@ -881,27 +912,30 @@ class StaticMap {
             $xIconOffset = imagesx($iconImg);
             imagecopy(
                 $this->image,
-                $iconImg, imagesx($logoImg) + 1,
+                $iconImg,
+                imagesx($logoImg) + 1,
                 imagesy($this->image) - imagesy($iconImg),
                 0,
                 0,
-                imagesx($iconImg), imagesy($iconImg)
+                imagesx($iconImg),
+                imagesy($iconImg)
             );
         }
         imagestring(
             $this->image,
-            1, imagesx($logoImg) + $xIconOffset + 4,
+            1,
+            imagesx($logoImg) + $xIconOffset + 4,
             imagesy($this->image) - ceil(imagesy($logoImg) / 2) + 1,
             $mapAuthor,
             $bgcolor
         );
         imagestring(
             $this->image,
-            1, imagesx($logoImg) + $xIconOffset + 3,
+            1,
+            imagesx($logoImg) + $xIconOffset + 3,
             imagesy($this->image) - ceil(imagesy($logoImg) / 2),
             $mapAuthor,
             $textcolor
         );
-
     }
 }
