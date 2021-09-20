@@ -3,7 +3,7 @@ In de kaart zijn verschillende functies beschikbaar.
 
 == muis/vinger bediening ==
   * **verschuiven** door met de muis de kaart vast te pakken kunt u deze verschuiven
-  * **overzichtskaart** met het + knopje rechts onderin de kaart kunt u een overzichtskaart uitvouwen
+  * **overzichtskaart** met het < knopje rechts onderin de kaart kunt u een overzichtskaart uitvouwen
   * **in- en uitzoomen** door op de + en - knoppen links bovenin de kaart kunt u meer of minder detail in de kaart bekijken
   * **thema's aan- of uitzetten** na op het ≡ ikoon te klikken aan de rechterkant van de kaart krijgt u een overzicht van de beschikbare kaarten en thema's, u kunt hier een selectie maken.
   * **informatie opvragen** in de kaart kunnen zich elementen bevinden die meer informatie dragen, door erop te klikken kunt u deze opvragen

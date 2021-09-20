@@ -763,9 +763,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
         if($format == 'xhtml') {
             $olscript     = '';
-            $olEnable     = false;
-            $gscript      = '';
-            $gEnable      = $this->getConf('enableGoogle');
             $stamenEnable = $this->getConf('enableStamen');
             $osmEnable    = $this->getConf('enableOSM');
             $enableBing   = $this->getConf('enableBing');
@@ -773,27 +770,23 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
             $scriptEnable = '';
             if(!$initialised) {
                 $initialised = true;
-                // render necessary script tags
-                if($gEnable) {
-                    $gscript = '<script defer="defer" src="//maps.google.com/maps/api/js?v=3.29&amp;key='
-                        . $this->getConf('googleAPIkey') . '"></script>';
-                }
-                $olscript = '<script defer="defer" src="' . DOKU_BASE
-                    . 'lib/plugins/openlayersmap/lib/OpenLayers.js"></script>';
+                // render necessary script tags only once
+                $olscript = '<script defer="defer" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/ol6/ol.js"></script>
+<script defer="defer" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/ol6/ol-layerswitcher.js"></script>';
 
                 $scriptEnable = '<script defer="defer" src="data:text/javascript;base64,';
-                $scriptSrc    = $olscript ? 'olEnable = true;' : 'olEnable = false;';
-                $scriptSrc    .= 'gEnable = ' . ($gEnable ? 'true' : 'false') . ';';
-                $scriptSrc    .= 'osmEnable = ' . ($osmEnable ? 'true' : 'false') . ';';
-                $scriptSrc    .= 'stamenEnable = ' . ($stamenEnable ? 'true' : 'false') . ';';
-                $scriptSrc    .= 'bEnable = ' . ($enableBing ? 'true' : 'false') . ';';
-                $scriptSrc    .= 'bApiKey="' . $this->getConf('bingAPIKey') . '";';
-                $scriptSrc    .= 'tfApiKey="' . $this->getConf('tfApiKey') . '";';
-                $scriptSrc    .= 'gApiKey="' . $this->getConf('googleAPIkey') . '";';
+                $scriptSrc    = $olscript ? 'const olEnable=true;' : 'const olEnable=false;';
+                $scriptSrc    .= 'const osmEnable=' . ($osmEnable ? 'true' : 'false') . ';';
+                $scriptSrc    .= 'const stamenEnable=' . ($stamenEnable ? 'true' : 'false') . ';';
+                $scriptSrc    .= 'const bEnable=' . ($enableBing ? 'true' : 'false') . ';';
+                $scriptSrc    .= 'const bApiKey="' . $this->getConf('bingAPIKey') . '";';
+                $scriptSrc    .= 'const tfApiKey="' . $this->getConf('tfApiKey') . '";';
+                $scriptSrc    .= 'const gApiKey="' . $this->getConf('googleAPIkey') . '";';
+                $scriptSrc    .= 'olMapData = []; let olMaps = {}; let olMapOverlays = {};';
                 $scriptEnable .= base64_encode($scriptSrc);
                 $scriptEnable .= '"></script>';
             }
-            $renderer->doc .= "$gscript\n$olscript\n$scriptEnable";
+            $renderer->doc .= "$olscript\n$scriptEnable";
             $renderer->doc .= '<div class="olMapHelp">' . $this->locale_xhtml("help") . '</div>';
             if($this->getConf('enableA11y')) {
                 $renderer->doc .= '<div id="' . $mapid . '-static" class="olStaticMap">'
@@ -802,7 +795,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
             $renderer->doc .= '<div id="' . $mapid . '-clearer" class="clearer"><p>&nbsp;</p></div>';
             if($this->getConf('enableA11y')) {
                 // render a table of the POI for the print and a11y presentation, it is hidden using javascript
-                $renderer->doc .= '<div class="olPOItableSpan" id="' . $mapid . '-table-span">
+                $renderer->doc .= '
+                <div class="olPOItableSpan" id="' . $mapid . '-table-span">
                     <table class="olPOItable" id="' . $mapid . '-table">
                     <caption class="olPOITblCaption">' . $this->getLang('olmapPOItitle') . '</caption>
                     <thead class="olPOITblHeader">
@@ -821,7 +815,9 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
                         . '</td></tr></tfoot>';
                 }
                 $renderer->doc .= '<tbody class="olPOITblBody">' . $poitable . '</tbody>
-                    </table></div>';
+                    </table>
+                </div>';
+                $renderer->doc .= "\n";
             }
             // render inline mapscript parts
             $renderer->doc .= '<script defer="defer" src="data:text/javascript;base64,';

@@ -10,3 +10,8 @@ updates:
   labels:
   - build-infra
 
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"

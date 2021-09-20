@@ -3,7 +3,7 @@ Various functions are available as part of the map.
 
 == mouse/touch operation ==
   * **moving** by grabbing the map with a mouse-click you can move the map around
-  * **overview map** using the + button in the bottom right of the map you can expand an overview map
+  * **overview map** using the < button in the bottom right of the map you can expand an overview map
   * **zooming in and out** using the + and - buttons in the top left of the map you can obtain more or less detail in the map
   * **switching themes or maps** clicking on the ≡ icon on the right-hand side of the map you can view and select available maps and themes
   * **retrieving information** the map may contain elements that contain more information, by clicking these a popup will show this information

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2018 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2022 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,112 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-/**
- * @fileoverview Javascript voor OpenLayers plugin.
- *
- * @requires {lib/OpenLayers.js} or a full openlayers build
- * @author Mark C. Prins <mprins@users.sf.net>
- *
- */
 
-/**
- * Openlayers selectcontrol.
- *
- * @type {OpenLayers.Control.SelectFeature}
- * @private
- */
-var selectControl;
-
-/**
- * handle feature select event.
- *
- * @param {OpenLayers.Feature.Vector}
- *            selFeature the selected feature
- */
-function onFeatureSelect(selFeature) {
-    // 'this' is selectFeature control
-    var pPos = selFeature.geometry.getBounds().getCenterLonLat();
-    // != OpenLayers.Geometry.Point
-    if (selFeature.geometry.CLASS_NAME === "OpenLayers.Geometry.LineString") {
-        try {
-            // for lines make the popup show at the cursor position
-            pPos = selFeature.layer.map.getLonLatFromViewPortPx(this.handlers.feature.evt.xy);
-        } catch (anErr) {
-            OpenLayers.Console.warn("unable to get event position; reverting to boundingbox center.");
-            pPos = selFeature.geometry.getBounds().getCenterLonLat();
-        }
-    }
-
-    var pContent = '<div class="spacer">&nbsp;</div>';
-    var locDesc = '';
-    if (selFeature.data.rowId !== undefined) {
-        pContent += '<span class="rowId">' + selFeature.data.rowId + ': </span>';
-    }
-    if (selFeature.data.name !== undefined) {
-        pContent += '<span class="txt">' + selFeature.data.name + '</span>';
-        locDesc = selFeature.data.name;
-        // TODO strip <p> tag from locDesc
-        // locDesc = selFeature.data.name.split(/\s+/).slice(0,2).join('+');
-    }
-    if (selFeature.data.ele !== undefined) {
-        pContent += '<div class="ele">elevation: ' + selFeature.data.ele + '</div>';
-    }
-    if (selFeature.data.type !== undefined) {
-        pContent += '<div>' + selFeature.data.type + '</div>';
-    }
-    if (selFeature.data.time !== undefined) {
-        pContent += '<div class="time">time: ' + selFeature.data.time + '</div>';
-    }
-    if (selFeature.data.description !== undefined) {
-        pContent += '<div class="desc">' + selFeature.data.description + '</div>';
-    }
-    // mapillary layer
-    if (selFeature.attributes.location !== undefined) {
-        pContent += '<div class="desc">' + selFeature.data.location + '</div>';
-    }
-    // mapillary layer
-    if (selFeature.attributes.image !== undefined) {
-        pContent += '<img class="img" src=' + selFeature.data.image + ' width="320" />';
-    }
-    // mapillary layer
-    if (selFeature.attributes.ca !== undefined) {
-        var angle = Math.floor(selFeature.data.ca);
-        pContent += '<div class="coord"><img src="' + DOKU_BASE + 'lib/plugins/openlayersmapoverlays/icons/arrow-up-20.png'
-                + '" width="16" height="16" style="transform:rotate(' + angle + 'deg)" alt="' + angle + 'º"/> '+OpenLayers.i18n("compass") + angle + 'º</div>';
-    }
-
-    if (selFeature.attributes.img !== undefined) {
-        pContent += '<div class="coord" title="lat;lon"><img src="' + selFeature.attributes.img
-                + '" width="16" height="16" style="transform:rotate(' + selFeature.attributes.angle + 'deg)" />&nbsp;'
-                + '<a href="geo:'+ selFeature.data.lat + ',' + selFeature.data.lon
-                + '?q=' + selFeature.data.lat + ',' + selFeature.data.lon + '(' + selFeature.data.alt + ')" title="' + OpenLayers.i18n("navi") + '">'
-                + selFeature.data.latlon + '</a></div>';
-    }
-    if (pContent.length > 0) {
-        // only show when there is something to show...
-        var popup = new OpenLayersMap.Popup.FramedCloud("olPopup", pPos, null, pContent, null, true, function() {
-            selectControl.unselect(selFeature);
-            jQuery('#' + selectControl.layer.map.div.id).focus();
-        });
-        selFeature.popup = popup;
-        selFeature.layer.map.addPopup(popup);
-        jQuery('#olPopup').attr("tabindex", -1).focus();
-    }
-}
-
-/**
- * handle feature unselect event. remove & destroy the popup.
- *
- * @param {OpenLayers.Feature.Vector}
- *            selFeature the un-selected feature
- */
-function onFeatureUnselect(selFeature) {
-    if (selFeature.popup !== null) {
-        selFeature.layer.map.removePopup(selFeature.popup);
-        selFeature.popup.destroy();
-        selFeature.popup = null;
-    }
-}
 /**
  * Test for css support in the browser by sniffing for a css class we added
  * using javascript added by the action plugin; this is an edge case because
@@ -145,20 +40,13 @@ function olTestCSSsupport() {
  */
 function olCreateMaptag(mapid, width, height) {
     var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">'
-    // map
-    + '<div id="' + mapid + '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap"></div>'
-    // statusbar
-    + '<div id="' + mapid + '-olStatusBar" style="width:' + width + ';" class="olStatusBarContainer">' + '  <div id="'
-            + mapid + '-statusbar-scale" class="olStatusBar olStatusBarScale">scale</div>' + '  <div id="' + mapid
-            + '-statusbar-mouseposition" class="olStatusBar olStatusBarMouseposition"></div>' + '  <div id="' + mapid
-            + '-statusbar-projection" class="olStatusBar olStatusBarProjection">proj</div>' + '  <div id="' + mapid
-            + '-statusbar-text" class="olStatusBar olStatusBarText">txt</div>' + '</div>'
-            //
+            // map
+            + '<div id="' + mapid + '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap"></div>'
             + '</div>',
-    // fragment
-    frag = document.createDocumentFragment(),
-    // temp node
-    temp = document.createElement('div');
+        // fragment
+        frag = document.createDocumentFragment(),
+        // temp node
+        temp = document.createElement('div');
     temp.innerHTML = mEl;
     while (temp.firstChild) {
         frag.appendChild(temp.firstChild);
@@ -180,7 +68,11 @@ function olCreateMaptag(mapid, width, height) {
  *
  * @return {OpenLayers.Map} the created map
  */
-function createMap(mapOpts, OLmapPOI) {
+function createMap(mapOpts, poi) {
+
+    // const mapOpts = olMapData[0].mapOpts;
+    // const poi = olMapData[0].poi;
+
     if (!olEnable) {
         return;
     }
@@ -188,8 +80,6 @@ function createMap(mapOpts, OLmapPOI) {
         olEnable = false;
         return;
     }
-    OpenLayers.ImgPath = DOKU_BASE + 'lib/plugins/openlayersmap/lib/img/';
-    OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
 
     // find map element location
     var cleartag = document.getElementById(mapOpts.id + '-clearer');
@@ -201,385 +91,519 @@ function createMap(mapOpts, OLmapPOI) {
     cleartag.parentNode.insertBefore(fragment, cleartag);
 
     /** dynamic map extent. */
-    var extent = new OpenLayers.Bounds(),
+    let extent = ol.extent.createEmpty();
+    overlayGroup = new ol.layer.Group({title: 'Overlays', fold: 'open', layers: []});
+    const baseLyrGroup = new ol.layer.Group({'title': 'Base maps', layers: []});
 
-    /** map. */
-    m = new OpenLayers.Map({
-        div : mapOpts.id,
-        projection : 'EPSG:3857',
-        displayProjection : new OpenLayers.Projection("EPSG:4326"),
-        numZoomLevels : 22,
-        controls : [],
-        theme : null
+    const map = new ol.Map({
+        target:   document.getElementById(mapOpts.id),
+        layers:   [baseLyrGroup, overlayGroup],
+        view:     new ol.View({
+            center:     ol.proj.transform([mapOpts.lon, mapOpts.lat], 'EPSG:4326', 'EPSG:3857'),
+            zoom:       mapOpts.zoom,
+            projection: 'EPSG:3857'
+        }),
+        controls: [new ol.control.Zoom()]
     });
 
     if (osmEnable) {
-        /* add OSM map layers */
-        m.addLayer(new OpenLayers.Layer.OSM());
+        baseLyrGroup.getLayers().push(
+            new ol.layer.Tile({
+                visible: true,
+                title:   'OSM',
+                type:    'base',
+                source:  new ol.source.OSM()
+            }));
 
-        /* open cycle map */
-        m.addLayer(new OpenLayersMap.Layer.OCM("cycle map",[
-                'https://a.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+tfApiKey,
-                'https://b.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+tfApiKey,
-                'https://c.tile.thunderforest.com/cycle/${z}/${x}/${y}.png?apikey='+tfApiKey ], {
-            visibility : mapOpts.baselyr === "transport",
-            apikey : tfApiKey
-        }));
-        m.addLayer(new OpenLayersMap.Layer.OCM("transport", [
-                "https://a.tile.thunderforest.com/transport/${z}/${x}/${y}.png?apikey="+tfApiKey,
-                "https://b.tile.thunderforest.com/transport/${z}/${x}/${y}.png?apikey="+tfApiKey,
-                "https://c.tile.thunderforest.com/transport/${z}/${x}/${y}.png?apikey="+tfApiKey ], {
-            visibility : mapOpts.baselyr === "transport",
-            apikey : tfApiKey
-        }));
-        m.addLayer(new OpenLayersMap.Layer.OCM("landscape", [
-                "https://a.tile.thunderforest.com/landscape/${z}/${x}/${y}.png?apikey="+tfApiKey,
-                "https://b.tile.thunderforest.com/landscape/${z}/${x}/${y}.png?apikey="+tfApiKey,
-                "https://c.tile.thunderforest.com/landscape/${z}/${x}/${y}.png?apikey="+tfApiKey ], {
-            visibility : mapOpts.baselyr === "landscape",
-            apikey : tfApiKey
-        }));
-        m.addLayer(new OpenLayersMap.Layer.OCM("outdoors", [
-                "https://a.tile.thunderforest.com/outdoors/${z}/${x}/${y}.png?apikey="+tfApiKey,
-                "https://b.tile.thunderforest.com/outdoors/${z}/${x}/${y}.png?apikey="+tfApiKey,
-                "https://c.tile.thunderforest.com/outdoors/${z}/${x}/${y}.png?apikey="+tfApiKey ], {
-            visibility : mapOpts.baselyr === "outdoors",
-            apikey : tfApiKey
-        }));
-        /* hike and bike map seem to be offline
-        m.addLayer(new OpenLayers.Layer.OSM(
-                "hike and bike map", "http://toolserver.org/tiles/hikebike/${z}/${x}/${y}.png", {
-                    visibility : mapOpts.baselyr === "hike and bike map",
-                    tileOptions : {
-                        crossOriginKeyword : null
-                    }
-        }));
-        */
-    }
-    /*
-     * add Stamen map layers, see: http://maps.stamen.com/
-     */
-    if (stamenEnable) {
-        m.addLayer(new OpenLayersMap.Layer.StamenTerrain());
-        m.addLayer(new OpenLayersMap.Layer.StamenToner());
-    }
+        baseLyrGroup.getLayers().push(
+            new ol.layer.Tile({
+                visible: mapOpts.baselyr === "cycle map",
+                title:   'cycle map',
+                type:    'base',
+                source:  new ol.source.OSM({
+                    url:          'https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=' + tfApiKey,
+                    attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
+                                      + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
+                                      + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
+                })
+            }));
 
-    if (gEnable) {
-        /* load google maps */
-        try {
-            m.addLayer(new OpenLayers.Layer.Google("google relief", {
-                type : google.maps.MapTypeId.TERRAIN,
-                numZoomLevels : 16,
-                animationEnabled : true,
-                visibility : mapOpts.baselyr === "google relief"
+        baseLyrGroup.getLayers().push(
+            new ol.layer.Tile({
+                visible: mapOpts.baselyr === "transport",
+                title:   'transport',
+                type:    'base',
+                source:  new ol.source.OSM({
+                    url:          'https://{a-c}.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=' + tfApiKey,
+                    attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
+                                      + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
+                                      + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
+                })
             }));
-            m.addLayer(new OpenLayers.Layer.Google("google sat", {
-                type : google.maps.MapTypeId.SATELLITE,
-                animationEnabled : true,
-                visibility : mapOpts.baselyr === "google sat"
+
+        baseLyrGroup.getLayers().push(
+            new ol.layer.Tile({
+                visible: mapOpts.baselyr === "landscape",
+                title:   'landscape',
+                type:    'base',
+                source:  new ol.source.OSM({
+                    url:          'https://{a-c}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=' + tfApiKey,
+                    attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
+                                      + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
+                                      + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
+                })
             }));
-            m.addLayer(new OpenLayers.Layer.Google("google hybrid", {
-                type : google.maps.MapTypeId.HYBRID,
-                animationEnabled : true,
-                visibility : mapOpts.baselyr === "google hybrid"
+
+        baseLyrGroup.getLayers().push(
+            new ol.layer.Tile({
+                visible: mapOpts.baselyr === "outdoors",
+                title:   'outdoors',
+                type:    'base',
+                source:  new ol.source.OSM({
+                    url:          'https://{a-c}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=' + tfApiKey,
+                    attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
+                                      + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
+                                      + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
+                })
             }));
-            m.addLayer(new OpenLayers.Layer.Google("google road", {
-                animationEnabled : true,
-                visibility : mapOpts.baselyr === "google road"
-            }));
-        } catch (ol_err1) {
-            Openlayers.Console.userError('Error loading Google maps' + ol_err1);
-        }
     }
 
     if (bEnable && bApiKey !== '') {
-        try {
-            /* add Bing tiles */
-            m.addLayer(new OpenLayers.Layer.Bing({
-                key : bApiKey,
-                type : "Road",
-                name : "bing road",
-                visibility : mapOpts.baselyr === "bing road",
-                wrapDateLine : true,
-                attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
-                        + 'Bing™</a><img src="//www.bing.com/favicon.ico" alt="Bing logo"/> ${copyrights}'
-                        + '<a target="_blank" href="http://www.microsoft.com/maps/product/terms.html">Terms of Use</a>'
-            }));
-            m.addLayer(new OpenLayers.Layer.Bing({
-                key : bApiKey,
-                type : "Aerial",
-                name : "bing sat",
-                visibility : mapOpts.baselyr === "bing sat",
-                wrapDateLine : true,
-                attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
-                        + 'Bing™</a><img src="//www.bing.com/favicon.ico" alt="Bing logo"/> ${copyrights}'
-                        + '<a target="_blank" href="http://www.microsoft.com/maps/product/terms.html">Terms of Use</a>'
-            }));
-            m.addLayer(new OpenLayers.Layer.Bing({
-                key : bApiKey,
-                type : "AerialWithLabels",
-                name : "bing hybrid",
-                visibility : mapOpts.baselyr === "bing hybrid",
-                wrapDateLine : true,
-                attributionTemplate : '<a target="_blank" href="http://www.bing.com/maps/">'
-                        + 'Bing™</a><img src="//www.bing.com/favicon.ico" alt="Bing logo"/> ${copyrights}'
-                        + '<a target="_blank" href="http://www.microsoft.com/maps/product/terms.html">Terms of Use</a>'
-            }));
-        } catch (ol_errBing) {
-            Openlayers.Console.userError('Error loading Bing maps: ' + ol_errBing);
-        }
-    }
-
-    m.setCenter(new OpenLayers.LonLat(mapOpts.lon, mapOpts.lat).transform(m.displayProjection, m.projection),
-            mapOpts.zoom);
-    extent.extend(m.getExtent());
-
-    // change/set alternative baselyr
-    try {
-        m.setBaseLayer(((m.getLayersByName(mapOpts.baselyr))[0]));
-    } catch (ol_err4) {
-        m.setBaseLayer(m.layers[0]);
-    }
-
-    m.addControls([ new OpenLayers.Control.ScaleLine({
-        geodesic : true
-    }), new OpenLayers.Control.KeyboardDefaults({
-        observeElement : mapOpts.id
-    }), new OpenLayers.Control.Navigation() ]);
-
-    if (mapOpts.statusbar === 1) {
-        // statusbar control: mouse pos.
-        m.addControl(new OpenLayers.Control.MousePosition({
-            'div' : OpenLayers.Util.getElement(mapOpts.id + '-statusbar-mouseposition')
-        }));
-        // statusbar control: scale
-        m.addControl(new OpenLayers.Control.Scale(mapOpts.id + '-statusbar-scale'));
-        // statusbar control: attribution
-        m.addControl(new OpenLayers.Control.Attribution({
-            'div' : OpenLayers.Util.getElement(mapOpts.id + '-statusbar-text')
-        }));
-        // statusbar control: projection
-        OpenLayers.Util.getElement(mapOpts.id + '-statusbar-projection').innerHTML = m.displayProjection;
-    } else {
-        OpenLayers.Util.getElement(mapOpts.id + '-olStatusBar').display = 'none';
-    }
-
-    if (OLmapPOI.length > 0) {
-        var markers = new OpenLayers.Layer.Vector("POI", {
-            styleMap : new OpenLayers.StyleMap({
-                "default" : {
-                    cursor : "help",
-                    externalGraphic : "${img}",
-                    graphicHeight : 16,
-                    graphicWidth : 16,
-                    // graphicXOffset : 0,
-                    // graphicYOffset : -8,
-                    graphicOpacity : "${opacity}",
-                    rotation : "${angle}",
-                    backgroundGraphic : DOKU_BASE + "lib/plugins/openlayersmap/icons/marker_shadow.png",
-                    // backgroundXOffset : 0,
-                    // backgroundYOffset : -4,
-                    backgroundRotation : "${angle}",
-                    pointRadius : 10,
-                    labelXOffset : 8,
-                    labelYOffset : 8,
-                    labelAlign : "lb",
-                    label : "${label}",
-                    // fontColor : "",
-                    fontFamily : "monospace",
-                    fontSize : "12px",
-                    fontWeight : "bold"
-                },
-                "select" : {
-                    cursor : "help",
-                    externalGraphic : DOKU_BASE + "lib/plugins/openlayersmap/icons/marker-red.png",
-                    graphicHeight : 16,
-                    graphicWidth : 16,
-                    // graphicXOffset : 0,
-                    // graphicYOffset : -8,
-                    graphicOpacity : 1.0,
-                    rotation : "${angle}"
-                }
-            }),
-            isBaseLayer : false,
-            rendererOptions : {
-                yOrdering : true
-            }
-        });
-        m.addLayer(markers);
-        var features = [];
-        for (var j = 0; j < OLmapPOI.length; j++) {
-            var feat = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(OLmapPOI[j].lon, OLmapPOI[j].lat)
-                    .transform(m.displayProjection, m.projection), {
-                angle : OLmapPOI[j].angle,
-                opacity : OLmapPOI[j].opacity,
-                img : DOKU_BASE + "lib/plugins/openlayersmap/icons/" + OLmapPOI[j].img,
-                label : OLmapPOI[j].rowId
-            });
-            var _latlon = OLmapPOI[j].lat + 'º;' + OLmapPOI[j].lon + 'º';
-            if (mapOpts.displayformat === 'DMS') {
-                _latlon = OpenLayers.Util.getFormattedLonLat(OLmapPOI[j].lat, 'lat') + ';'
-                        + OpenLayers.Util.getFormattedLonLat(OLmapPOI[j].lon, 'lon');
-            }
-            feat.data = {
-                name : OLmapPOI[j].txt,
-                rowId : OLmapPOI[j].rowId,
-                latlon : _latlon,
-                lat: OLmapPOI[j].lat,
-                lon: OLmapPOI[j].lon,
-                alt : OLmapPOI[j].img.substring(0, OLmapPOI[j].img.lastIndexOf("."))
-            };
-            features.push(feat);
-        }
-        markers.addFeatures(features);
-        if (mapOpts.autozoom) {
-            extent.extend(markers.getDataExtent());
-            m.zoomToExtent(extent);
-        }
-    }
-
-    /* GPX layer */
-    if (mapOpts.gpxfile.length > 0) {
-        var layerGPX = new OpenLayers.Layer.Vector("GPS route", {
-            protocol : new OpenLayers.Protocol.HTTP({
-                url : DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.gpxfile,
-                format : new OpenLayers.Format.GPX({
-                    extractWaypoints : true,
-                    extractTracks : true,
-                    extractStyles : true,
-                    extractAttributes : true,
-                    handleHeight : true,
-                    maxDepth : 3
+        baseLyrGroup.getLayers().push(
+            new ol.layer.Tile({
+                visible: mapOpts.baselyr === "bing road",
+                title:   'bing road',
+                type:    'base',
+                source:  new ol.source.BingMaps({
+                    key:        bApiKey,
+                    imagerySet: 'Road'
                 })
-            }),
-            style : {
-                strokeColor : "#0000FF",
-                strokeWidth : 3,
-                strokeOpacity : 0.7,
-                pointRadius : 4,
-                fillColor : "#0099FF",
-                fillOpacity : 0.7
-            // , label:"${name}"
-            },
-            projection : new OpenLayers.Projection("EPSG:4326"),
-            strategies : [ new OpenLayers.Strategy.Fixed() ]
-        });
-        m.addLayer(layerGPX);
-        if (mapOpts.autozoom) {
-            layerGPX.events.register('loadend', m, function() {
-                extent.extend(layerGPX.getDataExtent());
-                m.zoomToExtent(extent);
-            });
-        }
-    }
+            }));
 
-    /* GeoJSON layer */
-    if (mapOpts.geojsonfile.length > 0) {
-        var layerGJS = new OpenLayers.Layer.Vector("json data", {
-            protocol : new OpenLayers.Protocol.HTTP({
-                url : DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.geojsonfile,
-                format : new OpenLayers.Format.GeoJSON({
-                    ignoreExtraDims : true
+        baseLyrGroup.getLayers().push(
+            new ol.layer.Tile({
+                visible: mapOpts.baselyr === "bing sat",
+                title:   'bing sat',
+                type:    'base',
+                source:  new ol.source.BingMaps({
+                    key:        bApiKey,
+                    imagerySet: 'Aerial'
                 })
-            }),
-            style : {
-                strokeColor : "#FF00FF",
-                strokeWidth : 3,
-                strokeOpacity : 0.7,
-                pointRadius : 4,
-                fillColor : "#FF99FF",
-                fillOpacity : 0.7
-            // , label:"${name}"
-            },
-            projection : new OpenLayers.Projection("EPSG:4326"),
-            strategies : [ new OpenLayers.Strategy.Fixed() ]
-        });
-        m.addLayer(layerGJS);
-        if (mapOpts.autozoom) {
-            layerGJS.events.register('loadend', m, function() {
-                extent.extend(layerGJS.getDataExtent());
-                m.zoomToExtent(extent);
-            });
-        }
+            }));
+
+        baseLyrGroup.getLayers().push(
+            new ol.layer.Tile({
+                visible: mapOpts.baselyr === "bing hybrid",
+                title:   'bing hybrid',
+                type:    'base',
+                source:  new ol.source.BingMaps({
+                    key:        bApiKey,
+                    imagerySet: 'AerialWithLabels'
+                })
+            }));
     }
 
-    /* KML layer */
+    if (stamenEnable) {
+        baseLyrGroup.getLayers().push(
+            new ol.layer.Tile({
+                visible: false,
+                type:    'base',
+                title:   'toner',
+                source:  new ol.source.Stamen({layer: 'toner'})
+            })
+        );
+        baseLyrGroup.getLayers().push(
+            new ol.layer.Tile({
+                visible: false,
+                type:    'base',
+                title:   'terrain',
+                source:  new ol.source.Stamen({layer: 'terrain'})
+            })
+        );
+    }
+
+    extent = ol.extent.extend(extent, map.getView().calculateExtent());
+
+    const iconScale = 1.0;
+    const vectorSource = new ol.source.Vector();
+    poi.forEach((p) => {
+        const f = new ol.Feature({
+            geometry:    new ol.geom.Point(ol.proj.fromLonLat([p.lon, p.lat])),
+            description: p.txt,
+            img:         p.img,
+            rowId:       p.rowId,
+            lat:         p.lat,
+            lon:         p.lon,
+            angle:       p.angle,
+            alt:         p.img.substring(0, p.img.lastIndexOf("."))
+        });
+        f.setId(p.rowId);
+        f.setStyle(new ol.style.Style({
+            text:      new ol.style.Text({
+                text:           "" + p.rowId,
+                textAlign:      'left',
+                textBaseline:   'bottom',
+                offsetX:        8,
+                offsetY:        -8,
+                scale:          iconScale,
+                fill:           new ol.style.Fill({color: 'rgb(0,0,0)'}),
+                font:           '12px monospace bold',
+                backgroundFill: new ol.style.Fill({color: 'rgba(255,255,255,.4)'})
+            }), image: new ol.style.Icon({
+                src:         DOKU_BASE + "lib/plugins/openlayersmap/icons/" + p.img,
+                crossOrigin: '',
+                opacity:     p.opacity,
+                scale:       iconScale,
+                rotation:    p.angle * Math.PI / 180,
+            }),
+        }));
+        vectorSource.addFeature(f);
+    });
+
+    const vectorLayer = new ol.layer.Vector({title: 'POI', visible: true, source: vectorSource});
+    overlayGroup.getLayers().push(vectorLayer);
+    if (mapOpts.autozoom) {
+        extent = ol.extent.extend(extent, vectorSource.getExtent());
+        map.getView().fit(extent);
+    }
+
+    map.addControl(new ol.control.ScaleLine({bar: true, text: true}));
+    map.addControl(new ol.control.MousePosition({
+        coordinateFormat: ol.coordinate.createStringXY(4), projection: 'EPSG:4326',
+    }));
+    map.addControl(new ol.control.FullScreen({label: '✈'}));
+    map.addControl(new ol.control.OverviewMap({
+        label:  '+',
+        layers: [new ol.layer.Tile({
+            source: new ol.source.OSM()
+        })]
+    }));
+    map.addControl(new ol.control.LayerSwitcher({
+        activationMode: 'click',
+        label:          '\u2630',
+        collapseLabel:  '\u00BB',
+    }));
+    map.addControl(new ol.control.Attribution({
+        collapsible: true,
+        collapsed:   true
+    }));
+
     if (mapOpts.kmlfile.length > 0) {
-        var layerKML = new OpenLayers.Layer.Vector("KML file", {
-            protocol : new OpenLayers.Protocol.HTTP({
-                url : DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.kmlfile,
-                format : new OpenLayers.Format.KML({
-                    extractStyles : true,
-                    extractAttributes : true,
-                    maxDepth : 3
-                })
-            }),
-            style : {
-                label : "${name}"
-            },
-            projection : new OpenLayers.Projection("EPSG:4326"),
-            strategies : [ new OpenLayers.Strategy.Fixed() ]
-        });
-        m.addLayer(layerKML);
-        if (mapOpts.autozoom) {
-            layerKML.events.register('loadend', m, function() {
-                extent.extend(layerKML.getDataExtent());
-                m.zoomToExtent(extent);
+        try {
+            const kmlSource = new ol.source.Vector({
+                url:    DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.kmlfile,
+                format: new ol.format.KML(),
             });
+            overlayGroup.getLayers().push(new ol.layer.Vector({title: 'KML file', visible: true, source: kmlSource}));
+
+            if (mapOpts.autozoom) {
+                kmlSource.once('change', function () {
+                    extent = ol.extent.extend(extent, kmlSource.getExtent());
+                    map.getView().fit(extent);
+                });
+            }
+        } catch (e) {
+            console.error(e);
         }
     }
 
-    // selectcontrol for layers
-    if ((m.getLayersByClass('OpenLayers.Layer.GML').length > 0)
-            || m.getLayersByClass('OpenLayers.Layer.Vector').length > 0) {
-        selectControl = new OpenLayers.Control.SelectFeature((m.getLayersByClass('OpenLayers.Layer.Vector')).concat(m
-                .getLayersByClass('OpenLayers.Layer.GML')), {
-            hover : mapOpts.poihoverstyle,
-            onSelect : onFeatureSelect,
-            onUnselect : onFeatureUnselect
-        });
-        m.addControl(selectControl);
-        selectControl.activate();
+    if (mapOpts.geojsonfile.length > 0) {
+        try {
+            const geoJsonSource = new ol.source.Vector({
+                url:    DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.geojsonfile,
+                format: new ol.format.GeoJSON(),
+            });
+            overlayGroup.getLayers().push(new ol.layer.Vector({
+                title: 'GeoJSON file', visible: true, source: geoJsonSource,
+                // TODO
+                // style:  {
+                //     strokeColor:   "#FF00FF",
+                //     strokeWidth:   3,
+                //     strokeOpacity: 0.7,
+                //     pointRadius:   4,
+                //     fillColor:     "#FF99FF",
+                //     fillOpacity:   0.7
+                // }
+            }));
 
-        // keyboard select control
-        var iControl = new OpenLayersMap.Control.KeyboardClick({
-            observeElement : mapOpts.id,
-            selectControl : selectControl
-        });
-        m.addControl(iControl);
+            if (mapOpts.autozoom) {
+                geoJsonSource.once('change', function () {
+                    extent = ol.extent.extend(extent, geoJsonSource.getExtent());
+                    map.getView().fit(extent);
+                });
+            }
+        } catch (e) {
+            console.error(e);
+        }
     }
 
-    if (mapOpts.controls === 1) {
-        /* add base controls to map */
-        m.addControls([ new OpenLayersMap.Control.LayerSwitcher(), new OpenLayers.Control.Graticule({
-            visible : false
-        }), new OpenLayersMap.Control.OverviewMap({
-            mapOptions : {
-                theme : null
-            }
-        }), new OpenLayersMap.Control.Zoom(), new OpenLayersMap.Control.Fullscreen() ]);
+    if (mapOpts.gpxfile.length > 0) {
+        try {
+            const gpxSource = new ol.source.Vector({
+                url:    DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.gpxfile,
+                format: new ol.format.GPX(),
+            });
+            overlayGroup.getLayers().push(new ol.layer.Vector({
+                title: 'GPS track', visible: true, source: gpxSource,
+                // TODO
+                // style:  {
+                //     strokeColor:   "#0000FF",
+                //     strokeWidth:   3,
+                //     strokeOpacity: 0.7,
+                //     pointRadius:   4,
+                //     fillColor:     "#0099FF",
+                //     fillOpacity:   0.7
+                // }
+            }));
 
-        // add hillshade, since this is off by default only add when we have a
-        // layerswitcher
-        m.addLayer(new OpenLayers.Layer.OSM("Hillshade", "https://tiles.wmflabs.org/hillshading/${z}/${x}/${y}.png", {
-            isBaseLayer : false,
-            transparent : true,
-            visibility : false,
-            displayOutsideMaxExtent : true,
-            attribution : '',
-            tileOptions : {
-                crossOriginKeyword : null
+            if (mapOpts.autozoom) {
+                gpxSource.once('change', function () {
+                    extent = ol.extent.extend(extent, gpxSource.getExtent());
+                    map.getView().fit(extent);
+                });
             }
-        }));
+        } catch (e) {
+            console.error(e);
+        }
     }
 
-    return m;
+    const container = document.getElementById('popup');
+    const content = document.getElementById('popup-content');
+    const closer = document.getElementById('popup-closer');
+
+    const overlay = new ol.Overlay({
+        element: container, autoPan: true, autoPanAnimation: {
+            duration: 250,
+        }, //stopEvent: false,
+    });
+    map.addOverlay(overlay);
+
+    /**
+     * Add a click handler to hide the popup.
+     * @return {boolean} Don't follow the href.
+     */
+    closer.onclick = function () {
+        overlay.setPosition(undefined);
+        closer.blur();
+        return false;
+    };
+
+    // display popup on click
+    map.on('singleclick', function (evt) {
+        const selFeature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+            return feature;
+        });
+        if (selFeature) {
+            overlay.setPosition(evt.coordinate);
+
+            let pContent = '<div class="spacer">&nbsp;</div>';
+            let locDesc = '';
+
+            if (selFeature.get('rowId') !== undefined) {
+                pContent += '<span class="rowId">' + selFeature.get('rowId') + ': </span>';
+            }
+            if (selFeature.get('name') !== undefined) {
+                pContent += '<span class="txt">' + selFeature.get('name') + '</span>';
+                locDesc = selFeature.get('name');
+                // TODO strip <p> tag from locDesc
+                // locDesc = selFeature.get('name').split(/\s+/).slice(0,2).join('+');
+            }
+            if (selFeature.get('ele') !== undefined) {
+                pContent += '<div class="ele">elevation: ' + selFeature.get('ele') + '</div>';
+            }
+            if (selFeature.get('type') !== undefined) {
+                pContent += '<div>' + selFeature.get('type') + '</div>';
+            }
+            if (selFeature.get('time') !== undefined) {
+                pContent += '<div class="time">time: ' + selFeature.get('time') + '</div>';
+            }
+            if (selFeature.get('description') !== undefined) {
+                pContent += '<div class="desc">' + selFeature.get('description') + '</div>';
+            }
+            if (selFeature.get('img') !== undefined) {
+                pContent += '<div class="coord" title="lat;lon">' +
+                    '<img alt="" src="' + DOKU_BASE + 'lib/plugins/openlayersmap/icons/' + selFeature.get('img') +
+                    '" width="16" height="16" ' + 'style="transform:rotate(' + selFeature.get('angle') + 'deg)" />&nbsp;' +
+                    '<a href="geo:' + selFeature.get('lat') + ',' + selFeature.get('lon') + '?q=' + selFeature.get('lat') +
+                    ',' + selFeature.get('lon') + '(' + selFeature.get('alt') + ')" title="Open in navigation app">' +
+                    ol.coordinate.format([selFeature.get('lon'), selFeature.get('lat')], '{x}º; {y}º', 4) + '</a></div>';
+            }
+            content.innerHTML = pContent;
+        } else {
+            // do nothing...
+        }
+    });
+
+    // change mouse cursor when over marker
+    map.on('pointermove', function (e) {
+        const pixel = map.getEventPixel(e.originalEvent);
+        const hit = map.hasFeatureAtPixel(pixel);
+        map.getTarget().style.cursor = hit ? 'pointer' : '';
+    });
+
+    return map;
+}
+
+/**
+ * add layers to the map based on the olMapOverlays object.
+ */
+function olovAddToMap() {
+    for (const key in olMapOverlays) {
+        const overlay = olMapOverlays[key];
+        const m = olMaps[overlay.id];
+
+        switch (overlay.type) {
+            case 'osm':
+                m.addLayer(new ol.layer.Tile({
+                    title:   overlay.name,
+                    visible: (overlay.visible).toLowerCase() === 'true',
+                    opacity: parseFloat(overlay.opacity),
+                    source:  new ol.source.OSM({
+                        url:          overlay.url,
+                        crossOrigin:  'Anonymous',
+                        attributions: overlay.attribution
+                    })
+                }));
+                break;
+            case 'wms':
+                m.addLayer(new ol.layer.Image({
+                    title:   overlay.name,
+                    opacity: parseFloat(overlay.opacity),
+                    visible: (overlay.visible).toLowerCase() === 'true',
+                    source:  new ol.source.ImageWMS({
+                        url:          overlay.url,
+                        params:       {
+                            'LAYERS':      overlay.layers,
+                            'VERSION':     overlay.version,
+                            'TRANSPARENT': overlay.transparent,
+                            'FORMAT':      overlay.format
+                        },
+                        ratio:        1,
+                        crossOrigin:  'Anonymous',
+                        attributions: overlay.attribution
+                    })
+                }));
+                break;
+            case 'ags':
+                m.addLayer(new ol.layer.Image({
+                    title:   overlay.name,
+                    opacity: parseFloat(overlay.opacity),
+                    visible: (overlay.visible).toLowerCase() === 'true',
+                    source:  new ol.source.ImageArcGISRest({
+                        url:          overlay.url,
+                        params:       {
+                            'LAYERS':      overlay.layers,
+                            'TRANSPARENT': overlay.transparent,
+                            'FORMAT':      overlay.format
+                        },
+                        ratio:        1,
+                        crossOrigin:  'Anonymous',
+                        attributions: overlay.attribution
+                    })
+                }));
+                break;
+            // case 'mapillary':
+            //     var mUrl = 'http://api.mapillary.com/v1/im/search?';
+            //     if (overlay.skey !== '') {
+            //         mUrl = 'http://api.mapillary.com/v1/im/sequence?';
+            //     }
+            //     var mLyr = new OpenLayers.Layer.Vector(
+            //         "Mapillary", {
+            //             projection:  new OpenLayers.Projection("EPSG:4326"),
+            //             strategies:  [new OpenLayers.Strategy.BBOX({
+            //                 ratio:     1.1,
+            //                 resFactor: 1.5
+            //             }) /* ,new OpenLayers.Strategy.Cluster({}) */],
+            //             protocol:    new OpenLayers.Protocol.HTTP({
+            //                 url:            mUrl,
+            //                 format:         new OpenLayers.Format.GeoJSON(),
+            //                 params:         {
+            //                     // default to max. 250 locations
+            //                     'max-results': 250,
+            //                     'geojson':     true,
+            //                     'skey':        overlay.skey
+            //                 },
+            //                 filterToParams: function (filter, params) {
+            //                     if (filter.type === OpenLayers.Filter.Spatial.BBOX) {
+            //                         // override the bbox serialization of
+            //                         // the filter to give the Mapillary
+            //                         // specific bounds
+            //                         params['min-lat'] = filter.value.bottom;
+            //                         params['max-lat'] = filter.value.top;
+            //                         params['min-lon'] = filter.value.left;
+            //                         params['max-lon'] = filter.value.right;
+            //                         // if the width of our bbox width is
+            //                         // less than 0.15 degrees drop the max
+            //                         // results
+            //                         if (filter.value.top - filter.value.bottom < .15) {
+            //                             OpenLayers.Console.debug('dropping max-results parameter, width is: ',
+            //                                 filter.value.top - filter.value.bottom);
+            //                             params['max-results'] = null;
+            //                         }
+            //                     }
+            //                     return params;
+            //                 }
+            //             }),
+            //             styleMap:    new OpenLayers.StyleMap({
+            //                 'default': {
+            //                     cursor:          'help',
+            //                     rotation:        '${ca}',
+            //                     externalGraphic: DOKU_BASE + 'lib/plugins/openlayersmapoverlays/icons/arrow-up-20.png',
+            //                     graphicHeight:   20,
+            //                     graphicWidth:    20,
+            //                 },
+            //                 'select':  {
+            //                     externalGraphic: DOKU_BASE + 'lib/plugins/openlayersmapoverlays/icons/arrow-up-20-select.png',
+            //                     label:           '${location}',
+            //                     fontSize:        '1em',
+            //                     fontFamily:      'monospace',
+            //                     labelXOffset:    '0.5',
+            //                     labelYOffset:    '0.5',
+            //                     labelAlign:      'lb',
+            //                 }
+            //             }),
+            //             attribution: '<a href="http://www.mapillary.com/legal.html">' +
+            //                              '<img src="http://mapillary.com/favicon.ico" ' +
+            //                              'alt="Mapillary" height="16" width="16" />Mapillary (CC-BY-SA)',
+            //             visibility:  (overlay.visible).toLowerCase() == 'true',
+            //         });
+            //     m.addLayer(mLyr);
+            //     selectControl.addLayer(mLyr);
+            //     break;
+            // case 'search':
+            //     m.addLayer(new OpenLayers.Layer.Vector(
+            //         overlay.name,
+            //         overlay.url,
+            //         {
+            //             layers:      overlay.layers,
+            //             version:     overlay.version,
+            //             transparent: overlay.transparent,
+            //             format:      overlay.format
+            //         }, {
+            //             opacity:     parseFloat(overlay.opacity),
+            //             visibility:  (overlay.visible).toLowerCase() == 'true',
+            //             isBaseLayer: !1,
+            //             attribution: overlay.attribution
+            //         }
+            //     ));
+            //     break;
+        }
+    }
 }
 
 /** init. */
 function olInit() {
     if (olEnable) {
-        var _i = 0;
+        // add info window to DOM
+        const frag = document.createDocumentFragment(),
+            temp = document.createElement('div');
+        temp.innerHTML = '<div id="popup" class="olPopup"><a href="#" id="popup-closer" class="olPopupCloseBox"></a><div id="popup-content"></div></div>';
+        while (temp.firstChild) {
+            frag.appendChild(temp.firstChild);
+        }
+        document.body.appendChild(frag);
+
+        let _i = 0;
         // create the maps in the page
         for (_i = 0; _i < olMapData.length; _i++) {
             var _id = olMapData[_i].mapOpts.id;
@@ -598,10 +622,13 @@ function olInit() {
             }
         }
 
-        var resizeTimer;
-        jQuery(window).on('resize', function(e) {
+        // add overlays
+        olovAddToMap();
+
+        let resizeTimer;
+        jQuery(window).on('resize', function (e) {
             clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function() {
+            resizeTimer = setTimeout(function () {
                 for (_i = 0; _i < olMapData.length; _i++) {
                     var _id = olMapData[_i].mapOpts.id;
                     var _w = jQuery('#' + _id + '-olContainer').parent().innerWidth();
@@ -621,84 +648,23 @@ function olInit() {
         jQuery('.olStaticMap').addClass('olPrintOnly');
         // add help button with toggle.
         jQuery('.olWebOnly > .olMap')
-                .prepend(
-                        '<div class="olMapHelpButtonDiv">'
-                                + '<button onclick="jQuery(\'.olMapHelp\').toggle(500);" class="olMapHelpButton olHasTooltip"><span>'
-                                + OpenLayers.i18n("toggle_help") + '</span>?</button></div>');
+            .prepend(
+                '<div class="olMapHelpButtonDiv">'
+                + '<button onclick="jQuery(\'.olMapHelp\').toggle(500);" class="olMapHelpButton olHasTooltip"><span>'
+                + 'Show or hide help</span>?</button></div>');
         // toggle to switch dynamic vs. static map
         jQuery('.olMapHelp').before(
-                '<div class="a11y"><button onclick="jQuery(\'.olPrintOnly\').toggle();jQuery(\'.olWebOnly\').toggle();">'
-                        + OpenLayers.i18n("toggle_dynamic_map") + '</button></div>');
+            '<div class="a11y"><button onclick="jQuery(\'.olPrintOnly\').toggle();jQuery(\'.olWebOnly\').toggle();">'
+            + 'Hide or show the dynamic map</button></div>');
     }
 }
 
-/**
- * ol api flag.
- *
- * @type {Boolean}
- */
-var olEnable = false,
-/**
- * An array with data for each map in the page.
- *
- * @type {Array}
- */
-olMapData = [],
-/**
- * Holds a reference to all of the maps on this page with the map's id as key.
- * Can be used as an extension point.
- *
- * @type {Object}
- */
-olMaps = new Object(),
-/**
- * Stamen tiles flag.
- *
- * @type {Boolean}
- */
-stamenEnable = false,
-/**
- * google map api flag.
- *
- * @type {Boolean}
- */
-gEnable = false,
-/**
- * Bing tiles flag.
- *
- * @type {Boolean}
- */
-bEnable = false,
-/**
- * Bing API key.
- *
- * @type {String}
- */
-bApiKey = '',
-/**
- * Google API key.
- *
- * @type {String}
- */
-gApiKey = '',
-/**
- * Thunderforest API key.
- *
- * @type {String}
- */
-tfApiKey = '',
-/**
- * OSM tiles flag.
- *
- * @type {Boolean}
- */
-osmEnable = true,
 /**
  * CSS support flag.
  *
  * @type {Boolean}
  */
-olCSSEnable = true;
+let olCSSEnable = true;
 
 /* register olInit to run with onload event. */
 jQuery(olInit);
