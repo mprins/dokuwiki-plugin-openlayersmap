@@ -304,11 +304,16 @@ class StaticMap
         $vy0 = log(tan(M_PI * (0.25 + $bbox ['miny'] / 360)));
         $vy1 = log(tan(M_PI * (0.25 + $bbox ['maxy'] / 360)));
         Logger::debug("StaticMap::autoZoom: vertical resolution: $vy0, $vy1");
-        $zoomFactorPowered  = ($this->height / 2) / (40.7436654315252 * ($vy1 - $vy0));
-        $resolutionVertical = 360 / ($zoomFactorPowered * $this->tileSize);
+        if ($vy1 - $vy0 === 0.0){
+            $resolutionVertical = 0;
+            Logger::debug("StaticMap::autoZoom: using $resolutionVertical");
+        } else {
+            $zoomFactorPowered  = ($this->height / 2) / (40.7436654315252 * ($vy1 - $vy0));
+            $resolutionVertical = 360 / ($zoomFactorPowered * $this->tileSize);
+        }
         // determine horizontal resolution
         $resolutionHorizontal = ($bbox ['maxx'] - $bbox ['minx']) / $this->width;
-        dbglog("StaticMap::autoZoom: using $resolutionHorizontal");
+        Logger::debug("StaticMap::autoZoom: using $resolutionHorizontal");
         $resolution           = max($resolutionHorizontal, $resolutionVertical) * $paddingFactor;
         $zoom                 = $this->zoom;
         if ($resolution > 0){
