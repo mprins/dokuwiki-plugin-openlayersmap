@@ -103,7 +103,12 @@ function createMap(mapOpts, poi) {
             zoom:       mapOpts.zoom,
             projection: 'EPSG:3857'
         }),
-        controls: [new ol.control.Zoom()]
+        controls: [
+            new ol.control.Attribution({
+                collapsible: true,
+                collapsed:   true
+            })
+        ]
     });
 
     if (osmEnable) {
@@ -267,26 +272,27 @@ function createMap(mapOpts, poi) {
         map.getView().fit(extent);
     }
 
-    map.addControl(new ol.control.ScaleLine({bar: true, text: true}));
-    map.addControl(new ol.control.MousePosition({
-        coordinateFormat: ol.coordinate.createStringXY(4), projection: 'EPSG:4326',
-    }));
-    map.addControl(new ol.control.FullScreen({label: '✈'}));
-    map.addControl(new ol.control.OverviewMap({
-        label:  '+',
-        layers: [new ol.layer.Tile({
-            source: new ol.source.OSM()
-        })]
-    }));
-    map.addControl(new ol.control.LayerSwitcher({
-        activationMode: 'click',
-        label:          '\u2630',
-        collapseLabel:  '\u00BB',
-    }));
-    map.addControl(new ol.control.Attribution({
-        collapsible: true,
-        collapsed:   true
-    }));
+    if (mapOpts.controls === 1) {
+        map.addControl(new ol.control.Zoom());
+        map.addControl(new ol.control.ScaleLine({bar: true, text: true}));
+        map.addControl(new ol.control.MousePosition({
+            coordinateFormat: ol.coordinate.createStringXY(4), projection: 'EPSG:4326',
+        }));
+        map.addControl(new ol.control.FullScreen({
+            label: '✈'
+        }));
+        map.addControl(new ol.control.OverviewMap({
+            label:  '+',
+            layers: [new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })]
+        }));
+        map.addControl(new ol.control.LayerSwitcher({
+            activationMode: 'click',
+            label:          '\u2630',
+            collapseLabel:  '\u00BB',
+        }));
+    }
 
     if (mapOpts.kmlfile.length > 0) {
         try {
