@@ -297,10 +297,16 @@ class StaticMap {
         $vy0 = log(tan(M_PI * (0.25 + $bbox ['miny'] / 360)));
         $vy1 = log(tan(M_PI * (0.25 + $bbox ['maxy'] / 360)));
         dbglog("StaticMap::autoZoom: vertical resolution: $vy0, $vy1");
-        $zoomFactorPowered  = ($this->height / 2) / (40.7436654315252 * ($vy1 - $vy0));
-        $resolutionVertical = 360 / ($zoomFactorPowered * $this->tileSize);
+        if ($vy1 - $vy0 === 0.0){
+            $resolutionVertical = 0;
+            dbglog("StaticMap::autoZoom: using $resolutionVertical");
+        } else {
+            $zoomFactorPowered  = ($this->height / 2) / (40.7436654315252 * ($vy1 - $vy0));
+            $resolutionVertical = 360 / ($zoomFactorPowered * $this->tileSize);
+        }
         // determine horizontal resolution
         $resolutionHorizontal = ($bbox ['maxx'] - $bbox ['minx']) / $this->width;
+        dbglog("StaticMap::autoZoom: using $resolutionHorizontal");
         $resolution           = max($resolutionHorizontal, $resolutionVertical) * $paddingFactor;
         $zoom                 = log(360 / ($resolution * $this->tileSize), 2);
 
@@ -351,14 +357,30 @@ class StaticMap {
     public function makeMap(): void {
         $this->initCoords();
         $this->createBaseMap();
-        if(!empty ($this->markers))
+        if(!empty ($this->markers)) {
             $this->placeMarkers();
-        if(file_exists($this->kmlFileName))
-            $this->drawKML();
-        if(file_exists($this->gpxFileName))
-            $this->drawGPX();
-        if(file_exists($this->geojsonFileName))
-            $this->drawGeojson();
+        }
+        if (file_exists($this->kmlFileName)) {
+            try {
+                $this->drawKML();
+            } catch (exception $e) {
+                dbglog('failed to load KML file', $e);
+            }
+        }
+        if (file_exists($this->gpxFileName)) {
+            try {
+                $this->drawGPX();
+            } catch (exception $e) {
+                dbglog('failed to load GPX file', $e);
+            }
+        }
+        if (file_exists($this->geojsonFileName)) {
+            try {
+                $this->drawGeojson();
+            } catch (exception $e) {
+                dbglog('failed to load GeoJSON file', $e);
+            }
+        }
 
         $this->drawCopyright();
     }
@@ -544,6 +566,11 @@ class StaticMap {
         $color         = imagecolorallocate($this->image, 0, 0, 0);
         $bgcolor       = imagecolorallocate($this->image, 200, 200, 200);
         $markerBaseDir = __DIR__ . '/icons';
+        $markerImageOffsetX  = 0;
+        $markerImageOffsetY  = 0;
+        $markerShadowOffsetX = 0;
+        $markerShadowOffsetY = 0;
+        $markerShadowImg     = null;
         // loop thru marker array
         foreach($this->markers as $marker) {
             // set some local variables
