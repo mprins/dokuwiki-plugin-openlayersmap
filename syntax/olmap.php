@@ -36,7 +36,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
         'lon'           => 5.1,
         'zoom'          => 12,
         'autozoom'      => 1,
-        'toolbar'       => true,
         'controls'      => true,
         'baselyr'       => 'OpenStreetMap',
         'gpxfile'       => '',

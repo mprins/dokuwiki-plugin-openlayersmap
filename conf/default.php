@@ -39,7 +39,6 @@ $conf['default_lat']              = 50.0; //invisible
 $conf['default_lon']              = 5.1; //invisible
 $conf['default_zoom']             = 12;
 $conf['default_autozoom']         = $conf['autoZoomMap']; //invisible; duplicate for internal use
-$conf['default_toolbar']          = 1;
 $conf['default_controls']         = 1;
 $conf['default_baselyr']          = 'OpenStreetMap'; //invisible
 $conf['default_kmlfile']          = '';

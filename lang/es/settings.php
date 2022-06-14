@@ -37,7 +37,6 @@ $lang['displayformat']            = 'FIXME (translate)- Coordinates display form
 $lang['default_width']            = 'Default map width';
 $lang['default_height']           = 'Default map height';
 $lang['default_zoom']             = 'Default map zoom';
-$lang['default_toolbar']          = 'Default toolbar show';
 $lang['default_controls']         = 'Default controls show';
 $lang['default_kmlfile']          = 'Default KML file';
 $lang['default_gpxfile']          = 'Default GPX file';
