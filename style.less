@@ -1,0 +1,358 @@
+/*!
+ * Copyright (c) 2008-2022 Mark C. Prins <mprins@users.sf.net>
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
+/* admin form */
+#olmap_purgeform p {
+    text-align: left;
+}
+
+/* admin form */
+
+
+/* map container */
+.olContainer {
+    border: 1px solid __border__;
+    background-color: __background_neu__;
+    width: auto;
+    float: left;
+}
+
+/* TODO check */
+/* Work around a case of style reset, setting it on the container breaks the overview map. See: http://www.dokuwiki.org/plugin:openlayersmap?rev=1329438681&do=diff */
+.olContainer img {
+    max-width: none;
+}
+
+/*OL map */
+.olMap {
+    cursor: default;
+    background-image: url("olMapbg.png");
+    background-color: __background_neu__;
+    background-repeat: repeat;
+    background-attachment: scroll;
+    background-position: 0 0;
+    /* on some browsers the outline is partly hidden by the .olContainer; this way we work around that.*/
+    touch-action: none;
+}
+
+.olMap:focus {
+    outline-style: solid;
+    outline-width: 2px;
+    outline-offset: 2px;
+}
+
+.ol-viewport > div > * {
+    outline-width: 0;
+}
+
+/** popup styles. */
+.olPopup {
+    position: absolute;
+    background-color: __background__;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid __border__;
+    bottom: 12px;
+    left: -50px;
+    min-width: 280px;
+}
+
+.olPopup:after, .olPopup:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.olPopup:after {
+    border-top-color: __background__;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px;
+}
+
+.olPopup:before {
+    border-top-color: __background_alt__;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px;
+}
+
+.txt p {
+    display: inline;
+}
+
+.rowId {
+    border: 1px dotted __border__;
+}
+
+.spacer {
+    height: 8px;
+    min-width: 190px;
+}
+
+.coord {
+    float: left;
+    top: 0;
+    position: absolute;
+    font-size: smaller;
+    overflow: hidden;
+    min-width: 190px;
+}
+
+.coord img {
+    height: inherit;
+    vertical-align: middle;
+}
+
+.olPopupCloseBox {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+}
+
+.olPopupCloseBox:after {
+    content: "✖";
+}
+
+
+/* POI table */
+.olPOItableSpan {
+    display: inline;
+}
+
+.olPOItable {
+    margin: 1px;
+    padding: 1px;
+    border: 1px solid __border__;
+    width: 99%;
+}
+
+.olPrintOnly {
+    display: none;
+}
+
+.olWebOnly {
+    display: inline;
+}
+
+.olPOItable .icon {
+    text-align: center;
+}
+
+/** accesible tooltip, to add to a focusable element containing a span with the tooltip. */
+/* show a tooltip offset to above/left */
+.olHasTooltip span, .olHasTooltip_bttm_r span, .olHasTooltip_bttm_l span, .olHasTooltip_TL span {
+    position: absolute;
+    clip: rect(1px 1px 1px 1px); /* < IE8 */
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    opacity: 0;
+    will-change: opacity, clip;
+    -moz-animation-name: fadeIn;
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+    -moz-animation-timing-function: ease;
+    -webkit-animation-timing-function: ease;
+    animation-timing-function: ease;
+    -moz-animation-delay: 0.35s;
+    -webkit-animation-delay: 0.35s;
+    animation-delay: 0.35s;
+    -moz-animation-duration: 5s;
+    -webkit-animation-duration: 5s;
+    animation-duration: 5s;
+    -moz-animation-iteration-count: 1;
+    -webkit-animation-iteration-count: 1;
+    animation-iteration-count: 1;
+}
+
+.olHasTooltip:hover span, .olHasTooltip_bttm_r:hover span, .olHasTooltip_bttm_l:hover span, .olHasTooltip:focus span, .olHasTooltip_bttm_r:focus span, .olHasTooltip_bttm_l:focus span, .olHasTooltip_TL:hover span, .olHasTooltip_TL:focus span {
+    clip: auto;
+    padding: 3px;
+    height: auto;
+    width: auto;
+    z-index: 1100;
+    max-height: 100px;
+    white-space: nowrap;
+    display: inline-block;
+    background-color: __background_alt__;
+    color: __text__;
+    border: 1px solid __border__;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 2px 2px 2px __border__;
+    -webkit-box-shadow: 2px 2px 2px __border__;
+    box-shadow: 2px 2px 2px __border__;
+    bottom: 2em;
+    right: 0;
+    -moz-animation-name: fadeOut;
+    -webkit-animation-name: fadeOut;
+    animation-name: fadeOut;
+}
+
+/* show a tooltip offset to below/right */
+.olHasTooltip_bttm_r:hover span, .olHasTooltip_bttm_r:focus span {
+    bottom: -2em;
+    left: 1em;
+    right: auto;
+}
+
+/* show a tooltip offset to below/left */
+.olHasTooltip_bttm_l:hover span, .olHasTooltip_bttm_l:focus span {
+    bottom: -2em;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.olMapHelp {
+    display: none;
+    z-index: 1100;
+    position: absolute;
+    background: __background_alt__;
+    border: 1px solid __border__;
+    padding-right: 2px;
+    border-radius: 4px;
+    box-shadow: 2px 2px 2px __border__;
+}
+
+.olMapHelpButtonDiv {
+    position: relative;
+    float: right;
+    width: 22px;
+    background-color: __background_neu__;
+}
+
+.olMapHelpButton {
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    line-height: 19px;
+    text-decoration: none;
+    text-align: center;
+    padding: 0;
+    color: #FFF;
+    background: rgba(0, 60, 136, 0.7);
+    border: 1px solid __border__;
+    z-index: 1100;
+    border-bottom-left-radius: 4px;
+}
+
+.olMapHelpButton:hover, .olMapHelpButton:focus {
+    background: #003c88;
+}
+
+.ol-zoom {
+    top: 8px;
+    left: 8px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.ol-full-screen {
+    left: 8px;
+    right: initial;
+    top: 64px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.ol-overviewmap {
+    right: 0;
+    left: initial;
+    bottom: 50px;
+
+}
+
+.ol-attribution {
+    bottom: 19px;
+    right: 0;
+    background: __background_neu__;
+
+    ul {
+        color: __text__ !important;
+        margin: 0 !important;
+    }
+}
+
+.ol-control {
+    button {
+        display: block;
+        margin: 1px;
+        padding: 0;
+        color: #FFF;
+        height: 22px;
+        width: 22px;
+        line-height: 19px;
+        text-decoration: none;
+        text-align: center;
+        border: 1px solid __border__;
+        background: rgba(0, 60, 136, 0.7);
+
+        :hover {
+            background: #003c88;
+        }
+    }
+}
+
+.ol-mouse-position {
+    top: initial;
+    bottom: 0;
+    right: 4em;
+}
+
+.layer-switcher {
+    top: 64px;
+    right: 0;
+
+    ul {
+        color: __text__ !important;
+        list-style-type: none !important;
+        margin: 0 !important;
+        line-height: 1em !important;
+    }
+
+    li {
+        margin-top: 0;
+    }
+}
+
+.layer-switcher.shown.layer-switcher-activation-mode-click > button {
+    left: initial
+}

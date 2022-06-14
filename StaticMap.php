@@ -64,12 +64,12 @@ class StaticMap {
         'toner-lite'    => array(
             'txt'  => 'Stamen tiles',
             'logo' => 'stamen.png',
-            'url'  => 'http://tile.stamen.com/toner-lite/{Z}/{X}/{Y}.png'
+            'url'  => 'https://stamen-tiles.a.ssl.fastly.net/toner/{Z}/{X}/{Y}.png'
         ),
         'terrain'       => array(
             'txt'  => 'Stamen tiles',
             'logo' => 'stamen.png',
-            'url'  => 'http://tile.stamen.com/terrain/{Z}/{X}/{Y}.png'
+            'url'  => 'https://stamen-tiles.a.ssl.fastly.net/terrain/{Z}/{X}/{Y}.jpg'
         )
         //,
         // 'piste'=>array(
@@ -297,12 +297,21 @@ class StaticMap {
         $vy0 = log(tan(M_PI * (0.25 + $bbox ['miny'] / 360)));
         $vy1 = log(tan(M_PI * (0.25 + $bbox ['maxy'] / 360)));
         dbglog("StaticMap::autoZoom: vertical resolution: $vy0, $vy1");
-        $zoomFactorPowered  = ($this->height / 2) / (40.7436654315252 * ($vy1 - $vy0));
-        $resolutionVertical = 360 / ($zoomFactorPowered * $this->tileSize);
+        if ($vy1 - $vy0 === 0.0){
+            $resolutionVertical = 0;
+            dbglog("StaticMap::autoZoom: using $resolutionVertical");
+        } else {
+            $zoomFactorPowered  = ($this->height / 2) / (40.7436654315252 * ($vy1 - $vy0));
+            $resolutionVertical = 360 / ($zoomFactorPowered * $this->tileSize);
+        }
         // determine horizontal resolution
         $resolutionHorizontal = ($bbox ['maxx'] - $bbox ['minx']) / $this->width;
+        dbglog("StaticMap::autoZoom: using $resolutionHorizontal");
         $resolution           = max($resolutionHorizontal, $resolutionVertical) * $paddingFactor;
-        $zoom                 = log(360 / ($resolution * $this->tileSize), 2);
+        $zoom                 = $this->zoom;
+        if ($resolution > 0){
+            $zoom             = log(360 / ($resolution * $this->tileSize), 2);
+        }
 
         if(is_finite($zoom) && $zoom < 15 && $zoom > 2) {
             $this->zoom = floor($zoom);
@@ -320,7 +329,7 @@ class StaticMap {
     }
 
     public function serializeParams(): string {
-        return join(
+        return implode(
             "&", array(
                    $this->zoom,
                    $this->lat,
@@ -351,14 +360,30 @@ class StaticMap {
     public function makeMap(): void {
         $this->initCoords();
         $this->createBaseMap();
-        if(!empty ($this->markers))
+        if(!empty ($this->markers)) {
             $this->placeMarkers();
-        if(file_exists($this->kmlFileName))
-            $this->drawKML();
-        if(file_exists($this->gpxFileName))
-            $this->drawGPX();
-        if(file_exists($this->geojsonFileName))
-            $this->drawGeojson();
+        }
+        if (file_exists($this->kmlFileName)) {
+            try {
+                $this->drawKML();
+            } catch (exception $e) {
+                dbglog('failed to load KML file', $e);
+            }
+        }
+        if (file_exists($this->gpxFileName)) {
+            try {
+                $this->drawGPX();
+            } catch (exception $e) {
+                dbglog('failed to load GPX file', $e);
+            }
+        }
+        if (file_exists($this->geojsonFileName)) {
+            try {
+                $this->drawGeojson();
+            } catch (exception $e) {
+                dbglog('failed to load GeoJSON file', $e);
+            }
+        }
 
         $this->drawCopyright();
     }
@@ -544,6 +569,11 @@ class StaticMap {
         $color         = imagecolorallocate($this->image, 0, 0, 0);
         $bgcolor       = imagecolorallocate($this->image, 200, 200, 200);
         $markerBaseDir = __DIR__ . '/icons';
+        $markerImageOffsetX  = 0;
+        $markerImageOffsetY  = 0;
+        $markerShadowOffsetX = 0;
+        $markerShadowOffsetY = 0;
+        $markerShadowImg     = null;
         // loop thru marker array
         foreach($this->markers as $marker) {
             // set some local variables
@@ -640,6 +670,7 @@ class StaticMap {
 
     /**
      * Draw kml trace on the map.
+     * @throws exception when loading the KML fails
      */
     public function drawKML(): void {
         // TODO get colour from kml node (not currently supported in geoPHP)
@@ -782,6 +813,7 @@ class StaticMap {
 
     /**
      * Draw gpx trace on the map.
+     * @throws exception when loading the GPX fails
      */
     public function drawGPX() {
         $col     = imagecolorallocatealpha($this->image, 0, 0, 255, .4 * 127);
@@ -791,6 +823,7 @@ class StaticMap {
 
     /**
      * Draw geojson on the map.
+     * @throws exception when loading the JSON fails
      */
     public function drawGeojson() {
         $col     = imagecolorallocatealpha($this->image, 255, 0, 255, .4 * 127);
