@@ -64,12 +64,12 @@ class StaticMap {
         'toner-lite'    => array(
             'txt'  => 'Stamen tiles',
             'logo' => 'stamen.png',
-            'url'  => 'http://tile.stamen.com/toner-lite/{Z}/{X}/{Y}.png'
+            'url'  => 'https://stamen-tiles.a.ssl.fastly.net/toner/{Z}/{X}/{Y}.png'
         ),
         'terrain'       => array(
             'txt'  => 'Stamen tiles',
             'logo' => 'stamen.png',
-            'url'  => 'http://tile.stamen.com/terrain/{Z}/{X}/{Y}.png'
+            'url'  => 'https://stamen-tiles.a.ssl.fastly.net/terrain/{Z}/{X}/{Y}.jpg'
         )
         //,
         // 'piste'=>array(
@@ -308,7 +308,10 @@ class StaticMap {
         $resolutionHorizontal = ($bbox ['maxx'] - $bbox ['minx']) / $this->width;
         dbglog("StaticMap::autoZoom: using $resolutionHorizontal");
         $resolution           = max($resolutionHorizontal, $resolutionVertical) * $paddingFactor;
-        $zoom                 = log(360 / ($resolution * $this->tileSize), 2);
+        $zoom                 = $this->zoom;
+        if ($resolution > 0){
+            $zoom             = log(360 / ($resolution * $this->tileSize), 2);
+        }
 
         if(is_finite($zoom) && $zoom < 15 && $zoom > 2) {
             $this->zoom = floor($zoom);
@@ -326,7 +329,7 @@ class StaticMap {
     }
 
     public function serializeParams(): string {
-        return join(
+        return implode(
             "&", array(
                    $this->zoom,
                    $this->lat,
@@ -667,6 +670,7 @@ class StaticMap {
 
     /**
      * Draw kml trace on the map.
+     * @throws exception when loading the KML fails
      */
     public function drawKML(): void {
         // TODO get colour from kml node (not currently supported in geoPHP)
@@ -809,6 +813,7 @@ class StaticMap {
 
     /**
      * Draw gpx trace on the map.
+     * @throws exception when loading the GPX fails
      */
     public function drawGPX() {
         $col     = imagecolorallocatealpha($this->image, 0, 0, 255, .4 * 127);
@@ -818,6 +823,7 @@ class StaticMap {
 
     /**
      * Draw geojson on the map.
+     * @throws exception when loading the JSON fails
      */
     public function drawGeojson() {
         $col     = imagecolorallocatealpha($this->image, 255, 0, 255, .4 * 127);
