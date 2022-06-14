@@ -70,9 +70,6 @@ $meta ['default_zoom']          = array(
 $meta ['default_autozoom']      = array(
     'onoff'
 );
-$meta ['default_statusbar']     = array(
-    'onoff'
-);
 $meta ['default_toolbar']       = array(
     'onoff'
 );

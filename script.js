@@ -59,7 +59,7 @@ function olCreateMaptag(mapid, width, height) {
  *
  * @param {Object}
  *            mapOpts MapOptions hash {id:'olmap', width:500px, height:500px,
- *            lat:6710200, lon:506500, zoom:13, statusbar:1, controls:1,
+ *            lat:6710200, lon:506500, zoom:13, controls:1,
  *            baselyr:'', kmlfile:'', gpxfile:'', geojsonfile,
  *            summary:''}
  * @param {Array}
@@ -616,7 +616,6 @@ function olInit() {
             var _w = jQuery('#' + _id + '-olContainer').parent().innerWidth();
             if (parseInt(olMapData[_i].mapOpts.width) > _w) {
                 jQuery('#' + _id).width(_w);
-                jQuery('#' + _id + '-olStatusBar').width(_w);
                 jQuery('#' + _id).parent().parent().find('.olMapHelp').width(_w);
                 olMaps[_id].updateSize();
             }
@@ -634,7 +633,6 @@ function olInit() {
                     var _w = jQuery('#' + _id + '-olContainer').parent().innerWidth();
                     if (parseInt(olMapData[_i].mapOpts.width) > _w) {
                         jQuery('#' + _id).width(_w);
-                        jQuery('#' + _id + '-olStatusBar').width(_w);
                         jQuery('#' + _id).parent().parent().find('.olMapHelp').width(_w);
                         olMaps[_id].updateSize();
                     }
