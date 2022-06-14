@@ -1,11 +1,13 @@
 # This is a list of files that were present in previous plugin releases
 # but were removed later. An up to date plugin should not have any of
 # the files installed
-print.css.map
-style.css.map
-logo/mq_logo.png
 CHANGES
 README
+print.css.map
+style.css.map
+print.css
+style.css
+logo/mq_logo.png
 javascript/OpenLayersMap.js
 javascript/OpenLayersMap/Control/Fullscreen.js
 javascript/OpenLayersMap/Control/KeyboardClick.js
@@ -25,6 +27,10 @@ javascript/nl.js
 lib/OpenLayers.js
 lib/img/cloud-popup-relative.png
 lib/img/overview_replacement.gif
+lib/img/blank.gif
+lib/img/close.gif
+lib/img/info.png
+lib/img/olMapbg.png
 scss/_Common.scss
 scss/_Fullscreen.scss
 scss/_LayerSwitcher.scss
@@ -38,9 +44,4 @@ scss/_help.scss
 scss/_tooltip.scss
 scss/print.scss
 scss/style.scss
-lib/img/blank.gif
-lib/img/close.gif
-lib/img/info.png
-lib/img/olMapbg.png
-print.css
-style.css
+.github/workflows/build.yml
