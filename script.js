@@ -211,15 +211,16 @@ function createMap(mapOpts, poi) {
     if (stamenEnable) {
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
-                visible: false,
+                visible: mapOpts.baselyr === "toner",
                 type:    'base',
                 title:   'toner',
                 source:  new ol.source.Stamen({layer: 'toner'})
             })
         );
+
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
-                visible: false,
+                visible: mapOpts.baselyr === "terrain",
                 type:    'base',
                 title:   'terrain',
                 source:  new ol.source.Stamen({layer: 'terrain'})
