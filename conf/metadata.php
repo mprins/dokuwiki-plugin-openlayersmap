@@ -79,9 +79,6 @@ $meta ['default_toolbar']       = array(
 $meta ['default_controls']      = array(
     'onoff'
 );
-$meta ['default_poihoverstyle'] = array(
-    'onoff'
-);
 $meta ['default_kmlfile']       = array(
     'string'
 );

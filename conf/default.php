@@ -42,7 +42,6 @@ $conf['default_autozoom']         = $conf['autoZoomMap']; //invisible; duplicate
 $conf['default_statusbar']        = 1;
 $conf['default_toolbar']          = 1;
 $conf['default_controls']         = 1;
-$conf['default_poihoverstyle']    = 0;
 $conf['default_baselyr']          = 'OpenStreetMap'; //invisible
 $conf['default_kmlfile']          = '';
 $conf['default_gpxfile']          = '';

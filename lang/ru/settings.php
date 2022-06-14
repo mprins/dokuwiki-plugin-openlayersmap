@@ -39,7 +39,6 @@ $lang['default_zoom']             = 'Масштаб карты по умолча
 $lang['default_statusbar']        = 'Отображение статусной строки по умолчанию';
 $lang['default_toolbar']          = 'Отображение панели инструментов по умолчанию';
 $lang['default_controls']         = 'Отображение элементов управления по умолчанию';
-$lang['default_poihoverstyle']    = 'Открытие POI по наведению мыши (если выключено, то по щелчку) по умолчанию';
 $lang['default_kmlfile']          = 'Файл KML по умолчанию';
 $lang['default_gpxfile']          = 'Файл GPX по умолчанию';
 $lang['default_geojsonfile']      = 'Файл GeoJSON по умолчанию';

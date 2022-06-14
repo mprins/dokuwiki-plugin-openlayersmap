@@ -60,7 +60,7 @@ function olCreateMaptag(mapid, width, height) {
  * @param {Object}
  *            mapOpts MapOptions hash {id:'olmap', width:500px, height:500px,
  *            lat:6710200, lon:506500, zoom:13, statusbar:1, controls:1,
- *            poihoverstyle:1, baselyr:'', kmlfile:'', gpxfile:'', geojsonfile,
+ *            baselyr:'', kmlfile:'', gpxfile:'', geojsonfile,
  *            summary:''}
  * @param {Array}
  *            OLmapPOI array with POI's [ {lat:6710300,lon:506000,txt:'instap

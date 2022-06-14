@@ -40,7 +40,6 @@ $lang['default_zoom']             = 'Default map zoom';
 $lang['default_statusbar']        = 'Default statusbar show';
 $lang['default_toolbar']          = 'Default toolbar show';
 $lang['default_controls']         = 'Default controls show';
-$lang['default_poihoverstyle']    = 'Default POI opening on mouse hover (on click, if disabled)';
 $lang['default_kmlfile']          = 'Default KML file';
 $lang['default_gpxfile']          = 'Default GPX file';
 $lang['default_geojsonfile']      = 'Default GeoJSON file';

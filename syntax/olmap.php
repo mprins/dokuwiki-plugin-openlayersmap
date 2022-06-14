@@ -39,7 +39,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
         'statusbar'     => true,
         'toolbar'       => true,
         'controls'      => true,
-        'poihoverstyle' => false,
         'baselyr'       => 'OpenStreetMap',
         'gpxfile'       => '',
         'kmlfile'       => '',
