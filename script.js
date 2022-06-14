@@ -385,21 +385,42 @@ function createMap(mapOpts, poi) {
 
     if (mapOpts.gpxfile.length > 0) {
         try {
+            // these are the same colour as in StaticMap#drawGPX()
+            const gpxJsonStyle = {
+                'Point':           new ol.style.Style({
+                    image: new ol.style.CircleStyle({
+                        fill:   new ol.style.Fill({
+                            color: 'rgba(0,0,255,0.4)',
+                        }),
+                        radius: 5,
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(0,0,255,0.9)',
+                            width: 1,
+                        }),
+                    }),
+                }),
+                'LineString':      new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'rgba(0,0,255,0.9)',
+                        width: 3,
+                    }),
+                }),
+                'MultiLineString': new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'rgba(0,0,255,0.9)',
+                        width: 3,
+                    }),
+                }),
+            };
             const gpxSource = new ol.source.Vector({
                 url:    DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.gpxfile,
                 format: new ol.format.GPX(),
             });
             overlayGroup.getLayers().push(new ol.layer.Vector({
                 title: 'GPS track', visible: true, source: gpxSource,
-                // TODO
-                // style:  {
-                //     strokeColor:   "#0000FF",
-                //     strokeWidth:   3,
-                //     strokeOpacity: 0.7,
-                //     pointRadius:   4,
-                //     fillColor:     "#0099FF",
-                //     fillOpacity:   0.7
-                // }
+                style: function (feature) {
+                    return gpxJsonStyle[feature.getGeometry().getType()];
+                },
             }));
 
             if (mapOpts.autozoom) {
