@@ -59,8 +59,8 @@ function olCreateMaptag(mapid, width, height) {
  *
  * @param {Object}
  *            mapOpts MapOptions hash {id:'olmap', width:500px, height:500px,
- *            lat:6710200, lon:506500, zoom:13, statusbar:1, controls:1,
- *            poihoverstyle:1, baselyr:'', kmlfile:'', gpxfile:'', geojsonfile,
+ *            lat:6710200, lon:506500, zoom:13, controls:1,
+ *            baselyr:'', kmlfile:'', gpxfile:'', geojsonfile,
  *            summary:''}
  * @param {Array}
  *            OLmapPOI array with POI's [ {lat:6710300,lon:506000,txt:'instap
@@ -103,7 +103,12 @@ function createMap(mapOpts, poi) {
             zoom:       mapOpts.zoom,
             projection: 'EPSG:3857'
         }),
-        controls: [new ol.control.Zoom()]
+        controls: [
+            new ol.control.Attribution({
+                collapsible: true,
+                collapsed:   true
+            })
+        ]
     });
 
     if (osmEnable) {
@@ -206,15 +211,16 @@ function createMap(mapOpts, poi) {
     if (stamenEnable) {
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
-                visible: false,
+                visible: mapOpts.baselyr === "toner",
                 type:    'base',
                 title:   'toner',
                 source:  new ol.source.Stamen({layer: 'toner'})
             })
         );
+
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
-                visible: false,
+                visible: mapOpts.baselyr === "terrain",
                 type:    'base',
                 title:   'terrain',
                 source:  new ol.source.Stamen({layer: 'terrain'})
@@ -267,26 +273,27 @@ function createMap(mapOpts, poi) {
         map.getView().fit(extent);
     }
 
-    map.addControl(new ol.control.ScaleLine({bar: true, text: true}));
-    map.addControl(new ol.control.MousePosition({
-        coordinateFormat: ol.coordinate.createStringXY(4), projection: 'EPSG:4326',
-    }));
-    map.addControl(new ol.control.FullScreen({label: '✈'}));
-    map.addControl(new ol.control.OverviewMap({
-        label:  '+',
-        layers: [new ol.layer.Tile({
-            source: new ol.source.OSM()
-        })]
-    }));
-    map.addControl(new ol.control.LayerSwitcher({
-        activationMode: 'click',
-        label:          '\u2630',
-        collapseLabel:  '\u00BB',
-    }));
-    map.addControl(new ol.control.Attribution({
-        collapsible: true,
-        collapsed:   true
-    }));
+    if (mapOpts.controls === 1) {
+        map.addControl(new ol.control.Zoom());
+        map.addControl(new ol.control.ScaleLine({bar: true, text: true}));
+        map.addControl(new ol.control.MousePosition({
+            coordinateFormat: ol.coordinate.createStringXY(4), projection: 'EPSG:4326',
+        }));
+        map.addControl(new ol.control.FullScreen({
+            label: '✈'
+        }));
+        map.addControl(new ol.control.OverviewMap({
+            label:  '+',
+            layers: [new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })]
+        }));
+        map.addControl(new ol.control.LayerSwitcher({
+            activationMode: 'click',
+            label:          '\u2630',
+            collapseLabel:  '\u00BB',
+        }));
+    }
 
     if (mapOpts.kmlfile.length > 0) {
         try {
@@ -616,7 +623,6 @@ function olInit() {
             var _w = jQuery('#' + _id + '-olContainer').parent().innerWidth();
             if (parseInt(olMapData[_i].mapOpts.width) > _w) {
                 jQuery('#' + _id).width(_w);
-                jQuery('#' + _id + '-olStatusBar').width(_w);
                 jQuery('#' + _id).parent().parent().find('.olMapHelp').width(_w);
                 olMaps[_id].updateSize();
             }
@@ -634,7 +640,6 @@ function olInit() {
                     var _w = jQuery('#' + _id + '-olContainer').parent().innerWidth();
                     if (parseInt(olMapData[_i].mapOpts.width) > _w) {
                         jQuery('#' + _id).width(_w);
-                        jQuery('#' + _id + '-olStatusBar').width(_w);
                         jQuery('#' + _id).parent().parent().find('.olMapHelp').width(_w);
                         olMaps[_id].updateSize();
                     }

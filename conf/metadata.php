@@ -70,16 +70,7 @@ $meta ['default_zoom']          = array(
 $meta ['default_autozoom']      = array(
     'onoff'
 );
-$meta ['default_statusbar']     = array(
-    'onoff'
-);
-$meta ['default_toolbar']       = array(
-    'onoff'
-);
 $meta ['default_controls']      = array(
-    'onoff'
-);
-$meta ['default_poihoverstyle'] = array(
     'onoff'
 );
 $meta ['default_kmlfile']       = array(
