@@ -39,15 +39,14 @@ function olTestCSSsupport() {
  * @returns a {DocumentFragment} element that can be injected into the dom
  */
 function olCreateMaptag(mapid, width, height) {
-    var mEl = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">'
-            // map
-            + '<div id="' + mapid + '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap"></div>'
-            + '</div>',
-        // fragment
+    const // fragment
         frag = document.createDocumentFragment(),
         // temp node
         temp = document.createElement('div');
-    temp.innerHTML = mEl;
+    temp.innerHTML = '<div id="' + mapid + '-olContainer" class="olContainer olWebOnly">'
+        // map
+        + '<div id="' + mapid + '" tabindex="0" style="width:' + width + ';height:' + height + ';" class="olMap"></div>'
+        + '</div>';
     while (temp.firstChild) {
         frag.appendChild(temp.firstChild);
     }
@@ -57,16 +56,16 @@ function olCreateMaptag(mapid, width, height) {
 /**
  * Create the map based on the params given.
  *
- * @param {Object}
+ * @param mapOpts {Object}
  *            mapOpts MapOptions hash {id:'olmap', width:500px, height:500px,
  *            lat:6710200, lon:506500, zoom:13, controls:1,
  *            baselyr:'', kmlfile:'', gpxfile:'', geojsonfile,
  *            summary:''}
- * @param {Array}
+ * @param poi {Array}
  *            OLmapPOI array with POI's [ {lat:6710300,lon:506000,txt:'instap
  *            punt',angle:180,opacity:.9,img:'', rowId:n},... ]);
  *
- * @return {OpenLayers.Map} the created map
+ * @return {ol.Map} the created map
  */
 function createMap(mapOpts, poi) {
 
@@ -74,25 +73,25 @@ function createMap(mapOpts, poi) {
     // const poi = olMapData[0].poi;
 
     if (!olEnable) {
-        return;
+        return null;
     }
     if (!olTestCSSsupport()) {
         olEnable = false;
-        return;
+        return null;
     }
 
     // find map element location
-    var cleartag = document.getElementById(mapOpts.id + '-clearer');
+    const cleartag = document.getElementById(mapOpts.id + '-clearer');
     if (cleartag === null) {
-        return;
+        return null;
     }
     // create map element and add to document
-    var fragment = olCreateMaptag(mapOpts.id, mapOpts.width, mapOpts.height);
+    const fragment = olCreateMaptag(mapOpts.id, mapOpts.width, mapOpts.height);
     cleartag.parentNode.insertBefore(fragment, cleartag);
 
     /** dynamic map extent. */
     let extent = ol.extent.createEmpty();
-    overlayGroup = new ol.layer.Group({title: 'Overlays', fold: 'open', layers: []});
+    let overlayGroup = new ol.layer.Group({title: 'Overlays', fold: 'open', layers: []});
     const baseLyrGroup = new ol.layer.Group({'title': 'Base maps', layers: []});
 
     const map = new ol.Map({
@@ -319,7 +318,7 @@ function createMap(mapOpts, poi) {
             // these are the same colour as in StaticMap#drawJSON()
             const geoJsonStyle = {
                 'Point':           new ol.style.Style({
-                    image: new ol.style.CircleStyle({
+                    image: new ol.style.Circle({
                         fill:   new ol.style.Fill({
                             color: 'rgba(255,0,255,0.4)',
                         }),
@@ -388,7 +387,7 @@ function createMap(mapOpts, poi) {
             // these are the same colour as in StaticMap#drawGPX()
             const gpxJsonStyle = {
                 'Point':           new ol.style.Style({
-                    image: new ol.style.CircleStyle({
+                    image: new ol.style.Circle({
                         fill:   new ol.style.Fill({
                             color: 'rgba(0,0,255,0.4)',
                         }),
@@ -464,14 +463,14 @@ function createMap(mapOpts, poi) {
             overlay.setPosition(evt.coordinate);
 
             let pContent = '<div class="spacer">&nbsp;</div>';
-            let locDesc = '';
+            // let locDesc = '';
 
             if (selFeature.get('rowId') !== undefined) {
                 pContent += '<span class="rowId">' + selFeature.get('rowId') + ': </span>';
             }
             if (selFeature.get('name') !== undefined) {
                 pContent += '<span class="txt">' + selFeature.get('name') + '</span>';
-                locDesc = selFeature.get('name');
+                // locDesc = selFeature.get('name');
                 // TODO strip <p> tag from locDesc
                 // locDesc = selFeature.get('name').split(/\s+/).slice(0,2).join('+');
             }
@@ -673,14 +672,14 @@ function olInit() {
         let _i = 0;
         // create the maps in the page
         for (_i = 0; _i < olMapData.length; _i++) {
-            var _id = olMapData[_i].mapOpts.id;
+            const _id = olMapData[_i].mapOpts.id;
             olMaps[_id] = createMap(olMapData[_i].mapOpts, olMapData[_i].poi);
 
             // set max-width on help pop-over
             jQuery('#' + _id).parent().parent().find('.olMapHelp').css('max-width', olMapData[_i].mapOpts.width);
 
             // shrink the map width to fit inside page container
-            var _w = jQuery('#' + _id + '-olContainer').parent().innerWidth();
+            const _w = jQuery('#' + _id + '-olContainer').parent().innerWidth();
             if (parseInt(olMapData[_i].mapOpts.width) > _w) {
                 jQuery('#' + _id).width(_w);
                 jQuery('#' + _id).parent().parent().find('.olMapHelp').width(_w);
@@ -696,8 +695,8 @@ function olInit() {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(function () {
                 for (_i = 0; _i < olMapData.length; _i++) {
-                    var _id = olMapData[_i].mapOpts.id;
-                    var _w = jQuery('#' + _id + '-olContainer').parent().innerWidth();
+                    const _id = olMapData[_i].mapOpts.id;
+                    const _w = jQuery('#' + _id + '-olContainer').parent().innerWidth();
                     if (parseInt(olMapData[_i].mapOpts.width) > _w) {
                         jQuery('#' + _id).width(_w);
                         jQuery('#' + _id).parent().parent().find('.olMapHelp').width(_w);
