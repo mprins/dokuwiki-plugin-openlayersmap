@@ -240,32 +240,45 @@ function createMap(mapOpts, poi) {
             lat:         p.lat,
             lon:         p.lon,
             angle:       p.angle,
+            opacity:     p.opacity,
             alt:         p.img.substring(0, p.img.lastIndexOf("."))
         });
         f.setId(p.rowId);
-        f.setStyle(new ol.style.Style({
-            text:      new ol.style.Text({
-                text:           "" + p.rowId,
-                textAlign:      'center',
-                textBaseline:   'middle',
-                offsetX:        (8 + 4) * iconScale,
-                offsetY:        -8 * iconScale,
-                scale:          iconScale,
-                fill:           new ol.style.Fill({color: 'rgb(0,0,0)'}),
-                font:           'bold 1em monospace',
-                backgroundFill: new ol.style.Fill({color: 'rgba(255,255,255,.4)'})
-            }), image: new ol.style.Icon({
-                src:         DOKU_BASE + "lib/plugins/openlayersmap/icons/" + p.img,
-                crossOrigin: '',
-                opacity:     p.opacity,
-                scale:       iconScale,
-                rotation:    p.angle * Math.PI / 180,
-            }),
-        }));
         vectorSource.addFeature(f);
     });
 
-    const vectorLayer = new ol.layer.Vector({title: 'POI', visible: true, source: vectorSource});
+    const vectorLayer = new ol.layer.Vector({
+        title:   'POI',
+        visible: true,
+        source:  vectorSource,
+        style(feature, resolution) {
+            const img = feature.get('img');
+            const opacity = feature.get('opacity');
+            const angle = feature.get('angle');
+            const text = feature.get('rowId');
+
+            return new ol.style.Style({
+                image: new ol.style.Icon({
+                    src:         `${DOKU_BASE}lib/plugins/openlayersmap/icons/${img}`,
+                    crossOrigin: '',
+                    opacity:     opacity,
+                    scale:       iconScale,
+                    rotation:    angle * Math.PI / 180,
+                }),
+                text:  new ol.style.Text({
+                    text:           `${text}`,
+                    textAlign:      'center',
+                    textBaseline:   'middle',
+                    offsetX:        (8 + 4) * iconScale,
+                    offsetY:        -8 * iconScale,
+                    scale:          iconScale,
+                    fill:           new ol.style.Fill({color: 'rgb(0,0,0)'}),
+                    font:           'bold 1em monospace',
+                    backgroundFill: new ol.style.Fill({color: 'rgba(255,255,255,.4)'})
+                })
+            });
+        }
+    });
     overlayGroup.getLayers().push(vectorLayer);
     if (mapOpts.autozoom) {
         extent = ol.extent.extend(extent, vectorSource.getExtent());
