@@ -240,32 +240,45 @@ function createMap(mapOpts, poi) {
             lat:         p.lat,
             lon:         p.lon,
             angle:       p.angle,
+            opacity:     p.opacity,
             alt:         p.img.substring(0, p.img.lastIndexOf("."))
         });
         f.setId(p.rowId);
-        f.setStyle(new ol.style.Style({
-            text:      new ol.style.Text({
-                text:           "" + p.rowId,
-                textAlign:      'left',
-                textBaseline:   'bottom',
-                offsetX:        8,
-                offsetY:        -8,
-                scale:          iconScale,
-                fill:           new ol.style.Fill({color: 'rgb(0,0,0)'}),
-                font:           '12px monospace bold',
-                backgroundFill: new ol.style.Fill({color: 'rgba(255,255,255,.4)'})
-            }), image: new ol.style.Icon({
-                src:         DOKU_BASE + "lib/plugins/openlayersmap/icons/" + p.img,
-                crossOrigin: '',
-                opacity:     p.opacity,
-                scale:       iconScale,
-                rotation:    p.angle * Math.PI / 180,
-            }),
-        }));
         vectorSource.addFeature(f);
     });
 
-    const vectorLayer = new ol.layer.Vector({title: 'POI', visible: true, source: vectorSource});
+    const vectorLayer = new ol.layer.Vector({
+        title:   'POI',
+        visible: true,
+        source:  vectorSource,
+        style(feature, resolution) {
+            const img = feature.get('img');
+            const opacity = feature.get('opacity');
+            const angle = feature.get('angle');
+            const text = feature.get('rowId');
+
+            return new ol.style.Style({
+                image: new ol.style.Icon({
+                    src:         `${DOKU_BASE}lib/plugins/openlayersmap/icons/${img}`,
+                    crossOrigin: '',
+                    opacity:     opacity,
+                    scale:       iconScale,
+                    rotation:    angle * Math.PI / 180,
+                }),
+                text:  new ol.style.Text({
+                    text:           `${text}`,
+                    textAlign:      'center',
+                    textBaseline:   'middle',
+                    offsetX:        (8 + 4) * iconScale,
+                    offsetY:        -8 * iconScale,
+                    scale:          iconScale,
+                    fill:           new ol.style.Fill({color: 'rgb(0,0,0)'}),
+                    font:           'bold 1em monospace',
+                    backgroundFill: new ol.style.Fill({color: 'rgba(255,255,255,.4)'})
+                })
+            });
+        }
+    });
     overlayGroup.getLayers().push(vectorLayer);
     if (mapOpts.autozoom) {
         extent = ol.extent.extend(extent, vectorSource.getExtent());
@@ -438,9 +451,14 @@ function createMap(mapOpts, poi) {
     const closer = document.getElementById('popup-closer');
 
     const overlay = new ol.Overlay({
-        element: container, autoPan: true, autoPanAnimation: {
-            duration: 250,
-        }, //stopEvent: false,
+        element:     container,
+        positioning: 'center-center',
+        stopEvent:   true,
+        autoPan:     {
+            animation: {
+                duration: 250,
+            }
+        },
     });
     map.addOverlay(overlay);
 
@@ -487,8 +505,9 @@ function createMap(mapOpts, poi) {
                 pContent += '<div class="desc">' + selFeature.get('description') + '</div>';
             }
             if (selFeature.get('img') !== undefined) {
+                const _alt = selFeature.get('alt');
                 pContent += '<div class="coord" title="lat;lon">' +
-                    '<img alt="" src="' + DOKU_BASE + 'lib/plugins/openlayersmap/icons/' + selFeature.get('img') +
+                    '<img alt="' + _alt + '" src="' + DOKU_BASE + 'lib/plugins/openlayersmap/icons/' + selFeature.get('img') +
                     '" width="16" height="16" ' + 'style="transform:rotate(' + selFeature.get('angle') + 'deg)" />&nbsp;' +
                     '<a href="geo:' + selFeature.get('lat') + ',' + selFeature.get('lon') + '?q=' + selFeature.get('lat') +
                     ',' + selFeature.get('lon') + '(' + selFeature.get('alt') + ')" title="Open in navigation app">' +
