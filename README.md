@@ -19,3 +19,5 @@ This project includes part of OpenLayers.
 [![GitHub issues](https://img.shields.io/github/issues/mprins/dokuwiki-plugin-openlayersmap.svg)](https://github.com/mprins/dokuwiki-plugin-openlayersmap/issues)
 [![GitHub forks](https://img.shields.io/github/forks/mprins/dokuwiki-plugin-openlayersmap.svg)](https://github.com/mprins/dokuwiki-plugin-openlayersmap/network)
 [![GitHub stars](https://img.shields.io/github/stars/mprins/dokuwiki-plugin-openlayersmap.svg)](https://github.com/mprins/dokuwiki-plugin-openlayersmap/stargazers)
+
+<img src="https://sourceforge.net/cdn/syndication/badge_img/239475/oss-community-choice-white?achievement=oss-community-choice&r=https://sourceforge.net/p/dokuwikispatial/admin/files/badges/" alt="Spatial plugins for Dokuwiki received the Community Choice Award on 2022-03-02" data-canonical-src="https://sourceforge.net/cdn/syndication/badge_img/239475/oss-community-choice-white?achievement=oss-community-choice&amp;r=https://sourceforge.net/p/dokuwikispatial/admin/files/badges/" width="100" height="100">
