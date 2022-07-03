@@ -22,3 +22,15 @@ export SWITCHER_VERSION=3.8.3
 wget "https://unpkg.com/ol-layerswitcher@$SWITCHER_VERSION" -O ol-layerswitcher.js
 wget "https://unpkg.com/ol-layerswitcher@$SWITCHER_VERSION/dist/ol-layerswitcher.css" -O ol-layerswitcher.css
 ```
+
+## custom openlayers build
+
+cd ol6
+git clone https://github.com/openlayers/openlayers.git
+cd openlayers
+npm install
+npm run build-index
+
+# edit ./build/index.js
+
+npx webpack --config config/webpack-config-legacy-build.mjs && npx cleancss --source-map src/ol/ol.css -o build/legacy/ol.css
