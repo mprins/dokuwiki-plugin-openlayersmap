@@ -2,12 +2,14 @@
 
 ## update OpenLayers
 
-see https://openlayers.org/en/latest/doc/quickstart.html
+This will get the full legacy build of OpenLayers. See https://openlayers.org/download/
+
 ```shell
-wget "https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.14.1/css/ol.css" -O ol.css
-wget "https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.14.1/css/ol.css.map" -O ol.css.map
-wget "https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.14.1/build/ol.js" -O ol.js
-wget "https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.14.1/build/ol.js.map" -O ol.js.map
+cd ol6
+export OL_VERSION=v6.14.1
+wget https://github.com/openlayers/openlayers/releases/download/$OL_VERSION/$OL_VERSION-dist.zip
+unzip -jo $OL_VERSION-dist.zip
+rm $OL_VERSION-dist.zip
 ```
 
 ## update LayerSwitcher
@@ -15,6 +17,8 @@ wget "https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1
 see https://github.com/walkermatt/ol-layerswitcher#js
 
 ```shell
-wget "https://unpkg.com/ol-layerswitcher@3.8.3" -O ol-layerswitcher.js
-wget "https://unpkg.com/ol-layerswitcher@3.8.3/dist/ol-layerswitcher.css" -O ol-layerswitcher.css
+cd ol6
+export SWITCHER_VERSION=3.8.3
+wget "https://unpkg.com/ol-layerswitcher@$SWITCHER_VERSION" -O ol-layerswitcher.js
+wget "https://unpkg.com/ol-layerswitcher@$SWITCHER_VERSION/dist/ol-layerswitcher.css" -O ol-layerswitcher.css
 ```
