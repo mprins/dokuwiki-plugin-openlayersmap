@@ -2,7 +2,7 @@
 
 ## update OpenLayers
 
-see https://openlayers.org/download/
+This will get the full legacy build of OpenLayers. See https://openlayers.org/download/
 
 ```shell
 cd ol6

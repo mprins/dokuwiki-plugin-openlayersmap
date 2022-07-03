@@ -45,3 +45,4 @@ scss/_tooltip.scss
 scss/print.scss
 scss/style.scss
 .github/workflows/build.yml
+LICENSE.txt
