@@ -17,6 +17,8 @@
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
 
+use geoPHP\Geometry\Point;
+
 /**
  * DokuWiki Plugin openlayersmap (Syntax Component).
  * Provides for display of an OpenLayers based map in a wiki page.

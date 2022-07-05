@@ -19,9 +19,16 @@
  * limitations under the License.
  */
 
+use geoPHP\Geometry\Geometry;
+use geoPHP\Geometry\GeometryCollection;
+use geoPHP\Geometry\LineString;
+use geoPHP\Geometry\Point;
+use geoPHP\Geometry\Polygon;
+use geoPHP\geoPHP;
+
 // phpcs:disable PSR1.Files.SideEffects
 // TODO resolve side effect
-include_once(realpath(__DIR__) . '/../geophp/geoPHP/geoPHP.inc');
+require_once __DIR__ . '/../geophp/vendor/autoload.php';
 
 /**
  *
@@ -248,13 +255,10 @@ class StaticMap {
 
     /**
      * Calculate the lat/lon/zoom values to make sure that all of the markers and gpx/kml are on the map.
-     * can throw an error like
-     * "Fatal error: Uncaught Exception: Cannot create a collection with non-geometries in
-     * D:\www\wild-water.nl\www\dokuwiki\lib\plugins\geophp\geoPHP\lib\geometry\Collection.class.php:29"
      *
      * @param float $paddingFactor
      *            buffer constant to enlarge (>1.0) the zoom level
-     * @throws Exception
+     * @throws Exception if non-geometries are found in the collection
      */
     private function autoZoom(float $paddingFactor = 1.0): void {
         $geoms    = array();
