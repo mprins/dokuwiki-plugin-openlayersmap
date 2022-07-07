@@ -1,0 +1,22 @@
+{
+  "name": "mprins/dokuwiki-plugin-openlayersmap",
+  "description": "Provides a syntax for rendering an OpenLayers based map in a wiki page.",
+  "homepage": "https://www.dokuwiki.org/plugin:openlayersmap",
+  "minimum-stability": "stable",
+  "license": "bsd-2-clause",
+  "type": "plugin",
+  "authors": [
+    {
+      "name": "Mark C. Prins",
+      "email": "mprins@users.sf.net"
+    }
+  ],
+  "require": {
+    "php": ">=7.4"
+  },
+  "config": {
+    "platform": {
+      "php": "8.0"
+    }
+  }
+}
