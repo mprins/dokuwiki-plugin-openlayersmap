@@ -1,0 +1,3 @@
+filter:
+  dependency_paths:
+    - ol6/
