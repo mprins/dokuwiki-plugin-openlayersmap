@@ -49,13 +49,15 @@ $meta['enableA11y']               = array(
     'onoff'
 );
 $meta['optionStaticMapGenerator'] = array(
-    'multichoice', '_choices' => array('local', 'remote')
+    'multichoice',
+    '_choices' => array('local', 'remote')
 );
 $meta['autoZoomMap']              = array(
     'onoff'
 );
 $meta ['displayformat']           = array(
-    'multichoice', '_choices' => array('DD', 'DMS')
+    'multichoice',
+    '_choices' => array('DD', 'DMS')
 );
 
 $meta ['default_width']         = array(

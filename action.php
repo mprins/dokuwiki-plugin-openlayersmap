@@ -22,14 +22,16 @@
  * Toolbar button.
  * @author Mark Prins
  */
-class action_plugin_openlayersmap extends DokuWiki_Action_Plugin {
+class action_plugin_openlayersmap extends DokuWiki_Action_Plugin
+{
 
     /**
      * plugin should use this method to register its handlers with the DokuWiki's event controller
      *
      * @param    $controller DokuWiki's event controller object. Also available as global $EVENT_HANDLER
      */
-    public function register(Doku_Event_Handler $controller) {
+    public function register(Doku_Event_Handler $controller)
+    {
         $controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'insertButton', array());
         $controller->register_hook('TPL_METAHEADER_OUTPUT', 'BEFORE', $this, 'insertCSSSniffer');
     }
@@ -38,7 +40,8 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin {
      * Inserts the toolbar button.
      * @param Doku_Event $event the DokuWiki event
      */
-    public function insertButton(Doku_Event $event, $param) {
+    public function insertButton(Doku_Event $event, $param)
+    {
         $strOpen       = '<olmap id="olMapOne" width="550px" height="450px" lat="50.0" ';
         $strOpen       .= 'lon="5.1" zoom="12" controls="1" ';
         $strOpen       .= 'baselyr="OpenStreetMap" gpxfile="" kmlfile="" geojsonfile="" summary="" >\n';
@@ -60,7 +63,11 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin {
     }
 
     /** add a snippet of javascript into the head to do a css operation we can check for later on.*/
-    public function insertCSSSniffer(Doku_Event $event, $param) {
-        $event->data["script"][] = array("_data" => "document.documentElement.className += ' olCSSsupported';");
+    public function insertCSSSniffer(Doku_Event $event, $param)
+    {
+        $event->data["script"][] = array(
+            "type"  => "text/javascript",
+            "_data" => "document.documentElement.className += ' olCSSsupported';",
+        );
     }
 }
