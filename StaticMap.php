@@ -47,6 +47,12 @@ class StaticMap {
             'logo' => 'osm_logo.png',
             'url'  => 'https://tile.openstreetmap.org/{Z}/{X}/{Y}.png'
         ),
+        // OpenTopoMap sources
+        'opentopomap' => array(
+            'txt'  => '(c) OpenStreetMap data/ODbl, SRTM | style: (c) OpenTopoMap',
+            'logo' => 'osm_logo.png',
+            'url'  => 'https:/tile.opentopomap.org/{Z}/{X}/{Y}.png'
+        ),
         // OCM sources
         'cycle'         => array(
             'txt'  => '(c) Thunderforest maps',

@@ -121,6 +121,20 @@ function createMap(mapOpts, poi) {
 
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
+                visible: mapOpts.baselyr === "opentopomap",
+                title:   'opentopomap',
+                type:    'base',
+                source:  new ol.source.OSM({
+                    url:          'https://{a-c}.tile.opentopomap.org/{z}/{x}/{y}.png',
+                    attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
+                                      + '<a href="http://viewfinderpanoramas.org" target="_blank">SRTM</a>, '
+                                      + 'style &copy;<a href="https://opentopomap.org/" target="_blank">OpenTopoMap</a>'
+                                      + '(<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+                })
+            }));
+
+        baseLyrGroup.getLayers().push(
+            new ol.layer.Tile({
                 visible: mapOpts.baselyr === "cycle map",
                 title:   'cycle map',
                 type:    'base',
