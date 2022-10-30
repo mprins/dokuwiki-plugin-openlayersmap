@@ -770,8 +770,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
             if(!$initialised) {
                 $initialised = true;
                 // render necessary script tags only once
-                $olscript = '<script defer="defer" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/ol6/ol.js"></script>
-<script defer="defer" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/ol6/ol-layerswitcher.js"></script>';
+                $olscript = '<script defer="defer" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/ol7/ol.js"></script>
+<script defer="defer" src="' . DOKU_BASE . 'lib/plugins/openlayersmap/ol7/ol-layerswitcher.js"></script>';
 
                 $scriptEnable = '<script defer="defer" src="data:text/javascript;base64,';
                 $scriptSrc    = $olscript ? 'const olEnable=true;' : 'const olEnable=false;';
