@@ -116,7 +116,6 @@ class syntax_plugin_openlayersmap_osmlayer extends DokuWiki_Syntax_Plugin
         // incremented for each olmap_osmlayer tag in the page source
         static $overlaynumber = 0;
 
-        list ($id, $url, $name, $visible) = $data;
         $renderer->doc .= DOKU_LF . '<script defer="defer" src="data:text/javascript;base64,';
         $str           = '{';
         foreach ($data as $key => $val) {

@@ -120,7 +120,6 @@ class syntax_plugin_openlayersmap_agslayer extends DokuWiki_Syntax_Plugin
         // incremented for each olmap_agslayer tag in the page source
         static $overlaynumber = 0;
 
-        list ($id, $url, $name, $visible) = $data;
         $renderer->doc .= DOKU_LF . '<script defer="defer" src="data:text/javascript;base64,';
         $str           = '{';
         foreach ($data as $key => $val) {
