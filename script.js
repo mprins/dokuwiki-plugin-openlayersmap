@@ -116,10 +116,7 @@ function createMap(mapOpts, poi) {
                 visible: true,
                 title:   'OSM',
                 type:    'base',
-                source:  new ol.source.OSM({
-                    // can be removed after upgrade to OL 7.1, see https://github.com/openlayers/openlayers/pull/14062
-                    url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-                })
+                source:  new ol.source.OSM()
             }));
 
         baseLyrGroup.getLayers().push(
