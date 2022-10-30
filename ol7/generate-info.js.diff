@@ -1,0 +1,31 @@
+diff --git a/tasks/generate-info.js b/tasks/generate-info.js
+index ee9660554..49ca324c8 100644
+--- a/tasks/generate-info.js
++++ b/tasks/generate-info.js
+@@ -70,7 +70,25 @@ function getPaths() {
+     walker.on('file', (root, stats, next) => {
+       const sourcePath = path.join(root, stats.name);
+       if (sourcePath.endsWith('.js')) {
+-        paths.push(sourcePath);
++        if (
++          sourcePath.toLowerCase().includes('webgl') ||
++          sourcePath.toLowerCase().includes('geotiff') ||
++          sourcePath.toLowerCase().includes('gml') ||
++          sourcePath.toLowerCase().includes('format/filter') ||
++          sourcePath.toLowerCase().includes('format/xml') ||
++          sourcePath.toLowerCase().includes('capabilities') ||
++          sourcePath.toLowerCase().includes('format/wk') ||
++          sourcePath.toLowerCase().includes('iiif') ||
++          sourcePath.toLowerCase().includes('vectortile') ||
++          sourcePath.toLowerCase().includes('mapguide') ||
++          sourcePath.toLowerCase().includes('cartodb') ||
++          sourcePath.toLowerCase().includes('zoomify') ||
++          sourcePath.toLowerCase().includes('mapbox')
++        ) {
++          // skip
++        } else {
++          paths.push(sourcePath);
++        }
+       }
+       next();
+     });
