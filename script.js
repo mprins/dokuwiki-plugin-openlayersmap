@@ -243,7 +243,7 @@ function createMap(mapOpts, poi) {
 
     extent = ol.extent.extend(extent, map.getView().calculateExtent());
 
-    const iconScale = 1.0;
+    const iconScale = window.devicePixelRatio ?? 1.0;
     const vectorSource = new ol.source.Vector();
     poi.forEach((p) => {
         const f = new ol.Feature({
@@ -283,12 +283,12 @@ function createMap(mapOpts, poi) {
                     text:           `${text}`,
                     textAlign:      'center',
                     textBaseline:   'middle',
-                    offsetX:        (8 + 4) * iconScale,
+                    offsetX:        (8 + 4 + 2) * iconScale,
                     offsetY:        -8 * iconScale,
                     scale:          iconScale,
                     fill:           new ol.style.Fill({color: 'rgb(0,0,0)'}),
-                    font:           'bold 1em monospace',
-                    backgroundFill: new ol.style.Fill({color: 'rgba(255,255,255,.4)'})
+                    font:           'bold 16px monospace',
+                    stroke:         new ol.style.Stroke({color: 'rgba(255,255,255,.4)', width: 5}),
                 })
             });
         }
