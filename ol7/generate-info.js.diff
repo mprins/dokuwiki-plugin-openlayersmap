@@ -1,24 +1,13 @@
-From 6b27144de1c2b5982b6f219ea2a364db845a00ea Mon Sep 17 00:00:00 2001
-From: Mark Prins <1165786+mprins@users.noreply.github.com>
-Date: Mon, 4 Jul 2022 18:26:59 +0200
-Subject: [PATCH] Exclude some files from the build
-
----
- tasks/generate-info.js | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
-
 diff --git a/tasks/generate-info.js b/tasks/generate-info.js
-index bcf89bedc..19c165782 100644
+index ee9660554..49ca324c8 100644
 --- a/tasks/generate-info.js
 +++ b/tasks/generate-info.js
-@@ -69,9 +69,25 @@ function getPaths() {
-     const walker = walk(sourceDir);
+@@ -70,7 +70,25 @@ function getPaths() {
      walker.on('file', (root, stats, next) => {
        const sourcePath = path.join(root, stats.name);
--      if (/\.js$/.test(sourcePath)) {
+       if (sourcePath.endsWith('.js')) {
 -        paths.push(sourcePath);
--      }
-+      if (
++        if (
 +          sourcePath.toLowerCase().includes('webgl') ||
 +          sourcePath.toLowerCase().includes('geotiff') ||
 +          sourcePath.toLowerCase().includes('gml') ||
@@ -30,16 +19,13 @@ index bcf89bedc..19c165782 100644
 +          sourcePath.toLowerCase().includes('vectortile') ||
 +          sourcePath.toLowerCase().includes('mapguide') ||
 +          sourcePath.toLowerCase().includes('cartodb') ||
-+          sourcePath.toLowerCase().includes('zommify') ||
++          sourcePath.toLowerCase().includes('zoomify') ||
 +          sourcePath.toLowerCase().includes('mapbox')
 +        ) {
 +          // skip
 +        } else {
 +          paths.push(sourcePath);
 +        }
+       }
        next();
      });
-     walker.on('errors', () => {
--- 
-2.34.1
-
