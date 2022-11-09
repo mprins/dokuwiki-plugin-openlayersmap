@@ -29,4 +29,5 @@ jobs:
             run: phpcs -v --standard=_test/phpcs_MigrationAdjustments.xml --report-full --report-checkstyle=./phpcs-report.xml lib/plugins/openlayersmap
 
           - name: Annotate PR
-            run: cs2pr ./phpcs-report.xml
+            if: ${{ always() && steps.phpcs.outcome == 'failure' }}
+            run: cs2pr --notices-as-warnings --colorize ./phpcs-report.xml
