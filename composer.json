@@ -18,5 +18,9 @@
     "platform": {
       "php": "8.0"
     }
+  },
+  "suggest": {
+    "ext-gd": "For image manipulation",
+    "ext-imagick": "For image manipulation"
   }
 }

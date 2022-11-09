@@ -512,7 +512,7 @@ class StaticMap {
             }
 
             $context = stream_context_create($opts);
-            dbglog("StaticMap::fetchTile: getting: $url . $this->apikey using file_get_contents and options $opts");
+            // dbglog("StaticMap::fetchTile: getting: $url . $this->apikey using file_get_contents and options $opts");
             $tile = file_get_contents($url . $this->apikey, false, $context);
         }
         if($tile && $this->useTileCache) {

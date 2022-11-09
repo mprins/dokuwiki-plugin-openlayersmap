@@ -844,8 +844,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
                 global $ID;
                 $rel = p_get_metadata($ID, 'relation', METADATA_RENDER_USING_CACHE);
-                $img = $rel ['firstimage'];
-                if(empty ($img) /* || $img == $_firstimage*/) {
+                // $img = $rel ['firstimage'];
+                if(empty ($rel ['firstimage']) /* || $img == $_firstimage*/) {
                     //dbglog ( $_firstimage,
                     // 'olmap::render#rendering image relation metadata for _firstimage as $img was empty or same.' );
                     // This seems to never work; the firstimage entry in the .meta file is empty

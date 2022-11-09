@@ -1,0 +1,2 @@
+https://github.com/mprins/dokuwiki-plugin-geophp.git lib/plugins/geophp
+https://github.com/mprins/dokuwiki-plugin-spatialhelper.git lib/plugins/spatialhelper
