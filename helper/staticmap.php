@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2021 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2022 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,6 +16,8 @@
  *
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
+
+use dokuwiki\plugin\openlayersmap\StaticMap;
 
 /**
  * DokuWiki Plugin openlayersmap (staticmap Helper Component).
@@ -112,7 +114,6 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
         $geojson = $this->mediaIdToPath($geojson);
 
         // create map
-        require_once DOKU_PLUGIN . 'openlayersmap/StaticMap.php';
         $map = new StaticMap(
             $lat, $lon, $zoom, $width, $height, $maptype,
             $markers, $gpx, $kml, $geojson, $conf['mediadir'], $conf['cachedir'],

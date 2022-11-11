@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012-2018 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2012-2022 Mark C. Prins <mprins@users.sf.net>
  *
  * In part based on staticMapLite 0.03 available at http://staticmaplite.svn.sourceforge.net/viewvc/staticmaplite/
  *
@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+namespace dokuwiki\plugin\openlayersmap;
 
 use geoPHP\Geometry\Geometry;
 use geoPHP\Geometry\GeometryCollection;
@@ -25,10 +26,6 @@ use geoPHP\Geometry\LineString;
 use geoPHP\Geometry\Point;
 use geoPHP\Geometry\Polygon;
 use geoPHP\geoPHP;
-
-// phpcs:disable PSR1.Files.SideEffects
-// TODO resolve side effect
-require_once __DIR__ . '/../geophp/vendor/autoload.php';
 
 /**
  *
