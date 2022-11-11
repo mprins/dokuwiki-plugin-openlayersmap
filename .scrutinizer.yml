@@ -1,3 +1,10 @@
 filter:
   dependency_paths:
     - ol7/
+
+build:
+  nodes:
+    analysis:
+      dependencies:          # This needs to be the section name like "tests", "dependencies", or "project_setup"
+        override:
+          - true
