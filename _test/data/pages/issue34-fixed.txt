@@ -1,0 +1,7 @@
+===== issue34-fixed =====
+demonstrates https://github.com/mprins/dokuwiki-plugin-openlayersmap/issues/34
+which was using an invalid syntax by not having a line break before the closing </olmap> tag.
+
+<olmap id="olMap_example" width="550px" height="450px" lat="51.3680" lon="6.1403" zoom="14" statusbar="1" controls="1" poihoverstyle="0" baselyr="OpenStreetMap" gpxfile="" kmlfile="" geojsonfile="" summary="" >
+~~ a comment
+</olmap>

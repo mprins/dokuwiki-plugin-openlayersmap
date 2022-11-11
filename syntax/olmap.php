@@ -86,8 +86,14 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
      * @see DokuWiki_Syntax_Plugin::handle()
      */
     public function handle($match, $state, $pos, Doku_Handler $handler): array {
-        // break matched cdata into its components
-        list ($str_params, $str_points) = explode('>', substr($match, 7, -9), 2);
+        // break matched data into its components
+        $_tag       = explode('>', substr($match, 7, -9), 2);
+        $str_params = $_tag[0];
+        if(array_key_exists(1, $_tag)) {
+            $str_points = $_tag[1];
+        } else {
+            $str_points = '';
+        }
         // get the lat/lon for adding them to the metadata (used by geotag)
         preg_match('(lat[:|=]\"-?\d*\.?\d*\")', $match, $mainLat);
         preg_match('(lon[:|=]\"-?\d*\.?\d*\")', $match, $mainLon);
@@ -101,7 +107,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
         }
 
         $gmap          = $this->extractParams($str_params);
-        $overlay       = $this->extractPoints($str_points);
+        $overlay = $this->extractPoints($str_points);
         $_firstimageID = '';
 
         $_nocache = false;
@@ -795,8 +801,8 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
             if($this->getConf('enableA11y')) {
                 // render a table of the POI for the print and a11y presentation, it is hidden using javascript
                 $renderer->doc .= '
-                <div class="olPOItableSpan" id="' . $mapid . '-table-span">
-                    <table class="olPOItable" id="' . $mapid . '-table">
+                <div id="' . $mapid . '-table-span" class="olPOItableSpan">
+                    <table id="' . $mapid . '-table" class="olPOItable">
                     <caption class="olPOITblCaption">' . $this->getLang('olmapPOItitle') . '</caption>
                     <thead class="olPOITblHeader">
                     <tr>
