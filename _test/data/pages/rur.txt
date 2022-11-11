@@ -1,0 +1,6 @@
+===== Rur =====
+<olmap id="olMap" width="650px" height="550px" lat="50.555" lon="6.283" zoom="13" statusbar="1" toolbar="1" controls="1" poihoverstyle="0" baselyr="openstreetmap" gpxfile="" kmlfile="" geojsonfile="" summary="Rur parkings">
+50.548611,6.228889,0,0,parking.png,Parking Dreistegen
+50.56384, 6.29766,0,0,parking.png,Parking Grünenthalstrasse
+
+</olmap>

@@ -47,7 +47,7 @@ class general_plugin_openlayersmap_test extends DokuWikiTest {
         self::assertRegExp('/^https?:\/\//', $info['url']);
         self::assertTrue(mail_isvalid($info['email']));
         self::assertRegExp('/^\d\d\d\d-\d\d-\d\d$/', $info['date']);
-        self::assertTrue(false !== strtotime($info['date']));
+        self::assertNotFalse(strtotime($info['date']));
     }
 
     /**

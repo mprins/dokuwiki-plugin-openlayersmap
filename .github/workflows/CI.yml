@@ -1,51 +1,49 @@
 name: CI
 
-on: [push, pull_request]
+on: [ push, pull_request ]
+
+permissions:
+  contents: read
 
 jobs:
-    testLinux:
-        name: PHP Unit
-        runs-on: ubuntu-latest
-        
-        strategy:
-            matrix:
-                php-version: ['7.4']
-                dokuwiki-branch: [ 'master', 'stable']
-                include:
-                  - php-version: '8.0'
-                    dokuwiki-branch: 'master'
-                  - php-version: '8.1'
-                    dokuwiki-branch: 'master'
-            fail-fast: false
+  test:
+    name: PHP Unit
+    runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v3
+    strategy:
+      matrix:
+        php-version: [ '7.4', '8.0', '8.1' ]
+        dokuwiki-branch: [ 'master', 'stable' ]
+      fail-fast: false
 
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: ${{ matrix.php-version }}
-                  extensions: mbstring, intl, bz2
+    steps:
+      - uses: actions/checkout@v3
 
-            - name: Setup problem matchers
-              run: |
-                echo ::add-matcher::${{ runner.tool_cache }}/php.json
-                echo ::add-matcher::${{ runner.tool_cache }}/phpunit.json
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, intl, bz2, gd, imagick
 
-            - name: Download DokuWiki Test-setup
-              run: wget https://raw.github.com/splitbrain/dokuwiki-travis/master/travis.sh
+      - name: Setup problem matchers
+        run: |
+          echo ::add-matcher::${{ runner.tool_cache }}/php.json
+          echo ::add-matcher::${{ runner.tool_cache }}/phpunit.json
 
-            - name: Install DokuWiki
-              env:
-                  CI_SERVER: 1
-                  DOKUWIKI: ${{ matrix.dokuwiki-branch }}
-              run: sh travis.sh
+      - name: Download DokuWiki Test-setup
+        run: wget https://raw.github.com/splitbrain/dokuwiki-travis/master/travis.sh
 
-            - name: Setup PHPUnit
-              run: |
-                  php _test/fetchphpunit.php
-                  ./_test/phpunit.phar --version
+      - name: Install DokuWiki and required plugins
+        env:
+          CI_SERVER: 1
+          DOKUWIKI: ${{ matrix.dokuwiki-branch }}
+        run: sh travis.sh
 
-            - name: Run PHPUnit
-              run: |
-                cd _test && PRESERVE_TMP=false ./phpunit.phar --stderr --verbose --debug --group plugin_openlayersmap
+      - name: Setup PHPUnit
+        run: |
+          php _test/fetchphpunit.php
+          ./_test/phpunit.phar --version
+
+      - name: Run PHPUnit
+        run: |
+          cd _test && PRESERVE_TMP=false ./phpunit.phar --stderr --verbose --debug --group plugin_openlayersmap
