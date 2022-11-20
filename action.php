@@ -32,6 +32,7 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin {
     public function register(Doku_Event_Handler $controller) {
         $controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'insertButton', array());
         $controller->register_hook('TPL_METAHEADER_OUTPUT', 'BEFORE', $this, 'insertCSSSniffer');
+        $controller->register_hook('PLUGIN_POPULARITY_DATA_SETUP', 'AFTER', $this, 'popularity');
     }
 
     /**
@@ -62,5 +63,19 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin {
     /** add a snippet of javascript into the head to do a css operation we can check for later on.*/
     public function insertCSSSniffer(Doku_Event $event, $param) {
         $event->data["script"][] = array("_data" => "document.documentElement.className += ' olCSSsupported';");
+    }
+
+    /**
+     * Add openlayersmap popularity data.
+     *
+     * @param Doku_Event $event
+     *          the DokuWiki event
+     */
+    final public function popularity(Doku_Event $event): void {
+        global $updateVersion;
+        $plugin_info                                     = $this->getInfo();
+        $event->data['openlayersmap']['version']         = $plugin_info['date'];
+        $event->data['openlayersmap']['dwversion']       = $updateVersion;
+        $event->data['openlayersmap']['combinedversion'] = $updateVersion . '_' . $plugin_info['date'];
     }
 }
