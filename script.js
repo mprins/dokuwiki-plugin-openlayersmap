@@ -278,6 +278,8 @@ function createMap(mapOpts, poi) {
                     opacity:     opacity,
                     scale:       iconScale,
                     rotation:    angle * Math.PI / 180,
+                    // width/height were added in OpenLayers 7.2.2
+                    // see https://github.com/openlayers/openlayers/pull/14364
                 }),
                 text:  new ol.style.Text({
                     text:           `${text}`,
