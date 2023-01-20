@@ -79,7 +79,7 @@ class StaticMap {
         'terrain'       => array(
             'txt'  => 'Stamen tiles',
             'logo' => 'stamen.png',
-            'url'  => 'https://stamen-tiles.a.ssl.fastly.net/terrain/{Z}/{X}/{Y}.jpg'
+            'url'  => 'https://stamen-tiles.a.ssl.fastly.net/terrain/{Z}/{X}/{Y}.png'
         )
         //,
         // 'piste'=>array(
