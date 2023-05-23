@@ -71,6 +71,7 @@ function createMap(mapOpts, poi) {
 
     // const mapOpts = olMapData[0].mapOpts;
     // const poi = olMapData[0].poi;
+    const autoZoom_options =  {padding: [16, 16, 16, 16]};
 
     if (!olEnable) {
         return null;
@@ -298,7 +299,7 @@ function createMap(mapOpts, poi) {
     overlayGroup.getLayers().push(vectorLayer);
     if (mapOpts.autozoom) {
         extent = ol.extent.extend(extent, vectorSource.getExtent());
-        map.getView().fit(extent);
+        map.getView().fit(extent, autoZoom_options);
     }
 
     if (mapOpts.controls === 1) {
@@ -334,7 +335,7 @@ function createMap(mapOpts, poi) {
             if (mapOpts.autozoom) {
                 kmlSource.once('change', function () {
                     extent = ol.extent.extend(extent, kmlSource.getExtent());
-                    map.getView().fit(extent);
+                    map.getView().fit(extent, autoZoom_options);
                 });
             }
         } catch (e) {
@@ -403,7 +404,7 @@ function createMap(mapOpts, poi) {
             if (mapOpts.autozoom) {
                 geoJsonSource.once('change', function () {
                     extent = ol.extent.extend(extent, geoJsonSource.getExtent());
-                    map.getView().fit(extent);
+                    map.getView().fit(extent, autoZoom_options);
                 });
             }
         } catch (e) {
@@ -454,7 +455,7 @@ function createMap(mapOpts, poi) {
             if (mapOpts.autozoom) {
                 gpxSource.once('change', function () {
                     extent = ol.extent.extend(extent, gpxSource.getExtent());
-                    map.getView().fit(extent);
+                    map.getView().fit(extent, autoZoom_options);
                 });
             }
         } catch (e) {
