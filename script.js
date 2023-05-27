@@ -695,7 +695,7 @@ function olovAddToMap() {
 
 /** init. */
 function olInit() {
-    if (olEnable) {
+    if (typeof olEnable !== 'undefined' && olEnable) {
         // add info window to DOM
         const frag = document.createDocumentFragment(),
             temp = document.createElement('div');
