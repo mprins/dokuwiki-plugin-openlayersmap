@@ -523,12 +523,22 @@ function createMap(mapOpts, poi) {
             }
             if (selFeature.get('img') !== undefined) {
                 const _alt = selFeature.get('alt');
+                // Android Maps intent: https://developer.android.com/guide/components/intents-common#Maps
+                // geo uri scheme: https://en.wikipedia.org/wiki/Geo_URI_scheme
+                // geo uri reference: https://tools.ietf.org/html/rfc5870
+                // OSM wiki: https://wiki.openstreetmap.org/wiki/Geo_URI_scheme
                 pContent += '<div class="coord" title="lat;lon">' +
                     '<img alt="' + _alt + '" src="' + DOKU_BASE + 'lib/plugins/openlayersmap/icons/' + selFeature.get('img') +
                     '" width="16" height="16" ' + 'style="transform:rotate(' + selFeature.get('angle') + 'deg)" />&nbsp;' +
-                    '<a href="geo:' + selFeature.get('lat') + ',' + selFeature.get('lon') + '?q=' + selFeature.get('lat') +
-                    ',' + selFeature.get('lon') + '(' + selFeature.get('alt') + ')" title="Open in navigation app">' +
-                    ol.coordinate.format([selFeature.get('lon'), selFeature.get('lat')], '{x}º; {y}º', 4) + '</a></div>';
+                    '<a href="geo:' + selFeature.get('lat') + ','
+                                    + selFeature.get('lon') +
+                           '?q='    + selFeature.get('lat') + ',' +
+                                      selFeature.get('lon') +
+                           '&name=' + selFeature.get('alt') +
+                           ';z=16" title="Open in navigation app">' +
+                    ol.coordinate.format([selFeature.get('lon'), selFeature.get('lat')], '{x}º; {y}º', 4)
+                    + '</a>' +
+                    '</div>';
             }
             content.innerHTML = pContent;
         } else {
