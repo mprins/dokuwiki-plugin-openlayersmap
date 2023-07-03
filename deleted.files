@@ -77,15 +77,18 @@ ol6/ol.js.LICENSE.txt
 ol6/ol.js.map
 ol6/
 
-_test/action.test.php
+_test/syntax.test.php
 _test/general.test.php
 _test/data/pages/issue34.txt
 _test/data/pages/issue34-fixed.txt
 _test/data/pages/rur.txt
+_test/data/
+_test/
 
 .github/workflows/phpCS.yml
 .github/workflows/maintenance.yml
 .github/workflows/CI.yml
 .github/workflows/codeql-analysis.yml
+.github/workflows/
 .github/dependabot.yml
 .github/ISSUE_TEMPLATE.md
