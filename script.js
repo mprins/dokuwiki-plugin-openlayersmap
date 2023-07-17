@@ -565,11 +565,12 @@ function olovAddToMap() {
         const m = olMaps[overlay.id];
 
         let targetGroup;
+        const isBaselayer = overlay.baselayer && (overlay.baselayer).toLowerCase() === 'true';
         m.getLayers().forEach(function (layer) {
-            if (layer.get('title') === 'Base maps' && (overlay.baselayer).toLowerCase() === 'true') {
+            if (layer.get('title') === 'Base maps' && isBaselayer) {
                 targetGroup = layer;
             }
-            if (layer.get('title') === 'Overlays' && (overlay.baselayer).toLowerCase() === 'false') {
+            if (layer.get('title') === 'Overlays' && !isBaselayer) {
                 targetGroup = layer;
             }
         });
