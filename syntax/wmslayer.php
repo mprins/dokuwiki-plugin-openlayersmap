@@ -32,7 +32,8 @@ class syntax_plugin_openlayersmap_wmslayer extends DokuWiki_Syntax_Plugin
         'layers'      => '',
         'version'     => '1.3.0',
         'format'      => 'image/png',
-        'transparent' => 'true'
+        'transparent' => 'true',
+        'baselayer'   => 'false',
     );
 
     /**
