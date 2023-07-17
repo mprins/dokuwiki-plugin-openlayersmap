@@ -71,7 +71,7 @@ function createMap(mapOpts, poi) {
 
     // const mapOpts = olMapData[0].mapOpts;
     // const poi = olMapData[0].poi;
-    const autoZoom_options =  {padding: [16, 16, 16, 16]};
+    const autoZoom_options = {padding: [16, 16, 16, 16]};
 
     if (!olEnable) {
         return null;
@@ -96,17 +96,17 @@ function createMap(mapOpts, poi) {
     const baseLyrGroup = new ol.layer.Group({'title': 'Base maps', layers: []});
 
     const map = new ol.Map({
-        target:   document.getElementById(mapOpts.id),
-        layers:   [baseLyrGroup, overlayGroup],
-        view:     new ol.View({
-            center:     ol.proj.transform([mapOpts.lon, mapOpts.lat], 'EPSG:4326', 'EPSG:3857'),
-            zoom:       mapOpts.zoom,
+        target: document.getElementById(mapOpts.id),
+        layers: [baseLyrGroup, overlayGroup],
+        view: new ol.View({
+            center: ol.proj.transform([mapOpts.lon, mapOpts.lat], 'EPSG:4326', 'EPSG:3857'),
+            zoom: mapOpts.zoom,
             projection: 'EPSG:3857'
         }),
         controls: [
             new ol.control.Attribution({
                 collapsible: true,
-                collapsed:   true
+                collapsed: true
             })
         ]
     });
@@ -115,74 +115,74 @@ function createMap(mapOpts, poi) {
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: true,
-                title:   'OSM',
-                type:    'base',
-                source:  new ol.source.OSM()
+                title: 'OSM',
+                type: 'base',
+                source: new ol.source.OSM()
             }));
 
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "opentopomap",
-                title:   'opentopomap',
-                type:    'base',
-                source:  new ol.source.OSM({
-                    url:          'https://{a-c}.tile.opentopomap.org/{z}/{x}/{y}.png',
+                title: 'opentopomap',
+                type: 'base',
+                source: new ol.source.OSM({
+                    url: 'https://{a-c}.tile.opentopomap.org/{z}/{x}/{y}.png',
                     attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
-                                      + '<a href="http://viewfinderpanoramas.org" target="_blank">SRTM</a>, '
-                                      + 'style &copy;<a href="https://opentopomap.org/" target="_blank">OpenTopoMap</a>'
-                                      + '(<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+                        + '<a href="http://viewfinderpanoramas.org" target="_blank">SRTM</a>, '
+                        + 'style &copy;<a href="https://opentopomap.org/" target="_blank">OpenTopoMap</a>'
+                        + '(<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
                 })
             }));
 
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "cycle map",
-                title:   'cycle map',
-                type:    'base',
-                source:  new ol.source.OSM({
-                    url:          'https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=' + tfApiKey,
+                title: 'cycle map',
+                type: 'base',
+                source: new ol.source.OSM({
+                    url: 'https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=' + tfApiKey,
                     attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
-                                      + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
-                                      + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
+                        + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
+                        + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
                 })
             }));
 
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "transport",
-                title:   'transport',
-                type:    'base',
-                source:  new ol.source.OSM({
-                    url:          'https://{a-c}.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=' + tfApiKey,
+                title: 'transport',
+                type: 'base',
+                source: new ol.source.OSM({
+                    url: 'https://{a-c}.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=' + tfApiKey,
                     attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
-                                      + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
-                                      + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
+                        + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
+                        + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
                 })
             }));
 
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "landscape",
-                title:   'landscape',
-                type:    'base',
-                source:  new ol.source.OSM({
-                    url:          'https://{a-c}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=' + tfApiKey,
+                title: 'landscape',
+                type: 'base',
+                source: new ol.source.OSM({
+                    url: 'https://{a-c}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=' + tfApiKey,
                     attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
-                                      + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
-                                      + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
+                        + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
+                        + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
                 })
             }));
 
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "outdoors",
-                title:   'outdoors',
-                type:    'base',
-                source:  new ol.source.OSM({
-                    url:          'https://{a-c}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=' + tfApiKey,
+                title: 'outdoors',
+                type: 'base',
+                source: new ol.source.OSM({
+                    url: 'https://{a-c}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=' + tfApiKey,
                     attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
-                                      + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
-                                      + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
+                        + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
+                        + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
                 })
             }));
     }
@@ -191,10 +191,10 @@ function createMap(mapOpts, poi) {
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "bing road",
-                title:   'bing road',
-                type:    'base',
-                source:  new ol.source.BingMaps({
-                    key:        bApiKey,
+                title: 'bing road',
+                type: 'base',
+                source: new ol.source.BingMaps({
+                    key: bApiKey,
                     imagerySet: 'Road'
                 })
             }));
@@ -202,10 +202,10 @@ function createMap(mapOpts, poi) {
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "bing sat",
-                title:   'bing sat',
-                type:    'base',
-                source:  new ol.source.BingMaps({
-                    key:        bApiKey,
+                title: 'bing sat',
+                type: 'base',
+                source: new ol.source.BingMaps({
+                    key: bApiKey,
                     imagerySet: 'Aerial'
                 })
             }));
@@ -213,10 +213,10 @@ function createMap(mapOpts, poi) {
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "bing hybrid",
-                title:   'bing hybrid',
-                type:    'base',
-                source:  new ol.source.BingMaps({
-                    key:        bApiKey,
+                title: 'bing hybrid',
+                type: 'base',
+                source: new ol.source.BingMaps({
+                    key: bApiKey,
                     imagerySet: 'AerialWithLabels'
                 })
             }));
@@ -226,18 +226,18 @@ function createMap(mapOpts, poi) {
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "toner",
-                type:    'base',
-                title:   'toner',
-                source:  new ol.source.Stamen({layer: 'toner'})
+                type: 'base',
+                title: 'toner',
+                source: new ol.source.Stamen({layer: 'toner'})
             })
         );
 
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "terrain",
-                type:    'base',
-                title:   'terrain',
-                source:  new ol.source.Stamen({layer: 'terrain'})
+                type: 'base',
+                title: 'terrain',
+                source: new ol.source.Stamen({layer: 'terrain'})
             })
         );
     }
@@ -248,24 +248,24 @@ function createMap(mapOpts, poi) {
     const vectorSource = new ol.source.Vector();
     poi.forEach((p) => {
         const f = new ol.Feature({
-            geometry:    new ol.geom.Point(ol.proj.fromLonLat([p.lon, p.lat])),
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([p.lon, p.lat])),
             description: p.txt,
-            img:         p.img,
-            rowId:       p.rowId,
-            lat:         p.lat,
-            lon:         p.lon,
-            angle:       p.angle,
-            opacity:     p.opacity,
-            alt:         p.img.substring(0, p.img.lastIndexOf("."))
+            img: p.img,
+            rowId: p.rowId,
+            lat: p.lat,
+            lon: p.lon,
+            angle: p.angle,
+            opacity: p.opacity,
+            alt: p.img.substring(0, p.img.lastIndexOf("."))
         });
         f.setId(p.rowId);
         vectorSource.addFeature(f);
     });
 
     const vectorLayer = new ol.layer.Vector({
-        title:   'POI',
+        title: 'POI',
         visible: true,
-        source:  vectorSource,
+        source: vectorSource,
         style(feature, resolution) {
             const img = feature.get('img');
             const opacity = feature.get('opacity');
@@ -274,24 +274,24 @@ function createMap(mapOpts, poi) {
 
             return new ol.style.Style({
                 image: new ol.style.Icon({
-                    src:         `${DOKU_BASE}lib/plugins/openlayersmap/icons/${img}`,
+                    src: `${DOKU_BASE}lib/plugins/openlayersmap/icons/${img}`,
                     crossOrigin: '',
-                    opacity:     opacity,
-                    scale:       iconScale,
-                    rotation:    angle * Math.PI / 180,
+                    opacity: opacity,
+                    scale: iconScale,
+                    rotation: angle * Math.PI / 180,
                     // width/height were added in OpenLayers 7.2.2
                     // see https://github.com/openlayers/openlayers/pull/14364
                 }),
-                text:  new ol.style.Text({
-                    text:           `${text}`,
-                    textAlign:      'center',
-                    textBaseline:   'middle',
-                    offsetX:        (8 + 4 + 2) * iconScale,
-                    offsetY:        -8 * iconScale,
-                    scale:          iconScale,
-                    fill:           new ol.style.Fill({color: 'rgb(0,0,0)'}),
-                    font:           'bold 16px monospace',
-                    stroke:         new ol.style.Stroke({color: 'rgba(255,255,255,.4)', width: 5}),
+                text: new ol.style.Text({
+                    text: `${text}`,
+                    textAlign: 'center',
+                    textBaseline: 'middle',
+                    offsetX: (8 + 4 + 2) * iconScale,
+                    offsetY: -8 * iconScale,
+                    scale: iconScale,
+                    fill: new ol.style.Fill({color: 'rgb(0,0,0)'}),
+                    font: 'bold 16px monospace',
+                    stroke: new ol.style.Stroke({color: 'rgba(255,255,255,.4)', width: 5}),
                 })
             });
         }
@@ -312,22 +312,22 @@ function createMap(mapOpts, poi) {
             label: '✈'
         }));
         map.addControl(new ol.control.OverviewMap({
-            label:  '+',
+            label: '+',
             layers: [new ol.layer.Tile({
                 source: new ol.source.OSM()
             })]
         }));
         map.addControl(new ol.control.LayerSwitcher({
             activationMode: 'click',
-            label:          '\u2630',
-            collapseLabel:  '\u00BB',
+            label: '\u2630',
+            collapseLabel: '\u00BB',
         }));
     }
 
     if (mapOpts.kmlfile.length > 0) {
         try {
             const kmlSource = new ol.source.Vector({
-                url:    DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.kmlfile,
+                url: DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.kmlfile,
                 format: new ol.format.KML(),
             });
             overlayGroup.getLayers().push(new ol.layer.Vector({title: 'KML file', visible: true, source: kmlSource}));
@@ -347,9 +347,9 @@ function createMap(mapOpts, poi) {
         try {
             // these are the same colour as in StaticMap#drawJSON()
             const geoJsonStyle = {
-                'Point':           new ol.style.Style({
+                'Point': new ol.style.Style({
                     image: new ol.style.Circle({
-                        fill:   new ol.style.Fill({
+                        fill: new ol.style.Fill({
                             color: 'rgba(255,0,255,0.4)',
                         }),
                         radius: 5,
@@ -359,7 +359,7 @@ function createMap(mapOpts, poi) {
                         }),
                     }),
                 }),
-                'LineString':      new ol.style.Style({
+                'LineString': new ol.style.Style({
                     stroke: new ol.style.Stroke({
                         color: 'rgba(255,0,255,0.9)',
                         width: 3,
@@ -371,27 +371,27 @@ function createMap(mapOpts, poi) {
                         width: 3,
                     }),
                 }),
-                'Polygon':         new ol.style.Style({
+                'Polygon': new ol.style.Style({
                     stroke: new ol.style.Stroke({
                         color: 'rgba(255,0,255,0.9)',
                         width: 3,
                     }),
-                    fill:   new ol.style.Fill({
+                    fill: new ol.style.Fill({
                         color: 'rgba(255,0,255,0.4)',
                     }),
                 }),
-                'MultiPolygon':    new ol.style.Style({
+                'MultiPolygon': new ol.style.Style({
                     stroke: new ol.style.Stroke({
                         color: 'rgba(255,0,255,0.9)',
                         width: 3,
                     }),
-                    fill:   new ol.style.Fill({
+                    fill: new ol.style.Fill({
                         color: 'rgba(255,0,255,0.4)',
                     }),
                 }),
             };
             const geoJsonSource = new ol.source.Vector({
-                url:    DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.geojsonfile,
+                url: DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.geojsonfile,
                 format: new ol.format.GeoJSON(),
             });
             overlayGroup.getLayers().push(new ol.layer.Vector({
@@ -416,9 +416,9 @@ function createMap(mapOpts, poi) {
         try {
             // these are the same colour as in StaticMap#drawGPX()
             const gpxJsonStyle = {
-                'Point':           new ol.style.Style({
+                'Point': new ol.style.Style({
                     image: new ol.style.Circle({
-                        fill:   new ol.style.Fill({
+                        fill: new ol.style.Fill({
                             color: 'rgba(0,0,255,0.4)',
                         }),
                         radius: 5,
@@ -428,7 +428,7 @@ function createMap(mapOpts, poi) {
                         }),
                     }),
                 }),
-                'LineString':      new ol.style.Style({
+                'LineString': new ol.style.Style({
                     stroke: new ol.style.Stroke({
                         color: 'rgba(0,0,255,0.9)',
                         width: 3,
@@ -442,7 +442,7 @@ function createMap(mapOpts, poi) {
                 }),
             };
             const gpxSource = new ol.source.Vector({
-                url:    DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.gpxfile,
+                url: DOKU_BASE + "lib/exe/fetch.php?media=" + mapOpts.gpxfile,
                 format: new ol.format.GPX(),
             });
             overlayGroup.getLayers().push(new ol.layer.Vector({
@@ -468,10 +468,10 @@ function createMap(mapOpts, poi) {
     const closer = document.getElementById('popup-closer');
 
     const overlay = new ol.Overlay({
-        element:     container,
+        element: container,
         positioning: 'center-center',
-        stopEvent:   true,
-        autoPan:     {
+        stopEvent: true,
+        autoPan: {
             animation: {
                 duration: 250,
             }
@@ -531,11 +531,11 @@ function createMap(mapOpts, poi) {
                     '<img alt="' + _alt + '" src="' + DOKU_BASE + 'lib/plugins/openlayersmap/icons/' + selFeature.get('img') +
                     '" width="16" height="16" ' + 'style="transform:rotate(' + selFeature.get('angle') + 'deg)" />&nbsp;' +
                     '<a href="geo:' + selFeature.get('lat') + ','
-                                    + selFeature.get('lon') +
-                           '?q='    + selFeature.get('lat') + ',' +
-                                      selFeature.get('lon') +
-                           '&name=' + selFeature.get('alt') +
-                           ';z=16" title="Open in navigation app">' +
+                    + selFeature.get('lon') +
+                    '?q=' + selFeature.get('lat') + ',' +
+                    selFeature.get('lon') +
+                    '&name=' + selFeature.get('alt') +
+                    ';z=16" title="Open in navigation app">' +
                     ol.coordinate.format([selFeature.get('lon'), selFeature.get('lat')], '{x}º; {y}º', 4)
                     + '</a>' +
                     '</div>';
@@ -564,53 +564,87 @@ function olovAddToMap() {
         const overlay = olMapOverlays[key];
         const m = olMaps[overlay.id];
 
+        let targetGroup;
+        m.getLayers().forEach(function (layer) {
+            if (layer.get('title') === 'Base maps' && (overlay.baselayer).toLowerCase() === 'true') {
+                targetGroup = layer;
+            }
+            if (layer.get('title') === 'Overlays' && (overlay.baselayer).toLowerCase() === 'false') {
+                targetGroup = layer;
+            }
+        });
+
         switch (overlay.type) {
             case 'osm':
-                m.addLayer(new ol.layer.Tile({
-                    title:   overlay.name,
+                targetGroup.getLayers().push(new ol.layer.Tile({
+                    title: overlay.name,
                     visible: (overlay.visible).toLowerCase() === 'true',
                     opacity: parseFloat(overlay.opacity),
-                    source:  new ol.source.OSM({
-                        url:          overlay.url,
-                        crossOrigin:  'Anonymous',
+                    source: new ol.source.OSM({
+                        url: overlay.url,
+                        crossOrigin: 'Anonymous',
                         attributions: overlay.attribution
-                    })
+                    }),
+                    type: overlay.baselayer ? 'base' : 'overlay'
                 }));
                 break;
             case 'wms':
-                m.addLayer(new ol.layer.Image({
-                    title:   overlay.name,
+                targetGroup.getLayers().push(new ol.layer.Image({
+                    title: overlay.name,
                     opacity: parseFloat(overlay.opacity),
                     visible: (overlay.visible).toLowerCase() === 'true',
-                    source:  new ol.source.ImageWMS({
-                        url:          overlay.url,
-                        params:       {
-                            'LAYERS':      overlay.layers,
-                            'VERSION':     overlay.version,
+                    source: new ol.source.ImageWMS({
+                        url: overlay.url,
+                        params: {
+                            'LAYERS': overlay.layers,
+                            'VERSION': overlay.version,
                             'TRANSPARENT': overlay.transparent,
-                            'FORMAT':      overlay.format
+                            'FORMAT': overlay.format
                         },
-                        ratio:        1,
-                        crossOrigin:  'Anonymous',
+                        ratio: 1,
+                        crossOrigin: 'Anonymous',
                         attributions: overlay.attribution
-                    })
+                    }),
+                    type: overlay.baselayer ? 'base' : 'overlay'
                 }));
                 break;
+            case 'wmts':
+                const parser = new ol.format.WMTSCapabilities();
+                fetch(overlay.url).then(function (response) {
+                    return response.text();
+                }).then(function (text) {
+                    const wmtsCap = parser.read(text);
+                    const options = ol.source.WMTS.optionsFromCapabilities(wmtsCap, {
+                        layer: overlay.layer,
+                        matrixSet: overlay.matrixSet
+                    });
+                    options.crossOrigin = 'Anonymous';
+                    options.attributions = overlay.attribution;
+                    targetGroup.getLayers().push(new ol.layer.Tile({
+                        title: overlay.name,
+                        opacity: parseFloat(overlay.opacity),
+                        visible: (overlay.visible).toLowerCase() === 'true',
+                        source: new ol.source.WMTS(options),
+                        type: overlay.baselayer ? 'base' : 'overlay'
+                    }));
+                });
+                break;
             case 'ags':
-                m.addLayer(new ol.layer.Image({
-                    title:   overlay.name,
+                targetGroup.getLayers().push(new ol.layer.Image({
+                    title: overlay.name,
                     opacity: parseFloat(overlay.opacity),
                     visible: (overlay.visible).toLowerCase() === 'true',
-                    source:  new ol.source.ImageArcGISRest({
-                        url:          overlay.url,
-                        params:       {
-                            'LAYERS':      overlay.layers,
+                    source: new ol.source.ImageArcGISRest({
+                        url: overlay.url,
+                        params: {
+                            'LAYERS': overlay.layers,
                             'TRANSPARENT': overlay.transparent,
-                            'FORMAT':      overlay.format
+                            'FORMAT': overlay.format
                         },
-                        ratio:        1,
-                        crossOrigin:  'Anonymous',
-                        attributions: overlay.attribution
+                        ratio: 1,
+                        crossOrigin: 'Anonymous',
+                        attributions: overlay.attribution,
+                        type: overlay.baselayer ? 'base' : 'overlay'
                     })
                 }));
                 break;

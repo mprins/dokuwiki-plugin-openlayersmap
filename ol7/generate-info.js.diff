@@ -2,7 +2,7 @@ diff --git a/tasks/generate-info.js b/tasks/generate-info.js
 index ee9660554..49ca324c8 100644
 --- a/tasks/generate-info.js
 +++ b/tasks/generate-info.js
-@@ -70,7 +70,25 @@ function getPaths() {
+@@ -70,7 +70,26 @@ function getPaths() {
      walker.on('file', (root, stats, next) => {
        const sourcePath = path.join(root, stats.name);
        if (sourcePath.endsWith('.js')) {
@@ -13,7 +13,8 @@ index ee9660554..49ca324c8 100644
 +          sourcePath.toLowerCase().includes('gml') ||
 +          sourcePath.toLowerCase().includes('format/filter') ||
 +          sourcePath.toLowerCase().includes('format/xml') ||
-+          sourcePath.toLowerCase().includes('capabilities') ||
++          sourcePath.toLowerCase().includes('wmscapabilities') ||
++          sourcePath.toLowerCase().includes('format/esrijson') ||
 +          sourcePath.toLowerCase().includes('format/wk') ||
 +          sourcePath.toLowerCase().includes('iiif') ||
 +          sourcePath.toLowerCase().includes('vectortile') ||
