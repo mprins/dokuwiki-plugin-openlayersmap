@@ -29,7 +29,8 @@ class syntax_plugin_openlayersmap_osmlayer extends DokuWiki_Syntax_Plugin
         'opacity'     => 0.8,
         'attribution' => '',
         'visible'     => false,
-        'cors'        => null
+        'cors'        => null,
+        'baselayer'   => 'false',
     );
 
     /**

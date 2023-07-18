@@ -31,7 +31,8 @@ class syntax_plugin_openlayersmap_agslayer extends DokuWiki_Syntax_Plugin
         'visible'     => false,
         'layers'      => '',
         'format'      => 'png',
-        'transparent' => 'true'
+        'transparent' => 'true',
+        'baselayer'   => 'false',
     );
 
     /**

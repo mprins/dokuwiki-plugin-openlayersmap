@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012-2020 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2023 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -18,22 +18,21 @@
  */
 
 /**
- * adds a WMS 1.3.0 layer to your map.
+ * adds a WMTS 1.0.0 layer to your map.
  */
-class syntax_plugin_openlayersmap_wmslayer extends DokuWiki_Syntax_Plugin
+class syntax_plugin_openlayersmap_wmtslayer extends DokuWiki_Syntax_Plugin
 {
     private $dflt = array(
-        'id'          => 'olmap',
-        'name'        => '',
-        'url'         => '',
-        'opacity'     => 0.8,
+        'id' => 'olmap',
+        'name' => '',
+        'url' => '',
+        'opacity' => 0.8,
         'attribution' => '',
-        'visible'     => false,
-        'layers'      => '',
-        'version'     => '1.3.0',
-        'format'      => 'image/png',
+        'visible' => false,
+        'layer' => '',
+        'matrixSet' => '',
         'transparent' => 'true',
-        'baselayer'   => 'false',
+        'baselayer' => 'false',
     );
 
     /**
@@ -41,7 +40,7 @@ class syntax_plugin_openlayersmap_wmslayer extends DokuWiki_Syntax_Plugin
      *
      * @see DokuWiki_Syntax_Plugin::getPType()
      */
-    public function getPType(): string
+    final public function getPType(): string
     {
         return 'block';
     }
@@ -51,9 +50,8 @@ class syntax_plugin_openlayersmap_wmslayer extends DokuWiki_Syntax_Plugin
      *
      * @see DokuWiki_Syntax_Plugin::getType()
      */
-    public function getType(): string
+    final public function getType(): string
     {
-        // return 'FIXME: container|baseonly|formatting|substition|protected|disabled|paragraphs';
         return 'baseonly';
     }
 
@@ -62,7 +60,7 @@ class syntax_plugin_openlayersmap_wmslayer extends DokuWiki_Syntax_Plugin
      *
      * @see Doku_Parser_Mode::getSort()
      */
-    public function getSort(): int
+    final public function getSort(): int
     {
         return 902;
     }
@@ -72,14 +70,14 @@ class syntax_plugin_openlayersmap_wmslayer extends DokuWiki_Syntax_Plugin
      *
      * @see Doku_Parser_Mode::connectTo()
      */
-    public function connectTo($mode): void
+    final public function connectTo($mode): void
     {
-        // look for: <olmap_wmslayer id="olmap" name="cloud" url="http://openweathermap.org/t/tile.cgi?SERVICE=WMS"
-        // attribution="OpenWeatherMap" visible="true" layers="GLBETA_PR"></olmap_wmslayer>
+        // look for: <olmap_wmstlayer id="olmap" name="geolandbasemap" url="https://mapsneu.wien.gv.at/basemapneu/1.0.0/WMTSCapabilities.xml"
+        // attribution="basemap.at" visible="true" layer="geolandbasemap" matrixSet=google3857></olmap_wmtslayer>
         $this->Lexer->addSpecialPattern(
-            '<olmap_wmslayer ?[^>\n]*>.*?</olmap_wmslayer>',
+            '<olmap_wmtslayer ?[^>\n]*>.*?</olmap_wmtslayer>',
             $mode,
-            'plugin_openlayersmap_wmslayer'
+            'plugin_openlayersmap_wmtslayer'
         );
     }
 
@@ -88,21 +86,20 @@ class syntax_plugin_openlayersmap_wmslayer extends DokuWiki_Syntax_Plugin
      *
      * @see DokuWiki_Syntax_Plugin::handle()
      */
-    public function handle($match, $state, $pos, Doku_Handler $handler): array
+    final public function handle($match, $state, $pos, Doku_Handler $handler): array
     {
         $param = array();
-        $data  = $this->dflt;
+        $data = $this->dflt;
 
         preg_match_all('/(\w*)="(.*?)"/us', $match, $param, PREG_SET_ORDER);
 
         foreach ($param as $kvpair) {
             list ($matched, $key, $val) = $kvpair;
             if (isset ($data [$key])) {
-                $key         = strtolower($key);
+                $key = strtolower($key);
                 $data [$key] = $val;
             }
         }
-        // dbglog($data,'syntax_plugin_overlayer::handle: parsed data is:');
         return $data;
     }
 
@@ -111,22 +108,22 @@ class syntax_plugin_openlayersmap_wmslayer extends DokuWiki_Syntax_Plugin
      *
      * @see DokuWiki_Syntax_Plugin::render()
      */
-    public function render($format, Doku_Renderer $renderer, $data): bool
+    final public function render($format, Doku_Renderer $renderer, $data): bool
     {
         if ($format !== 'xhtml') {
             return false;
         }
 
-        // incremented for each olmap_wmslayer tag in the page source
+        // incremented for each olmap_wmtslayer tag in the page source
         static $overlaynumber = 0;
 
         $renderer->doc .= DOKU_LF . '<script defer="defer" src="data:text/javascript;base64,';
-        $str           = '{';
+        $str = '{';
         foreach ($data as $key => $val) {
-            $str .= "'" . $key . "' : '" . $val . "',";
+            $str .= "'" . $key . "':'" . $val . "', ";
         }
-        $str           .= "'type':'wms'}";
-        $renderer->doc .= base64_encode("olMapOverlays['wms" . $overlaynumber . "'] = " . $str . ";")
+        $str .= "'type':'wmts'}";
+        $renderer->doc .= base64_encode("olMapOverlays['wmts" . $overlaynumber . "'] = " . $str . ";")
             . '"></script>';
         $overlaynumber++;
         return true;
