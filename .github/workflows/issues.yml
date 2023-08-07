@@ -1,4 +1,4 @@
-name: 'Accessibility-alt-text-bot'
+name: 'Issues workflow'
 on:
   issues:
     types: [ opened, edited ]
