@@ -309,7 +309,9 @@ function createMap(mapOpts, poi) {
             coordinateFormat: ol.coordinate.createStringXY(4), projection: 'EPSG:4326',
         }));
         map.addControl(new ol.control.FullScreen({
-            label: '✈'
+            // Square Four Corners / U+26F6
+            label: '⛶',
+            labelActive: '▢'
         }));
         map.addControl(new ol.control.OverviewMap({
             label: '+',
