@@ -19,7 +19,7 @@ A slightly more complicated build process is required to get an optimized-fot-si
 
 ```shell
 cd ol7
-export OL_VERSION=v7.5.0
+export OL_VERSION=v7.5.1
 git clone https://github.com/openlayers/openlayers.git
 cd openlayers
 git checkout -b $OL_VERSION-custom $OL_VERSION
