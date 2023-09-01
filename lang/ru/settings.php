@@ -24,7 +24,7 @@
 $lang['bingAPIKey']               = 'Ключ для Bing Maps API. Получите ключ тут: https://www.bingmapsportal.com/application';
 $lang['tfApiKey']                 = 'Ключ для Thunderforest API. Получите ключ тут: https://manage.thunderforest.com/dashboard';
 $lang['iconUrlOverload']          = 'URL для иконок карт (при использовании статических карт на не подключённом к интернету сервере)';
-$lang['enableStamen']             = 'Разрешить использование Stamen как провайдера карт';
+$lang['enableStadia']             = 'Разрешить использование Stadia Maps как провайдера карт';
 $lang['enableGoogle']             = 'Разрешить использование Google как провайдера карт';
 $lang['googleAPIkey']             = 'Ключ для Google Static Maps API. Получите ключ тут: https://code.google.com/apis/console';
 $lang['enableBing']               = 'Разрешить использование Bing как провайдера карт';

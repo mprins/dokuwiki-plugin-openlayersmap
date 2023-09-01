@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012-2022 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2012-2023 Mark C. Prins <mprins@users.sf.net>
  *
  * In part based on staticMapLite 0.03 available at http://staticmaplite.svn.sourceforge.net/viewvc/staticmaplite/
  *
@@ -72,12 +72,12 @@ class StaticMap {
             'url'  => 'https://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png'
         ),
         'toner'    => array(
-            'txt'  => '(c) Stadia Maps;Stamen Design',
+            'txt'  => '(c) Stadia Maps;Stamen Design;OpenStreetMap contributors',
             'logo' => 'stamen.png',
             'url'  => 'https://tiles-eu.stadiamaps.com/tiles/stamen_toner/{Z}/{X}/{Y}.png'
         ),
         'terrain'       => array(
-            'txt'  => '(c) Stadia Maps;Stamen Design',
+            'txt'  => '(c) Stadia Maps;Stamen Design;OpenStreetMap contributors',
             'logo' => 'stamen.png',
             'url'  => 'https://tiles-eu.stadiamaps.com/tiles/stamen_terrain/{Z}/{X}/{Y}.png'
         )

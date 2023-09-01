@@ -483,7 +483,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
     private function getStaticOSM(array $gmap, array $overlay) {
         global $conf;
 
-        if($this->getConf('optionStaticMapGenerator') == 'local') {
+        if($this->getConf('optionStaticMapGenerator') === 'local') {
             // using local basemap composer
             if(!$myMap = plugin_load('helper', 'openlayersmap_staticmap')) {
                 dbglog(
@@ -501,7 +501,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
             if(!empty ($overlay)) {
                 foreach($overlay as $data) {
                     list ($lat, $lon, $text, $angle, $opacity, $img) = $data;
-                    $iconStyle  = substr($img, 0, strlen($img) - 4);
+                    $iconStyle  = substr($img, 0, -4);
                     $markers [] = array(
                         'lat'  => $lat,
                         'lon'  => $lon,
@@ -584,7 +584,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
 
             $result = $imgUrl;
         }
-        // dbglog ( $result, 'syntax_plugin_openlayersmap_olmap::getStaticOSM: osm image url is:' );
         return $result;
     }
 
@@ -650,7 +649,6 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
         global $conf;
         $imgUrl .= "&fmt=png";
         $imgUrl .= "&c=" . $conf ['lang'];
-        // dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::getBing: bing image url is:');
         return $imgUrl;
     }
 
@@ -763,12 +761,11 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
         // incremented for each map tag in the page source so we can keep track of each map in this page
         static $mapnumber = 0;
 
-        // dbglog($data, 'olmap::render() data.');
         list ($mapid, $param, $mainLat, $mainLon, $poitable, $poitabledesc, $staticImgUrl, $_firstimage) = $data;
 
-        if($format == 'xhtml') {
+        if($format === 'xhtml') {
             $olscript     = '';
-            $stamenEnable = $this->getConf('enableStamen');
+            $stadiaEnable = $this->getConf('enableStadia');
             $osmEnable    = $this->getConf('enableOSM');
             $enableBing   = $this->getConf('enableBing');
 
@@ -782,7 +779,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
                 $scriptEnable = '<script defer="defer" src="data:text/javascript;base64,';
                 $scriptSrc    = $olscript ? 'const olEnable=true;' : 'const olEnable=false;';
                 $scriptSrc    .= 'const osmEnable=' . ($osmEnable ? 'true' : 'false') . ';';
-                $scriptSrc    .= 'const stamenEnable=' . ($stamenEnable ? 'true' : 'false') . ';';
+                $scriptSrc    .= 'const stadiaEnable=' . ($stadiaEnable ? 'true' : 'false') . ';';
                 $scriptSrc    .= 'const bEnable=' . ($enableBing ? 'true' : 'false') . ';';
                 $scriptSrc    .= 'const bApiKey="' . $this->getConf('bingAPIKey') . '";';
                 $scriptSrc    .= 'const tfApiKey="' . $this->getConf('tfApiKey') . '";';
@@ -830,7 +827,7 @@ class syntax_plugin_openlayersmap_olmap extends DokuWiki_Syntax_Plugin {
             $renderer->doc .= '"></script>';
             $mapnumber++;
             return true;
-        } elseif($format == 'metadata') {
+        } elseif($format === 'metadata') {
             if(!(($this->dflt ['lat'] == $mainLat) && ($this->dflt ['lon'] == $mainLon))) {
                 // render geo metadata, unless they are the default
                 $renderer->meta ['geo'] ['lat'] = $mainLat;

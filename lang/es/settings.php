@@ -25,7 +25,7 @@
 $lang['bingAPIKey']               = 'Bing Maps API key. Consigue tu clave en: https://www.bingmapsportal.com/application';
 $lang['tfApiKey']                 = 'Thunderforest API key. Consigue tu clave en: https://manage.thunderforest.com/dashboard';
 $lang['iconUrlOverload']          = 'URL para iconos cuando usas un mapa estático en uná máquina sin internet';
-$lang['enableStamen']             = 'Habilita Stamen como proveedor de mapas';
+$lang['enableStadia']             = 'Habilita Stadia Maps como proveedor de mapas';
 $lang['enableGoogle']             = 'Habilita Google como proveedor de mapas';
 $lang['googleAPIkey']             = 'Google Static Maps API key. Consigue tu clave en: https://code.google.com/apis/console';
 $lang['enableBing']               = 'Habilita Bing como proveedor de mapas';

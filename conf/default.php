@@ -23,7 +23,7 @@
 $conf['bingAPIKey']               = '';
 $conf['tfApiKey']                 = '';
 $conf['iconUrlOverload']          = '';
-$conf['enableStamen']             = 0;
+$conf['enableStadia']             = 0;
 $conf['enableGoogle']             = 0;
 $conf['googleAPIkey']             = '';
 $conf['enableOSM']                = 1;

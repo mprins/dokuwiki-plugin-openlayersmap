@@ -23,7 +23,7 @@
 $lang['bingAPIKey']               = 'Bing Maps API key. Get your key at: https://www.bingmapsportal.com/application';
 $lang['tfApiKey']                 = 'Thunderforest API key. Get your key at: https://manage.thunderforest.com/dashboard';
 $lang['iconUrlOverload']          = 'URL for map icons when using static maps on a non-internet host';
-$lang['enableStamen']             = 'Enable the use of Stamen as basemap provider';
+$lang['enableStadia']             = 'Enable the use of Stadia Maps as basemap provider';
 $lang['enableGoogle']             = 'Enable the use of Google as basemap provider';
 $lang['googleAPIkey']             = 'Google Static Maps API key. Get your key at: https://code.google.com/apis/console';
 $lang['enableBing']               = 'Enable the use of Bing as basemap provider';

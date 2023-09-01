@@ -24,7 +24,7 @@
 $meta['enableOSM']                = array(
     'onoff'
 );
-$meta['enableStamen']             = array(
+$meta['enableStadia']             = array(
     'onoff'
 );
 $meta['enableGoogle']             = array(

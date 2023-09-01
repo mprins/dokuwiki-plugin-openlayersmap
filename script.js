@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2022 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2023 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -222,7 +222,7 @@ function createMap(mapOpts, poi) {
             }));
     }
 
-    if (stamenEnable) {
+    if (stadiaEnable) {
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "toner",

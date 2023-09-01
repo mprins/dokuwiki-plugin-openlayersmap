@@ -23,7 +23,7 @@
 $lang['bingAPIKey']               = 'Clé d\'API Bing Maps. Obtenez votre clé chez: https://www.bingmapsportal.com/application';
 $lang['tfApiKey']                 = 'Clé d\'API Thunderforest. Obtenez votre clé chez: https://manage.thunderforest.com/dashboard';
 $lang['iconUrlOverload']          = 'URL pour les icônes de carte lors de l\'utilisation de cartes statiques sur un hôte non-Internet';
-$lang['enableStamen']             = 'Activer l\'utilisation de Stamen comme fournisseur de base de données cartographiques';
+$lang['enableStadia']             = 'Activer l\'utilisation de Stadia Maps comme fournisseur de base de données cartographiques';
 $lang['enableGoogle']             = 'Activer l\'utilisation de Google comme fournisseur de base de données cartographiques';
 $lang['googleAPIkey']             = 'Clé d\'API Google Static Maps. Obtenez votre clé chez: https://code.google.com/apis/console';
 $lang['enableBing']               = 'Activer l\'utilisation de Bing comme fournisseur de base de données cartographiques';
