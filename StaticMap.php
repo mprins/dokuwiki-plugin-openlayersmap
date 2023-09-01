@@ -71,15 +71,15 @@ class StaticMap {
             'logo' => 'tf_logo.png',
             'url'  => 'https://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png'
         ),
-        'toner-lite'    => array(
-            'txt'  => 'Stamen tiles',
+        'toner'    => array(
+            'txt'  => '(c) Stadia Maps;Stamen Design',
             'logo' => 'stamen.png',
-            'url'  => 'https://stamen-tiles.a.ssl.fastly.net/toner/{Z}/{X}/{Y}.png'
+            'url'  => 'https://tiles-eu.stadiamaps.com/tiles/stamen_toner/{Z}/{X}/{Y}.png'
         ),
         'terrain'       => array(
-            'txt'  => 'Stamen tiles',
+            'txt'  => '(c) Stadia Maps;Stamen Design',
             'logo' => 'stamen.png',
-            'url'  => 'https://stamen-tiles.a.ssl.fastly.net/terrain/{Z}/{X}/{Y}.png'
+            'url'  => 'https://tiles-eu.stadiamaps.com/tiles/stamen_terrain/{Z}/{X}/{Y}.png'
         )
         //,
         // 'piste'=>array(

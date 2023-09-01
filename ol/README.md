@@ -6,8 +6,8 @@
 This will get the full/legacy build of OpenLayers. See https://openlayers.org/download/
 
 ```shell
-cd ol7
-export OL_VERSION=v7.5.0
+cd ol
+export OL_VERSION=v8.0.0
 wget https://github.com/openlayers/openlayers/releases/download/$OL_VERSION/$OL_VERSION-dist.zip
 unzip -jo $OL_VERSION-dist.zip  dist/* ol.css ol.css.map
 rm $OL_VERSION-dist.zip
@@ -18,8 +18,9 @@ rm $OL_VERSION-dist.zip
 A slightly more complicated build process is required to get an optimized-fot-size build of OpenLayers.
 
 ```shell
-cd ol7
-export OL_VERSION=v7.5.1
+cd ol
+rm -rf openlayers
+export OL_VERSION=v8.0.0
 git clone https://github.com/openlayers/openlayers.git
 cd openlayers
 git checkout -b $OL_VERSION-custom $OL_VERSION
@@ -41,7 +42,7 @@ cp build/full/*.* ../
 see https://github.com/walkermatt/ol-layerswitcher#js
 
 ```shell
-cd ol7
+cd ol
 export SWITCHER_VERSION=4.1.1
 wget "https://unpkg.com/ol-layerswitcher@$SWITCHER_VERSION" -O ol-layerswitcher.js
 wget "https://unpkg.com/ol-layerswitcher@$SWITCHER_VERSION/dist/ol-layerswitcher.css" -O ol-layerswitcher.css

@@ -228,7 +228,12 @@ function createMap(mapOpts, poi) {
                 visible: mapOpts.baselyr === "toner",
                 type: 'base',
                 title: 'toner',
-                source: new ol.source.Stamen({layer: 'toner'})
+                // apiKey: 'OPTIONAL', (we suggest domain-based auth)
+                source: new ol.source.StadiaMaps({
+                    layer: 'stamen_toner',
+                    // missing CORS header
+                    // url:'https://tiles-eu.stadiamaps.com/tiles/'
+                })
             })
         );
 
@@ -237,7 +242,12 @@ function createMap(mapOpts, poi) {
                 visible: mapOpts.baselyr === "terrain",
                 type: 'base',
                 title: 'terrain',
-                source: new ol.source.Stamen({layer: 'terrain'})
+                // apiKey: 'OPTIONAL', (we suggest domain-based auth)
+                source: new ol.source.StadiaMaps({
+                    layer: 'stamen_terrain',
+                    // missing CORS header
+                    // url:'https://tiles-eu.stadiamaps.com/tiles/'
+                })
             })
         );
     }

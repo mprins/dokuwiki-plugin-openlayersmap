@@ -77,7 +77,7 @@ class syntax_plugin_openlayersmap_test extends DokuWikiTest {
 
         $_content = $response->getContent();
         self::assertStringContainsString('Rur', $_content);
-        self::assertStringContainsString('<script defer="defer" src="/./lib/plugins/openlayersmap/ol7/ol.js"></script>', $_content);
+        self::assertStringContainsString('<script defer="defer" src="/./lib/plugins/openlayersmap/ol/ol.js"></script>', $_content);
         self::assertStringContainsString('<div id="olMap-static" class="olStaticMap">', $_content);
         self::assertStringContainsString('<table id="olMap-table" class="olPOItable">', $_content);
 
