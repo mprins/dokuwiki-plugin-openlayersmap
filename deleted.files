@@ -8,6 +8,7 @@ style.css.map
 print.css
 style.css
 logo/mq_logo.png
+logo/stamen.png
 javascript/OpenLayersMap.js
 javascript/OpenLayersMap/Control/Fullscreen.js
 javascript/OpenLayersMap/Control/KeyboardClick.js
@@ -76,6 +77,16 @@ ol6/ol.js
 ol6/ol.js.LICENSE.txt
 ol6/ol.js.map
 ol6/
+
+ol7/README.md
+ol7/ol-layerswitcher.css
+ol7/ol-layerswitcher.js
+ol7/ol.css
+ol7/ol.css.map
+ol7/ol.js
+ol7/ol.js.map
+ol7/generate-info.js.diff
+ol7/
 
 _test/syntax.test.php
 _test/general.test.php

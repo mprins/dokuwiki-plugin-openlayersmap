@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012-2022 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2012-2023 Mark C. Prins <mprins@users.sf.net>
  *
  * In part based on staticMapLite 0.03 available at http://staticmaplite.svn.sourceforge.net/viewvc/staticmaplite/
  *
@@ -71,15 +71,15 @@ class StaticMap {
             'logo' => 'tf_logo.png',
             'url'  => 'https://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png'
         ),
-        'toner-lite'    => array(
-            'txt'  => 'Stamen tiles',
+        'toner'    => array(
+            'txt'  => '(c) Stadia Maps;Stamen Design;OpenStreetMap contributors',
             'logo' => 'stamen.png',
-            'url'  => 'https://stamen-tiles.a.ssl.fastly.net/toner/{Z}/{X}/{Y}.png'
+            'url'  => 'https://tiles-eu.stadiamaps.com/tiles/stamen_toner/{Z}/{X}/{Y}.png'
         ),
         'terrain'       => array(
-            'txt'  => 'Stamen tiles',
+            'txt'  => '(c) Stadia Maps;Stamen Design;OpenStreetMap contributors',
             'logo' => 'stamen.png',
-            'url'  => 'https://stamen-tiles.a.ssl.fastly.net/terrain/{Z}/{X}/{Y}.png'
+            'url'  => 'https://tiles-eu.stadiamaps.com/tiles/stamen_terrain/{Z}/{X}/{Y}.png'
         )
         //,
         // 'piste'=>array(

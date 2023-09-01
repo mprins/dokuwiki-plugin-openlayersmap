@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2022 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2023 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -222,13 +222,18 @@ function createMap(mapOpts, poi) {
             }));
     }
 
-    if (stamenEnable) {
+    if (stadiaEnable) {
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "toner",
                 type: 'base',
                 title: 'toner',
-                source: new ol.source.Stamen({layer: 'toner'})
+                // apiKey: 'OPTIONAL', (we suggest domain-based auth)
+                source: new ol.source.StadiaMaps({
+                    layer: 'stamen_toner',
+                    // missing CORS header
+                    // url:'https://tiles-eu.stadiamaps.com/tiles/'
+                })
             })
         );
 
@@ -237,7 +242,12 @@ function createMap(mapOpts, poi) {
                 visible: mapOpts.baselyr === "terrain",
                 type: 'base',
                 title: 'terrain',
-                source: new ol.source.Stamen({layer: 'terrain'})
+                // apiKey: 'OPTIONAL', (we suggest domain-based auth)
+                source: new ol.source.StadiaMaps({
+                    layer: 'stamen_terrain',
+                    // missing CORS header
+                    // url:'https://tiles-eu.stadiamaps.com/tiles/'
+                })
             })
         );
     }

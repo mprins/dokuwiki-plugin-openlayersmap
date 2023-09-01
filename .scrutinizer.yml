@@ -1,6 +1,6 @@
 filter:
   dependency_paths:
-    - ol7/
+    - ol/
 
 build:
   nodes:
