@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2008-2017 Mark C. Prins <mprins@users.sf.net>
  *

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2008-2017 Mark C. Prins <mprins@users.sf.net>
  *
@@ -20,6 +21,7 @@
  *
  * @author Mark C. Prins
  */
+
 $conf['bingAPIKey']               = '';
 $conf['tfApiKey']                 = '';
 $conf['iconUrlOverload']          = '';

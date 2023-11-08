@@ -1,4 +1,7 @@
 <?php
+
+use dokuwiki\Extension\SyntaxPlugin;
+
 /*
  * Copyright (c) 2012-2020 Mark C. Prins <mprins@users.sf.net>
  *
@@ -16,25 +19,12 @@
  *
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-
 /**
  * adds a WMS 1.3.0 layer to your map.
  */
-class syntax_plugin_openlayersmap_wmslayer extends DokuWiki_Syntax_Plugin
+class syntax_plugin_openlayersmap_wmslayer extends SyntaxPlugin
 {
-    private $dflt = array(
-        'id'          => 'olmap',
-        'name'        => '',
-        'url'         => '',
-        'opacity'     => 0.8,
-        'attribution' => '',
-        'visible'     => false,
-        'layers'      => '',
-        'version'     => '1.3.0',
-        'format'      => 'image/png',
-        'transparent' => 'true',
-        'baselayer'   => 'false',
-    );
+    private $dflt = ['id'          => 'olmap', 'name'        => '', 'url'         => '', 'opacity'     => 0.8, 'attribution' => '', 'visible'     => false, 'layers'      => '', 'version'     => '1.3.0', 'format'      => 'image/png', 'transparent' => 'true', 'baselayer'   => 'false'];
 
     /**
      * (non-PHPdoc)
@@ -90,14 +80,14 @@ class syntax_plugin_openlayersmap_wmslayer extends DokuWiki_Syntax_Plugin
      */
     public function handle($match, $state, $pos, Doku_Handler $handler): array
     {
-        $param = array();
+        $param = [];
         $data  = $this->dflt;
 
         preg_match_all('/(\w*)="(.*?)"/us', $match, $param, PREG_SET_ORDER);
 
         foreach ($param as $kvpair) {
-            list ($matched, $key, $val) = $kvpair;
-            if (isset ($data [$key])) {
+            [$matched, $key, $val] = $kvpair;
+            if (isset($data [$key])) {
                 $key         = strtolower($key);
                 $data [$key] = $val;
             }
