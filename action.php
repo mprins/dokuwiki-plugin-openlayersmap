@@ -1,4 +1,9 @@
 <?php
+
+use dokuwiki\Extension\ActionPlugin;
+use dokuwiki\Extension\EventHandler;
+use dokuwiki\Extension\Event;
+
 /*
  * Copyright (c) 2008 Mark C. Prins <mprins@users.sf.net>
  *
@@ -16,19 +21,18 @@
  *
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-
 /**
  * Action for Plugin OL Maps: Allow Display of a OpenLayers Map in a wiki page.
  * @author Mark Prins
  */
-class action_plugin_openlayersmap extends DokuWiki_Action_Plugin
+class action_plugin_openlayersmap extends ActionPlugin
 {
     /**
      * Plugin uses this method to register its handlers with the DokuWiki's event controller.
      *
      * @param $controller DokuWiki's event controller object. Also available as global $EVENT_HANDLER
      */
-    final public function register(Doku_Event_Handler $controller): void
+    final public function register(EventHandler $controller): void
     {
         $controller->register_hook('TOOLBAR_DEFINE', 'AFTER', $this, 'insertButton');
         $controller->register_hook('TPL_METAHEADER_OUTPUT', 'BEFORE', $this, 'insertCSSSniffer');
@@ -39,7 +43,7 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin
      * Inserts the toolbar button.
      * @param Doku_Event $event the DokuWiki event
      */
-    final public function insertButton(Doku_Event $event): void
+    final public function insertButton(Event $event): void
     {
         $strOpen = '<olmap id="olMapOne" width="550px" height="450px" lat="50.0" ';
         $strOpen .= 'lon="5.1" zoom="12" controls="1" ';
@@ -50,24 +54,17 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin
         $strOpen .= '~~ want the map to start.\n\n';
         $strOpen .= '~~ Below is an example of a POI, you can add as many as you want. ';
         $strOpen .= '~~ More examples: https://dokuwiki.org/plugin:openlayersmap \n';
-        $event->data[] = array(
-            'type' => 'format',
-            'title' => $this->getLang('openlayersmap'),
-            'icon' => '../../plugins/openlayersmap/toolbar/map.png',
-            'open' => $strOpen,
-            'sample' => '50.0117,5.1287,-90,.8,marker-green.png,Pont de Barbouillons; Daverdisse \\\\ external link: 
-                        [[https://test.com|test.com]] \\\\ internal link: [[::start]]\\\\ **DW Formatting** \n',
-            'close' => '</olmap>\n',
-        );
+        $event->data[] = ['type' => 'format', 'title' => $this->getLang('openlayersmap'), 'icon' => '../../plugins/openlayersmap/toolbar/map.png', 'open' => $strOpen, 'sample' => '50.0117,5.1287,-90,.8,marker-green.png,Pont de Barbouillons; Daverdisse \\\\ external link: 
+                        [[https://test.com|test.com]] \\\\ internal link: [[::start]]\\\\ **DW Formatting** \n', 'close' => '</olmap>\n'];
     }
 
     /**
      * Add a snippet of javascript into the head to do a css operation we can check for later on.
      * @param Doku_Event $event the DokuWiki event
      */
-    final public function insertCSSSniffer(Doku_Event $event): void
+    final public function insertCSSSniffer(Event $event): void
     {
-        $event->data["script"][] = array("_data" => "document.documentElement.className += ' olCSSsupported';");
+        $event->data["script"][] = ["_data" => "document.documentElement.className += ' olCSSsupported';"];
     }
 
     /**
@@ -75,7 +72,7 @@ class action_plugin_openlayersmap extends DokuWiki_Action_Plugin
      *
      * @param Doku_Event $event the DokuWiki event
      */
-    final public function popularity(Doku_Event $event): void
+    final public function popularity(Event $event): void
     {
         $versionInfo = getVersionData();
         $plugin_info = $this->getInfo();

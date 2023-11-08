@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2008-2022 Mark C. Prins <mprins@users.sf.net>
  *
@@ -16,7 +17,7 @@
  *
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-
+use dokuwiki\Extension\Plugin;
 use dokuwiki\plugin\openlayersmap\StaticMap;
 
 /**
@@ -25,7 +26,8 @@ use dokuwiki\plugin\openlayersmap\StaticMap;
  *
  * @author Mark Prins
  */
-class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
+class helper_plugin_openlayersmap_staticmap extends Plugin
+{
     /** maximum width of the resulting image. */
     private $maxWidth = 1024;
     /** maximum heigth of the resulting image. */
@@ -36,26 +38,9 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
      *
      * @return array Information to all provided methods.
      */
-    public function getMethods(): array {
-        $result   = array();
-        $result[] = array(
-            'name'   => 'getMap',
-            'desc'   => 'returns url to the image',
-            'params' => array(
-                'lat'     => 'float',
-                'lon'     => 'float',
-                'zoom'    => 'integer',
-                'size'    => 'string',
-                'maptype' => 'string',
-                'markers' => 'string',
-                'gpx'     => 'string',
-                'kml'     => 'string',
-                'geojson' => 'string',
-                'apikey'  => 'string'
-            ),
-            'return' => array('image' => 'string'),
-        );
-        return $result;
+    public function getMethods(): array
+    {
+        return [['name'   => 'getMap', 'desc'   => 'returns url to the image', 'params' => ['lat'     => 'float', 'lon'     => 'float', 'zoom'    => 'integer', 'size'    => 'string', 'maptype' => 'string', 'markers' => 'string', 'gpx'     => 'string', 'kml'     => 'string', 'geojson' => 'string', 'apikey'  => 'string'], 'return' => ['image' => 'string']]];
     }
 
     /**
@@ -72,8 +57,6 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
      * @param string $kml     media link
      * @param string $geojson media link
      * @param string $apikey  optional API key eg. for Thunderforest maps
-     *
-     * @return string
      */
     public function getMap(
         float $lat,
@@ -92,17 +75,17 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 
         // normalize zoom
         $zoom = $zoom ?: 0;
-        if($zoom > 18) {
+        if ($zoom > 18) {
             $zoom = 18;
         }
         // normalize WxH
-        list($width, $height) = explode('x', $size);
+        [$width, $height] = explode('x', $size);
         $width = (int) $width;
-        if($width > $this->maxWidth) {
+        if ($width > $this->maxWidth) {
             $width = $this->maxWidth;
         }
         $height = (int) $height;
-        if($height > $this->maxHeight) {
+        if ($height > $this->maxHeight) {
             $height = $this->maxHeight;
         }
 
@@ -115,9 +98,20 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
 
         // create map
         $map = new StaticMap(
-            $lat, $lon, $zoom, $width, $height, $maptype,
-            $markers, $gpx, $kml, $geojson, $conf['mediadir'], $conf['cachedir'],
-            $this->getConf('autoZoomMap'), $apikey
+            $lat,
+            $lon,
+            $zoom,
+            $width,
+            $height,
+            $maptype,
+            $markers,
+            $gpx,
+            $kml,
+            $geojson,
+            $conf['mediadir'],
+            $conf['cachedir'],
+            $this->getConf('autoZoomMap'),
+            $apikey
         );
 
         // return the media id url
@@ -134,13 +128,14 @@ class helper_plugin_openlayersmap_staticmap extends DokuWiki_Plugin {
      * @param string $id the DW media id
      * @return string the path to the file
      */
-    private function mediaIdToPath(string $id): string {
+    private function mediaIdToPath(string $id): string
+    {
         global $conf;
-        if(empty($id)) {
+        if (empty($id)) {
             return "";
         }
-        $id = str_replace(array("[[", "]]"), "", $id);
-        if((strpos($id, ':') === 0)) {
+        $id = str_replace(["[[", "]]"], "", $id);
+        if ((strpos($id, ':') === 0)) {
             $id = substr($id, 1);
         }
         $id = str_replace(":", "/", $id);

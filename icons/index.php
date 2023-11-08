@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2008, 2009 Mark C. Prins <mc.prins@gmail.com>
  *
@@ -42,9 +43,9 @@
 </head>
 <body>
 <div class="box"><?php
-    foreach(glob('*.png') as $img) {
-        echo '<img src="' . $img . '" alt="' . $img . '" title="' . $img . '" /> ';
-    }
-    ?></div>
+foreach (glob('*.png') as $img) {
+    echo '<img src="' . $img . '" alt="' . $img . '" title="' . $img . '" /> ';
+}
+?></div>
 </body>
 </html>
