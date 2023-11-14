@@ -639,11 +639,6 @@ class StaticMap
                     $this->drawGeometry($_geom, $colour);
                 }
                 break;
-            case 'MultiPolygon':
-            case 'MultiLineString':
-            case 'MultiPoint':
-                // TODO implement / do nothing
-                break;
             case 'Polygon':
                 $this->drawPolygon($geom, $colour);
                 break;
@@ -653,6 +648,10 @@ class StaticMap
             case 'Point':
                 $this->drawPoint($geom, $colour);
                 break;
+            // TODO implement / do nothing
+            case 'MultiPolygon':
+            case 'MultiLineString':
+            case 'MultiPoint':
             default:
                 // draw nothing
                 break;
