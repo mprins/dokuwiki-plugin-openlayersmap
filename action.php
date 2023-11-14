@@ -41,7 +41,7 @@ class action_plugin_openlayersmap extends ActionPlugin
 
     /**
      * Inserts the toolbar button.
-     * @param Doku_Event $event the DokuWiki event
+     * @param Event $event the DokuWiki event
      */
     final public function insertButton(Event $event): void
     {
@@ -60,7 +60,7 @@ class action_plugin_openlayersmap extends ActionPlugin
 
     /**
      * Add a snippet of javascript into the head to do a css operation we can check for later on.
-     * @param Doku_Event $event the DokuWiki event
+     * @param Event $event the DokuWiki event
      */
     final public function insertCSSSniffer(Event $event): void
     {
@@ -70,7 +70,7 @@ class action_plugin_openlayersmap extends ActionPlugin
     /**
      * Add openlayersmap popularity data.
      *
-     * @param Doku_Event $event the DokuWiki event
+     * @param Event $event the DokuWiki event
      */
     final public function popularity(Event $event): void
     {
