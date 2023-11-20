@@ -71,7 +71,7 @@ class helper_plugin_openlayersmap_staticmap extends Plugin
         string $apikey = ''
     ): string {
         global $conf;
-        // dbglog($markers,'helper_plugin_openlayersmap_staticmap::getMap: markers :');
+        // Logger::debug('helper_plugin_openlayersmap_staticmap::getMap: markers :',$markers);
 
         // normalize zoom
         $zoom = $zoom ?: 0;
@@ -91,9 +91,9 @@ class helper_plugin_openlayersmap_staticmap extends Plugin
 
         // cleanup/validate gpx/kml
         $kml = $this->mediaIdToPath($kml);
-        // dbglog($kml,'helper_plugin_openlayersmap_staticmap::getMap: kml file:');
+        // Logger::debug('helper_plugin_openlayersmap_staticmap::getMap: kml file:',$kml);
         $gpx = $this->mediaIdToPath($gpx);
-        // dbglog($gpx,'helper_plugin_openlayersmap_staticmap::getMap: gpx file:');
+        // Logger::debug('helper_plugin_openlayersmap_staticmap::getMap: gpx file:',$gpx);
         $geojson = $this->mediaIdToPath($geojson);
 
         // create map

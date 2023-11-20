@@ -74,7 +74,7 @@ class admin_plugin_openlayersmap_purge extends AdminPlugin
     private function rrmdir(string $sDir): bool
     {
         if (is_dir($sDir)) {
-            dbglog($sDir, 'admin_plugin_openlayersmap_purge::rrmdir: recursively removing path: ');
+            Logger::debug('admin_plugin_openlayersmap_purge::rrmdir: recursively removing path: ', $sDir);
             $sDir = rtrim($sDir, '/');
             $oDir = dir($sDir);
             while (($sFile = $oDir->read()) !== false) {

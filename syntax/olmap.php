@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2008-2021 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2023 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -157,8 +157,6 @@ if ($_nocache) {
 }
 
         $imgUrl .= " |" . $gmap ['summary'] . " }}";
-
-        // dbglog($imgUrl,"complete image tags is:");
 
         $mapid = $gmap ['id'];
         // create a javascript parameter string for the map
@@ -383,7 +381,6 @@ if (!empty($gmap ['geojsonfile'])) {
         if ($this->getConf('googleAPIkey')) {
             $imgUrl .= "&key=" . $this->getConf('googleAPIkey');
         }
-        // dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::getGoogle: Google image url is:');
         return $imgUrl;
     }
 
@@ -446,7 +443,6 @@ if (!empty($gmap ['geojsonfile'])) {
        }
        $imgUrl .= "&imageType=png&type=" . $maptype;
        $imgUrl .= "&key=".$this->getConf ( 'mapquestAPIKey' );
-       // dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getMapQuest: MapQuest image url is:');
        return $imgUrl;
    }
    */
@@ -468,13 +464,13 @@ if (!empty($gmap ['geojsonfile'])) {
         if ($this->getConf('optionStaticMapGenerator') === 'local') {
             // using local basemap composer
             if (($myMap = plugin_load('helper', 'openlayersmap_staticmap')) === null) {
-                dbglog(
-                    $myMap,
-                    'openlayersmap_staticmap plugin is not available for use.'
+                Logger::error(
+                    'openlayersmap_staticmap plugin is not available for use.',
+                    $myMap
                 );
             }
             if (($geophp = plugin_load('helper', 'geophp')) === null) {
-                dbglog($geophp, 'geophp plugin is not available for use.');
+                Logger::debug('geophp plugin is not available for use.', $geophp);
             }
             $size = str_replace("px", "", $gmap ['width']) . "x"
                 . str_replace("px", "", $gmap ['height']);
@@ -816,11 +812,11 @@ if (!empty($gmap ['geojsonfile'])) {
                 $renderer->meta ['geo'] ['lon'] = $mainLon;
                 if (($geophp = plugin_load('helper', 'geophp')) !== null) {
                     // if we have the geoPHP helper, add the geohash
-
-                    // fails with older php versions..
-                    // $renderer->meta['geo']['geohash'] = (new Point($mainLon,$mainLat))->out('geohash');
-                    $p                                  = new Point($mainLon, $mainLat);
-                    $renderer->meta ['geo'] ['geohash'] = $p->out('geohash');
+                    try{
+                        $renderer->meta['geo']['geohash'] = (new Point($mainLon, $mainLat))->out('geohash');
+                    } catch (Exception $e) {
+                        Logger::error("Failed to create geohash for: $mainLat, $mainLon");
+                    }
                 }
             }
 
@@ -831,15 +827,15 @@ if (!empty($gmap ['geojsonfile'])) {
                 $rel = p_get_metadata($ID, 'relation', METADATA_RENDER_USING_CACHE);
                 // $img = $rel ['firstimage'];
                 if (empty($rel ['firstimage']) /* || $img == $_firstimage*/) {
-                    //dbglog ( $_firstimage,
-                    // 'olmap::render#rendering image relation metadata for _firstimage as $img was empty or same.' );
+                    //Logger::debug(
+                    // 'olmap::render#rendering image relation metadata for _firstimage as $img was empty or same.',
+                    // $_firstimage);
+                    
                     // This seems to never work; the firstimage entry in the .meta file is empty
                     // $renderer->meta['relation']['firstimage'] = $_firstimage;
-
                     // ... and neither does this; the firstimage entry in the .meta file is empty
                     // $relation = array('relation'=>array('firstimage'=>$_firstimage));
                     // p_set_metadata($ID, $relation, false, false);
-
                     // ... this works
                     $renderer->internalmedia($_firstimage, $poitabledesc);
                 }
