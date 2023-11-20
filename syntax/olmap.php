@@ -19,6 +19,7 @@
  */
 use dokuwiki\Extension\SyntaxPlugin;
 use geoPHP\Geometry\Point;
+use dokuwiki\Logger;
 
 /**
  * DokuWiki Plugin openlayersmap (Syntax Component).

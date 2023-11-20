@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2008-2022 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2023 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -17,6 +17,7 @@
  *
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
+use dokuwiki\Logger;
 use dokuwiki\Extension\Plugin;
 use dokuwiki\plugin\openlayersmap\StaticMap;
 

@@ -1,9 +1,7 @@
 <?php
 
-use dokuwiki\Extension\AdminPlugin;
-
 /*
- * Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2023 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -19,6 +17,9 @@ use dokuwiki\Extension\AdminPlugin;
  *
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
+use dokuwiki\Extension\AdminPlugin;
+use dokuwiki\Logger;
+
 /**
  * DokuWiki Plugin openlayersmap (Admin Component).
  * This component purges the cached tiles and maps.

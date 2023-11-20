@@ -27,6 +27,7 @@ use geoPHP\Geometry\LineString;
 use geoPHP\Geometry\Point;
 use geoPHP\Geometry\Polygon;
 use geoPHP\geoPHP;
+use dokuwiki\Logger;
 
 /**
  *
