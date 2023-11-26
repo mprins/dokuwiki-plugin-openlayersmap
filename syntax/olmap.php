@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2008-2021 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2023 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -19,6 +19,7 @@
  */
 use dokuwiki\Extension\SyntaxPlugin;
 use geoPHP\Geometry\Point;
+use dokuwiki\Logger;
 
 /**
  * DokuWiki Plugin openlayersmap (Syntax Component).
@@ -124,7 +125,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
                 $_nocache = true;
                 $imgUrl   .= $this->getBing($gmap, $overlay) . "&.png";
             }
-        } /* elseif (stripos ( $gmap ['baselyr'], 'mapquest' ) !== false) {
+         /* elseif (stripos ( $gmap ['baselyr'], 'mapquest' ) !== false) {
             // MapQuest
             if (! $this->getConf ( 'mapquestAPIKey' )) {
                 // no API key for MapQuest, use OSM
@@ -137,14 +138,15 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
                 $imgUrl .= $this->_getMapQuest ( $gmap, $overlay );
                 $imgUrl .= "&.png";
             }
-        } */ else {
+        } */
+        } else {
             // default OSM
             $_firstimageID = $this->getStaticOSM($gmap, $overlay);
             $imgUrl        .= $_firstimageID;
             if ($this->getConf('optionStaticMapGenerator') == 'remote') {
                 $imgUrl .= "&.png";
             }
-}
+        }
 
         // append dw p_render specific params and render
         $imgUrl .= "?" . str_replace("px", "", $gmap ['width']) . "x"
@@ -152,87 +154,85 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
         $imgUrl .= "&nolink";
 
         // add nocache option for selected services
-if ($_nocache) {
-    $imgUrl .= "&nocache";
-}
+        if ($_nocache) {
+            $imgUrl .= "&nocache";
+        }
 
         $imgUrl .= " |" . $gmap ['summary'] . " }}";
-
-        // dbglog($imgUrl,"complete image tags is:");
 
         $mapid = $gmap ['id'];
         // create a javascript parameter string for the map
         $param = '';
-foreach ($gmap as $key => $val) {
-    $param .= is_numeric($val) ? "$key: $val, " : "$key: '" . hsc($val) . "', ";
-}
-if (!empty($param)) {
-    $param = substr($param, 0, -2);
-}
+        foreach ($gmap as $key => $val) {
+            $param .= is_numeric($val) ? "$key: $val, " : "$key: '" . hsc($val) . "', ";
+        }
+        if (!empty($param)) {
+            $param = substr($param, 0, -2);
+        }
         unset($gmap ['id']);
 
         // create a javascript serialisation of the point data
         $poi      = '';
         $poitable = '';
         $rowId    = 0;
-if ($overlay !== []) {
-    foreach ($overlay as $data) {
-        [$lat, $lon, $text, $angle, $opacity, $img] = $data;
-        $rowId++;
-        $poi .= ", {lat:$lat,lon:$lon,txt:'$text',angle:$angle,opacity:$opacity,img:'$img',rowId: $rowId}";
+        if ($overlay !== []) {
+            foreach ($overlay as $data) {
+                [$lat, $lon, $text, $angle, $opacity, $img] = $data;
+                $rowId++;
+                $poi .= ", {lat:$lat,lon:$lon,txt:'$text',angle:$angle,opacity:$opacity,img:'$img',rowId: $rowId}";
 
-        if ($this->getConf('displayformat') === 'DMS') {
-            $lat = $this->convertLat($lat);
-            $lon = $this->convertLon($lon);
-        } else {
-            $lat .= 'º';
-            $lon .= 'º';
-        }
+                if ($this->getConf('displayformat') === 'DMS') {
+                    $lat = $this->convertLat($lat);
+                    $lon = $this->convertLon($lon);
+                } else {
+                    $lat .= 'º';
+                    $lon .= 'º';
+                }
 
-        $poitable .= '
+                $poitable .= '
                     <tr>
                     <td class="rowId">' . $rowId . '</td>
                     <td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/icons/' . $img . '" alt="'
-            . substr($img, 0, -4) . $this->getlang('alt_legend_poi') . '" /></td>
+                    . substr($img, 0, -4) . $this->getlang('alt_legend_poi') . '" /></td>
                     <td class="lat" title="' . $this->getLang('olmapPOIlatTitle') . '">' . $lat . '</td>
                     <td class="lon" title="' . $this->getLang('olmapPOIlonTitle') . '">' . $lon . '</td>
                     <td class="txt">' . $text . '</td>
                     </tr>';
-    }
-    $poi = substr($poi, 2);
-}
-if (!empty($gmap ['kmlfile'])) {
-    $poitable .= '
+            }
+            $poi = substr($poi, 2);
+        }
+        if (!empty($gmap ['kmlfile'])) {
+            $poitable .= '
                     <tr>
                     <td class="rowId"><img src="' . DOKU_BASE
-        . 'lib/plugins/openlayersmap/toolbar/kml_file.png" alt="KML file" /></td>
+                . 'lib/plugins/openlayersmap/toolbar/kml_file.png" alt="KML file" /></td>
                     <td class="icon"><img src="' . DOKU_BASE . 'lib/plugins/openlayersmap/toolbar/kml_line.png" alt="'
-        . $this->getlang('alt_legend_kml') . '" /></td>
+                . $this->getlang('alt_legend_kml') . '" /></td>
                     <td class="txt" colspan="3">KML track: ' . $this->getFileName($gmap ['kmlfile']) . '</td>
                     </tr>';
-}
-if (!empty($gmap ['gpxfile'])) {
-    $poitable .= '
+        }
+        if (!empty($gmap ['gpxfile'])) {
+            $poitable .= '
                     <tr>
                     <td class="rowId"><img src="' . DOKU_BASE
-        . 'lib/plugins/openlayersmap/toolbar/gpx_file.png" alt="GPX file" /></td>
+                . 'lib/plugins/openlayersmap/toolbar/gpx_file.png" alt="GPX file" /></td>
                     <td class="icon"><img src="' . DOKU_BASE
-        . 'lib/plugins/openlayersmap/toolbar/gpx_line.png" alt="'
-        . $this->getlang('alt_legend_gpx') . '" /></td>
+                . 'lib/plugins/openlayersmap/toolbar/gpx_line.png" alt="'
+                . $this->getlang('alt_legend_gpx') . '" /></td>
                     <td class="txt" colspan="3">GPX track: ' . $this->getFileName($gmap ['gpxfile']) . '</td>
                     </tr>';
-}
-if (!empty($gmap ['geojsonfile'])) {
-    $poitable .= '
+        }
+        if (!empty($gmap ['geojsonfile'])) {
+            $poitable .= '
                     <tr>
                     <td class="rowId"><img src="' . DOKU_BASE
-        . 'lib/plugins/openlayersmap/toolbar/geojson_file.png" alt="GeoJSON file" /></td>
+                . 'lib/plugins/openlayersmap/toolbar/geojson_file.png" alt="GeoJSON file" /></td>
                     <td class="icon"><img src="' . DOKU_BASE
-        . 'lib/plugins/openlayersmap/toolbar/geojson_line.png" alt="'
-        . $this->getlang('alt_legend_geojson') . '" /></td>
+                . 'lib/plugins/openlayersmap/toolbar/geojson_line.png" alt="'
+                . $this->getlang('alt_legend_geojson') . '" /></td>
                     <td class="txt" colspan="3">GeoJSON track: ' . $this->getFileName($gmap ['geojsonfile']) . '</td>
                     </tr>';
-}
+        }
 
         $autozoom = empty($gmap ['autozoom']) ? $this->getConf('autoZoomMap') : $gmap ['autozoom'];
         $js       = "{mapOpts: {" . $param . ", displayformat: '" . $this->getConf('displayformat')
@@ -383,7 +383,6 @@ if (!empty($gmap ['geojsonfile'])) {
         if ($this->getConf('googleAPIkey')) {
             $imgUrl .= "&key=" . $this->getConf('googleAPIkey');
         }
-        // dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::getGoogle: Google image url is:');
         return $imgUrl;
     }
 
@@ -446,7 +445,6 @@ if (!empty($gmap ['geojsonfile'])) {
        }
        $imgUrl .= "&imageType=png&type=" . $maptype;
        $imgUrl .= "&key=".$this->getConf ( 'mapquestAPIKey' );
-       // dbglog($imgUrl,'syntax_plugin_openlayersmap_olmap::_getMapQuest: MapQuest image url is:');
        return $imgUrl;
    }
    */
@@ -468,13 +466,13 @@ if (!empty($gmap ['geojsonfile'])) {
         if ($this->getConf('optionStaticMapGenerator') === 'local') {
             // using local basemap composer
             if (($myMap = plugin_load('helper', 'openlayersmap_staticmap')) === null) {
-                dbglog(
-                    $myMap,
-                    'openlayersmap_staticmap plugin is not available for use.'
+                Logger::error(
+                    'openlayersmap_staticmap plugin is not available for use.',
+                    $myMap
                 );
             }
             if (($geophp = plugin_load('helper', 'geophp')) === null) {
-                dbglog($geophp, 'geophp plugin is not available for use.');
+                Logger::debug('geophp plugin is not available for use.', $geophp);
             }
             $size = str_replace("px", "", $gmap ['width']) . "x"
                 . str_replace("px", "", $gmap ['height']);
@@ -816,11 +814,11 @@ if (!empty($gmap ['geojsonfile'])) {
                 $renderer->meta ['geo'] ['lon'] = $mainLon;
                 if (($geophp = plugin_load('helper', 'geophp')) !== null) {
                     // if we have the geoPHP helper, add the geohash
-
-                    // fails with older php versions..
-                    // $renderer->meta['geo']['geohash'] = (new Point($mainLon,$mainLat))->out('geohash');
-                    $p                                  = new Point($mainLon, $mainLat);
-                    $renderer->meta ['geo'] ['geohash'] = $p->out('geohash');
+                    try {
+                        $renderer->meta['geo']['geohash'] = (new Point($mainLon, $mainLat))->out('geohash');
+                    } catch (Exception $e) {
+                        Logger::error("Failed to create geohash for: $mainLat, $mainLon");
+                    }
                 }
             }
 
@@ -831,15 +829,15 @@ if (!empty($gmap ['geojsonfile'])) {
                 $rel = p_get_metadata($ID, 'relation', METADATA_RENDER_USING_CACHE);
                 // $img = $rel ['firstimage'];
                 if (empty($rel ['firstimage']) /* || $img == $_firstimage*/) {
-                    //dbglog ( $_firstimage,
-                    // 'olmap::render#rendering image relation metadata for _firstimage as $img was empty or same.' );
+                    //Logger::debug(
+                    // 'olmap::render#rendering image relation metadata for _firstimage as $img was empty or same.',
+                    // $_firstimage);
+
                     // This seems to never work; the firstimage entry in the .meta file is empty
                     // $renderer->meta['relation']['firstimage'] = $_firstimage;
-
                     // ... and neither does this; the firstimage entry in the .meta file is empty
                     // $relation = array('relation'=>array('firstimage'=>$_firstimage));
                     // p_set_metadata($ID, $relation, false, false);
-
                     // ... this works
                     $renderer->internalmedia($_firstimage, $poitabledesc);
                 }

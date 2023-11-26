@@ -27,6 +27,7 @@ use geoPHP\Geometry\LineString;
 use geoPHP\Geometry\Point;
 use geoPHP\Geometry\Polygon;
 use geoPHP\geoPHP;
+use dokuwiki\Logger;
 
 /**
  *
@@ -170,7 +171,7 @@ class StaticMap
                 $this->autoZoom();
             }
         } catch (Exception $e) {
-            dbglog($e);
+            Logger::debug($e);
         }
 
         // use map cache, so check cache for map
@@ -221,7 +222,7 @@ class StaticMap
         }
 
         if (count($geoms) <= 1) {
-            dbglog($geoms, "StaticMap::autoZoom: Skip setting autozoom options");
+            Logger::debug("StaticMap::autoZoom: Skip setting autozoom options", $geoms);
             return;
         }
 
@@ -233,17 +234,17 @@ class StaticMap
         // $vy00 = log(tan(M_PI*(0.25 + $centroid->getY()/360)));
         $vy0 = log(tan(M_PI * (0.25 + $bbox ['miny'] / 360)));
         $vy1 = log(tan(M_PI * (0.25 + $bbox ['maxy'] / 360)));
-        dbglog("StaticMap::autoZoom: vertical resolution: $vy0, $vy1");
+        Logger::debug("StaticMap::autoZoom: vertical resolution: $vy0, $vy1");
         if ($vy1 - $vy0 === 0.0) {
             $resolutionVertical = 0;
-            dbglog("StaticMap::autoZoom: using $resolutionVertical");
+            Logger::debug("StaticMap::autoZoom: using $resolutionVertical");
         } else {
             $zoomFactorPowered  = ($this->height / 2) / (40.7436654315252 * ($vy1 - $vy0));
             $resolutionVertical = 360 / ($zoomFactorPowered * $this->tileSize);
         }
         // determine horizontal resolution
         $resolutionHorizontal = ($bbox ['maxx'] - $bbox ['minx']) / $this->width;
-        dbglog("StaticMap::autoZoom: using $resolutionHorizontal");
+        Logger::debug("StaticMap::autoZoom: using $resolutionHorizontal");
         $resolution           = max($resolutionHorizontal, $resolutionVertical) * $paddingFactor;
         $zoom                 = $this->zoom;
         if ($resolution > 0) {
@@ -255,7 +256,7 @@ class StaticMap
         }
         $this->lon = $centroid->getX();
         $this->lat = $centroid->getY();
-        dbglog("StaticMap::autoZoom: Set autozoom options to: z: $this->zoom, lon: $this->lon, lat: $this->lat");
+        Logger::debug("StaticMap::autoZoom: Set autozoom options to: z: $this->zoom, lon: $this->lon, lat: $this->lat");
     }
 
     public function checkMapCache(): bool
@@ -298,21 +299,21 @@ class StaticMap
             try {
                 $this->drawKML();
             } catch (exception $e) {
-                dbglog('failed to load KML file', $e);
+                Logger::error('failed to load KML file', $e);
             }
         }
         if (file_exists($this->gpxFileName)) {
             try {
                 $this->drawGPX();
             } catch (exception $e) {
-                dbglog('failed to load GPX file', $e);
+                Logger::error('failed to load GPX file', $e);
             }
         }
         if (file_exists($this->geojsonFileName)) {
             try {
                 $this->drawGeojson();
             } catch (exception $e) {
-                dbglog('failed to load GeoJSON file', $e);
+                Logger::error('failed to load GeoJSON file', $e);
             }
         }
 
@@ -386,7 +387,7 @@ class StaticMap
                 }
                 $destX = ($x - $startX) * $this->tileSize + $this->offsetX;
                 $destY = ($y - $startY) * $this->tileSize + $this->offsetY;
-                dbglog($this->tileSize, "imagecopy tile into image: $destX, $destY");
+                Logger::debug("imagecopy tile into image: $destX, $destY", $this->tileSize);
                 imagecopy(
                     $this->image,
                     $tileImage,
@@ -421,7 +422,7 @@ class StaticMap
             curl_setopt($ch, CURLOPT_USERAGENT, $_UA);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
             curl_setopt($ch, CURLOPT_URL, $url . $this->apikey);
-            dbglog("StaticMap::fetchTile: getting: $url using curl_exec");
+            Logger::debug("StaticMap::fetchTile: getting: $url using curl_exec");
             $tile = curl_exec($ch);
             curl_close($ch);
         } else {
@@ -437,7 +438,9 @@ class StaticMap
             }
 
             $context = stream_context_create($opts);
-            // dbglog("StaticMap::fetchTile: getting: $url . $this->apikey using file_get_contents and options $opts");
+            Logger::debug(
+                "StaticMap::fetchTile: getting: $url . $this->apikey using file_get_contents and options $opts"
+            );
             $tile = file_get_contents($url . $this->apikey, false, $context);
         }
         if ($tile && $this->useTileCache) {

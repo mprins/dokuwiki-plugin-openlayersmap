@@ -92,7 +92,6 @@ class syntax_plugin_openlayersmap_osmlayer extends SyntaxPlugin
                 $data [$key] = $val;
             }
         }
-        // dbglog($data,'syntax_plugin_overlayer::handle: parsed data is:');
         return $data;
     }
 

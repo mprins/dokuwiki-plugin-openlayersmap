@@ -1,9 +1,7 @@
 <?php
 
-use dokuwiki\Extension\AdminPlugin;
-
 /*
- * Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2023 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -19,6 +17,9 @@ use dokuwiki\Extension\AdminPlugin;
  *
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
+use dokuwiki\Extension\AdminPlugin;
+use dokuwiki\Logger;
+
 /**
  * DokuWiki Plugin openlayersmap (Admin Component).
  * This component purges the cached tiles and maps.
@@ -74,7 +75,7 @@ class admin_plugin_openlayersmap_purge extends AdminPlugin
     private function rrmdir(string $sDir): bool
     {
         if (is_dir($sDir)) {
-            dbglog($sDir, 'admin_plugin_openlayersmap_purge::rrmdir: recursively removing path: ');
+            Logger::debug('admin_plugin_openlayersmap_purge::rrmdir: recursively removing path: ', $sDir);
             $sDir = rtrim($sDir, '/');
             $oDir = dir($sDir);
             while (($sFile = $oDir->read()) !== false) {

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2008-2022 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2023 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -17,6 +17,7 @@
  *
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
+use dokuwiki\Logger;
 use dokuwiki\Extension\Plugin;
 use dokuwiki\plugin\openlayersmap\StaticMap;
 
@@ -71,7 +72,7 @@ class helper_plugin_openlayersmap_staticmap extends Plugin
         string $apikey = ''
     ): string {
         global $conf;
-        // dbglog($markers,'helper_plugin_openlayersmap_staticmap::getMap: markers :');
+        // Logger::debug('helper_plugin_openlayersmap_staticmap::getMap: markers :',$markers);
 
         // normalize zoom
         $zoom = $zoom ?: 0;
@@ -91,9 +92,9 @@ class helper_plugin_openlayersmap_staticmap extends Plugin
 
         // cleanup/validate gpx/kml
         $kml = $this->mediaIdToPath($kml);
-        // dbglog($kml,'helper_plugin_openlayersmap_staticmap::getMap: kml file:');
+        // Logger::debug('helper_plugin_openlayersmap_staticmap::getMap: kml file:',$kml);
         $gpx = $this->mediaIdToPath($gpx);
-        // dbglog($gpx,'helper_plugin_openlayersmap_staticmap::getMap: gpx file:');
+        // Logger::debug('helper_plugin_openlayersmap_staticmap::getMap: gpx file:',$gpx);
         $geojson = $this->mediaIdToPath($geojson);
 
         // create map
