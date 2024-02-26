@@ -1,62 +1,21 @@
-name: CI
+name: 'CI'
 
 on: [ push, pull_request, workflow_dispatch ]
 
-permissions:
-  contents: read
-
 jobs:
   test:
-    name: PHP Unit
-    runs-on: ubuntu-latest
-
     strategy:
-      matrix:
-        php-version: [ '8.0', '8.1', '8.2', '8.3' ]
-        dokuwiki-branch: [ 'master', 'stable' ]
       fail-fast: false
+      matrix:
+        php-version: [ '8.1', '8.2' ]
+        dokuwiki-branch: [ 'master', 'stable' ]
+        include:
+          - php-version: '8.0'
+            dokuwiki-branch: 'stable'
+          - php-version: '8.3'
+            dokuwiki-branch: 'master'
 
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          extensions: mbstring, intl, bz2, gd, imagick
-          ini-values: pcre.jit=0
-
-      - name: Setup problem matchers
-        run: |
-          echo ::add-matcher::${{ runner.tool_cache }}/php.json
-          echo ::add-matcher::${{ runner.tool_cache }}/phpunit.json
-
-      - name: Download DokuWiki Test-setup
-        run: wget https://raw.github.com/splitbrain/dokuwiki-travis/master/travis.sh
-
-      - name: Install DokuWiki and required plugins
-        id: dokuwiki-env
-        uses: dokuwiki/github-action/.github/actions/dokuenv@main
-        with:
-          branch: ${{ matrix.dokuwiki-branch }}
-
-      - name: Install Composer Dependencies
-        run: |
-          cd _test
-          composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --no-scripts
-
-      - name: Setup PHPUnit
-        # old branches
-        run: |
-          if [ -f _test/fetchphpunit.php ]; then
-            php _test/fetchphpunit.php
-          fi
-
-      - name: Run PHPUnit
-        run: |
-          cd _test
-          if [ -f phpunit.phar ]; then
-            php phpunit.phar --verbose --stderr --group ${{ steps.dokuwiki-env.outputs.type }}_${{ steps.dokuwiki-env.outputs.base }}
-          else
-            composer exec -- phpunit --verbose --stderr --group ${{ steps.dokuwiki-env.outputs.type }}_${{ steps.dokuwiki-env.outputs.base }}
-          fi
+    uses: mprins/.github/.github/workflows/test.yml@main
+    with:
+      php-version: "${{ matrix.php-version }}"
+      dokuwiki-branch: "${{ matrix.dokuwiki-branch }}"
