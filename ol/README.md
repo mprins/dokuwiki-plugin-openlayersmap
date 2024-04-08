@@ -20,7 +20,7 @@ A slightly more complicated build process is required to get an optimized-fot-si
 ```shell
 cd ol
 rm -rf openlayers
-export OL_VERSION=v9.0.0
+export OL_VERSION=v9.1.0
 git clone https://github.com/openlayers/openlayers.git
 cd openlayers
 git checkout -b $OL_VERSION-custom $OL_VERSION
@@ -39,7 +39,7 @@ cp build/full/*.* ../
 
 ## update LayerSwitcher
 
-see https://github.com/walkermatt/ol-layerswitcher#js
+see https://github.com/walkermatt/ol-layerswitchgier#js
 
 ```shell
 cd ol
