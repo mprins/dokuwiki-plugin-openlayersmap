@@ -7,7 +7,7 @@ This will get the full/legacy build of OpenLayers. See https://openlayers.org/do
 
 ```shell
 cd ol
-export OL_VERSION=v9.0.0
+export OL_VERSION=v9.1.0
 wget https://github.com/openlayers/openlayers/releases/download/$OL_VERSION/$OL_VERSION-dist.zip
 unzip -jo $OL_VERSION-dist.zip  dist/* ol.css ol.css.map
 rm $OL_VERSION-dist.zip
@@ -39,7 +39,7 @@ cp build/full/*.* ../
 
 ## update LayerSwitcher
 
-see https://github.com/walkermatt/ol-layerswitchgier#js
+see https://github.com/walkermatt/ol-layerswitcher#js
 
 ```shell
 cd ol
