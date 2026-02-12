@@ -2,7 +2,7 @@ diff --git a/tasks/generate-info.js b/tasks/generate-info.js
 index ee9660554..49ca324c8 100644
 --- a/tasks/generate-info.js
 +++ b/tasks/generate-info.js
-@@ -70,7 +70,28 @@ function getPaths() {
+@@ -70,7 +70,30 @@ function getPaths() {
      walker.on('file', (root, stats, next) => {
        const sourcePath = path.join(root, stats.name);
        if (sourcePath.endsWith('.js')) {
@@ -23,7 +23,9 @@ index ee9660554..49ca324c8 100644
 +          sourcePath.toLowerCase().includes('zoomify') ||
 +          sourcePath.toLowerCase().includes('mapbox') ||
 +          sourcePath.toLowerCase().includes('sentinelhub') ||
-+          sourcePath.toLowerCase().includes('flow')
++          sourcePath.toLowerCase().includes('flow') ||
++          sourcePath.toLowerCase().includes('geozarr') ||
++          sourcePath.toLowerCase().includes('ogcmap')
 +        ) {
 +          // skip adding these files to the paths array
 +        } else {
