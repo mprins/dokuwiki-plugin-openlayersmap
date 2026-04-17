@@ -1,35 +1,34 @@
 diff --git a/tasks/generate-info.js b/tasks/generate-info.js
-index ee9660554..49ca324c8 100644
+index 281be0c1c0..5e028dbc5e 100644
 --- a/tasks/generate-info.js
 +++ b/tasks/generate-info.js
-@@ -70,7 +70,30 @@ function getPaths() {
+@@ -69,7 +69,29 @@ function getPaths() {
+     const walker = walk(sourceDir);
      walker.on('file', (root, stats, next) => {
-       const sourcePath = path.join(root, stats.name);
-       if (sourcePath.endsWith('.js')) {
--        paths.push(sourcePath);
-+        if (
-+          sourcePath.toLowerCase().includes('webgl') ||
-+          sourcePath.toLowerCase().includes('geotiff') ||
-+          sourcePath.toLowerCase().includes('gml') ||
-+          sourcePath.toLowerCase().includes('format/filter') ||
-+          sourcePath.toLowerCase().includes('format/xml') ||
-+          sourcePath.toLowerCase().includes('wmscapabilities') ||
-+          sourcePath.toLowerCase().includes('format/esrijson') ||
-+          sourcePath.toLowerCase().includes('format/wk') ||
-+          sourcePath.toLowerCase().includes('iiif') ||
-+          sourcePath.toLowerCase().includes('vectortile') ||
-+          sourcePath.toLowerCase().includes('mapguide') ||
-+          sourcePath.toLowerCase().includes('cartodb') ||
-+          sourcePath.toLowerCase().includes('zoomify') ||
-+          sourcePath.toLowerCase().includes('mapbox') ||
-+          sourcePath.toLowerCase().includes('sentinelhub') ||
-+          sourcePath.toLowerCase().includes('flow') ||
-+          sourcePath.toLowerCase().includes('geozarr') ||
-+          sourcePath.toLowerCase().includes('ogcmap')
-+        ) {
+       if (stats.name.endsWith('.js')) {
+-        paths.push(path.join(root, stats.name));
++        if (path.join(root, stats.name).toLowerCase().includes('webgl') ||
++            path.join(root, stats.name).toLowerCase().includes('geotiff') ||
++            path.join(root, stats.name).toLowerCase().includes('gml') ||
++            path.join(root, stats.name).toLowerCase().includes('format/filter') ||
++            path.join(root, stats.name).toLowerCase().includes('format/xml') ||
++            path.join(root, stats.name).toLowerCase().includes('wmscapabilities') ||
++            path.join(root, stats.name).toLowerCase().includes('format/esrijson') ||
++            path.join(root, stats.name).toLowerCase().includes('format/wk') ||
++            path.join(root, stats.name).toLowerCase().includes('iiif') ||
++            path.join(root, stats.name).toLowerCase().includes('vectortile') ||
++            path.join(root, stats.name).toLowerCase().includes('mapguide') ||
++            path.join(root, stats.name).toLowerCase().includes('cartodb') ||
++            path.join(root, stats.name).toLowerCase().includes('zoomify') ||
++            path.join(root, stats.name).toLowerCase().includes('mapbox') ||
++            path.join(root, stats.name).toLowerCase().includes('sentinelhub') ||
++            path.join(root, stats.name).toLowerCase().includes('flow') ||
++            path.join(root, stats.name).toLowerCase().includes('geozarr') ||
++            path.join(root, stats.name).toLowerCase().includes('ogcmap')) {
 +          // skip adding these files to the paths array
-+        } else {
-+          paths.push(sourcePath);
++          console.log(`Skipping ${path.join(root, stats.name)}`);
++        } else{
++          paths.push(path.join(root, stats.name));
 +        }
        }
        next();
