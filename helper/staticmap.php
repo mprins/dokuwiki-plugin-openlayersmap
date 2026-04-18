@@ -72,10 +72,6 @@ class helper_plugin_openlayersmap_staticmap extends Plugin
         string $apikey = ''
     ): string {
         global $conf;
-        // Logger::debug('helper_plugin_openlayersmap_staticmap::getMap: markers :',$markers);
-
-        // normalize zoom
-        $zoom = $zoom ?: 0;
         if ($zoom > 18) {
             $zoom = 18;
         }
@@ -136,7 +132,7 @@ class helper_plugin_openlayersmap_staticmap extends Plugin
             return "";
         }
         $id = str_replace(["[[", "]]"], "", $id);
-        if ((strpos($id, ':') === 0)) {
+        if ((str_starts_with($id, ':'))) {
             $id = substr($id, 1);
         }
         $id = str_replace(":", "/", $id);

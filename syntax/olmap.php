@@ -339,22 +339,12 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
         if (!$sUrl) {
             $sUrl = DOKU_URL;
         }
-        switch ($gmap ['baselyr']) {
-            case 'google hybrid':
-                $maptype = 'hybrid';
-                break;
-            case 'google sat':
-                $maptype = 'satellite';
-                break;
-            case 'terrain':
-            case 'google relief':
-                $maptype = 'terrain';
-                break;
-            case 'google road':
-            default:
-                $maptype = 'roadmap';
-                break;
-        }
+        $maptype = match ($gmap ['baselyr']) {
+            'google hybrid' => 'hybrid',
+            'google sat' => 'satellite',
+            'terrain', 'google relief' => 'terrain',
+            default => 'roadmap',
+        };
         // TODO maybe use viewport / visible instead of center/zoom,
         // see: https://developers.google.com/maps/documentation/staticmaps/index#Viewports
         // http://maps.google.com/maps/api/staticmap?center=51.565690,5.456756&zoom=16&size=600x400&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker.png|label:1|51.565690,5.456756&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker-blue.png|51.566197,5.458966|label:2&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.567177,5.457909|label:3&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.566283,5.457330|label:4&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.565630,5.457695|label:5&sensor=false&format=png&maptype=roadmap
@@ -579,23 +569,11 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
      */
     private function getBing(array $gmap, array $overlay): string
     {
-        switch ($gmap ['baselyr']) {
-            case 've hybrid':
-            case 'bing hybrid':
-                $maptype = 'AerialWithLabels';
-                break;
-            case 've sat':
-            case 'bing sat':
-                $maptype = 'Aerial';
-                break;
-            case 've normal':
-            case 've road':
-            case 've':
-            case 'bing road':
-            default:
-                $maptype = 'Road';
-                break;
-        }
+        $maptype = match ($gmap ['baselyr']) {
+            've hybrid', 'bing hybrid' => 'AerialWithLabels',
+            've sat', 'bing sat' => 'Aerial',
+            default => 'Road',
+        };
         $imgUrl = "https://dev.virtualearth.net/REST/v1/Imagery/Map/" . $maptype;// . "/";
         if ($this->getConf('autoZoomMap')) {
             $bbox = $this->calcBBOX($overlay, $gmap ['lat'], $gmap ['lon']);
@@ -605,7 +583,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
                 . "%2C" . $bbox ['maxlon'];
             $imgUrl .= "&dcl=1";
         }
-        if (strpos($imgUrl, "?") === false)
+        if (!str_contains($imgUrl, "?"))
             $imgUrl .= "?";
 
         //$imgUrl .= "&ms=" . str_replace ( "px", "", $gmap ['width'] ) . ","
@@ -671,7 +649,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
      */
     private function convertLat(float $decimaldegrees): string
     {
-        if (strpos($decimaldegrees, '-') !== false) {
+        if (str_contains($decimaldegrees, '-')) {
             $latPos = "S";
         } else {
             $latPos = "N";
@@ -705,7 +683,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
      */
     private function convertLon(float $decimaldegrees): string
     {
-        if (strpos($decimaldegrees, '-') !== false) {
+        if (str_contains($decimaldegrees, '-')) {
             $lonPos = "W";
         } else {
             $lonPos = "E";
@@ -816,7 +794,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
                     // if we have the geoPHP helper, add the geohash
                     try {
                         $renderer->meta['geo']['geohash'] = (new Point($mainLon, $mainLat))->out('geohash');
-                    } catch (Exception $e) {
+                    } catch (Exception) {
                         Logger::error("Failed to create geohash for: $mainLat, $mainLon");
                     }
                 }
