@@ -17,6 +17,7 @@
  *
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
+use dokuwiki\Parsing\Handler;
 use dokuwiki\Extension\SyntaxPlugin;
 use geoPHP\Geometry\Point;
 use dokuwiki\Logger;
@@ -78,7 +79,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
      *
      * @see DokuWiki_Syntax_Plugin::handle()
      */
-    public function handle($match, $state, $pos, Doku_Handler $handler): array
+    public function handle($match, $state, $pos, Handler $handler): array
     {
         // break matched data into its components
         $_tag       = explode('>', substr($match, 7, -9), 2);
