@@ -44,9 +44,9 @@ class general_plugin_openlayersmap_test extends DokuWikiTest {
         self::assertArrayHasKey('url', $info);
 
         self::assertEquals('openlayersmap', $info['base']);
-        self::assertRegExp('/^https?:\/\//', $info['url']);
+        self::assertMatchesRegularExpression('/^https?:\/\//', $info['url']);
         self::assertTrue(mail_isvalid($info['email']));
-        self::assertRegExp('/^\d\d\d\d-\d\d-\d\d$/', $info['date']);
+        self::assertMatchesRegularExpression('/^\d\d\d\d-\d\d-\d\d$/', $info['date']);
         self::assertNotFalse(strtotime($info['date']));
     }
 
