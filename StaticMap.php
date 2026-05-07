@@ -21,6 +21,7 @@
  */
 namespace dokuwiki\plugin\openlayersmap;
 
+use Exception;
 use geoPHP\Geometry\Geometry;
 use geoPHP\Geometry\GeometryCollection;
 use geoPHP\Geometry\LineString;
@@ -38,58 +39,60 @@ use dokuwiki\Logger;
 class StaticMap
 {
     // the final output
-    private $tileSize = 256;
-    private $tileInfo = [
+    private int $tileSize = 256;
+    private array $tileInfo = [
         // OSM sources
-        'openstreetmap' => ['txt'  => '(c) OpenStreetMap data/ODbl', 'logo' => 'osm_logo.png', 'url'  => 'https://tile.openstreetmap.org/{Z}/{X}/{Y}.png'],
+        'openstreetmap' => ['txt' => '(c) OpenStreetMap data/ODbL', 'logo' => 'osm_logo.png', 'url' => 'https://tile.openstreetmap.org/{Z}/{X}/{Y}.png'],
         // OpenTopoMap sources
-        'opentopomap' => ['txt'  => '(c) OpenStreetMap data/ODbl, SRTM | style: (c) OpenTopoMap', 'logo' => 'osm_logo.png', 'url'  => 'https:/tile.opentopomap.org/{Z}/{X}/{Y}.png'],
+        'opentopomap' => ['txt' => '(c) OpenStreetMap data/ODbL, SRTM | style: (c) OpenTopoMap', 'logo' => 'osm_logo.png', 'url' => 'https://tile.opentopomap.org/{Z}/{X}/{Y}.png'],
         // OCM sources
-        'cycle'         => ['txt'  => '(c) Thunderforest maps', 'logo' => 'tf_logo.png', 'url'  => 'https://tile.thunderforest.com/cycle/{Z}/{X}/{Y}.png'],
-        'transport'     => ['txt'  => '(c) Thunderforest maps', 'logo' => 'tf_logo.png', 'url'  => 'https://tile.thunderforest.com/transport/{Z}/{X}/{Y}.png'],
-        'landscape'     => ['txt'  => '(c) Thunderforest maps', 'logo' => 'tf_logo.png', 'url'  => 'https://tile.thunderforest.com/landscape/{Z}/{X}/{Y}.png'],
-        'outdoors'      => ['txt'  => '(c) Thunderforest maps', 'logo' => 'tf_logo.png', 'url'  => 'https://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png'],
-        'toner'    => ['txt'  => '(c) Stadia Maps;Stamen Design;OpenStreetMap contributors', 'logo' => 'stamen.png', 'url'  => 'https://tiles-eu.stadiamaps.com/tiles/stamen_toner/{Z}/{X}/{Y}.png'],
-        'terrain'       => ['txt'  => '(c) Stadia Maps;Stamen Design;OpenStreetMap contributors', 'logo' => 'stamen.png', 'url'  => 'https://tiles-eu.stadiamaps.com/tiles/stamen_terrain/{Z}/{X}/{Y}.png'],
+        'cycle' => ['txt' => '(c) Thunderforest maps', 'logo' => 'tf_logo.png', 'url' => 'https://tile.thunderforest.com/cycle/{Z}/{X}/{Y}.png'],
+        'transport' => ['txt' => '(c) Thunderforest maps', 'logo' => 'tf_logo.png', 'url' => 'https://tile.thunderforest.com/transport/{Z}/{X}/{Y}.png'],
+        'landscape' => ['txt' => '(c) Thunderforest maps', 'logo' => 'tf_logo.png', 'url' => 'https://tile.thunderforest.com/landscape/{Z}/{X}/{Y}.png'],
+        'outdoors' => ['txt' => '(c) Thunderforest maps', 'logo' => 'tf_logo.png', 'url' => 'https://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png'],
+        'toner' => ['txt' => '(c) Stadia Maps;Stamen Design;OpenStreetMap contributors', 'logo' => 'stamen.png', 'url' => 'https://tiles-eu.stadiamaps.com/tiles/stamen_toner/{Z}/{X}/{Y}.png'],
+        'terrain' => ['txt' => '(c) Stadia Maps;Stamen Design;OpenStreetMap contributors', 'logo' => 'stamen.png', 'url' => 'https://tiles-eu.stadiamaps.com/tiles/stamen_terrain/{Z}/{X}/{Y}.png'],
     ];
-    private $tileDefaultSrc = 'openstreetmap';
+    private string $tileDefaultSrc = 'openstreetmap';
 
     // set up markers
-    private $markerPrototypes = [
+    private array $markerPrototypes = [
         // found at http://www.mapito.net/map-marker-icons.html
         // these are 17x19 px with a pointer at the bottom left
-        'lightblue' => ['regex'        => '/^lightblue(\d+)$/', 'extension'    => '.png', 'shadow'       => false, 'offsetImage'  => '0,-19', 'offsetShadow' => false],
+        'lightblue' => ['regex' => '/^lightblue(\d+)$/', 'extension' => '.png', 'shadow' => false, 'offsetImage' => '0,-19', 'offsetShadow' => false],
         // openlayers std markers are 21x25px with shadow
-        'ol-marker' => ['regex'        => '/^marker(|-blue|-gold|-green|-red)+$/', 'extension'    => '.png', 'shadow'       => 'marker_shadow.png', 'offsetImage'  => '-10,-25', 'offsetShadow' => '-1,-13'],
+        'ol-marker' => ['regex' => '/^marker(|-blue|-gold|-green|-red)+$/', 'extension' => '.png', 'shadow' => 'marker_shadow.png', 'offsetImage' => '-10,-25', 'offsetShadow' => '-1,-13'],
         // these are 16x16 px
-        'ww_icon'   => ['regex'        => '/ww_\S+$/', 'extension'    => '.png', 'shadow'       => false, 'offsetImage'  => '-8,-8', 'offsetShadow' => false],
+        'ww_icon' => ['regex' => '/ww_\S+$/', 'extension' => '.png', 'shadow' => false, 'offsetImage' => '-8,-8', 'offsetShadow' => false],
         // assume these are 16x16 px
-        'rest'      => ['regex'        => '/^(?!lightblue(\d+)$)(?!(ww_\S+$))(?!marker(|-blue|-gold|-green|-red)+$)(.*)/', 'extension'    => '.png', 'shadow'       => 'marker_shadow.png', 'offsetImage'  => '-8,-8', 'offsetShadow' => '-1,-1'],
+        'rest' => ['regex' => '/^(?!lightblue(\d+)$)(?!(ww_\S+$))(?!marker(|-blue|-gold|-green|-red)+$)(.*)/', 'extension' => '.png', 'shadow' => 'marker_shadow.png', 'offsetImage' => '-8,-8', 'offsetShadow' => '-1,-1'],
     ];
-    private $centerX;
-    private $centerY;
-    private $offsetX;
-    private $offsetY;
+    // note event hough $centerX, $centerY, $offsetX and $offsetY are defined as float,
+    //   these are actually integer numbers, but the php floor()/ceil() functions return a float
+    private float $centerX;
+    private float $centerY;
+    private float $offsetX;
+    private float $offsetY;
     private $image;
-    private $zoom;
-    private $lat;
-    private $lon;
-    private $width;
-    private $height;
-    private $markers;
-    private $maptype;
-    private $kmlFileName;
-    private $gpxFileName;
-    private $geojsonFileName;
-    private $autoZoomExtent;
-    private $apikey;
-    private $tileCacheBaseDir;
-    private $mapCacheBaseDir;
-    private $mediaBaseDir;
-    private $useTileCache;
-    private $mapCacheID = '';
-    private $mapCacheFile = '';
-    private $mapCacheExtension = 'png';
+    private int $zoom;
+    private float $lat;
+    private float $lon;
+    private int $width;
+    private int $height;
+    private array $markers;
+    private string $maptype;
+    private string $kmlFileName;
+    private string $gpxFileName;
+    private string $geojsonFileName;
+    private bool $autoZoomExtent;
+    private string $apikey;
+    private string $tileCacheBaseDir;
+    private string $mapCacheBaseDir;
+    private string $mediaBaseDir;
+    private bool $useTileCache;
+    private string $mapCacheID = '';
+    private string $mapCacheFile = '';
+    private string $mapCacheExtension = 'png';
 
     /**
      * Constructor.
@@ -334,9 +337,9 @@ class StaticMap
      *
      * @param float $long
      * @param int   $zoom
-     * @return float|int
+     * @return float
      */
-    public function lonToTile(float $long, int $zoom)
+    public function lonToTile(float $long, int $zoom): float
     {
         return (($long + 180) / 360) * 2 ** $zoom;
     }
@@ -345,9 +348,9 @@ class StaticMap
      *
      * @param float $lat
      * @param int   $zoom
-     * @return float|int
+     * @return float
      */
-    public function latToTile(float $lat, int $zoom)
+    public function latToTile(float $lat, int $zoom): float
     {
         return (1 - log(tan($lat * M_PI / 180) + 1 / cos($lat * M_PI / 180)) / M_PI) / 2 * 2 ** $zoom;
     }
@@ -420,6 +423,7 @@ class StaticMap
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERAGENT, $_UA);
+            curl_setopt($ch, CURLOPT_REFERER, DOKU_URL);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
             curl_setopt($ch, CURLOPT_URL, $url . $this->apikey);
             Logger::debug("StaticMap::fetchTile: getting: $url using curl_exec");
@@ -428,9 +432,12 @@ class StaticMap
         } else {
             // use file_get_contents
             global $conf;
-            $opts = ['http' => ['method'          => "GET", 'header'          => "Accept-language: en\r\n" . "User-Agent: $_UA\r\n" . "accept: image/png\r\n", 'request_fulluri' => true]];
-            if (
-                isset($conf['proxy']['host'], $conf['proxy']['port'])
+            $opts = ['http' => [
+                'method' => "GET",
+                'header' => "Accept-language: en\r\n" . "User-Agent: $_UA\r\n" . "accept: image/png\r\n" . "Referer: " . DOKU_URL . "\r\n",
+                'request_fulluri' => true
+            ]];
+            if (isset($conf['proxy']['host'], $conf['proxy']['port'])
                 && $conf['proxy']['host'] !== ''
                 && $conf['proxy']['port'] !== ''
             ) {
@@ -454,7 +461,7 @@ class StaticMap
      * @param string $url
      * @return string|false
      */
-    public function checkTileCache(string $url)
+    public function checkTileCache(string $url): string|false
     {
         $filename = $this->tileUrlToFilename($url);
         if (file_exists($filename)) {
@@ -464,8 +471,8 @@ class StaticMap
     }
 
     /**
-     *
      * @param string $url
+     * @return string
      */
     public function tileUrlToFilename(string $url): string
     {
@@ -478,7 +485,7 @@ class StaticMap
      * @param string $url
      * @param mixed  $data
      */
-    public function writeTileToCache($url, $data): void
+    public function writeTileToCache(string $url, mixed $data): void
     {
         $filename = $this->tileUrlToFilename($url);
         $this->mkdirRecursive(dirname($filename), 0777);
@@ -611,7 +618,7 @@ class StaticMap
 
     /**
      * Draw kml trace on the map.
-     * @throws exception when loading the KML fails
+     * @throws Exception when loading the KML fails
      */
     public function drawKML(): void
     {
@@ -668,7 +675,7 @@ class StaticMap
      * @param int     $colour
      *            drawing colour
      */
-    private function drawPolygon($polygon, int $colour)
+    private function drawPolygon(Polygon $polygon, int $colour): void
     {
         // TODO implementation of drawing holes,
         // maybe draw the polygon to an in-memory image and use imagecopy, draw polygon in col., draw holes in bgcol?
@@ -676,7 +683,7 @@ class StaticMap
         // print_r('Polygon:<br />');
         // print_r($polygon);
         $extPoints = [];
-        // extring is a linestring actually..
+        // extRing is a linestring actually...
         $extRing = $polygon->exteriorRing();
 
         for ($i = 1; $i < $extRing->numGeometries(); $i++) {
@@ -700,10 +707,10 @@ class StaticMap
      * Draw a line on the map.
      *
      * @param LineString $line
-     * @param int        $colour
+     * @param int $colour
      *            drawing colour
      */
-    private function drawLineString($line, $colour)
+    private function drawLineString(LineString $line, int $colour): void
     {
         imagesetthickness($this->image, 2);
         for ($p = 1; $p < $line->numGeometries(); $p++) {
@@ -733,10 +740,10 @@ class StaticMap
      * Draw a point on the map.
      *
      * @param Point $point
-     * @param int   $colour
+     * @param int $colour
      *            drawing colour
      */
-    private function drawPoint($point, $colour)
+    private function drawPoint(Point $point, int $colour): void
     {
         imagesetthickness($this->image, 2);
         // translate to paper space
@@ -758,9 +765,9 @@ class StaticMap
 
     /**
      * Draw gpx trace on the map.
-     * @throws exception when loading the GPX fails
+     * @throws Exception when loading the GPX fails
      */
-    public function drawGPX()
+    public function drawGPX(): void
     {
         $col     = imagecolorallocatealpha($this->image, 0, 0, 255, .4 * 127);
         $gpxgeom = geoPHP::load(file_get_contents($this->gpxFileName), 'gpx');
@@ -769,9 +776,9 @@ class StaticMap
 
     /**
      * Draw geojson on the map.
-     * @throws exception when loading the JSON fails
+     * @throws Exception when loading the JSON fails
      */
-    public function drawGeojson()
+    public function drawGeojson(): void
     {
         $col     = imagecolorallocatealpha($this->image, 255, 0, 255, .4 * 127);
         $gpxgeom = geoPHP::load(file_get_contents($this->geojsonFileName), 'json');
@@ -781,7 +788,7 @@ class StaticMap
     /**
      * add copyright and origin notice and icons to the map.
      */
-    public function drawCopyright()
+    public function drawCopyright(): void
     {
         $logoBaseDir = __DIR__ . '/' . 'logo/';
         $logoImg     = imagecreatefrompng($logoBaseDir . $this->tileInfo ['openstreetmap'] ['logo']);
