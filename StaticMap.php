@@ -380,7 +380,9 @@ class StaticMap
                 $tileData = $this->fetchTile($url);
                 if ($tileData) {
                     $tileImage = imagecreatefromstring($tileData);
-                } else {
+                }
+                // If fetching or creating failed, make a blank placeholder image
+                if (!$tileData || $tileImage === false || $tileImage === null) {
                     $tileImage = imagecreate($this->tileSize, $this->tileSize);
                     $color     = imagecolorallocate($tileImage, 255, 255, 255);
                     @imagestring($tileImage, 1, 127, 127, 'err', $color);
