@@ -361,7 +361,9 @@ class StaticMap
         $startX        = floor($this->centerX - ($this->width / $this->tileSize) / 2);
         $startY        = floor($this->centerY - ($this->height / $this->tileSize) / 2);
         $endX          = ceil($this->centerX + ($this->width / $this->tileSize) / 2);
+        $endX          = min($endX, pow(2,$this->zoom)-1);
         $endY          = ceil($this->centerY + ($this->height / $this->tileSize) / 2);
+        $endY          = min($endY, pow(2,$this->zoom)-1);
         $this->offsetX = -floor(($this->centerX - floor($this->centerX)) * $this->tileSize);
         $this->offsetY = -floor(($this->centerY - floor($this->centerY)) * $this->tileSize);
         $this->offsetX += floor($this->width / 2);
