@@ -395,7 +395,7 @@ class StaticMap
                 if ($tileData) {
                     $tileImage = imagecreatefromstring($tileData);
                 }
-                if (!$tileData || $tileImage === false || $tileImage === null) {
+                if (!$tileData || $tileImage === false || !$tileImage instanceof \GdImage) {
                     $tileImage = imagecreate($this->tileSize, $this->tileSize);
                     $color     = imagecolorallocate($tileImage, 255, 255, 255);
                     @imagestring($tileImage, 1, 127, 127, 'err', $color);
@@ -454,7 +454,8 @@ class StaticMap
                 'header' => "Accept-language: en\r\n" . "User-Agent: $_UA\r\n" . "accept: image/png\r\n" . "Referer: " . DOKU_URL . "\r\n",
                 'request_fulluri' => true
             ]];
-            if (isset($conf['proxy']['host'], $conf['proxy']['port'])
+            if (
+                isset($conf['proxy']['host'], $conf['proxy']['port'])
                 && $conf['proxy']['host'] !== ''
                 && $conf['proxy']['port'] !== ''
             ) {
