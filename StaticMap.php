@@ -67,7 +67,7 @@ class StaticMap
         // assume these are 16x16 px
         'rest' => ['regex' => '/^(?!lightblue(\d+)$)(?!(ww_\S+$))(?!marker(|-blue|-gold|-green|-red)+$)(.*)/', 'extension' => '.png', 'shadow' => 'marker_shadow.png', 'offsetImage' => '-8,-8', 'offsetShadow' => '-1,-1'],
     ];
-    // note event hough $centerX, $centerY, $offsetX and $offsetY are defined as float,
+    // note even though $centerX, $centerY, $offsetX and $offsetY are defined as float,
     //   these are actually integer numbers, but the php floor()/ceil() functions return a float
     private float $centerX;
     private float $centerY;
@@ -274,7 +274,18 @@ class StaticMap
     {
         return implode(
             "&",
-            [$this->zoom, $this->lat, $this->lon, $this->width, $this->height, serialize($this->markers), $this->maptype, $this->kmlFileName, $this->gpxFileName, $this->geojsonFileName]
+            [
+                $this->zoom,
+                $this->lat,
+                $this->lon,
+                $this->width,
+                $this->height,
+                serialize($this->markers),
+                $this->maptype,
+                $this->kmlFileName,
+                $this->gpxFileName,
+                $this->geojsonFileName
+            ]
         );
     }
 
@@ -383,13 +394,14 @@ class StaticMap
                 $tileData = $this->fetchTile($url);
                 if ($tileData) {
                     $tileImage = imagecreatefromstring($tileData);
-                } else {
+                }
+                if (!$tileData || $tileImage === false || $tileImage === null) {
                     $tileImage = imagecreate($this->tileSize, $this->tileSize);
                     $color     = imagecolorallocate($tileImage, 255, 255, 255);
                     @imagestring($tileImage, 1, 127, 127, 'err', $color);
                 }
-                $destX = ($x - $startX) * $this->tileSize + $this->offsetX;
-                $destY = ($y - $startY) * $this->tileSize + $this->offsetY;
+                $destX = (int) ($x - $startX) * $this->tileSize + $this->offsetX;
+                $destY = (int) ($y - $startY) * $this->tileSize + $this->offsetY;
                 Logger::debug("imagecopy tile into image: $destX, $destY", $this->tileSize);
                 imagecopy(
                     $this->image,
@@ -406,16 +418,21 @@ class StaticMap
     }
 
     /**
-     * Fetch a tile and (if configured) store it in the cache.
+     * Fetch a tile (from the source or from the cache) and optionally store it in the cache,
+     * returns false if the tile is not a valid image.
      * @param string $url
      * @return bool|string
      * @todo refactor this to use dokuwiki\HTTP\HTTPClient or dokuwiki\HTTP\DokuHTTPClient
      *          for better proxy handling...
      */
-    public function fetchTile(string $url)
+    public function fetchTile(string $url): bool|string
     {
-        if ($this->useTileCache && ($cached = $this->checkTileCache($url)))
-            return $cached;
+        if ($this->useTileCache) {
+            $cached = $this->checkTileCache($url);
+            if ($cached) {
+                return $cached;
+            }
+        }
 
         $_UA = 'Mozilla/4.0 (compatible; DokuWikiSpatial HTTP Client; ' . PHP_OS . ')';
         if (function_exists("curl_init")) {
@@ -426,7 +443,7 @@ class StaticMap
             curl_setopt($ch, CURLOPT_REFERER, DOKU_URL);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
             curl_setopt($ch, CURLOPT_URL, $url . $this->apikey);
-            Logger::debug("StaticMap::fetchTile: getting: $url using curl_exec");
+            Logger::debug("fetchTile: getting: $url using curl_exec");
             $tile = curl_exec($ch);
             curl_close($ch);
         } else {
@@ -445,15 +462,18 @@ class StaticMap
             }
 
             $context = stream_context_create($opts);
-            Logger::debug(
-                "StaticMap::fetchTile: getting: $url . $this->apikey using file_get_contents and options $opts"
-            );
+            Logger::debug("fetchTile: getting: $url . $this->apikey using file_get_contents and options", $opts);
             $tile = file_get_contents($url . $this->apikey, false, $context);
         }
-        if ($tile && $this->useTileCache) {
-            $this->writeTileToCache($url, $tile);
+
+        // check if we retrieved a valid image
+        if (@imagecreatefromstring($tile) !== false) {
+            if ($tile && $this->useTileCache) {
+                $this->writeTileToCache($url, $tile);
+            }
+            return $tile;
         }
-        return $tile;
+        return false;
     }
 
     /**
@@ -564,11 +584,11 @@ class StaticMap
                 $markerShadowImg = imagecreatefrompng($markerBaseDir . '/' . $markerShadow);
             }
             // calc position
-            $destX = floor(
+            $destX = (int) floor(
                 ($this->width / 2) -
                 $this->tileSize * ($this->centerX - $this->lonToTile($markerLon, $this->zoom))
             );
-            $destY = floor(
+            $destY = (int) floor(
                 ($this->height / 2) -
                 $this->tileSize * ($this->centerY - $this->latToTile($markerLat, $this->zoom))
             );
