@@ -34,10 +34,10 @@ $meta['enableGoogle']             = array(
 $meta['googleAPIkey']             = array(
     'string'
 );
-$meta['enableBing']               = array(
+$meta['enableAzure']               = array(
     'onoff'
 );
-$meta['bingAPIKey']               = array(
+$meta['azureAPIKey']               = array(
     'string'
 );
 $meta['tfApiKey']                 = array(

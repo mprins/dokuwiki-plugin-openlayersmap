@@ -111,19 +111,21 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
             // Google
             $imgUrl .= $this->getGoogle($gmap, $overlay);
             $imgUrl .= "&.png";
-        } elseif (stripos($gmap ['baselyr'], 'bing') !== false) {
-            // Bing
-            if (!$this->getConf('bingAPIKey')) {
-                // in case there is no Bing api key we'll use OSM
+        } elseif (stripos($gmap ['baselyr'], 'azure') !== false) {
+            if (!$this->getConf('azureAPIKey')) {
+                // in case there is no Azure api key we'll use OSM
                 $_firstimageID = $this->getStaticOSM($gmap, $overlay);
                 $imgUrl        .= $_firstimageID;
                 if ($this->getConf('optionStaticMapGenerator') == 'remote') {
                     $imgUrl .= "&.png";
                 }
             } else {
-                // seems that Bing doesn't like the DW client, turn off caching
                 $_nocache = true;
-                $imgUrl   .= $this->getBing($gmap, $overlay) . "&.png";
+                // NOTE the azure API key must be transmitted in the request header as `x-ms-client-id` as well as an
+                // Accept header with 'image/png'.
+                // So ultimately this will fail if we try to use the Azure maps API without local static map generator,
+                // but we'll do our best to generate a map URL for the user
+                $imgUrl .= $this->getAzure($gmap, $overlay) . "&.png";
             }
          /* elseif (stripos ( $gmap ['baselyr'], 'mapquest' ) !== false) {
             // MapQuest
@@ -562,54 +564,47 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
     }
 
     /**
-     * Create a Bing maps static image url w/ the poi.
+     * Create an Azure maps static image url w/ the poi.
      *
      * @param array $gmap
      * @param array $overlay
+     * @return string
+     *
+     * @see https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-static-image?view=rest-maps-2026-01-01&tabs=HTTP
      */
-    private function getBing(array $gmap, array $overlay): string
+    private function getAzure(array $gmap, array $overlay): string
     {
         $maptype = match ($gmap ['baselyr']) {
-            've hybrid', 'bing hybrid' => 'AerialWithLabels',
-            've sat', 'bing sat' => 'Aerial',
-            default => 'Road',
+            've sat', 'azure sat' => 'microsoft.imagery',
+            default => 'microsoft.base.road',
         };
-        $imgUrl = "https://dev.virtualearth.net/REST/v1/Imagery/Map/" . $maptype;// . "/";
+        $imgUrl = "https://atlas.microsoft.com/map/static?api-version=2024-04-01&tilesetId=" . $maptype;// . "/";
         if ($this->getConf('autoZoomMap')) {
             $bbox = $this->calcBBOX($overlay, $gmap ['lat'], $gmap ['lon']);
-            //$imgUrl .= "?ma=" . $bbox ['minlat'] . "," . $bbox ['minlon'] . ","
-            //          . $bbox ['maxlat'] . "," . $bbox ['maxlon'];
-            $imgUrl .= "?ma=" . $bbox ['minlat'] . "%2C" . $bbox ['minlon'] . "%2C" . $bbox ['maxlat']
-                . "%2C" . $bbox ['maxlon'];
-            $imgUrl .= "&dcl=1";
+            $imgUrl .= "&bbox=" . $bbox ['minlon'] . "%2C" . $bbox ['minlat'] . "%2C" . $bbox ['maxlon'] . "%2C" . $bbox ['maxlat'];
+        } else {
+            $imgUrl .= "&center=" . $gmap ['lon'] . "%2C" . $gmap ['lat'];
+            $imgUrl .= "&zoom=" . $gmap ['zoom'];
         }
-        if (!str_contains($imgUrl, "?"))
-            $imgUrl .= "?";
-
-        //$imgUrl .= "&ms=" . str_replace ( "px", "", $gmap ['width'] ) . ","
-        //          . str_replace ( "px", "", $gmap ['height'] );
-        $imgUrl .= "&ms=" . str_replace("px", "", $gmap ['width']) . "%2C"
-            . str_replace("px", "", $gmap ['height']);
-        $imgUrl .= "&key=" . $this->getConf('bingAPIKey');
+        $imgUrl .= "&width=" . str_replace("px", "", $gmap ['width']);
+        $imgUrl .= "&height=" . str_replace("px", "", $gmap ['height']);
         if ($overlay !== []) {
             $rowId = 0;
+            $imgUrl .= "&pins=default%7C";
             foreach ($overlay as $data) {
                 [$lat, $lon, $text, $angle, $opacity, $img] = $data;
-                // TODO icon style lookup, see: http://msdn.microsoft.com/en-us/library/ff701719.aspx for iconStyle
-                $iconStyle = 32;
                 $rowId++;
-                // NOTE: the max number of pushpins is 18! or we have to use POST
-                //  (http://msdn.microsoft.com/en-us/library/ff701724.aspx)
-                if ($rowId == 18) {
+                // The Azure Maps account S0 SKU only supports a single instance of the pins parameter and the number
+                // of locations is limited to 5 per pin. Other SKUs allow up to 25 instances of the pins parameter
+                // to specify multiple pin styles, and the number of locations is limited to 50 per pin.
+                if ($rowId == 6) {
                     break;
                 }
-                //$imgUrl .= "&pp=$lat,$lon;$iconStyle;$rowId";
-                $imgUrl .= "&pp=$lat%2C$lon%3B$iconStyle%3B$rowId";
+                $imgUrl .="%7C'$rowId'$lon+$lat";
             }
         }
         global $conf;
-        $imgUrl .= "&fmt=png";
-        $imgUrl .= "&c=" . $conf ['lang'];
+        $imgUrl .= "&language=" . $conf ['lang'];
         return $imgUrl;
     }
 
@@ -725,7 +720,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
             $olscript     = '';
             $stadiaEnable = $this->getConf('enableStadia');
             $osmEnable    = $this->getConf('enableOSM');
-            $enableBing   = $this->getConf('enableBing');
+            $enableAzure   = $this->getConf('enableAzure');
 
             $scriptEnable = '';
             if (!$initialised) {
@@ -738,8 +733,8 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
                 $scriptSrc    = $olscript ? 'const olEnable=true;' : 'const olEnable=false;';
                 $scriptSrc    .= 'const osmEnable=' . ($osmEnable ? 'true' : 'false') . ';';
                 $scriptSrc    .= 'const stadiaEnable=' . ($stadiaEnable ? 'true' : 'false') . ';';
-                $scriptSrc    .= 'const bEnable=' . ($enableBing ? 'true' : 'false') . ';';
-                $scriptSrc    .= 'const bApiKey="' . $this->getConf('bingAPIKey') . '";';
+                $scriptSrc    .= 'const aEnable=' . ($enableAzure ? 'true' : 'false') . ';';
+                $scriptSrc    .= 'const aApiKey="' . $this->getConf('azureAPIKey') . '";';
                 $scriptSrc    .= 'const tfApiKey="' . $this->getConf('tfApiKey') . '";';
                 $scriptSrc    .= 'const gApiKey="' . $this->getConf('googleAPIkey') . '";';
                 $scriptSrc    .= 'olMapData = []; let olMaps = {}; let olMapOverlays = {};';

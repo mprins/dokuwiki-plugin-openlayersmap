@@ -20,13 +20,13 @@
  *
  * @author Mark C. Prins
  */
-$lang['bingAPIKey']               = 'Bing Maps API sleutel. Haal een eigen sleutel op: https://www.bingmapsportal.com/application';
+$lang['azureAPIKey']              = 'Azure Maps API sleutel.';
 $lang['tfApiKey']                 = 'Thunderforest API sleutel. Haal een eigen sleutel op: https://manage.thunderforest.com/dashboard';
 $lang['googleAPIkey']             = 'Google API Static Maps sleutel. Haal een eigen sleutel op: https://code.google.com/apis/console';
 $lang['iconUrlOverload']          = 'URL voor kaart ikonen bij gebruik van statische kaarten op een non-internet host';
 $lang['enableStadia']             = 'Maak gebruik van Stadia Maps als basiskaart mogelijk';
 $lang['enableGoogle']             = 'Maak gebruik van Google als basiskaart mogelijk';
-$lang['enableBing']               = 'Maak gebruik van Bing als basiskaart mogelijk';
+$lang['enableAzure']              = 'Maak gebruik van Azure als basiskaart mogelijk (niet ondersteund voor statische kaarten)';
 $lang['enableOSM']                = 'Maak gebruik van OpenStreetMap als basiskaart mogelijk';
 $lang['enableA11y']               = 'Maak a11y/print output (statische kaart, legenda tabel) mogelijk';
 $lang['optionStaticMapGenerator'] = 'Lokale of externe statische kaart generator. <b>Gebruik van \'local\' faalt als de webserver het internet niet op kan.</b>';

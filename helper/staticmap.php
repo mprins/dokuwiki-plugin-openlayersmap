@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2008-2023 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2026 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -30,9 +30,9 @@ use dokuwiki\plugin\openlayersmap\StaticMap;
 class helper_plugin_openlayersmap_staticmap extends Plugin
 {
     /** maximum width of the resulting image. */
-    private $maxWidth = 1024;
+    private int $maxWidth = 1024;
     /** maximum heigth of the resulting image. */
-    private $maxHeight = 1024;
+    private int $maxHeight = 1024;
 
     /**
      * Provide metadata of the public methods of this class.
@@ -41,7 +41,27 @@ class helper_plugin_openlayersmap_staticmap extends Plugin
      */
     public function getMethods(): array
     {
-        return [['name'   => 'getMap', 'desc'   => 'returns url to the image', 'params' => ['lat'     => 'float', 'lon'     => 'float', 'zoom'    => 'integer', 'size'    => 'string', 'maptype' => 'string', 'markers' => 'string', 'gpx'     => 'string', 'kml'     => 'string', 'geojson' => 'string', 'apikey'  => 'string'], 'return' => ['image' => 'string']]];
+        return [
+            [
+                'name' => 'getMap',
+                'desc' => 'returns url to the image',
+                'params' => [
+                    'lat' => 'float',
+                    'lon' => 'float',
+                    'zoom' => 'integer',
+                    'size' => 'string',
+                    'maptype' => 'string',
+                    'markers' => 'string',
+                    'gpx' => 'string',
+                    'kml' => 'string',
+                    'geojson' => 'string',
+                    'apikey' => 'string'
+                ],
+                'return' => [
+                    'image' => 'string'
+                ]
+            ]
+        ];
     }
 
     /**

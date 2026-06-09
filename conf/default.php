@@ -22,14 +22,14 @@
  * @author Mark C. Prins
  */
 
-$conf['bingAPIKey']               = '';
+$conf['azureAPIKey']              = '';
 $conf['tfApiKey']                 = '';
 $conf['iconUrlOverload']          = '';
 $conf['enableStadia']             = 0;
 $conf['enableGoogle']             = 0;
 $conf['googleAPIkey']             = '';
 $conf['enableOSM']                = 1;
-$conf['enableBing']               = 0;
+$conf['enableAzure']              = 0;
 $conf['enableA11y']               = 1;
 $conf['optionStaticMapGenerator'] = 'local';
 $conf['autoZoomMap']              = 1;

@@ -21,13 +21,13 @@
  * @license BSD license
  * @author  Aleksej Kozlov <nellesmeti@gmail.com>
  */
-$lang['bingAPIKey']               = 'Ключ для Bing Maps API. Получите ключ тут: https://www.bingmapsportal.com/application';
+$lang['azureAPIKey']              = 'Ключ для Azure Maps API.';
 $lang['tfApiKey']                 = 'Ключ для Thunderforest API. Получите ключ тут: https://manage.thunderforest.com/dashboard';
 $lang['iconUrlOverload']          = 'URL для иконок карт (при использовании статических карт на не подключённом к интернету сервере)';
 $lang['enableStadia']             = 'Разрешить использование Stadia Maps как провайдера карт';
 $lang['enableGoogle']             = 'Разрешить использование Google как провайдера карт';
 $lang['googleAPIkey']             = 'Ключ для Google Static Maps API. Получите ключ тут: https://code.google.com/apis/console';
-$lang['enableBing']               = 'Разрешить использование Bing как провайдера карт';
+$lang['enableAzure']              = 'Разрешить использование Azure как провайдера карт (unsupported for static maps)';
 $lang['enableOSM']                = 'Разрешить использование OpenStreetMap как провайдера карт';
 $lang['enableA11y']               = 'Разрешить вывод a11y/print (статическая карта, таблица с легендой)';
 $lang['optionStaticMapGenerator'] = 'Локальное (local) или удалённое (remote) хранилище статических карт. <b>Локальное хранилище не будет работать, если сервер не подключён к интернету.</b>';
