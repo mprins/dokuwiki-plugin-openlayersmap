@@ -578,7 +578,9 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
             've sat', 'azure sat' => 'microsoft.imagery',
             default => 'microsoft.base.road',
         };
-        $imgUrl = "https://atlas.microsoft.com/map/static?api-version=2024-04-01&tilesetId=" . $maptype;// . "/";
+        $imgUrl = "https://atlas.microsoft.com/map/static?api-version=2024-04-01&tilesetId=" . $maptype;
+        // unlikely to work as it should be in the req-header, but we'll do our best to generate a map URL for the user
+        $imgUrl .= "&subscription-key=" . $this->getConf('azureAPIKey');
         if ($this->getConf('autoZoomMap')) {
             $bbox = $this->calcBBOX($overlay, $gmap ['lat'], $gmap ['lon']);
             $imgUrl .= "&bbox=" . $bbox ['minlon'] . "%2C" . $bbox ['minlat'] . "%2C" . $bbox ['maxlon'] . "%2C" . $bbox ['maxlat'];

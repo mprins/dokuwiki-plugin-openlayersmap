@@ -187,7 +187,7 @@ function createMap(mapOpts, poi) {
             }));
     }
 
-    if (bEnable && bApiKey !== '') {
+    if (aEnable && aApiKey !== '') {
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "azure road",
