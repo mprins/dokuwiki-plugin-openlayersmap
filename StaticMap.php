@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2012-2023 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2012-2026 Mark C. Prins <mprins@users.sf.net>
  *
  * In part based on staticMapLite 0.03 available at http://staticmaplite.svn.sourceforge.net/viewvc/staticmaplite/
  *

@@ -22,13 +22,13 @@
  * @author Mark C. Prins
  * @author Txus
  */
-$lang['bingAPIKey']               = 'Bing Maps API key. Consigue tu clave en: https://www.bingmapsportal.com/application';
+$lang['azureAPIKey']              = 'Azure Maps API key.';
 $lang['tfApiKey']                 = 'Thunderforest API key. Consigue tu clave en: https://manage.thunderforest.com/dashboard';
 $lang['iconUrlOverload']          = 'URL para iconos cuando usas un mapa estático en uná máquina sin internet';
 $lang['enableStadia']             = 'Habilita Stadia Maps como proveedor de mapas';
 $lang['enableGoogle']             = 'Habilita Google como proveedor de mapas';
 $lang['googleAPIkey']             = 'Google Static Maps API key. Consigue tu clave en: https://code.google.com/apis/console';
-$lang['enableBing']               = 'Habilita Bing como proveedor de mapas';
+$lang['enableAzure']              = 'Habilita Azure como proveedor de mapas (unsupported for static maps)';
 $lang['enableOSM']                = 'Habilita OpenStreetMap como proveedor de mapas';
 $lang['enableA11y']               = 'Habilita a11y/print para mapa estático, tabla de nombres';
 $lang['optionStaticMapGenerator'] = 'FIXME (translate)- Local or remote static map compiler. <b>Using \'local\' fails when the server can\'t go on the internet.</b>';

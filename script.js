@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2023 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2026 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -17,11 +17,11 @@
 
 /**
  * Test for css support in the browser by sniffing for a css class we added
- * using javascript added by the action plugin; this is an edge case because
- * browsers that support javascript generally support css as well.
+ * using JavaScript added by the action plugin; this is an edge case because
+ * browsers that support JavaScript generally support css as well.
  *
  * @returns {Boolean} true when the browser supports css (and implicitly
- *          javascript)
+ *          JavaScript)
  */
 function olTestCSSsupport() {
     return (jQuery('.olCSSsupported').length > 0);
@@ -187,37 +187,28 @@ function createMap(mapOpts, poi) {
             }));
     }
 
-    if (bEnable && bApiKey !== '') {
+    if (aEnable && aApiKey !== '') {
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
-                visible: mapOpts.baselyr === "bing road",
-                title: 'bing road',
+                visible: mapOpts.baselyr === "azure road",
+                title: 'Azure road',
                 type: 'base',
-                source: new ol.source.BingMaps({
-                    key: bApiKey,
+                source: new ol.source.ImageTile({
+                    attributions: `© ${new Date().getFullYear()} TomTom, Microsoft`,
+                    url: `https://atlas.microsoft.com/map/tile?subscription-key=${aApiKey}&api-version=2.0&tilesetId=microsoft.base.road&zoom={z}&x={x}&y={y}&tileSize=256`,
                     imagerySet: 'Road'
                 })
             }));
 
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
-                visible: mapOpts.baselyr === "bing sat",
-                title: 'bing sat',
+                visible: mapOpts.baselyr === "azure sat",
+                title: 'Azure sat',
                 type: 'base',
-                source: new ol.source.BingMaps({
-                    key: bApiKey,
+                source: new ol.source.ImageTile({
+                    attributions: `© ${new Date().getFullYear()} TomTom, Microsoft`,
+                    url: `https://atlas.microsoft.com/map/tile?subscription-key=${aApiKey}&api-version=2.0&tilesetId=microsoft.imagery&zoom={z}&x={x}&y={y}&tileSize=256`,
                     imagerySet: 'Aerial'
-                })
-            }));
-
-        baseLyrGroup.getLayers().push(
-            new ol.layer.Tile({
-                visible: mapOpts.baselyr === "bing hybrid",
-                title: 'bing hybrid',
-                type: 'base',
-                source: new ol.source.BingMaps({
-                    key: bApiKey,
-                    imagerySet: 'AerialWithLabels'
                 })
             }));
     }
