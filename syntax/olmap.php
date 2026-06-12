@@ -602,7 +602,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
                 if ($rowId == 6) {
                     break;
                 }
-                $imgUrl .="%7C'$rowId'$lon%20$lat";
+                $imgUrl .= "%7C'$rowId'$lon%20$lat";
             }
         }
         global $conf;
