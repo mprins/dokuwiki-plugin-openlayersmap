@@ -17,14 +17,16 @@ use dokuwiki\Extension\SyntaxPlugin;
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotPascalCase
  */
 /**
  * adds a WMS 1.3.0 layer to your map.
  */
 class syntax_plugin_openlayersmap_wmslayer extends SyntaxPlugin
 {
-    private $dflt = ['id'          => 'olmap', 'name'        => '', 'url'         => '', 'opacity'     => 0.8, 'attribution' => '', 'visible'     => false, 'layers'      => '', 'version'     => '1.3.0', 'format'      => 'image/png', 'transparent' => 'true', 'baselayer'   => 'false'];
+    private array $dflt = ['id' => 'olmap', 'name' => '', 'url' => '', 'opacity' => 0.8, 'attribution' => '',
+        'visible' => false, 'layers' => '', 'version' => '1.3.0', 'format' => 'image/png',
+        'transparent' => 'true', 'baselayer' => 'false'];
 
     /**
      * (non-PHPdoc)

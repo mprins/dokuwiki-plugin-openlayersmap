@@ -12,16 +12,17 @@
     }
   ],
   "require": {
-    "php": ">=8.0"
+    "ext-gd": "For image manipulation",
+    "php": ">=8.2"
   },
   "config": {
     "platform": {
-      "php": "8.0"
+      "php": "8.2"
     }
   },
   "suggest": {
-    "ext-gd": "For image manipulation",
-    "ext-imagick": "For image manipulation"
+    "ext-imagick": "For image manipulation",
+    "ext-curl": "For downloading tiles to the server"
   },
   "funding": [
     {

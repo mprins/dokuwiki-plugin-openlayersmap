@@ -12,11 +12,12 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3'
+          coverage: none
           tools: cs2pr, phpcs
 
       - name: retrieve script
-        run: wget https://raw.github.com/splitbrain/dokuwiki-travis/master/travis.sh
+        run: wget https://raw.githubusercontent.com/splitbrain/dokuwiki-travis/master/travis.sh
 
       - name: Install DokuWiki
         env:
@@ -29,5 +30,4 @@ jobs:
         run: phpcs -v --standard=_test/phpcs_MigrationAdjustments.xml --report-full --report-checkstyle=./phpcs-report.xml lib/plugins/openlayersmap
 
       - name: Annotate PR
-        if: ${{ always() && steps.phpcs.outcome == 'failure' }}
         run: cs2pr --notices-as-warnings --colorize ./phpcs-report.xml

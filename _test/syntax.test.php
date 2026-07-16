@@ -21,13 +21,15 @@
  * @group plugin_openlayersmap
  * @group plugins
  */
-class syntax_plugin_openlayersmap_test extends DokuWikiTest {
+class syntax_plugin_openlayersmap_test extends DokuWikiTest
+{
     protected $pluginsEnabled = array('openlayersmap', 'geophp');
 
     /**
      * copy data and add pages to the index.
      */
-    public static function setUpBeforeClass(): void {
+    public static function setUpBeforeClass(): void
+    {
         parent::setUpBeforeClass();
         global $conf;
         $conf['allowdebug'] = 1;
@@ -41,7 +43,8 @@ class syntax_plugin_openlayersmap_test extends DokuWikiTest {
         TestUtils::rcopy(TMP_DIR, __DIR__ . '/data/');
     }
 
-    final public function setUp(): void {
+    final public function setUp(): void
+    {
         parent::setUp();
 
         global $conf;
@@ -50,40 +53,49 @@ class syntax_plugin_openlayersmap_test extends DokuWikiTest {
 //        foreach($data as $val) {
 //            idx_addPage($val['id']);
 //        }
-        if($conf['allowdebug']) {
-            if(mkdir(DOKU_TMP_DATA . 'data/log/debug/', 0777, true)) {
+        if ($conf['allowdebug']) {
+            if (mkdir(DOKU_TMP_DATA . 'data/log/debug/', 0777, true)) {
                 touch(DOKU_TMP_DATA . 'data/log/debug/' . date('Y-m-d') . '.log');
             }
-
         }
     }
 
-    final public function tearDown(): void {
+    final public function tearDown(): void
+    {
         parent::tearDown();
 
         global $conf;
         // try to get the debug log after running the test, print and clear
-        if($conf['allowdebug']) {
+        if ($conf['allowdebug']) {
             print "\n";
             readfile(DOKU_TMP_DATA . 'data/log/debug/' . date('Y-m-d') . '.log');
             unlink(DOKU_TMP_DATA . 'data/log/debug/' . date('Y-m-d') . '.log');
         }
     }
 
-    final public function test_rur(): void {
+    /**
+     * @throws Exception
+     */
+    final public function test_rur(): void
+    {
         $request  = new TestRequest();
         $response = $request->get(array('id' => 'rur'));
         self::assertNotNull($response);
 
         $_content = $response->getContent();
         self::assertStringContainsString('Rur', $_content);
-        self::assertStringContainsString('<script defer="defer" src="/lib/plugins/openlayersmap/ol/ol.js"></script>', $_content);
+        self::assertStringContainsString(
+            '<script defer="defer" src="/lib/plugins/openlayersmap/ol/ol.js"></script>',
+            $_content
+        );
         self::assertStringContainsString('<div id="olMap-static" class="olStaticMap">', $_content);
         self::assertStringContainsString('<table id="olMap-table" class="olPOItable">', $_content);
 
         // <img src="/./lib/exe/fetch.php?w=650&amp;h=550&amp;tok=72bf3a&amp;media=olmapmaps:openstreetmap:13:cache_8b:9b:94cd3dabd2d1c470a2d5b4bea6df.png"
         // class="medialeft" loading="lazy" title="Rur parkings " alt="Rur parkings " width="650" height="550" />
-        $_staticImage = $response->queryHTML('img[src*="olmapmaps:openstreetmap:13:cache_8b:9b:94cd3dabd2d1c470a2d5b4bea6df.png"]');
+        $_staticImage = $response->queryHTML(
+            'img[src*="olmapmaps:openstreetmap:13:cache_8b:9b:94cd3dabd2d1c470a2d5b4bea6df.png"]'
+        );
         self::assertNotEmpty($_staticImage);
         self::assertEquals('medialeft', $_staticImage->attr('class'));
         self::assertEquals('650', $_staticImage->attr('width'));
@@ -132,13 +144,18 @@ class syntax_plugin_openlayersmap_test extends DokuWikiTest {
         self::assertEquals('6.29766º', $_lonCells->get(1)->textContent);
     }
 
-    final public function test_issue34(): void {
+    final public function test_issue34(): void
+    {
         $request  = new TestRequest();
         $response = $request->get(array('id' => 'issue34'));
         self::assertNotNull($response);
     }
 
-    final public function test_issue34_fixed(): void {
+    /**
+     * @throws Exception
+     */
+    final public function test_issue34_fixed(): void
+    {
         $request  = new TestRequest();
         $response = $request->get(array('id' => 'issue34-fixed'));
         self::assertNotNull($response);
@@ -148,7 +165,9 @@ class syntax_plugin_openlayersmap_test extends DokuWikiTest {
         self::assertStringContainsString('<div id="olMap_example-static" class="olStaticMap">', $_content);
         self::assertStringContainsString('<table id="olMap_example-table" class="olPOItable">', $_content);
 
-        $_staticImage = $response->queryHTML('img[src*="olmapmaps:openstreetmap:14:cache_32:12:6533646ecb8cf2f193db46305e5f.png"]');
+        $_staticImage = $response->queryHTML(
+            'img[src*="olmapmaps:openstreetmap:14:cache_32:12:6533646ecb8cf2f193db46305e5f.png"]'
+        );
         self::assertNotEmpty($_staticImage);
         self::assertEquals('550', $_staticImage->attr('width'));
         self::assertEquals('450', $_staticImage->attr('height'));

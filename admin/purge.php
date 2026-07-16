@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2008-2023 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2026 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -15,7 +15,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotPascalCase
  */
 use dokuwiki\Extension\AdminPlugin;
 use dokuwiki\Logger;
@@ -56,13 +56,13 @@ class admin_plugin_openlayersmap_purge extends AdminPlugin
         if (isset($_REQUEST['purgetiles'])) {
             $path = $conf['cachedir'] . '/olmaptiles';
             if ($this->rrmdir($path)) {
-                msg($this->getLang('admin_purged_tiles'), 0);
+                msg($this->getLang('admin_purged_tiles'));
             }
         }
         if (isset($_REQUEST['purgemaps'])) {
             $path = $conf['mediadir'] . '/olmapmaps';
             if ($this->rrmdir($path)) {
-                msg($this->getLang('admin_purged_maps'), 0);
+                msg($this->getLang('admin_purged_maps'));
             }
         }
     }

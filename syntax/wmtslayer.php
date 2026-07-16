@@ -17,14 +17,15 @@ use dokuwiki\Extension\SyntaxPlugin;
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotPascalCase
  */
 /**
  * adds a WMTS 1.0.0 layer to your map.
  */
 class syntax_plugin_openlayersmap_wmtslayer extends SyntaxPlugin
 {
-    private $dflt = ['id' => 'olmap', 'name' => '', 'url' => '', 'opacity' => 0.8, 'attribution' => '', 'visible' => false, 'layer' => '', 'matrixSet' => '', 'transparent' => 'true', 'baselayer' => 'false'];
+    private array $dflt = ['id' => 'olmap', 'name' => '', 'url' => '', 'opacity' => 0.8, 'attribution' => '',
+        'visible' => false, 'layer' => '', 'matrixSet' => '', 'transparent' => 'true', 'baselayer' => 'false'];
 
     /**
      * (non-PHPdoc)
@@ -63,7 +64,8 @@ class syntax_plugin_openlayersmap_wmtslayer extends SyntaxPlugin
      */
     final public function connectTo($mode): void
     {
-        // look for: <olmap_wmstlayer id="olmap" name="geolandbasemap" url="https://mapsneu.wien.gv.at/basemapneu/1.0.0/WMTSCapabilities.xml"
+        // look for: <olmap_wmstlayer id="olmap" name="geolandbasemap"
+        //    url="https://mapsneu.wien.gv.at/basemapneu/1.0.0/WMTSCapabilities.xml"
         // attribution="basemap.at" visible="true" layer="geolandbasemap" matrixSet=google3857></olmap_wmtslayer>
         $this->Lexer->addSpecialPattern(
             '<olmap_wmtslayer ?[^>\n]*>.*?</olmap_wmtslayer>',
