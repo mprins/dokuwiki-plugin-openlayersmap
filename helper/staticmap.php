@@ -15,9 +15,8 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotPascalCase
  */
-use dokuwiki\Logger;
 use dokuwiki\Extension\Plugin;
 use dokuwiki\plugin\openlayersmap\StaticMap;
 
@@ -108,9 +107,9 @@ class helper_plugin_openlayersmap_staticmap extends Plugin
 
         // cleanup/validate gpx/kml
         $kml = $this->mediaIdToPath($kml);
-        // Logger::debug('helper_plugin_openlayersmap_staticmap::getMap: kml file:',$kml);
+        // dokuwiki\Logger::debug('helper_plugin_openlayersmap_staticmap::getMap: kml file:',$kml);
         $gpx = $this->mediaIdToPath($gpx);
-        // Logger::debug('helper_plugin_openlayersmap_staticmap::getMap: gpx file:',$gpx);
+        // dokuwiki\Logger::debug('helper_plugin_openlayersmap_staticmap::getMap: gpx file:',$gpx);
         $geojson = $this->mediaIdToPath($geojson);
 
         // create map

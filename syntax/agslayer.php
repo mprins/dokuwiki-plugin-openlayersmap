@@ -17,14 +17,24 @@ use dokuwiki\Extension\SyntaxPlugin;
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotPascalCase
  */
 /**
  * adds a AGS layer to your map.
  */
 class syntax_plugin_openlayersmap_agslayer extends SyntaxPlugin
 {
-    private $dflt = ['id'          => 'olmap', 'name'        => '', 'url'         => '', 'opacity'     => 0.8, 'attribution' => '', 'visible'     => false, 'layers'      => '', 'format'      => 'png', 'transparent' => 'true', 'baselayer'   => 'false'];
+    private array $dflt = [
+        'id' => 'olmap',
+        'name' => '',
+        'url' => '',
+        'opacity' => 0.8,
+        'attribution' => '',
+        'visible' => false,
+        'layers' => '',
+        'format' => 'png',
+        'transparent' => 'true',
+        'baselayer' => 'false'];
 
     /**
      * (non-PHPdoc)
@@ -68,7 +78,10 @@ class syntax_plugin_openlayersmap_agslayer extends SyntaxPlugin
         // url="http://geoservices2.wallonie.be/arcgis/rest/services/APP_KAYAK/KAYAK/MapServer/export"
         // attribution="wallonie.be" visible="true" layers="show:0,1,2,3,4,7"></olmap_agslayer>
         // sample:
-        // http://geoservices2.wallonie.be/arcgis/rest/services/APP_KAYAK/KAYAK/MapServer/export?LAYERS=show%3A0%2C1%2C2%2C3%2C4%2C7&TRANSPARENT=true&FORMAT=png&BBOX=643294.029959%2C6467184.088252%2C645740.014863%2C6469630.073157&SIZE=256%2C256&F=html&BBOXSR=3857&IMAGESR=3857
+        // http://geoservices2.wallonie.be/arcgis/rest/services/APP_KAYAK/KAYAK/MapServer/export?
+        //LAYERS=show%3A0%2C1%2C2%2C3%2C4%2C7&TRANSPARENT=true&FORMAT=png&
+        //BBOX=643294.029959%2C6467184.088252%2C645740.014863%2C6469630.073157&SIZE=256%2C256&F=html&
+        //BBOXSR=3857&IMAGESR=3857
         $this->Lexer->addSpecialPattern(
             '<olmap_agslayer ?[^>\n]*>.*?</olmap_agslayer>',
             $mode,

@@ -22,6 +22,7 @@
 namespace dokuwiki\plugin\openlayersmap;
 
 use Exception;
+use GdImage;
 use geoPHP\Geometry\Geometry;
 use geoPHP\Geometry\GeometryCollection;
 use geoPHP\Geometry\LineString;
@@ -42,16 +43,24 @@ class StaticMap
     private int $tileSize = 256;
     private array $tileInfo = [
         // OSM sources
-        'openstreetmap' => ['txt' => '(c) OpenStreetMap data/ODbL', 'logo' => 'osm_logo.png', 'url' => 'https://tile.openstreetmap.org/{Z}/{X}/{Y}.png'],
+        'openstreetmap' => ['txt' => '(c) OpenStreetMap data/ODbL', 'logo' => 'osm_logo.png',
+            'url' => 'https://tile.openstreetmap.org/{Z}/{X}/{Y}.png'],
         // OpenTopoMap sources
-        'opentopomap' => ['txt' => '(c) OpenStreetMap data/ODbL, SRTM | style: (c) OpenTopoMap', 'logo' => 'osm_logo.png', 'url' => 'https://tile.opentopomap.org/{Z}/{X}/{Y}.png'],
+        'opentopomap' => ['txt' => '(c) OpenStreetMap data/ODbL, SRTM | style: (c) OpenTopoMap',
+            'logo' => 'osm_logo.png', 'url' => 'https://tile.opentopomap.org/{Z}/{X}/{Y}.png'],
         // OCM sources
-        'cycle' => ['txt' => '(c) Thunderforest maps', 'logo' => 'tf_logo.png', 'url' => 'https://tile.thunderforest.com/cycle/{Z}/{X}/{Y}.png'],
-        'transport' => ['txt' => '(c) Thunderforest maps', 'logo' => 'tf_logo.png', 'url' => 'https://tile.thunderforest.com/transport/{Z}/{X}/{Y}.png'],
-        'landscape' => ['txt' => '(c) Thunderforest maps', 'logo' => 'tf_logo.png', 'url' => 'https://tile.thunderforest.com/landscape/{Z}/{X}/{Y}.png'],
-        'outdoors' => ['txt' => '(c) Thunderforest maps', 'logo' => 'tf_logo.png', 'url' => 'https://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png'],
-        'toner' => ['txt' => '(c) Stadia Maps;Stamen Design;OpenStreetMap contributors', 'logo' => 'stamen.png', 'url' => 'https://tiles-eu.stadiamaps.com/tiles/stamen_toner/{Z}/{X}/{Y}.png'],
-        'terrain' => ['txt' => '(c) Stadia Maps;Stamen Design;OpenStreetMap contributors', 'logo' => 'stamen.png', 'url' => 'https://tiles-eu.stadiamaps.com/tiles/stamen_terrain/{Z}/{X}/{Y}.png'],
+        'cycle' => ['txt' => '(c) Thunderforest maps', 'logo' => 'tf_logo.png',
+            'url' => 'https://tile.thunderforest.com/cycle/{Z}/{X}/{Y}.png'],
+        'transport' => ['txt' => '(c) Thunderforest maps', 'logo' => 'tf_logo.png',
+            'url' => 'https://tile.thunderforest.com/transport/{Z}/{X}/{Y}.png'],
+        'landscape' => ['txt' => '(c) Thunderforest maps', 'logo' => 'tf_logo.png',
+            'url' => 'https://tile.thunderforest.com/landscape/{Z}/{X}/{Y}.png'],
+        'outdoors' => ['txt' => '(c) Thunderforest maps', 'logo' => 'tf_logo.png',
+            'url' => 'https://tile.thunderforest.com/outdoors/{Z}/{X}/{Y}.png'],
+        'toner' => ['txt' => '(c) Stadia Maps;Stamen Design;OpenStreetMap contributors', 'logo' => 'stamen.png',
+            'url' => 'https://tiles-eu.stadiamaps.com/tiles/stamen_toner/{Z}/{X}/{Y}.png'],
+        'terrain' => ['txt' => '(c) Stadia Maps;Stamen Design;OpenStreetMap contributors', 'logo' => 'stamen.png',
+            'url' => 'https://tiles-eu.stadiamaps.com/tiles/stamen_terrain/{Z}/{X}/{Y}.png'],
     ];
     private string $tileDefaultSrc = 'openstreetmap';
 
@@ -59,13 +68,18 @@ class StaticMap
     private array $markerPrototypes = [
         // found at http://www.mapito.net/map-marker-icons.html
         // these are 17x19 px with a pointer at the bottom left
-        'lightblue' => ['regex' => '/^lightblue(\d+)$/', 'extension' => '.png', 'shadow' => false, 'offsetImage' => '0,-19', 'offsetShadow' => false],
+        'lightblue' => ['regex' => '/^lightblue(\d+)$/', 'extension' => '.png', 'shadow' => false,
+            'offsetImage' => '0,-19', 'offsetShadow' => false],
         // openlayers std markers are 21x25px with shadow
-        'ol-marker' => ['regex' => '/^marker(|-blue|-gold|-green|-red)+$/', 'extension' => '.png', 'shadow' => 'marker_shadow.png', 'offsetImage' => '-10,-25', 'offsetShadow' => '-1,-13'],
+        'ol-marker' => ['regex' => '/^marker(|-blue|-gold|-green|-red)+$/', 'extension' => '.png',
+            'shadow' => 'marker_shadow.png', 'offsetImage' => '-10,-25', 'offsetShadow' => '-1,-13'],
         // these are 16x16 px
-        'ww_icon' => ['regex' => '/ww_\S+$/', 'extension' => '.png', 'shadow' => false, 'offsetImage' => '-8,-8', 'offsetShadow' => false],
+        'ww_icon' => ['regex' => '/ww_\S+$/', 'extension' => '.png', 'shadow' => false, 'offsetImage' => '-8,-8',
+            'offsetShadow' => false],
         // assume these are 16x16 px
-        'rest' => ['regex' => '/^(?!lightblue(\d+)$)(?!(ww_\S+$))(?!marker(|-blue|-gold|-green|-red)+$)(.*)/', 'extension' => '.png', 'shadow' => 'marker_shadow.png', 'offsetImage' => '-8,-8', 'offsetShadow' => '-1,-1'],
+        'rest' => ['regex' => '/^(?!lightblue(\d+)$)(?!(ww_\S+$))(?!marker(|-blue|-gold|-green|-red)+$)(.*)/',
+            'extension' => '.png', 'shadow' => 'marker_shadow.png', 'offsetImage' => '-8,-8',
+            'offsetShadow' => '-1,-1'],
     ];
     // note even though $centerX, $centerY, $offsetX and $offsetY are defined as float,
     //   these are actually integer numbers, but the php floor()/ceil() functions return a float
@@ -259,7 +273,7 @@ class StaticMap
         }
         $this->lon = $centroid->getX();
         $this->lat = $centroid->getY();
-        Logger::debug("StaticMap::autoZoom: Set autozoom options to: z: $this->zoom, lon: $this->lon, lat: $this->lat");
+        Logger::debug("Set staticmap autozoom options to: z: $this->zoom, lon: $this->lon, lat: $this->lat");
     }
 
     public function checkMapCache(): bool
@@ -395,7 +409,7 @@ class StaticMap
                 if ($tileData) {
                     $tileImage = imagecreatefromstring($tileData);
                 }
-                if (!$tileData || $tileImage === false || !$tileImage instanceof \GdImage) {
+                if (!$tileData || $tileImage === false || !$tileImage instanceof GdImage) {
                     $tileImage = imagecreate($this->tileSize, $this->tileSize);
                     $color     = imagecolorallocate($tileImage, 255, 255, 255);
                     @imagestring($tileImage, 1, 127, 127, 'err', $color);
@@ -451,7 +465,8 @@ class StaticMap
             global $conf;
             $opts = ['http' => [
                 'method' => "GET",
-                'header' => "Accept-language: en\r\n" . "User-Agent: $_UA\r\n" . "accept: image/png\r\n" . "Referer: " . DOKU_URL . "\r\n",
+                'header' => "Accept-language: en\r\n" . "User-Agent: $_UA\r\n" . "accept: image/png\r\n" . "Referer: "
+                    . DOKU_URL . "\r\n",
                 'request_fulluri' => true
             ]];
             if (
@@ -463,7 +478,7 @@ class StaticMap
             }
 
             $context = stream_context_create($opts);
-            Logger::debug("fetchTile: getting: $url . $this->apikey using file_get_contents and options", $opts);
+            Logger::debug("fetchTile: getting: $url . $this->apikey using file_get_contents + options", $opts);
             $tile = file_get_contents($url . $this->apikey, false, $context);
         }
 

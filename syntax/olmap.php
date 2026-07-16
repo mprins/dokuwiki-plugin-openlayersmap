@@ -15,7 +15,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotPascalCase
  */
 use dokuwiki\Extension\SyntaxPlugin;
 use geoPHP\Geometry\Point;
@@ -32,7 +32,9 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
     /**
      * defaults of the known attributes of the olmap tag.
      */
-    private $dflt = ['id'            => 'olmap', 'width'         => '550px', 'height'        => '450px', 'lat'           => 50.0, 'lon'           => 5.1, 'zoom'          => 12, 'autozoom'      => 1, 'controls'      => true, 'baselyr'       => 'OpenStreetMap', 'gpxfile'       => '', 'kmlfile'       => '', 'geojsonfile'   => '', 'summary'       => ''];
+    private array $dflt = ['id' => 'olmap', 'width' => '550px', 'height' => '450px', 'lat' => 50.0,
+        'lon' => 5.1, 'zoom' => 12, 'autozoom' => 1, 'controls' => true, 'baselyr' => 'OpenStreetMap',
+        'gpxfile' => '', 'kmlfile' => '', 'geojsonfile' => '', 'summary' => ''];
 
     /**
      *
@@ -65,7 +67,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
      *
      * @see Doku_Parser_Mode::connectTo()
      */
-    public function connectTo($mode)
+    public function connectTo($mode): void
     {
         $this->Lexer->addSpecialPattern(
             '<olmap ?[^>\n]*>.*?</olmap>',
@@ -173,7 +175,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
         }
         unset($gmap ['id']);
 
-        // create a javascript serialisation of the point data
+        // create a JavaScript serialisation of the point data
         $poi      = '';
         $poitable = '';
         $rowId    = 0;
@@ -334,6 +336,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
      *
      * @param array $gmap
      * @param array $overlay
+     * @return string
      */
     private function getGoogle(array $gmap, array $overlay): string
     {
@@ -349,7 +352,14 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
         };
         // TODO maybe use viewport / visible instead of center/zoom,
         // see: https://developers.google.com/maps/documentation/staticmaps/index#Viewports
-        // http://maps.google.com/maps/api/staticmap?center=51.565690,5.456756&zoom=16&size=600x400&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker.png|label:1|51.565690,5.456756&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker-blue.png|51.566197,5.458966|label:2&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.567177,5.457909|label:3&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.566283,5.457330|label:4&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.565630,5.457695|label:5&sensor=false&format=png&maptype=roadmap
+
+        // http://maps.google.com/maps/api/staticmap?center=51.565690,5.456756&zoom=16&size=600x400&
+        //  markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker.png|label:1|51.565690,5.456756
+        // &markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/marker-blue.png|51.566197,5.458966|label:2
+        //&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.567177,5.457909|label:3
+        //&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.566283,5.457330|label:4
+        //&markers=icon:http://wild-water.nl/dokuwiki/lib/plugins/openlayersmap/icons/parking.png|51.565630,5.457695|label:5
+        //&sensor=false&format=png&maptype=roadmap
         $imgUrl = "https://maps.googleapis.com/maps/api/staticmap?";
         $imgUrl .= "&size=" . str_replace("px", "", $gmap ['width']) . "x"
             . str_replace("px", "", $gmap ['height']);
@@ -451,7 +461,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
      * @return false|string
      * @todo implementation for http://ojw.dev.openstreetmap.org/StaticMapDev/
      */
-    private function getStaticOSM(array $gmap, array $overlay)
+    private function getStaticOSM(array $gmap, array $overlay): false|string
     {
         global $conf;
 
@@ -583,7 +593,8 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
         $imgUrl .= "&subscription-key=" . $this->getConf('azureAPIKey');
         if ($this->getConf('autoZoomMap')) {
             $bbox = $this->calcBBOX($overlay, $gmap ['lat'], $gmap ['lon']);
-            $imgUrl .= "&bbox=" . $bbox ['minlon'] . "%2C" . $bbox ['minlat'] . "%2C" . $bbox ['maxlon'] . "%2C" . $bbox ['maxlat'];
+            $imgUrl .= "&bbox=" . $bbox ['minlon'] . "%2C" . $bbox ['minlat'] . "%2C" . $bbox ['maxlon'] . "%2C" .
+                $bbox ['maxlat'];
         } else {
             $imgUrl .= "&center=" . $gmap ['lon'] . "%2C" . $gmap ['lat'];
             $imgUrl .= "&zoom=" . $gmap ['zoom'];
@@ -635,13 +646,15 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
         // TODO: make edge/wrap around cases work
         $centerlat = $lats [0] + ($lats [count($lats) - 1] - $lats [0]);
         $centerlon = $lons [0] + ($lons [count($lats) - 1] - $lons [0]);
-        return ['minlat'    => $lats [0], 'minlon'    => $lons [0], 'maxlat'    => $lats [count($lats) - 1], 'maxlon'    => $lons [count($lats) - 1], 'centerlat' => $centerlat, 'centerlon' => $centerlon];
+        return ['minlat' => $lats [0], 'minlon' => $lons [0], 'maxlat' => $lats [count($lats) - 1],
+            'maxlon' => $lons [count($lats) - 1], 'centerlat' => $centerlat, 'centerlon' => $centerlon];
     }
 
     /**
      * convert latitude in decimal degrees to DMS+hemisphere.
      *
      * @param float $decimaldegrees
+     * @return string
      * @todo move this into a shared library
      */
     private function convertLat(float $decimaldegrees): string
@@ -676,6 +689,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
      * convert longitude in decimal degrees to DMS+hemisphere.
      *
      * @param float $decimaldegrees
+     * @return string
      * @todo move this into a shared library
      */
     private function convertLon(float $decimaldegrees): string
@@ -693,6 +707,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
      * Figures out the base filename of a media path.
      *
      * @param string $mediaLink
+     * @return string
      */
     private function getFileName(string $mediaLink): string
     {
@@ -751,7 +766,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
             }
             $renderer->doc .= '<div id="' . $mapid . '-clearer" class="clearer"><p>&nbsp;</p></div>';
             if ($this->getConf('enableA11y')) {
-                // render a table of the POI for the print and a11y presentation, it is hidden using javascript
+                // render a table of the POI for the print and a11y presentation, it is hidden using JavaScript
                 $renderer->doc .= '
                 <div id="' . $mapid . '-table-span" class="olPOItableSpan">
                     <table id="' . $mapid . '-table" class="olPOItable">
@@ -787,7 +802,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
                 // render geo metadata, unless they are the default
                 $renderer->meta ['geo'] ['lat'] = $mainLat;
                 $renderer->meta ['geo'] ['lon'] = $mainLon;
-                if (($geophp = plugin_load('helper', 'geophp')) !== null) {
+                if ((plugin_load('helper', 'geophp')) !== null) {
                     // if we have the geoPHP helper, add the geohash
                     try {
                         $renderer->meta['geo']['geohash'] = (new Point($mainLon, $mainLat))->out('geohash');
@@ -801,7 +816,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
                 // add map local image into relation/firstimage if not already filled and when it is a local image
 
                 global $ID;
-                $rel = p_get_metadata($ID, 'relation', METADATA_RENDER_USING_CACHE);
+                $rel = p_get_metadata($ID, 'relation');
                 // $img = $rel ['firstimage'];
                 if (empty($rel ['firstimage']) /* || $img == $_firstimage*/) {
                     //Logger::debug(

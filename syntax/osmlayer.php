@@ -17,14 +17,15 @@ use dokuwiki\Extension\SyntaxPlugin;
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotPascalCase
  */
 /**
  * Add OSM style layer to your map.
  */
 class syntax_plugin_openlayersmap_osmlayer extends SyntaxPlugin
 {
-    private $dflt = ['id'          => 'olmap', 'name'        => '', 'url'         => '', 'opacity'     => 0.8, 'attribution' => '', 'visible'     => false, 'cors'        => null, 'baselayer'   => 'false'];
+    private array $dflt = ['id' => 'olmap', 'name' => '', 'url' => '', 'opacity' => 0.8, 'attribution' => '',
+        'visible' => false, 'cors' => null, 'baselayer' => 'false'];
 
     /**
      * (non-PHPdoc)

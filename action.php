@@ -19,7 +19,7 @@ use dokuwiki\Extension\Event;
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotPascalCase
  */
 /**
  * Action for Plugin OL Maps: Allow Display of a OpenLayers Map in a wiki page.
@@ -54,8 +54,11 @@ class action_plugin_openlayersmap extends ActionPlugin
         $strOpen .= '~~ want the map to start.\n\n';
         $strOpen .= '~~ Below is an example of a POI, you can add as many as you want. ';
         $strOpen .= '~~ More examples: https://dokuwiki.org/plugin:openlayersmap \n';
-        $event->data[] = ['type' => 'format', 'title' => $this->getLang('openlayersmap'), 'icon' => '../../plugins/openlayersmap/toolbar/map.png', 'open' => $strOpen, 'sample' => '50.0117,5.1287,-90,.8,marker-green.png,Pont de Barbouillons; Daverdisse \\\\ external link: 
-                        [[https://test.com|test.com]] \\\\ internal link: [[::start]]\\\\ **DW Formatting** \n', 'close' => '</olmap>\n'];
+        $event->data[] = ['type' => 'format', 'title' => $this->getLang('openlayersmap'),
+            'icon' => '../../plugins/openlayersmap/toolbar/map.png', 'open' => $strOpen,
+            'sample' => '50.0117,5.1287,-90,.8,marker-green.png,Pont de Barbouillons; Daverdisse \\\\ external link: 
+                        [[https://test.com|test.com]] \\\\ internal link: [[::start]]\\\\ **DW Formatting** \n',
+            'close' => '</olmap>\n'];
     }
 
     /**
