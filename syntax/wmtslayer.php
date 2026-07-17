@@ -1,5 +1,6 @@
 <?php
 
+use dokuwiki\Parsing\Handler;
 use dokuwiki\Extension\SyntaxPlugin;
 
 /*
@@ -79,7 +80,7 @@ class syntax_plugin_openlayersmap_wmtslayer extends SyntaxPlugin
      *
      * @see DokuWiki_Syntax_Plugin::handle()
      */
-    final public function handle($match, $state, $pos, Doku_Handler $handler): array
+    final public function handle($match, $state, $pos, Handler $handler): array
     {
         $param = [];
         $data = $this->dflt;
