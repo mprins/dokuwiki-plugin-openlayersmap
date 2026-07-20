@@ -21,8 +21,7 @@
     }
   },
   "suggest": {
-    "ext-imagick": "For image manipulation",
-    "ext-curl": "For downloading tiles to the server"
+    "ext-imagick": "For image manipulation"
   },
   "funding": [
     {

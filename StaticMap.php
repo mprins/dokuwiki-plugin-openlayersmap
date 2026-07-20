@@ -29,6 +29,7 @@ use geoPHP\Geometry\LineString;
 use geoPHP\Geometry\Point;
 use geoPHP\Geometry\Polygon;
 use geoPHP\geoPHP;
+use dokuwiki\HTTP\DokuHTTPClient;
 use dokuwiki\Logger;
 
 /**
@@ -436,8 +437,6 @@ class StaticMap
      * returns false if the tile is not a valid image.
      * @param string $url
      * @return bool|string
-     * @todo refactor this to use dokuwiki\HTTP\HTTPClient or dokuwiki\HTTP\DokuHTTPClient
-     *          for better proxy handling...
      */
     public function fetchTile(string $url): bool|string
     {
@@ -448,43 +447,16 @@ class StaticMap
             }
         }
 
-        $_UA = 'Mozilla/4.0 (compatible; DokuWikiSpatial HTTP Client; ' . PHP_OS . ')';
-        if (function_exists("curl_init")) {
-            // use cUrl
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERAGENT, $_UA);
-            curl_setopt($ch, CURLOPT_REFERER, DOKU_URL);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-            curl_setopt($ch, CURLOPT_URL, $url . $this->apikey);
-            Logger::debug("fetchTile: getting: $url using curl_exec");
-            $tile = curl_exec($ch);
-            curl_close($ch);
-        } else {
-            // use file_get_contents
-            global $conf;
-            $opts = ['http' => [
-                'method' => "GET",
-                'header' => "Accept-language: en\r\n" . "User-Agent: $_UA\r\n" . "accept: image/png\r\n" . "Referer: "
-                    . DOKU_URL . "\r\n",
-                'request_fulluri' => true
-            ]];
-            if (
-                isset($conf['proxy']['host'], $conf['proxy']['port'])
-                && $conf['proxy']['host'] !== ''
-                && $conf['proxy']['port'] !== ''
-            ) {
-                $opts['http'] += ['proxy' => "tcp://" . $conf['proxy']['host'] . ":" . $conf['proxy']['port']];
-            }
-
-            $context = stream_context_create($opts);
-            Logger::debug("fetchTile: getting: $url . $this->apikey using file_get_contents + options", $opts);
-            $tile = file_get_contents($url . $this->apikey, false, $context);
-        }
+        $client = new DokuHTTPClient();
+        $client->agent = 'Mozilla/4.0 (compatible; DokuWikiSpatial HTTP Client; ' . PHP_OS . ')';
+        $client->referer = DOKU_URL;
+        $client->timeout = 10;
+        Logger::debug("fetchTile: getting: $url using DokuHTTPClient");
+        $tile = $client->get($url . $this->apikey);
 
         // check if we retrieved a valid image
-        if (@imagecreatefromstring($tile) !== false) {
-            if ($tile && $this->useTileCache) {
+        if ($tile !== false && @imagecreatefromstring($tile) !== false) {
+            if ($this->useTileCache) {
                 $this->writeTileToCache($url, $tile);
             }
             return $tile;
