@@ -36,7 +36,7 @@ class staticmap_plugin_openlayersmap_test extends DokuWikiTest
     public function setUp(): void
     {
         parent::setUp();
-        $this->tileCacheDir = TMP_DIR . '/olmaptilecache';
+        $this->tileCacheDir = TMP_DIR . '/olmaptilecache_' . uniqid('', true);
         $this->map = new StaticMap(
             51.5,
             -0.1,
