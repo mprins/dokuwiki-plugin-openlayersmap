@@ -95,6 +95,9 @@ function createMap(mapOpts, poi) {
     let overlayGroup = new ol.layer.Group({title: 'Overlays', fold: 'open', layers: []});
     const baseLyrGroup = new ol.layer.Group({'title': 'Base maps', layers: []});
 
+    const preloadLevel = 2;
+    const iconScale = window.devicePixelRatio ?? 1.0;
+
     const map = new ol.Map({
         target: document.getElementById(mapOpts.id),
         layers: [baseLyrGroup, overlayGroup],
@@ -117,14 +120,17 @@ function createMap(mapOpts, poi) {
                 visible: true,
                 title: 'OSM',
                 type: 'base',
+                preload: preloadLevel,
                 source: new ol.source.OSM()
-            }));
+            })
+        );
 
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "opentopomap",
                 title: 'opentopomap',
                 type: 'base',
+                preload: preloadLevel,
                 source: new ol.source.OSM({
                     url: 'https://{a-c}.tile.opentopomap.org/{z}/{x}/{y}.png',
                     attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
@@ -132,59 +138,68 @@ function createMap(mapOpts, poi) {
                         + 'style &copy;<a href="https://opentopomap.org/" target="_blank">OpenTopoMap</a>'
                         + '(<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
                 })
-            }));
+            })
+        );
 
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "cycle map",
                 title: 'cycle map',
                 type: 'base',
+                preload: preloadLevel,
                 source: new ol.source.OSM({
                     url: 'https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=' + tfApiKey,
                     attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
                         + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
                         + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
                 })
-            }));
+            })
+        );
 
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "transport",
                 title: 'transport',
                 type: 'base',
+                preload: preloadLevel,
                 source: new ol.source.OSM({
                     url: 'https://{a-c}.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=' + tfApiKey,
                     attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
                         + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
                         + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
                 })
-            }));
+            })
+        );
 
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "landscape",
                 title: 'landscape',
                 type: 'base',
+                preload: preloadLevel,
                 source: new ol.source.OSM({
                     url: 'https://{a-c}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=' + tfApiKey,
                     attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
                         + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
                         + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
                 })
-            }));
+            })
+        );
 
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "outdoors",
                 title: 'outdoors',
                 type: 'base',
+                preload: preloadLevel,
                 source: new ol.source.OSM({
                     url: 'https://{a-c}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=' + tfApiKey,
                     attributions: 'Data &copy;ODbL <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, '
                         + 'Tiles &copy;<a href="https://www.thunderforest.com/" target="_blank">Thunderforest</a>'
                         + '<img src="https://www.thunderforest.com/favicon.ico" alt="Thunderforest logo"/>'
                 })
-            }));
+            })
+        );
     }
 
     if (aEnable && aApiKey !== '') {
@@ -193,24 +208,28 @@ function createMap(mapOpts, poi) {
                 visible: mapOpts.baselyr === "azure road",
                 title: 'Azure road',
                 type: 'base',
+                preload: preloadLevel,
                 source: new ol.source.ImageTile({
                     attributions: `© ${new Date().getFullYear()} TomTom, Microsoft`,
                     url: `https://atlas.microsoft.com/map/tile?subscription-key=${aApiKey}&api-version=2.0&tilesetId=microsoft.base.road&zoom={z}&x={x}&y={y}&tileSize=256`,
                     imagerySet: 'Road'
                 })
-            }));
+            })
+        );
 
         baseLyrGroup.getLayers().push(
             new ol.layer.Tile({
                 visible: mapOpts.baselyr === "azure sat",
                 title: 'Azure sat',
                 type: 'base',
+                preload: preloadLevel,
                 source: new ol.source.ImageTile({
                     attributions: `© ${new Date().getFullYear()} TomTom, Microsoft`,
                     url: `https://atlas.microsoft.com/map/tile?subscription-key=${aApiKey}&api-version=2.0&tilesetId=microsoft.imagery&zoom={z}&x={x}&y={y}&tileSize=256`,
                     imagerySet: 'Aerial'
                 })
-            }));
+            })
+        );
     }
 
     if (stadiaEnable) {
@@ -219,11 +238,13 @@ function createMap(mapOpts, poi) {
                 visible: mapOpts.baselyr === "toner",
                 type: 'base',
                 title: 'toner',
-                // apiKey: 'OPTIONAL', (we suggest domain-based auth)
+                preload: preloadLevel,
                 source: new ol.source.StadiaMaps({
                     layer: 'stamen_toner',
                     // missing CORS header
                     // url:'https://tiles-eu.stadiamaps.com/tiles/'
+                    // apiKey: 'OPTIONAL', (we suggest domain-based auth)
+                    retina: (iconScale > 1.0),
                 })
             })
         );
@@ -233,11 +254,13 @@ function createMap(mapOpts, poi) {
                 visible: mapOpts.baselyr === "terrain",
                 type: 'base',
                 title: 'terrain',
-                // apiKey: 'OPTIONAL', (we suggest domain-based auth)
+                preload: preloadLevel,
                 source: new ol.source.StadiaMaps({
                     layer: 'stamen_terrain',
                     // missing CORS header
                     // url:'https://tiles-eu.stadiamaps.com/tiles/'
+                    // apiKey: 'OPTIONAL', (we suggest domain-based auth)
+                    retina: (iconScale > 1.0),
                 })
             })
         );
@@ -245,7 +268,6 @@ function createMap(mapOpts, poi) {
 
     extent = ol.extent.extend(extent, map.getView().calculateExtent());
 
-    const iconScale = window.devicePixelRatio ?? 1.0;
     const vectorSource = new ol.source.Vector();
     poi.forEach((p) => {
         const f = new ol.Feature({
