@@ -163,7 +163,7 @@ class syntax_plugin_openlayersmap_olmap extends SyntaxPlugin
             $imgUrl .= "&nocache";
         }
 
-        $imgUrl .= " |" . $gmap ['summary'] . " }}";
+        $imgUrl .= " |" . $gmap ['summary'] . "}}";
 
         $mapid = $gmap ['id'];
         // create a javascript parameter string for the map

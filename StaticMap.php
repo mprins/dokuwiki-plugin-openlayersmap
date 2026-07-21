@@ -178,6 +178,21 @@ class StaticMap
         $this->mapCacheBaseDir  = $mediaDir . '/olmapmaps';
         $this->autoZoomExtent   = $autoZoomExtent;
         $this->apikey           = $apikey;
+        $this->mapCacheID       = md5(implode(
+            "&",
+            [
+                $this->zoom,
+                $this->lat,
+                $this->lon,
+                $this->width,
+                $this->height,
+                serialize($this->markers),
+                $this->maptype,
+                $this->kmlFileName,
+                $this->gpxFileName,
+                $this->geojsonFileName
+            ]
+        ));
     }
 
     /**
@@ -195,16 +210,16 @@ class StaticMap
             Logger::debug($e);
         }
 
+        $filename = $this->mapCacheIDToFilename();
         // use map cache, so check cache for map
         if (!$this->checkMapCache()) {
             // map is not in cache, needs to be build
             $this->makeMap();
-            $this->mkdirRecursive(dirname($this->mapCacheIDToFilename()), 0777);
-            imagepng($this->image, $this->mapCacheIDToFilename(), 9);
+            $this->mkdirRecursive(dirname($filename), 0777);
+            imagepng($this->image, $filename, 9);
         }
-        $doc = $this->mapCacheIDToFilename();
         // make url relative to media dir
-        return str_replace($this->mediaBaseDir, '', $doc);
+        return str_replace($this->mediaBaseDir, '', $filename);
     }
 
     /**
@@ -280,34 +295,13 @@ class StaticMap
         Logger::debug("Set staticmap autozoom options to: z: $this->zoom, lon: $this->lon, lat: $this->lat");
     }
 
-    public function checkMapCache(): bool
+    private function checkMapCache(): bool
     {
-        // side effect: set the mapCacheID
-        $this->mapCacheID = md5($this->serializeParams());
-        $filename         = $this->mapCacheIDToFilename();
+        $filename = $this->mapCacheIDToFilename();
         return file_exists($filename);
     }
 
-    public function serializeParams(): string
-    {
-        return implode(
-            "&",
-            [
-                $this->zoom,
-                $this->lat,
-                $this->lon,
-                $this->width,
-                $this->height,
-                serialize($this->markers),
-                $this->maptype,
-                $this->kmlFileName,
-                $this->gpxFileName,
-                $this->geojsonFileName
-            ]
-        );
-    }
-
-    public function mapCacheIDToFilename(): string
+    private function mapCacheIDToFilename(): string
     {
         if (!$this->mapCacheFile) {
             $this->mapCacheFile = $this->mapCacheBaseDir . "/" . $this->maptype . "/" . $this->zoom . "/cache_"
@@ -633,7 +627,7 @@ class StaticMap
     public function drawKML(): void
     {
         // TODO get colour from kml node (not currently supported in geoPHP)
-        $col     = imagecolorallocatealpha($this->image, 255, 0, 0, .4 * 127);
+        $col     = imagecolorallocatealpha($this->image, 255, 0, 0, 50);
         $kmlgeom = geoPHP::load(file_get_contents($this->kmlFileName), 'kml');
         $this->drawGeometry($kmlgeom, $col);
     }
@@ -717,11 +711,11 @@ class StaticMap
         $extRing = $polygon->exteriorRing();
 
         for ($i = 1; $i < $extRing->numGeometries(); $i++) {
-            $p1           = $extRing->geometryN($i);
-            $x            = floor(
+            $p1 = $extRing->geometryN($i);
+            $x  = floor(
                 ($this->width / 2) - $this->tileSize * ($this->centerX - $this->lonToTile($p1->x(), $this->zoom))
             );
-            $y            = floor(
+            $y  = floor(
                 ($this->height / 2) - $this->tileSize * ($this->centerY - $this->latToTile($p1->y(), $this->zoom))
             );
             $extPoints [] = $x;
@@ -730,7 +724,7 @@ class StaticMap
         // print_r('points:('.($i-1).')<br />');
         // print_r($extPoints);
         // imagepolygon ($this->image, $extPoints, $i-1, $colour );
-        imagefilledpolygon($this->image, $extPoints, $i - 1, $colour);
+        imagefilledpolygon($this->image, $extPoints, $colour);
     }
 
     /**
@@ -799,7 +793,7 @@ class StaticMap
      */
     public function drawGPX(): void
     {
-        $col     = imagecolorallocatealpha($this->image, 0, 0, 255, .4 * 127);
+        $col     = imagecolorallocatealpha($this->image, 0, 0, 255, 50);
         $gpxgeom = geoPHP::load(file_get_contents($this->gpxFileName), 'gpx');
         $this->drawGeometry($gpxgeom, $col);
     }
@@ -810,7 +804,7 @@ class StaticMap
      */
     public function drawGeojson(): void
     {
-        $col     = imagecolorallocatealpha($this->image, 255, 0, 255, .4 * 127);
+        $col     = imagecolorallocatealpha($this->image, 255, 0, 255, 50);
         $jsonGeom = geoPHP::load(file_get_contents($this->geojsonFileName), 'json');
         $this->drawGeometry($jsonGeom, $col);
     }
