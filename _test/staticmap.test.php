@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2024 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2026 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -64,9 +64,13 @@ class staticmap_plugin_openlayersmap_test extends DokuWikiTest
 
     private function rrmdir(string $dir): void
     {
-        if (!is_dir($dir)) return;
+        if (!is_dir($dir)) {
+            return;
+        }
         foreach (scandir($dir) as $item) {
-            if ($item === '.' || $item === '..') continue;
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
             $path = $dir . DIRECTORY_SEPARATOR . $item;
             is_dir($path) ? $this->rrmdir($path) : unlink($path);
         }
@@ -83,7 +87,10 @@ class staticmap_plugin_openlayersmap_test extends DokuWikiTest
         // A syntactically valid but unreachable URL; DokuHTTPClient will fail and
         // fetchTile must return false rather than throwing.
         $result = $this->map->fetchTile('http://localhost:19999/nonexistent_tile.png');
-        self::assertFalse($result, 'fetchTile should return false when the tile cannot be retrieved or is not a valid image');
+        self::assertFalse(
+            $result,
+            'fetchTile should return false when the tile cannot be retrieved or is not a valid image'
+        );
     }
 
     /**
@@ -97,7 +104,6 @@ class staticmap_plugin_openlayersmap_test extends DokuWikiTest
         ob_start();
         imagepng($img);
         $pngData = ob_get_clean();
-        imagedestroy($img);
 
         $tileUrl = 'https://tile.openstreetmap.org/10/512/341.png';
 

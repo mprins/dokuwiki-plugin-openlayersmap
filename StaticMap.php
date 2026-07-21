@@ -26,6 +26,9 @@ use GdImage;
 use geoPHP\Geometry\Geometry;
 use geoPHP\Geometry\GeometryCollection;
 use geoPHP\Geometry\LineString;
+use geoPHP\Geometry\MultiLineString;
+use geoPHP\Geometry\MultiPoint;
+use geoPHP\Geometry\MultiPolygon;
 use geoPHP\Geometry\Point;
 use geoPHP\Geometry\Polygon;
 use geoPHP\geoPHP;
@@ -450,7 +453,6 @@ class StaticMap
         $client = new DokuHTTPClient();
         $client->agent = 'Mozilla/4.0 (compatible; DokuWikiSpatial HTTP Client; ' . PHP_OS . ')';
         $client->referer = DOKU_URL;
-        $client->timeout = 10;
         Logger::debug("fetchTile: getting: $url using DokuHTTPClient");
         $tile = $client->get($url . $this->apikey);
 
@@ -651,25 +653,45 @@ class StaticMap
 
         switch ($geom->geometryType()) {
             case 'GeometryCollection':
-                // recursively draw part of the collection
+                // recursively draw parts of the collection
                 for ($i = 1; $i < $geom->numGeometries() + 1; $i++) {
                     $_geom = $geom->geometryN($i);
                     $this->drawGeometry($_geom, $colour);
                 }
                 break;
             case 'Polygon':
+                /** @var Polygon $geom */
                 $this->drawPolygon($geom, $colour);
                 break;
             case 'LineString':
+                /** @var LineString $geom */
                 $this->drawLineString($geom, $colour);
                 break;
             case 'Point':
+                /** @var Point $geom */
                 $this->drawPoint($geom, $colour);
                 break;
-            // TODO implement / do nothing
             case 'MultiPolygon':
+                /** @var MultiPolygon $geom */
+                for ($i = 1; $i < $geom->numGeometries() + 1; $i++) {
+                    $_poly = $geom->geometryN($i);
+                    $this->drawGeometry($_poly, $colour);
+                }
+                break;
             case 'MultiLineString':
+                /** @var MultiLineString $geom */
+                for ($i = 1; $i < $geom->numGeometries() + 1; $i++) {
+                    $_line = $geom->geometryN($i);
+                    $this->drawGeometry($_line, $colour);
+                }
+                break;
             case 'MultiPoint':
+                /** @var MultiPoint $geom */
+                for ($i = 1; $i < $geom->numPoints() + 1; $i++) {
+                    $_p = $geom->geometryN($i);
+                    $this->drawGeometry($_p, $colour);
+                }
+                break;
             default:
                 // draw nothing
                 break;
@@ -789,8 +811,8 @@ class StaticMap
     public function drawGeojson(): void
     {
         $col     = imagecolorallocatealpha($this->image, 255, 0, 255, .4 * 127);
-        $gpxgeom = geoPHP::load(file_get_contents($this->geojsonFileName), 'json');
-        $this->drawGeometry($gpxgeom, $col);
+        $jsonGeom = geoPHP::load(file_get_contents($this->geojsonFileName), 'json');
+        $this->drawGeometry($jsonGeom, $col);
     }
 
     /**
