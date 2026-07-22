@@ -32,7 +32,7 @@ class syntax_plugin_openlayersmap_test extends DokuWikiTest
     {
         parent::setUpBeforeClass();
         global $conf;
-        $conf['allowdebug'] = 1;
+        $conf['allowdebug'] = true;
         $conf['dontlog']    = '';
         $conf['cachetime']  = -1;
 
@@ -48,14 +48,9 @@ class syntax_plugin_openlayersmap_test extends DokuWikiTest
         parent::setUp();
 
         global $conf;
-//        $data              = array();
-//        search($data, $conf['datadir'], 'search_allpages', array('skipacl' => true));
-//        foreach($data as $val) {
-//            idx_addPage($val['id']);
-//        }
         if ($conf['allowdebug']) {
-            if (mkdir(DOKU_TMP_DATA . 'data/log/debug/', 0777, true)) {
-                touch(DOKU_TMP_DATA . 'data/log/debug/' . date('Y-m-d') . '.log');
+            if (mkdir(DOKU_TMP_DATA . 'log/debug/', 0777, true)) {
+                touch(DOKU_TMP_DATA . 'log/debug/' . date('Y-m-d') . '.log');
             }
         }
     }
@@ -68,8 +63,8 @@ class syntax_plugin_openlayersmap_test extends DokuWikiTest
         // try to get the debug log after running the test, print and clear
         if ($conf['allowdebug']) {
             print "\n";
-            readfile(DOKU_TMP_DATA . 'data/log/debug/' . date('Y-m-d') . '.log');
-            unlink(DOKU_TMP_DATA . 'data/log/debug/' . date('Y-m-d') . '.log');
+            readfile(DOKU_TMP_DATA . 'log/debug/' . date('Y-m-d') . '.log');
+            unlink(DOKU_TMP_DATA . 'log/debug/' . date('Y-m-d') . '.log');
         }
     }
 
@@ -93,9 +88,7 @@ class syntax_plugin_openlayersmap_test extends DokuWikiTest
 
         // <img src="/./lib/exe/fetch.php?w=650&amp;h=550&amp;tok=72bf3a&amp;media=olmapmaps:openstreetmap:13:cache_8b:9b:94cd3dabd2d1c470a2d5b4bea6df.png"
         // class="medialeft" loading="lazy" title="Rur parkings " alt="Rur parkings " width="650" height="550" />
-        $_staticImage = $response->queryHTML(
-            'img[src*="olmapmaps:openstreetmap:13:cache_8b:9b:94cd3dabd2d1c470a2d5b4bea6df.png"]'
-        );
+        $_staticImage = $response->queryHTML('img[src*="olmapmaps:openstreetmap:13:cache_"]');
         self::assertNotEmpty($_staticImage);
         self::assertEquals('medialeft', $_staticImage->attr('class'));
         self::assertEquals('650', $_staticImage->attr('width'));

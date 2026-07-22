@@ -26,9 +26,13 @@ use GdImage;
 use geoPHP\Geometry\Geometry;
 use geoPHP\Geometry\GeometryCollection;
 use geoPHP\Geometry\LineString;
+use geoPHP\Geometry\MultiLineString;
+use geoPHP\Geometry\MultiPoint;
+use geoPHP\Geometry\MultiPolygon;
 use geoPHP\Geometry\Point;
 use geoPHP\Geometry\Polygon;
 use geoPHP\geoPHP;
+use dokuwiki\HTTP\DokuHTTPClient;
 use dokuwiki\Logger;
 
 /**
@@ -174,6 +178,21 @@ class StaticMap
         $this->mapCacheBaseDir  = $mediaDir . '/olmapmaps';
         $this->autoZoomExtent   = $autoZoomExtent;
         $this->apikey           = $apikey;
+        $this->mapCacheID       = md5(implode(
+            "&",
+            [
+                $this->zoom,
+                $this->lat,
+                $this->lon,
+                $this->width,
+                $this->height,
+                serialize($this->markers),
+                $this->maptype,
+                $this->kmlFileName,
+                $this->gpxFileName,
+                $this->geojsonFileName
+            ]
+        ));
     }
 
     /**
@@ -191,16 +210,16 @@ class StaticMap
             Logger::debug($e);
         }
 
+        $filename = $this->mapCacheIDToFilename();
         // use map cache, so check cache for map
         if (!$this->checkMapCache()) {
             // map is not in cache, needs to be build
             $this->makeMap();
-            $this->mkdirRecursive(dirname($this->mapCacheIDToFilename()), 0777);
-            imagepng($this->image, $this->mapCacheIDToFilename(), 9);
+            $this->mkdirRecursive(dirname($filename), 0777);
+            imagepng($this->image, $filename, 9);
         }
-        $doc = $this->mapCacheIDToFilename();
         // make url relative to media dir
-        return str_replace($this->mediaBaseDir, '', $doc);
+        return str_replace($this->mediaBaseDir, '', $filename);
     }
 
     /**
@@ -276,34 +295,13 @@ class StaticMap
         Logger::debug("Set staticmap autozoom options to: z: $this->zoom, lon: $this->lon, lat: $this->lat");
     }
 
-    public function checkMapCache(): bool
+    private function checkMapCache(): bool
     {
-        // side effect: set the mapCacheID
-        $this->mapCacheID = md5($this->serializeParams());
-        $filename         = $this->mapCacheIDToFilename();
+        $filename = $this->mapCacheIDToFilename();
         return file_exists($filename);
     }
 
-    public function serializeParams(): string
-    {
-        return implode(
-            "&",
-            [
-                $this->zoom,
-                $this->lat,
-                $this->lon,
-                $this->width,
-                $this->height,
-                serialize($this->markers),
-                $this->maptype,
-                $this->kmlFileName,
-                $this->gpxFileName,
-                $this->geojsonFileName
-            ]
-        );
-    }
-
-    public function mapCacheIDToFilename(): string
+    private function mapCacheIDToFilename(): string
     {
         if (!$this->mapCacheFile) {
             $this->mapCacheFile = $this->mapCacheBaseDir . "/" . $this->maptype . "/" . $this->zoom . "/cache_"
@@ -436,8 +434,6 @@ class StaticMap
      * returns false if the tile is not a valid image.
      * @param string $url
      * @return bool|string
-     * @todo refactor this to use dokuwiki\HTTP\HTTPClient or dokuwiki\HTTP\DokuHTTPClient
-     *          for better proxy handling...
      */
     public function fetchTile(string $url): bool|string
     {
@@ -448,43 +444,15 @@ class StaticMap
             }
         }
 
-        $_UA = 'Mozilla/4.0 (compatible; DokuWikiSpatial HTTP Client; ' . PHP_OS . ')';
-        if (function_exists("curl_init")) {
-            // use cUrl
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERAGENT, $_UA);
-            curl_setopt($ch, CURLOPT_REFERER, DOKU_URL);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-            curl_setopt($ch, CURLOPT_URL, $url . $this->apikey);
-            Logger::debug("fetchTile: getting: $url using curl_exec");
-            $tile = curl_exec($ch);
-            curl_close($ch);
-        } else {
-            // use file_get_contents
-            global $conf;
-            $opts = ['http' => [
-                'method' => "GET",
-                'header' => "Accept-language: en\r\n" . "User-Agent: $_UA\r\n" . "accept: image/png\r\n" . "Referer: "
-                    . DOKU_URL . "\r\n",
-                'request_fulluri' => true
-            ]];
-            if (
-                isset($conf['proxy']['host'], $conf['proxy']['port'])
-                && $conf['proxy']['host'] !== ''
-                && $conf['proxy']['port'] !== ''
-            ) {
-                $opts['http'] += ['proxy' => "tcp://" . $conf['proxy']['host'] . ":" . $conf['proxy']['port']];
-            }
-
-            $context = stream_context_create($opts);
-            Logger::debug("fetchTile: getting: $url . $this->apikey using file_get_contents + options", $opts);
-            $tile = file_get_contents($url . $this->apikey, false, $context);
-        }
+        $client = new DokuHTTPClient();
+        $client->agent = 'Mozilla/4.0 (compatible; DokuWikiSpatial HTTP Client; ' . PHP_OS . ')';
+        $client->referer = DOKU_URL;
+        Logger::debug("fetchTile: getting: $url using DokuHTTPClient");
+        $tile = $client->get($url . $this->apikey);
 
         // check if we retrieved a valid image
-        if (@imagecreatefromstring($tile) !== false) {
-            if ($tile && $this->useTileCache) {
+        if ($tile !== false && @imagecreatefromstring($tile) !== false) {
+            if ($this->useTileCache) {
                 $this->writeTileToCache($url, $tile);
             }
             return $tile;
@@ -659,7 +627,7 @@ class StaticMap
     public function drawKML(): void
     {
         // TODO get colour from kml node (not currently supported in geoPHP)
-        $col     = imagecolorallocatealpha($this->image, 255, 0, 0, .4 * 127);
+        $col     = imagecolorallocatealpha($this->image, 255, 0, 0, 50);
         $kmlgeom = geoPHP::load(file_get_contents($this->kmlFileName), 'kml');
         $this->drawGeometry($kmlgeom, $col);
     }
@@ -679,25 +647,45 @@ class StaticMap
 
         switch ($geom->geometryType()) {
             case 'GeometryCollection':
-                // recursively draw part of the collection
+                // recursively draw parts of the collection
                 for ($i = 1; $i < $geom->numGeometries() + 1; $i++) {
                     $_geom = $geom->geometryN($i);
                     $this->drawGeometry($_geom, $colour);
                 }
                 break;
             case 'Polygon':
+                /** @var Polygon $geom */
                 $this->drawPolygon($geom, $colour);
                 break;
             case 'LineString':
+                /** @var LineString $geom */
                 $this->drawLineString($geom, $colour);
                 break;
             case 'Point':
+                /** @var Point $geom */
                 $this->drawPoint($geom, $colour);
                 break;
-            // TODO implement / do nothing
             case 'MultiPolygon':
+                /** @var MultiPolygon $geom */
+                for ($i = 1; $i < $geom->numGeometries() + 1; $i++) {
+                    $_poly = $geom->geometryN($i);
+                    $this->drawGeometry($_poly, $colour);
+                }
+                break;
             case 'MultiLineString':
+                /** @var MultiLineString $geom */
+                for ($i = 1; $i < $geom->numGeometries() + 1; $i++) {
+                    $_line = $geom->geometryN($i);
+                    $this->drawGeometry($_line, $colour);
+                }
+                break;
             case 'MultiPoint':
+                /** @var MultiPoint $geom */
+                for ($i = 1; $i < $geom->numPoints() + 1; $i++) {
+                    $_p = $geom->geometryN($i);
+                    $this->drawGeometry($_p, $colour);
+                }
+                break;
             default:
                 // draw nothing
                 break;
@@ -723,11 +711,11 @@ class StaticMap
         $extRing = $polygon->exteriorRing();
 
         for ($i = 1; $i < $extRing->numGeometries(); $i++) {
-            $p1           = $extRing->geometryN($i);
-            $x            = floor(
+            $p1 = $extRing->geometryN($i);
+            $x  = floor(
                 ($this->width / 2) - $this->tileSize * ($this->centerX - $this->lonToTile($p1->x(), $this->zoom))
             );
-            $y            = floor(
+            $y  = floor(
                 ($this->height / 2) - $this->tileSize * ($this->centerY - $this->latToTile($p1->y(), $this->zoom))
             );
             $extPoints [] = $x;
@@ -736,7 +724,7 @@ class StaticMap
         // print_r('points:('.($i-1).')<br />');
         // print_r($extPoints);
         // imagepolygon ($this->image, $extPoints, $i-1, $colour );
-        imagefilledpolygon($this->image, $extPoints, $i - 1, $colour);
+        imagefilledpolygon($this->image, $extPoints, $colour);
     }
 
     /**
@@ -805,7 +793,7 @@ class StaticMap
      */
     public function drawGPX(): void
     {
-        $col     = imagecolorallocatealpha($this->image, 0, 0, 255, .4 * 127);
+        $col     = imagecolorallocatealpha($this->image, 0, 0, 255, 50);
         $gpxgeom = geoPHP::load(file_get_contents($this->gpxFileName), 'gpx');
         $this->drawGeometry($gpxgeom, $col);
     }
@@ -816,9 +804,9 @@ class StaticMap
      */
     public function drawGeojson(): void
     {
-        $col     = imagecolorallocatealpha($this->image, 255, 0, 255, .4 * 127);
-        $gpxgeom = geoPHP::load(file_get_contents($this->geojsonFileName), 'json');
-        $this->drawGeometry($gpxgeom, $col);
+        $col     = imagecolorallocatealpha($this->image, 255, 0, 255, 50);
+        $jsonGeom = geoPHP::load(file_get_contents($this->geojsonFileName), 'json');
+        $this->drawGeometry($jsonGeom, $col);
     }
 
     /**
