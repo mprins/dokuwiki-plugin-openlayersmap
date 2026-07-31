@@ -7,7 +7,7 @@ This will get the full/legacy build of OpenLayers. See https://openlayers.org/do
 
 ```shell
 cd ol
-export OL_VERSION=v10.9.0
+export OL_VERSION=v10.10.0
 wget https://github.com/openlayers/openlayers/releases/download/$OL_VERSION/$OL_VERSION-dist.zip
 unzip -jo $OL_VERSION-dist.zip  dist/* ol.css ol.css.map
 rm $OL_VERSION-dist.zip
@@ -20,14 +20,12 @@ A slightly more complicated build process is required to get an optimized-full-s
 ```shell
 cd ol
 rm -rf openlayers
-export OL_VERSION=v10.9.0
+export OL_VERSION=v10.10.0
 git clone https://github.com/openlayers/openlayers.git
 cd openlayers
 git checkout -b $OL_VERSION-custom $OL_VERSION
 npm install
-# patch package.json to remove puppeteer (not supported on OpenBSD)
-# npm uninstall puppeteer
-# patch generate-info.js to exclude some parts
+npm install clean-css-cli --save-dev
 cp ../generate-info.js.diff .
 git apply generate-info.js.diff
 rm -rf build/
