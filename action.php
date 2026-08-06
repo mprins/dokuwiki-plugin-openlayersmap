@@ -22,7 +22,7 @@ use dokuwiki\Extension\Event;
  * @phpcs:disable Squiz.Classes.ValidClassName.NotPascalCase
  */
 /**
- * Action for Plugin OL Maps: Allow Display of a OpenLayers Map in a wiki page.
+ * Action for OpenLayersMap Plugin: Allow Display of a OpenLayers Map in a wiki page.
  * @author Mark Prins
  */
 class action_plugin_openlayersmap extends ActionPlugin
@@ -54,15 +54,19 @@ class action_plugin_openlayersmap extends ActionPlugin
         $strOpen .= '~~ want the map to start.\n\n';
         $strOpen .= '~~ Below is an example of a POI, you can add as many as you want. ';
         $strOpen .= '~~ More examples: https://dokuwiki.org/plugin:openlayersmap \n';
-        $event->data[] = ['type' => 'format', 'title' => $this->getLang('openlayersmap'),
-            'icon' => '../../plugins/openlayersmap/toolbar/map.png', 'open' => $strOpen,
+        $event->data[] = [
+            'type' => 'format',
+            'title' => $this->getLang('olmapToolbar'),
+            'icon' => '../../plugins/openlayersmap/toolbar/map.png',
+            'open' => $strOpen,
             'sample' => '50.0117,5.1287,-90,.8,marker-green.png,Pont de Barbouillons; Daverdisse \\\\ external link: 
                         [[https://test.com|test.com]] \\\\ internal link: [[::start]]\\\\ **DW Formatting** \n',
-            'close' => '</olmap>\n'];
+            'close' => '</olmap>\n'
+        ];
     }
 
     /**
-     * Add a snippet of javascript into the head to do a css operation we can check for later on.
+     * Add a snippet of JavaScript into the head to do a CSS operation we can check for later on.
      * @param Event $event the DokuWiki event
      */
     final public function insertCSSSniffer(Event $event): void
@@ -71,7 +75,7 @@ class action_plugin_openlayersmap extends ActionPlugin
     }
 
     /**
-     * Add openlayersmap popularity data.
+     * Add OpenLayersMap popularity data.
      *
      * @param Event $event the DokuWiki event
      */
