@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2008-2015 Mark C. Prins <mprins@users.sf.net>
+ * Copyright (c) 2008-2026 Mark C. Prins <mprins@users.sf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -29,7 +29,8 @@ $lang ['olmapPOIicon']       = 'symbole';
 $lang ['olmapPOIlat']        = 'latitude';
 $lang ['olmapPOIlon']        = 'longitude';
 $lang ['olmapPOItxt']        = 'description';
-$lang ['menu']               = 'Gestionnaire de cache Openlayersmap';
+$lang ['olmapToolbar']       = 'insérer OpenLayersMap';
+$lang ['menu']               = 'Gestionnaire de cache OpenLayersMap';
 $lang ['admin_tiles']        = 'Tuiles';
 $lang ['admin_purge_tiles']  = 'Purger la mise en cache des tuiles';
 $lang ['admin_maps']         = 'Cartes';

@@ -28,6 +28,7 @@ $lang ['olmapPOIicon']       = 'символ';
 $lang ['olmapPOIlat']        = 'широта';
 $lang ['olmapPOIlon']        = 'долгота';
 $lang ['olmapPOItxt']        = 'описание';
+$lang ['olmapToolbar']       = 'вставить OpenLayersMap';
 $lang ['menu']               = 'Очистка кэша OpenLayersMap';
 $lang ['admin_tiles']        = 'Плитки';
 $lang ['admin_purge_tiles']  = 'Удалить все закэшированные плитки';
